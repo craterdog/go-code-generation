@@ -1,2 +1,2 @@
 # go-code-generation
-A template-based code generator for generating a Go modules, packages and classes.
+A template-based code generator for generating Go modules, packages and classes.
