@@ -29,7 +29,22 @@ on interfaces, not on each other.
 */
 package packages
 
+import (
+	not "github.com/craterdog/go-syntax-notation/v5"
+)
+
 // Class Declarations
+
+/*
+AstSynthesizerClassLike defines the set of class constants, constructors and
+functions that must be supported by all ast-synthesizer-class-like classes.
+*/
+type AstSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		syntax not.SyntaxLike,
+	) AstSynthesizerLike
+}
 
 /*
 GeneratorClassLike defines the set of class constants, constructors and
@@ -43,6 +58,18 @@ type GeneratorClassLike interface {
 // Instance Declarations
 
 /*
+AstSynthesizerLike defines the set of aspects and methods that must be supported by
+all ast-synthesizer-like instances.
+*/
+type AstSynthesizerLike interface {
+	// Primary Methods
+	GetClass() AstSynthesizerClassLike
+
+	// Aspect Interfaces
+	TemplateDriven
+}
+
+/*
 GeneratorLike defines the set of aspects and methods that must be supported by
 all generator-like instances.
 */
@@ -50,6 +77,7 @@ type GeneratorLike interface {
 	// Primary Methods
 	GetClass() GeneratorClassLike
 	GeneratePackage(
+		wikiPath string,
 		packageName string,
 		synthesizer TemplateDriven,
 	) string

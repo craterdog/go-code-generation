@@ -43,39 +43,43 @@ func (v *generator_) GetClass() GeneratorClassLike {
 }
 
 func (v *generator_) GeneratePackage(
+	wikiPath string,
 	packageName string,
 	synthesizer TemplateDriven,
 ) string {
 	// Begin with a package template.
 	var result = generatorReference().packageTemplate_
 
-	// Insert the legal notice.
+	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
 	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
 
-	// Insert the package declaration.
+	// Create the package declaration.
 	var packageDeclaration = synthesizer.CreatePackageDeclaration()
 	result = uti.ReplaceAll(result, "packageDeclaration", packageDeclaration)
 
-	// Insert the type declarations.
+	// Create the type declarations.
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
 	result = uti.ReplaceAll(result, "typeDeclarations", typeDeclarations)
 
-	// Insert the class declarations.
+	// Create the class declarations.
 	var classDeclarations = synthesizer.CreateClassDeclarations()
 	result = uti.ReplaceAll(result, "classDeclarations", classDeclarations)
 
-	// Insert the instance declarations.
+	// Create the instance declarations.
 	var instanceDeclarations = synthesizer.CreateInstanceDeclarations()
 	result = uti.ReplaceAll(result, "instanceDeclarations", instanceDeclarations)
 
-	// Insert the aspect declarations.
+	// Create the aspect declarations.
 	var aspectDeclarations = synthesizer.CreateAspectDeclarations()
 	result = uti.ReplaceAll(result, "aspectDeclarations", aspectDeclarations)
 
-	// Insert the module imports (this must be done last).
+	// Create the module imports (this must be done last).
 	var moduleImports = synthesizer.CreateModuleImports()
 	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
+
+	// Update the package information.
+	result = uti.ReplaceAll(result, "wikiPath", wikiPath)
 	result = uti.ReplaceAll(result, "packageName", packageName)
 
 	return result
@@ -104,7 +108,7 @@ func generatorReference() *generatorClass_ {
 
 var generatorReference_ = &generatorClass_{
 	// Initialize the class constants.
-	packageTemplate_: `<Notice><PackageDeclaration><ModuleImports>
+	packageTemplate_: `<LegalNotice><PackageDeclaration><ModuleImports>
 
 // Type Declarations<TypeDeclarations>
 
