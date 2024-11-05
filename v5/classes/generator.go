@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package packages
+package classes
 
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -42,12 +42,12 @@ func (v *generator_) GetClass() GeneratorClassLike {
 	return generatorReference()
 }
 
-func (v *generator_) GeneratePackage(
-	packageName string,
+func (v *generator_) GenerateClass(
+	className string,
 	synthesizer TemplateDriven,
 ) string {
-	// Begin with a package template.
-	var result = generatorReference().packageTemplate_
+	// Begin with a class template.
+	var result = generatorReference().classTemplate_
 
 	// Insert the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -57,26 +57,50 @@ func (v *generator_) GeneratePackage(
 	var packageDeclaration = synthesizer.CreatePackageDeclaration()
 	result = uti.ReplaceAll(result, "packageDeclaration", packageDeclaration)
 
-	// Insert the type declarations.
-	var typeDeclarations = synthesizer.CreateTypeDeclarations()
-	result = uti.ReplaceAll(result, "typeDeclarations", typeDeclarations)
+	// Insert the access function.
+	var accessFunction = synthesizer.CreateAccessFunction()
+	result = uti.ReplaceAll(result, "accessFunction", accessFunction)
 
-	// Insert the class declarations.
-	var classDeclarations = synthesizer.CreateClassDeclarations()
-	result = uti.ReplaceAll(result, "classDeclarations", classDeclarations)
+	// Insert the constructor methods.
+	var constructorMethods = synthesizer.CreateConstructorMethods()
+	result = uti.ReplaceAll(result, "constructorMethods", constructorMethods)
 
-	// Insert the instance declarations.
-	var instanceDeclarations = synthesizer.CreateInstanceDeclarations()
-	result = uti.ReplaceAll(result, "instanceDeclarations", instanceDeclarations)
+	// Insert the function methods.
+	var functionMethods = synthesizer.CreateFunctionMethods()
+	result = uti.ReplaceAll(result, "functionMethods", functionMethods)
 
-	// Insert the aspect declarations.
-	var aspectDeclarations = synthesizer.CreateAspectDeclarations()
-	result = uti.ReplaceAll(result, "aspectDeclarations", aspectDeclarations)
+	// Insert the primary methods.
+	var primaryMethods = synthesizer.CreatePrimaryMethods()
+	result = uti.ReplaceAll(result, "primaryMethods", primaryMethods)
+
+	// Insert the attribute methods.
+	var attributeMethods = synthesizer.CreateAttributeMethods()
+	result = uti.ReplaceAll(result, "attributeMethods", attributeMethods)
+
+	// Insert the aspect methods.
+	var aspectMethods = synthesizer.CreateAspectMethods()
+	result = uti.ReplaceAll(result, "aspectMethods", aspectMethods)
+
+	// Insert the private methods.
+	var privateMethods = synthesizer.CreatePrivateMethods()
+	result = uti.ReplaceAll(result, "privateMethods", privateMethods)
+
+	// Insert the instance structure.
+	var instanceStructure = synthesizer.CreateInstanceStructure()
+	result = uti.ReplaceAll(result, "instanceStructure", instanceStructure)
+
+	// Insert the class structure.
+	var classStructure = synthesizer.CreateClassStructure()
+	result = uti.ReplaceAll(result, "classStructure", classStructure)
+
+	// Insert the class reference.
+	var classReference = synthesizer.CreateClassReference()
+	result = uti.ReplaceAll(result, "classReference", classReference)
 
 	// Insert the module imports (this must be done last).
 	var moduleImports = synthesizer.CreateModuleImports()
 	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
-	result = uti.ReplaceAll(result, "packageName", packageName)
+	result = uti.ReplaceAll(result, "className", className)
 
 	return result
 }
@@ -93,7 +117,7 @@ type generator_ struct {
 
 type generatorClass_ struct {
 	// Declare the class constants.
-	packageTemplate_ string
+	classTemplate_ string
 }
 
 // Class Reference
@@ -104,14 +128,12 @@ func generatorReference() *generatorClass_ {
 
 var generatorReference_ = &generatorClass_{
 	// Initialize the class constants.
-	packageTemplate_: `<Notice><PackageDeclaration><ModuleImports>
+	classTemplate_: `<Notice><PackageDeclaration><ModuleImports>
 
-// Type Declarations<TypeDeclarations>
+// CLASS INTERFACE<AccessFunction><ConstructorMethods><FunctionMethods>
 
-// Class Declarations<ClassDeclarations>
+// INSTANCE INTERFACE<PrimaryMethods><AttributeMethods><AspectMethods>
 
-// Instance Declarations<InstanceDeclarations>
-
-// Aspect Declarations<AspectDeclarations>
+// PROTECTED INTERFACE<PrivateMethods><InstanceStructure><ClassStructure><ClassReference>
 `,
 }

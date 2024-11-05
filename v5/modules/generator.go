@@ -26,14 +26,9 @@ func Generator() GeneratorClassLike {
 
 // Constructor Methods
 
-func (c *generatorClass_) Make(
-	wiki string,
-	synthesizer TemplateDriven,
-) GeneratorLike {
+func (c *generatorClass_) Make() GeneratorLike {
 	var instance = &generator_{
 		// Initialize the instance attributes.
-		wiki_:        wiki,
-		synthesizer_: synthesizer,
 	}
 	return instance
 
@@ -47,29 +42,33 @@ func (v *generator_) GetClass() GeneratorClassLike {
 	return generatorReference()
 }
 
-func (v *generator_) GenerateModule() string {
+func (v *generator_) GenerateModule(
+	wiki string,
+	synthesizer TemplateDriven,
+) string {
 	// Begin with a module template.
 	var result = generatorReference().moduleTemplate_
 
 	// Insert the legal notice.
-	var legalNotice = v.synthesizer_.GenerateLegalNotice()
+	var legalNotice = synthesizer.CreateLegalNotice()
 	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
 
 	// Insert the type aliases.
-	var typeAliases = v.synthesizer_.GenerateTypeAliases()
+	var typeAliases = synthesizer.CreateTypeAliases()
 	result = uti.ReplaceAll(result, "typeAliases", typeAliases)
 
 	// Insert the universal constructors.
-	var universalConstructors = v.synthesizer_.GenerateUniversalConstructors()
+	var universalConstructors = synthesizer.CreateUniversalConstructors()
 	result = uti.ReplaceAll(result, "universalConstructors", universalConstructors)
 
 	// Insert the global functions.
-	var globalFunctions = v.synthesizer_.GenerateGlobalFunctions()
+	var globalFunctions = synthesizer.CreateGlobalFunctions()
 	result = uti.ReplaceAll(result, "globalFunctions", globalFunctions)
 
 	// Insert the module imports (this must be done last).
-	var moduleImports = v.synthesizer_.GenerateModuleImports()
+	var moduleImports = synthesizer.CreateModuleImports()
 	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
+	result = uti.ReplaceAll(result, "wiki", wiki)
 
 	return result
 }
@@ -80,8 +79,6 @@ func (v *generator_) GenerateModule() string {
 
 type generator_ struct {
 	// Declare the instance attributes.
-	wiki_        string
-	synthesizer_ TemplateDriven
 }
 
 // Class Structure

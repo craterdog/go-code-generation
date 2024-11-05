@@ -37,9 +37,7 @@ functions that must be supported by all generator-class-like classes.
 */
 type GeneratorClassLike interface {
 	// Constructor Methods
-	Make(
-		synthesizer TemplateDriven,
-	) GeneratorLike
+	Make() GeneratorLike
 }
 
 // Instance Declarations
@@ -51,21 +49,24 @@ all generator-like instances.
 type GeneratorLike interface {
 	// Primary Methods
 	GetClass() GeneratorClassLike
-	GeneratePackage() string
+	GeneratePackage(
+		packageName string,
+		synthesizer TemplateDriven,
+	) string
 }
 
 // Aspect Declarations
 
 /*
 TemplateDriven defines the set of method signatures that must be supported by
-all template-driven generators.
+all template-driven synthesizers.
 */
 type TemplateDriven interface {
-	GenerateLegalNotice() string
-	GeneratePackageDeclaration() string
-	GenerateModuleImports() string
-	GenerateTypeDeclarations() string
-	GenerateClassDeclarations() string
-	GenerateInstanceDeclarations() string
-	GenerateAspectDeclarations() string
+	CreateLegalNotice() string
+	CreatePackageDeclaration() string
+	CreateModuleImports() string
+	CreateTypeDeclarations() string
+	CreateClassDeclarations() string
+	CreateInstanceDeclarations() string
+	CreateAspectDeclarations() string
 }
