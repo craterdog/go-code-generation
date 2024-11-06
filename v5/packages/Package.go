@@ -47,6 +47,17 @@ type AstSynthesizerClassLike interface {
 }
 
 /*
+ExampleSynthesizerClassLike defines the set of class constants, constructors and
+functions that must be supported by all example-synthesizer-class-like classes.
+*/
+type ExampleSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		syntax not.SyntaxLike,
+	) ExampleSynthesizerLike
+}
+
+/*
 GeneratorClassLike defines the set of class constants, constructors and
 functions that must be supported by all generator-class-like classes.
 */
@@ -69,12 +80,24 @@ type GrammarSynthesizerClassLike interface {
 // Instance Declarations
 
 /*
-AstSynthesizerLike defines the set of aspects and methods that must be supported by
-all ast-synthesizer-like instances.
+AstSynthesizerLike defines the set of aspects and methods that must be supported
+by all ast-synthesizer-like instances.
 */
 type AstSynthesizerLike interface {
 	// Primary Methods
 	GetClass() AstSynthesizerClassLike
+
+	// Aspect Interfaces
+	TemplateDriven
+}
+
+/*
+ExampleSynthesizerLike defines the set of aspects and methods that must be
+supported by all example-synthesizer-like instances.
+*/
+type ExampleSynthesizerLike interface {
+	// Primary Methods
+	GetClass() ExampleSynthesizerClassLike
 
 	// Aspect Interfaces
 	TemplateDriven
@@ -118,6 +141,7 @@ type TemplateDriven interface {
 	CreatePackageDeclaration() string
 	CreateModuleImports() string
 	CreateTypeDeclarations() string
+	CreateFunctionalDeclarations() string
 	CreateClassDeclarations() string
 	CreateInstanceDeclarations() string
 	CreateAspectDeclarations() string

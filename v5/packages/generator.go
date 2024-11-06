@@ -63,6 +63,10 @@ func (v *generator_) GeneratePackage(
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
 	result = uti.ReplaceAll(result, "typeDeclarations", typeDeclarations)
 
+	// Create the functional declarations.
+	var functionalDeclarations = synthesizer.CreateFunctionalDeclarations()
+	result = uti.ReplaceAll(result, "functionalDeclarations", functionalDeclarations)
+
 	// Create the class declarations.
 	var classDeclarations = synthesizer.CreateClassDeclarations()
 	result = uti.ReplaceAll(result, "classDeclarations", classDeclarations)
@@ -113,6 +117,8 @@ var generatorReference_ = &generatorClass_{
 	packageTemplate_: `<LegalNotice><PackageDeclaration><ModuleImports>
 
 // Type Declarations<TypeDeclarations>
+
+// Functional Declarations<FunctionalDeclarations>
 
 // Class Declarations<ClassDeclarations>
 

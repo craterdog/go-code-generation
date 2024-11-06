@@ -69,4 +69,20 @@ func TestPackageGeneration(t *tes.T) {
 	if err != nil {
 		panic(err)
 	}
+
+	// Generate the example Package.go file.
+	filename = directory + "example/Package.go"
+	packageName = "example"
+	var exampleSynthesizer = pac.ExampleSynthesizer().Make(syntax)
+	source = generator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		exampleSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
 }

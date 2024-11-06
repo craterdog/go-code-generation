@@ -70,6 +70,11 @@ func (v *astSynthesizer_) CreateTypeDeclarations() string {
 	return typeDeclarations
 }
 
+func (v *astSynthesizer_) CreateFunctionalDeclarations() string {
+	var functionalDeclarations string
+	return functionalDeclarations
+}
+
 func (v *astSynthesizer_) CreateClassDeclarations() string {
 	var classDeclarations string
 	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()

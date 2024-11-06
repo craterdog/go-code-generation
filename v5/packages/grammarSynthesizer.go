@@ -63,20 +63,25 @@ func (v *grammarSynthesizer_) CreateModuleImports() string {
 }
 
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = grammarSynthesizerReference().typeDefinitions_
+	var typeDeclarations = grammarSynthesizerReference().typeDeclarations_
 	var tokenTypes = v.generateTokenTypes()
 	typeDeclarations = uti.ReplaceAll(typeDeclarations, "tokenTypes", tokenTypes)
 	return typeDeclarations
 }
 
+func (v *grammarSynthesizer_) CreateFunctionalDeclarations() string {
+	var functionalDeclarations string
+	return functionalDeclarations
+}
+
 func (v *grammarSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = grammarSynthesizerReference().classDefinitions_
+	var classDeclarations = grammarSynthesizerReference().classDeclarations_
 	return classDeclarations
 }
 
 func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	var instanceDeclarations = grammarSynthesizerReference().instanceDefinitions_
+	var instanceDeclarations = grammarSynthesizerReference().instanceDeclarations_
 	instanceDeclarations = uti.ReplaceAll(
 		instanceDeclarations,
 		"syntaxName",
@@ -86,7 +91,7 @@ func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = grammarSynthesizerReference().aspectDefinitions_
+	var aspectDeclarations = grammarSynthesizerReference().aspectDeclarations_
 	var processTokens = v.generateProcessTokens()
 	aspectDeclarations = uti.ReplaceAll(
 		aspectDeclarations,
@@ -183,17 +188,17 @@ type grammarSynthesizer_ struct {
 
 type grammarSynthesizerClass_ struct {
 	// Declare the class constants.
-	packageDeclaration_  string
-	moduleImports_       string
-	typeDefinitions_     string
-	tokenType_           string
-	classDefinitions_    string
-	instanceDefinitions_ string
-	aspectDefinitions_   string
-	processToken_        string
-	processIndexedToken_ string
-	processRule_         string
-	processIndexedRule_  string
+	packageDeclaration_   string
+	moduleImports_        string
+	typeDeclarations_     string
+	tokenType_            string
+	classDeclarations_    string
+	instanceDeclarations_ string
+	aspectDeclarations_   string
+	processToken_         string
+	processIndexedToken_  string
+	processRule_          string
+	processIndexedRule_   string
 }
 
 // Class Reference
@@ -224,7 +229,7 @@ here:
   - https://github.com/craterdog/go-class-model/wiki
 
 Additional concrete implementations of the classes defined by this package can
-be developed and used seamlessly since the interface definitions only depend on
+be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
@@ -236,7 +241,7 @@ import (
 	ast "<ModuleName>/ast"
 )`,
 
-	typeDefinitions_: `
+	typeDeclarations_: `
 
 /*
 TokenType is a constrained type representing any token type recognized by a
@@ -251,7 +256,7 @@ const (
 	tokenType_: `
 	<~TokenName>Token`,
 
-	classDefinitions_: `
+	classDeclarations_: `
 
 /*
 FormatterClassLike is a class interface that defines the complete set of
@@ -351,7 +356,7 @@ type VisitorClassLike interface {
 	) VisitorLike
 }`,
 
-	instanceDefinitions_: `
+	instanceDeclarations_: `
 
 /*
 FormatterLike is an instance interface that defines the complete set of
@@ -450,7 +455,7 @@ type VisitorLike interface {
 	)
 }`,
 
-	aspectDefinitions_: `
+	aspectDeclarations_: `
 
 /*
 Methodical defines the set of method signatures that must be supported

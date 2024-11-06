@@ -30,6 +30,8 @@ import (
 
 // Type Declarations
 
+// Functional Declarations
+
 // Class Declarations
 
 /*
