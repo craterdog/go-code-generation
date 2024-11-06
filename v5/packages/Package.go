@@ -55,6 +55,17 @@ type GeneratorClassLike interface {
 	Make() GeneratorLike
 }
 
+/*
+GrammarSynthesizerClassLike defines the set of class constants, constructors and
+functions that must be supported by all grammar-synthesizer-class-like classes.
+*/
+type GrammarSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		syntax not.SyntaxLike,
+	) GrammarSynthesizerLike
+}
+
 // Instance Declarations
 
 /*
@@ -77,10 +88,23 @@ type GeneratorLike interface {
 	// Primary Methods
 	GetClass() GeneratorClassLike
 	GeneratePackage(
+		moduleName string,
 		wikiPath string,
 		packageName string,
 		synthesizer TemplateDriven,
 	) string
+}
+
+/*
+GrammarSynthesizerLike defines the set of aspects and methods that must be
+supported by all grammar-synthesizer-like instances.
+*/
+type GrammarSynthesizerLike interface {
+	// Primary Methods
+	GetClass() GrammarSynthesizerClassLike
+
+	// Aspect Interfaces
+	TemplateDriven
 }
 
 // Aspect Declarations

@@ -43,6 +43,7 @@ func (v *generator_) GetClass() GeneratorClassLike {
 }
 
 func (v *generator_) GeneratePackage(
+	moduleName string,
 	wikiPath string,
 	packageName string,
 	synthesizer TemplateDriven,
@@ -79,6 +80,7 @@ func (v *generator_) GeneratePackage(
 	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
 
 	// Update the package information.
+	result = uti.ReplaceAll(result, "moduleName", moduleName)
 	result = uti.ReplaceAll(result, "wikiPath", wikiPath)
 	result = uti.ReplaceAll(result, "packageName", packageName)
 

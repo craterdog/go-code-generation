@@ -21,6 +21,8 @@ import (
 )
 
 var directory = "../testdata/packages/"
+var moduleName = "github.com/craterdog/go-syntax-notation/v5"
+var wikiPath = "github.com/craterdog/go-syntax-notation/wiki"
 
 func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
@@ -38,10 +40,30 @@ func TestPackageGeneration(t *tes.T) {
 
 	// Generate the AST Package.go file.
 	filename = directory + "ast/Package.go"
-	var wikiPath = "github.com/craterdog/go-code-generation/wiki"
 	var packageName = "ast"
-	var synthesizer = pac.AstSynthesizer().Make(syntax)
-	source = generator.GeneratePackage(wikiPath, packageName, synthesizer)
+	var astSynthesizer = pac.AstSynthesizer().Make(syntax)
+	source = generator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		astSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	// Generate the grammar Package.go file.
+	filename = directory + "grammar/Package.go"
+	packageName = "grammar"
+	var grammarSynthesizer = pac.GrammarSynthesizer().Make(syntax)
+	source = generator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		grammarSynthesizer,
+	)
 	bytes = []byte(source)
 	err = osx.WriteFile(filename, bytes, 0644)
 	if err != nil {

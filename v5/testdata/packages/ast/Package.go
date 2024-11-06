@@ -16,7 +16,7 @@ Each AST class manages the attributes associated with the rule definition found
 in the syntax grammar with the same rule name as the class.
 
 For detailed documentation on this package refer to the wiki:
-  - https://github.com/craterdog/go-code-generation/wiki
+  - https://github.com/craterdog/go-syntax-notation/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:
