@@ -138,7 +138,7 @@ all template-driven synthesizers.
 */
 type TemplateDriven interface {
 	CreateLegalNotice() string
-	CreatePackageDeclaration() string
+	CreatePackageDescription() string
 	CreateModuleImports() string
 	CreateTypeDeclarations() string
 	CreateFunctionalDeclarations() string

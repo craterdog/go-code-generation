@@ -51,9 +51,9 @@ func (v *exampleSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
-func (v *exampleSynthesizer_) CreatePackageDeclaration() string {
-	var packageDeclaration = exampleSynthesizerReference().packageDeclaration_
-	return packageDeclaration
+func (v *exampleSynthesizer_) CreatePackageDescription() string {
+	var packageDescription = exampleSynthesizerReference().packageDescription_
+	return packageDescription
 }
 
 func (v *exampleSynthesizer_) CreateModuleImports() string {
@@ -99,7 +99,7 @@ type exampleSynthesizer_ struct {
 
 type exampleSynthesizerClass_ struct {
 	// Declare the class constants.
-	packageDeclaration_     string
+	packageDescription_     string
 	moduleImports_          string
 	typeDeclarations_       string
 	functionalDeclarations_ string
@@ -116,23 +116,9 @@ func exampleSynthesizerReference() *exampleSynthesizerClass_ {
 
 var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	// Initialize the class constants.
-	packageDeclaration_: `
-/*
-Package "example" provides...
+	packageDescription_: `
+Package "example" provides...`,
 
-For detailed documentation on this package refer to the wiki:
-  - https://<WikiPath>
-
-This package follows the Crater Dog Technologies™ Go Coding Conventions located
-here:
-  - https://github.com/craterdog/go-class-model/wiki
-
-Additional concrete implementations of the classes defined by this package can
-be developed and used seamlessly since the interface declarations only depend on
-other interfaces and intrinsic types—and the class implementations only depend
-on interfaces, not on each other.
-*/
-package example`,
 	moduleImports_: `
 
 import (

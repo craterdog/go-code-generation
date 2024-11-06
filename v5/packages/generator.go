@@ -55,9 +55,9 @@ func (v *generator_) GeneratePackage(
 	var legalNotice = synthesizer.CreateLegalNotice()
 	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
 
-	// Create the package declaration.
-	var packageDeclaration = synthesizer.CreatePackageDeclaration()
-	result = uti.ReplaceAll(result, "packageDeclaration", packageDeclaration)
+	// Create the package description.
+	var packageDescription = synthesizer.CreatePackageDescription()
+	result = uti.ReplaceAll(result, "packageDescription", packageDescription)
 
 	// Create the type declarations.
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
@@ -114,7 +114,22 @@ func generatorReference() *generatorClass_ {
 
 var generatorReference_ = &generatorClass_{
 	// Initialize the class constants.
-	packageTemplate_: `<LegalNotice><PackageDeclaration><ModuleImports>
+	packageTemplate_: `<LegalNotice>
+/*<PackageDescription>
+
+For detailed documentation on this package refer to the wiki:
+  - https://<WikiPath>
+
+This package follows the Crater Dog Technologies™ Go Coding Conventions located
+here:
+  - https://github.com/craterdog/go-class-model/wiki
+
+Additional concrete implementations of the classes defined by this package can
+be developed and used seamlessly since the interface declarations only depend on
+other interfaces and intrinsic types—and the class implementations only depend
+on interfaces, not on each other.
+*/
+package <PackageName><ModuleImports>
 
 // Type Declarations<TypeDeclarations>
 

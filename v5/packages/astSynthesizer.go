@@ -52,9 +52,9 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 	return notice
 }
 
-func (v *astSynthesizer_) CreatePackageDeclaration() string {
-	var packageDeclaration = astSynthesizerReference().packageDeclaration_
-	return packageDeclaration
+func (v *astSynthesizer_) CreatePackageDescription() string {
+	var packageDescription = astSynthesizerReference().packageDescription_
+	return packageDescription
 }
 
 func (v *astSynthesizer_) CreateModuleImports() string {
@@ -252,7 +252,7 @@ type astSynthesizer_ struct {
 
 type astSynthesizerClass_ struct {
 	// Declare the class constants.
-	packageDeclaration_      string
+	packageDescription_      string
 	moduleImports_           string
 	classDeclaration_        string
 	singularRuleParameter_   string
@@ -276,20 +276,12 @@ func astSynthesizerReference() *astSynthesizerClass_ {
 
 var astSynthesizerReference_ = &astSynthesizerClass_{
 	// Initialize the class constants.
-	packageDeclaration_: `
-/*
-Package "ast" provides the abstract syntax tree (AST) classes for this module.
-Each AST class manages the attributes associated with the rule definition found
-in the syntax grammar with the same rule name as the class.
+	packageDescription_: `
+Package "ast" provides the abstract syntax tree (AST) classes for this module
+based on the "Syntax.cdsn" grammar for the module.  Each AST class manages the
+attributes associated with its corresponding rule definition found in the
+grammar.`,
 
-For detailed documentation on this package refer to the wiki:
-  - https://<WikiPath>
-
-This package follows the Crater Dog Technologies™ Go Coding Conventions located
-here:
-  - https://github.com/craterdog/go-class-model/wiki
-*/
-package ast`,
 	moduleImports_: `
 
 import (

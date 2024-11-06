@@ -52,9 +52,9 @@ func (v *grammarSynthesizer_) CreateLegalNotice() string {
 	return notice
 }
 
-func (v *grammarSynthesizer_) CreatePackageDeclaration() string {
-	var packageDeclaration = grammarSynthesizerReference().packageDeclaration_
-	return packageDeclaration
+func (v *grammarSynthesizer_) CreatePackageDescription() string {
+	var packageDescription = grammarSynthesizerReference().packageDescription_
+	return packageDescription
 }
 
 func (v *grammarSynthesizer_) CreateModuleImports() string {
@@ -188,7 +188,7 @@ type grammarSynthesizer_ struct {
 
 type grammarSynthesizerClass_ struct {
 	// Declare the class constants.
-	packageDeclaration_   string
+	packageDescription_   string
 	moduleImports_        string
 	typeDeclarations_     string
 	tokenType_            string
@@ -209,8 +209,7 @@ func grammarSynthesizerReference() *grammarSynthesizerClass_ {
 
 var grammarSynthesizerReference_ = &grammarSynthesizerClass_{
 	// Initialize the class constants.
-	packageDeclaration_: `
-/*
+	packageDescription_: `
 Package "grammar" provides the following grammar classes that operate on the
 abstract syntax tree (AST) for this module:
   - Token captures the attributes associated with a parsed token.
@@ -219,21 +218,8 @@ abstract syntax tree (AST) for this module:
   - Validator is used to validate the semantics associated with an AST.
   - Formatter is used to format an AST back into a canonical version of its source.
   - Visitor walks the AST and calls processor methods for each node in the tree.
-  - Processor provides empty processor methods to be inherited by the processors.
+  - Processor provides empty processor methods to be inherited by the processors.`,
 
-For detailed documentation on this package refer to the wiki:
-  - https://<WikiPath>
-
-This package follows the Crater Dog Technologies™ Go Coding Conventions located
-here:
-  - https://github.com/craterdog/go-class-model/wiki
-
-Additional concrete implementations of the classes defined by this package can
-be developed and used seamlessly since the interface declarations only depend on
-other interfaces and intrinsic types—and the class implementations only depend
-on interfaces, not on each other.
-*/
-package grammar`,
 	moduleImports_: `
 
 import (
