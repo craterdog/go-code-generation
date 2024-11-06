@@ -254,17 +254,6 @@ const (
 	classDefinitions_: `
 
 /*
-AnalyzerClassLike defines the set of class constants, constructors and
-functions that must be supported by all analyzer-class-like classes.
-*/
-type AnalyzerClassLike interface {
-	// Constructor Methods
-	Make(
-		syntax ast.SyntaxLike,
-	) AnalyzerLike
-}
-
-/*
 FormatterClassLike is a class interface that defines the complete set of
 class constants, constructors and functions that must be supported by each
 concrete formatter-like class.
@@ -363,46 +352,6 @@ type VisitorClassLike interface {
 }`,
 
 	instanceDefinitions_: `
-
-/*
-AnalyzerLike defines the set of aspects and methods that must be supported by
-all analyzer-like instances.
-*/
-type AnalyzerLike interface {
-	// Primary Methods
-	GetClass() AnalyzerClassLike
-	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
-	GetIdentifiers(
-		ruleName string,
-	) abs.Sequential[ast.IdentifierLike]
-	GetNotice() string
-	GetReferences(
-		ruleName string,
-	) abs.Sequential[ast.ReferenceLike]
-	GetRuleNames() abs.Sequential[string]
-	GetSyntaxMap() string
-	GetSyntaxName() string
-	GetTerms(
-		ruleName string,
-	) abs.Sequential[ast.TermLike]
-	GetTokenNames() abs.Sequential[string]
-	GetVariableType(
-		reference ast.ReferenceLike,
-	) string
-	GetVariables(
-		ruleName string,
-	) abs.Sequential[string]
-	HasPlurals() bool
-	IsDelimited(
-		ruleName string,
-	) bool
-	IsPlural(
-		name string,
-	) bool
-
-	// Aspect Interfaces
-	Methodical
-}
 
 /*
 FormatterLike is an instance interface that defines the complete set of
