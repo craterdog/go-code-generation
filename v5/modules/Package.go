@@ -28,6 +28,10 @@ on interfaces, not on each other.
 */
 package modules
 
+// Type Declarations
+
+// Functional Declarations
+
 // Class Declarations
 
 /*

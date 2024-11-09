@@ -29,7 +29,40 @@ on interfaces, not on each other.
 */
 package classes
 
+import (
+	mod "github.com/craterdog/go-class-model/v5"
+	abs "github.com/craterdog/go-collection-framework/v4/collection"
+)
+
+// Type Declarations
+
+// Functional Declarations
+
 // Class Declarations
+
+/*
+AnalyzerClassLike defines the set of class constants, constructors and
+functions that must be supported by all analyzer-class-like classes.
+*/
+type AnalyzerClassLike interface {
+	// Constructor Methods
+	Make(
+		model mod.ModelLike,
+		className string,
+	) AnalyzerLike
+}
+
+/*
+ClassSynthesizerClassLike defines the set of class constants, constructors and
+functions that must be supported by all example-synthesizer-class-like classes.
+*/
+type ClassSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		model mod.ModelLike,
+		className string,
+	) ClassSynthesizerLike
+}
 
 /*
 GeneratorClassLike defines the set of class constants, constructors and
@@ -43,6 +76,43 @@ type GeneratorClassLike interface {
 // Instance Declarations
 
 /*
+AnalyzerLike defines the set of aspects and methods that must be supported by
+all analyzer-like instances.
+*/
+type AnalyzerLike interface {
+	// Primary Methods
+	GetClass() AnalyzerClassLike
+	GetLegalNotice() string
+	IsGeneric() bool
+	GetTypeConstraints() string
+	GetTypeArguments() string
+	IsIntrinsic() bool
+	GetIntrinsicType() mod.AbstractionLike
+	GetConstants() abs.CatalogLike[string, string]
+	GetAttributes() abs.CatalogLike[string, string]
+	GetConstructorMethods() abs.ListLike[mod.ConstructorMethodLike]
+	GetConstantMethods() abs.ListLike[mod.ConstantMethodLike]
+	GetFunctionMethods() abs.ListLike[mod.FunctionMethodLike]
+	GetPrimaryMethods() abs.ListLike[mod.PrimaryMethodLike]
+	GetAttributeMethods() abs.ListLike[mod.AttributeMethodLike]
+	GetAspectInterfaces() abs.ListLike[mod.AspectInterfaceLike]
+	GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike]
+	GetModuleImports() mod.ModuleImportsLike
+}
+
+/*
+ClassSynthesizerLike defines the set of aspects and methods that must be
+supported by all example-synthesizer-like instances.
+*/
+type ClassSynthesizerLike interface {
+	// Primary Methods
+	GetClass() ClassSynthesizerClassLike
+
+	// Aspect Interfaces
+	TemplateDriven
+}
+
+/*
 GeneratorLike defines the set of aspects and methods that must be supported by
 all generator-like instances.
 */
@@ -50,6 +120,9 @@ type GeneratorLike interface {
 	// Primary Methods
 	GetClass() GeneratorClassLike
 	GenerateClass(
+		moduleName string,
+		wikiPath string,
+		packageName string,
 		className string,
 		synthesizer TemplateDriven,
 	) string
@@ -63,10 +136,9 @@ all template-driven synthesizers.
 */
 type TemplateDriven interface {
 	CreateLegalNotice() string
-	CreatePackageDeclaration() string
-	CreateModuleImports() string
 	CreateAccessFunction() string
 	CreateConstructorMethods() string
+	CreateConstantMethods() string
 	CreateFunctionMethods() string
 	CreatePrimaryMethods() string
 	CreateAttributeMethods() string
@@ -75,4 +147,7 @@ type TemplateDriven interface {
 	CreateInstanceStructure() string
 	CreateClassStructure() string
 	CreateClassReference() string
+	PerformGlobalUpdates(
+		source string,
+	) string
 }

@@ -32,7 +32,7 @@ func (c *grammarSynthesizerClass_) Make(
 ) GrammarSynthesizerLike {
 	var instance = &grammarSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: not.Analyzer(syntax),
+		analyzer_: Analyzer().Make(syntax),
 	}
 	return instance
 }
@@ -48,8 +48,8 @@ func (v *grammarSynthesizer_) GetClass() GrammarSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *grammarSynthesizer_) CreateLegalNotice() string {
-	var notice = v.analyzer_.GetNotice()
-	return notice
+	var legalNotice = v.analyzer_.GetLegalNotice()
+	return legalNotice
 }
 
 func (v *grammarSynthesizer_) CreatePackageDescription() string {
@@ -181,7 +181,7 @@ func (v *grammarSynthesizer_) generateTokenTypes() (
 
 type grammarSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ not.AnalyzerLike
+	analyzer_ AnalyzerLike
 }
 
 // Class Structure

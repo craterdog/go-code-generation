@@ -32,7 +32,7 @@ func (c *astSynthesizerClass_) Make(
 ) AstSynthesizerLike {
 	var instance = &astSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: not.Analyzer(syntax),
+		analyzer_: Analyzer().Make(syntax),
 	}
 	return instance
 }
@@ -48,8 +48,8 @@ func (v *astSynthesizer_) GetClass() AstSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *astSynthesizer_) CreateLegalNotice() string {
-	var notice = v.analyzer_.GetNotice()
-	return notice
+	var legalNotice = v.analyzer_.GetLegalNotice()
+	return legalNotice
 }
 
 func (v *astSynthesizer_) CreatePackageDescription() string {
@@ -245,7 +245,7 @@ func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
 
 type astSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ not.AnalyzerLike
+	analyzer_ AnalyzerLike
 }
 
 // Class Structure

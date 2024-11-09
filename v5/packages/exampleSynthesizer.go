@@ -31,7 +31,7 @@ func (c *exampleSynthesizerClass_) Make(
 ) ExampleSynthesizerLike {
 	var instance = &exampleSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: not.Analyzer(syntax),
+		analyzer_: Analyzer().Make(syntax),
 	}
 	return instance
 }
@@ -47,7 +47,7 @@ func (v *exampleSynthesizer_) GetClass() ExampleSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *exampleSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = v.analyzer_.GetNotice()
+	var legalNotice = v.analyzer_.GetLegalNotice()
 	return legalNotice
 }
 
@@ -92,7 +92,7 @@ func (v *exampleSynthesizer_) CreateAspectDeclarations() string {
 
 type exampleSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ not.AnalyzerLike
+	analyzer_ AnalyzerLike
 }
 
 // Class Structure

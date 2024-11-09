@@ -43,66 +43,67 @@ func (v *generator_) GetClass() GeneratorClassLike {
 }
 
 func (v *generator_) GenerateClass(
+	moduleName string,
+	wikiPath string,
+	packageName string,
 	className string,
 	synthesizer TemplateDriven,
 ) string {
 	// Begin with a class template.
-	var result = generatorReference().classTemplate_
+	var class = generatorReference().classTemplate_
 
-	// Insert the legal notice.
+	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
+	class = uti.ReplaceAll(class, "legalNotice", legalNotice)
 
-	// Insert the package declaration.
-	var packageDeclaration = synthesizer.CreatePackageDeclaration()
-	result = uti.ReplaceAll(result, "packageDeclaration", packageDeclaration)
-
-	// Insert the access function.
+	// Create the access function.
 	var accessFunction = synthesizer.CreateAccessFunction()
-	result = uti.ReplaceAll(result, "accessFunction", accessFunction)
+	class = uti.ReplaceAll(class, "accessFunction", accessFunction)
 
-	// Insert the constructor methods.
+	// Create the constructor methods.
 	var constructorMethods = synthesizer.CreateConstructorMethods()
-	result = uti.ReplaceAll(result, "constructorMethods", constructorMethods)
+	class = uti.ReplaceAll(class, "constructorMethods", constructorMethods)
 
-	// Insert the function methods.
+	// Create the function methods.
 	var functionMethods = synthesizer.CreateFunctionMethods()
-	result = uti.ReplaceAll(result, "functionMethods", functionMethods)
+	class = uti.ReplaceAll(class, "functionMethods", functionMethods)
 
-	// Insert the primary methods.
+	// Create the primary methods.
 	var primaryMethods = synthesizer.CreatePrimaryMethods()
-	result = uti.ReplaceAll(result, "primaryMethods", primaryMethods)
+	class = uti.ReplaceAll(class, "primaryMethods", primaryMethods)
 
-	// Insert the attribute methods.
+	// Create the attribute methods.
 	var attributeMethods = synthesizer.CreateAttributeMethods()
-	result = uti.ReplaceAll(result, "attributeMethods", attributeMethods)
+	class = uti.ReplaceAll(class, "attributeMethods", attributeMethods)
 
-	// Insert the aspect methods.
+	// Create the aspect methods.
 	var aspectMethods = synthesizer.CreateAspectMethods()
-	result = uti.ReplaceAll(result, "aspectMethods", aspectMethods)
+	class = uti.ReplaceAll(class, "aspectMethods", aspectMethods)
 
-	// Insert the private methods.
+	// Create the private methods.
 	var privateMethods = synthesizer.CreatePrivateMethods()
-	result = uti.ReplaceAll(result, "privateMethods", privateMethods)
+	class = uti.ReplaceAll(class, "privateMethods", privateMethods)
 
-	// Insert the instance structure.
+	// Create the instance structure.
 	var instanceStructure = synthesizer.CreateInstanceStructure()
-	result = uti.ReplaceAll(result, "instanceStructure", instanceStructure)
+	class = uti.ReplaceAll(class, "instanceStructure", instanceStructure)
 
-	// Insert the class structure.
+	// Create the class structure.
 	var classStructure = synthesizer.CreateClassStructure()
-	result = uti.ReplaceAll(result, "classStructure", classStructure)
+	class = uti.ReplaceAll(class, "classStructure", classStructure)
 
-	// Insert the class reference.
+	// Create the class reference.
 	var classReference = synthesizer.CreateClassReference()
-	result = uti.ReplaceAll(result, "classReference", classReference)
+	class = uti.ReplaceAll(class, "classReference", classReference)
 
-	// Insert the module imports (this must be done last).
-	var moduleImports = synthesizer.CreateModuleImports()
-	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
-	result = uti.ReplaceAll(result, "className", className)
+	// Perform global updates (this must be done last).
+	class = synthesizer.PerformGlobalUpdates(class)
+	class = uti.ReplaceAll(class, "moduleName", moduleName)
+	class = uti.ReplaceAll(class, "wikiPath", wikiPath)
+	class = uti.ReplaceAll(class, "packageName", packageName)
+	class = uti.ReplaceAll(class, "className", className)
 
-	return result
+	return class
 }
 
 // PROTECTED INTERFACE
@@ -128,12 +129,18 @@ func generatorReference() *generatorClass_ {
 
 var generatorReference_ = &generatorClass_{
 	// Initialize the class constants.
-	classTemplate_: `<Notice><PackageDeclaration><ModuleImports>
+	classTemplate_: `<LegalNotice>
+package <PackageName><ModuleImports>
 
-// CLASS INTERFACE<AccessFunction><ConstructorMethods><FunctionMethods>
+// CLASS INTERFACE
+<AccessFunction>
+<ConstructorMethods><ConstantMethods><FunctionMethods>
 
-// INSTANCE INTERFACE<PrimaryMethods><AttributeMethods><AspectMethods>
+// INSTANCE INTERFACE
+<PrimaryMethods><AttributeMethods><AspectMethods>
 
-// PROTECTED INTERFACE<PrivateMethods><InstanceStructure><ClassStructure><ClassReference>
+// PROTECTED INTERFACE
+<PrivateMethods>
+<InstanceStructure><ClassStructure><ClassReference>
 `,
 }

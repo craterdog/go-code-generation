@@ -30,10 +30,26 @@ on interfaces, not on each other.
 package packages
 
 import (
+	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
+// Type Declarations
+
+// Functional Declarations
+
 // Class Declarations
+
+/*
+AnalyzerClassLike defines the set of class constants, constructors and
+functions that must be supported by all analyzer-class-like classes.
+*/
+type AnalyzerClassLike interface {
+	// Constructor Methods
+	Make(
+		syntax not.SyntaxLike,
+	) AnalyzerLike
+}
 
 /*
 AstSynthesizerClassLike defines the set of class constants, constructors and
@@ -78,6 +94,46 @@ type GrammarSynthesizerClassLike interface {
 }
 
 // Instance Declarations
+
+/*
+AnalyzerLike defines the set of aspects and methods that must be supported by
+all analyzer-like instances.
+*/
+type AnalyzerLike interface {
+	// Primary Methods
+	GetClass() AnalyzerClassLike
+	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
+	GetIdentifiers(
+		ruleName string,
+	) abs.Sequential[not.IdentifierLike]
+	GetLegalNotice() string
+	GetReferences(
+		ruleName string,
+	) abs.Sequential[not.ReferenceLike]
+	GetRuleNames() abs.Sequential[string]
+	GetSyntaxMap() string
+	GetSyntaxName() string
+	GetTerms(
+		ruleName string,
+	) abs.Sequential[not.TermLike]
+	GetTokenNames() abs.Sequential[string]
+	GetVariableType(
+		reference not.ReferenceLike,
+	) string
+	GetVariables(
+		ruleName string,
+	) abs.Sequential[string]
+	HasPlurals() bool
+	IsDelimited(
+		ruleName string,
+	) bool
+	IsPlural(
+		name string,
+	) bool
+
+	// Aspect Interfaces
+	not.Methodical
+}
 
 /*
 AstSynthesizerLike defines the set of aspects and methods that must be supported
