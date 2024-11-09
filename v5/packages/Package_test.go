@@ -20,7 +20,7 @@ import (
 	tes "testing"
 )
 
-var directory = "../testdata/packages/"
+var directory = "../testdata/"
 var moduleName = "github.com/craterdog/go-syntax-notation/v5"
 var wikiPath = "github.com/craterdog/go-syntax-notation/wiki"
 
@@ -73,7 +73,7 @@ func TestPackageGeneration(t *tes.T) {
 	// Generate the example Package.go file.
 	filename = directory + "example/Package.go"
 	packageName = "example"
-	var exampleSynthesizer = pac.ExampleSynthesizer().Make(syntax)
+	var exampleSynthesizer = pac.ExampleSynthesizer().Make()
 	source = generator.GeneratePackage(
 		moduleName,
 		wikiPath,

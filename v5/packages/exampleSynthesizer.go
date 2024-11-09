@@ -12,10 +12,6 @@
 
 package packages
 
-import (
-	not "github.com/craterdog/go-syntax-notation/v5"
-)
-
 // CLASS INTERFACE
 
 // Access Function
@@ -26,12 +22,9 @@ func ExampleSynthesizer() ExampleSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *exampleSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
-) ExampleSynthesizerLike {
+func (c *exampleSynthesizerClass_) Make() ExampleSynthesizerLike {
 	var instance = &exampleSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: Analyzer().Make(syntax),
 	}
 	return instance
 }
@@ -47,7 +40,7 @@ func (v *exampleSynthesizer_) GetClass() ExampleSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *exampleSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = v.analyzer_.GetLegalNotice()
+	var legalNotice = exampleSynthesizerReference().legalNotice_
 	return legalNotice
 }
 
@@ -92,13 +85,13 @@ func (v *exampleSynthesizer_) CreateAspectDeclarations() string {
 
 type exampleSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ AnalyzerLike
 }
 
 // Class Structure
 
 type exampleSynthesizerClass_ struct {
 	// Declare the class constants.
+	legalNotice_            string
 	packageDescription_     string
 	moduleImports_          string
 	typeDeclarations_       string
@@ -116,6 +109,20 @@ func exampleSynthesizerReference() *exampleSynthesizerClass_ {
 
 var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	// Initialize the class constants.
+	legalNotice_: `
+/*
+................................................................................
+.                  Copyright (c) 2024.  All Rights Reserved.                   .
+................................................................................
+.  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
+.                                                                              .
+.  This code is free software; you can redistribute it and/or modify it under  .
+.  the terms of The MIT License (MIT), as published by the Open Source         .
+.  Initiative. (See https://opensource.org/license/MIT)                        .
+................................................................................
+*/
+`,
+
 	packageDescription_: `
 Package "example" provides...`,
 

@@ -68,9 +68,7 @@ functions that must be supported by all example-synthesizer-class-like classes.
 */
 type ExampleSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
-		syntax not.SyntaxLike,
-	) ExampleSynthesizerLike
+	Make() ExampleSynthesizerLike
 }
 
 /*

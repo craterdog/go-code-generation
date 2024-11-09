@@ -151,10 +151,12 @@ func (v *analyzer_) analyzeAttributeMethods(
 	v.attributeMethods_ = col.List[ast.AttributeMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
-	var attributeMethods = attributeSubsection.GetAttributeMethods().GetIterator()
-	for attributeMethods.HasNext() {
-		var attributeMethod = attributeMethods.GetNext()
-		v.attributeMethods_.AppendValue(attributeMethod)
+	if uti.IsDefined(attributeSubsection) {
+		var attributeMethods = attributeSubsection.GetAttributeMethods().GetIterator()
+		for attributeMethods.HasNext() {
+			var attributeMethod = attributeMethods.GetNext()
+			v.attributeMethods_.AppendValue(attributeMethod)
+		}
 	}
 }
 
@@ -162,6 +164,8 @@ func (v *analyzer_) analyzeClass(
 	model ast.ModelLike,
 	className string,
 ) {
+	var moduleDeclaration = model.GetModuleDeclaration()
+	v.analyzeModuleDeclaration(moduleDeclaration)
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	v.analyzeAspectDeclarations(interfaceDeclarations)
 	var classSection = interfaceDeclarations.GetClassSection()
@@ -243,52 +247,12 @@ func (v *analyzer_) analyzeConstantMethods(
 	v.constantMethods_ = col.List[ast.ConstantMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
-	var constantMethods = constantSubsection.GetConstantMethods().GetIterator()
-	for constantMethods.HasNext() {
-		var constantMethod = constantMethods.GetNext()
-		v.constantMethods_.AppendValue(constantMethod)
-	}
-}
-
-func (v *analyzer_) analyzeTypeArguments(
-	classDeclaration ast.ClassDeclarationLike,
-) {
-	if v.isGeneric_ {
-		v.typeArguments_ = "["
-		var classDeclaration = classDeclaration.GetDeclaration()
-		var optionalConstraints = classDeclaration.GetOptionalConstraints()
-		var constraint = optionalConstraints.GetConstraint()
-		var argument = constraint.GetName()
-		v.typeArguments_ += argument
-		var additionalConstraints = optionalConstraints.GetAdditionalConstraints().GetIterator()
-		for additionalConstraints.HasNext() {
-			constraint = additionalConstraints.GetNext().GetConstraint()
-			argument = constraint.GetName()
-			v.typeArguments_ += ", " + argument
+	if uti.IsDefined(constantSubsection) {
+		var constantMethods = constantSubsection.GetConstantMethods().GetIterator()
+		for constantMethods.HasNext() {
+			var constantMethod = constantMethods.GetNext()
+			v.constantMethods_.AppendValue(constantMethod)
 		}
-		v.typeArguments_ += "]"
-	}
-}
-
-func (v *analyzer_) analyzeTypeConstraints(
-	classDeclaration ast.ClassDeclarationLike,
-) {
-	if v.isGeneric_ {
-		v.typeConstraints_ = "["
-		var classDeclaration = classDeclaration.GetDeclaration()
-		var optionalConstraints = classDeclaration.GetOptionalConstraints()
-		var constraint = optionalConstraints.GetConstraint()
-		var constraintName = constraint.GetName()
-		var constraintType = v.extractType(constraint.GetAbstraction())
-		v.typeConstraints_ += constraintName + " " + constraintType
-		var additionalConstraints = optionalConstraints.GetAdditionalConstraints().GetIterator()
-		for additionalConstraints.HasNext() {
-			constraint = additionalConstraints.GetNext().GetConstraint()
-			constraintName = constraint.GetName()
-			constraintType = v.extractType(constraint.GetAbstraction())
-			v.typeConstraints_ += ", " + constraintName + " " + constraintType
-		}
-		v.typeConstraints_ += "]"
 	}
 }
 
@@ -311,11 +275,19 @@ func (v *analyzer_) analyzeFunctionMethods(
 	v.functionMethods_ = col.List[ast.FunctionMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var functionSubsection = classMethods.GetOptionalFunctionSubsection()
-	var functionMethods = functionSubsection.GetFunctionMethods().GetIterator()
-	for functionMethods.HasNext() {
-		var functionMethod = functionMethods.GetNext()
-		v.functionMethods_.AppendValue(functionMethod)
+	if uti.IsDefined(functionSubsection) {
+		var functionMethods = functionSubsection.GetFunctionMethods().GetIterator()
+		for functionMethods.HasNext() {
+			var functionMethod = functionMethods.GetNext()
+			v.functionMethods_.AppendValue(functionMethod)
+		}
 	}
+}
+
+func (v *analyzer_) analyzeModuleDeclaration(
+	moduleDeclaration ast.ModuleDeclarationLike,
+) {
+	v.legalNotice_ = moduleDeclaration.GetLegalNotice().GetComment()
 }
 
 func (v *analyzer_) analyzePrimaryMethods(
@@ -377,6 +349,48 @@ func (v *analyzer_) analyzePublicAttributes(
 			var attributeType = v.extractType(abstraction)
 			v.attributes_.SetValue(attributeName, attributeType)
 		}
+	}
+}
+
+func (v *analyzer_) analyzeTypeArguments(
+	classDeclaration ast.ClassDeclarationLike,
+) {
+	if v.isGeneric_ {
+		v.typeArguments_ = "["
+		var classDeclaration = classDeclaration.GetDeclaration()
+		var optionalConstraints = classDeclaration.GetOptionalConstraints()
+		var constraint = optionalConstraints.GetConstraint()
+		var argument = constraint.GetName()
+		v.typeArguments_ += argument
+		var additionalConstraints = optionalConstraints.GetAdditionalConstraints().GetIterator()
+		for additionalConstraints.HasNext() {
+			constraint = additionalConstraints.GetNext().GetConstraint()
+			argument = constraint.GetName()
+			v.typeArguments_ += ", " + argument
+		}
+		v.typeArguments_ += "]"
+	}
+}
+
+func (v *analyzer_) analyzeTypeConstraints(
+	classDeclaration ast.ClassDeclarationLike,
+) {
+	if v.isGeneric_ {
+		v.typeConstraints_ = "["
+		var classDeclaration = classDeclaration.GetDeclaration()
+		var optionalConstraints = classDeclaration.GetOptionalConstraints()
+		var constraint = optionalConstraints.GetConstraint()
+		var constraintName = constraint.GetName()
+		var constraintType = v.extractType(constraint.GetAbstraction())
+		v.typeConstraints_ += constraintName + " " + constraintType
+		var additionalConstraints = optionalConstraints.GetAdditionalConstraints().GetIterator()
+		for additionalConstraints.HasNext() {
+			constraint = additionalConstraints.GetNext().GetConstraint()
+			constraintName = constraint.GetName()
+			constraintType = v.extractType(constraint.GetAbstraction())
+			v.typeConstraints_ += ", " + constraintName + " " + constraintType
+		}
+		v.typeConstraints_ += "]"
 	}
 }
 

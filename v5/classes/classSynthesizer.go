@@ -265,7 +265,7 @@ func (v *classSynthesizer_) createAspectInterface(
 	)
 	implementation = uti.ReplaceAll(
 		implementation,
-		"methods",
+		"aspectMethods",
 		methods,
 	)
 	return implementation
@@ -420,7 +420,7 @@ func (v *classSynthesizer_) createAttributeMethods(
 			methods += method
 		}
 		implementation = classSynthesizerReference().attributeMethods_
-		implementation = uti.ReplaceAll(implementation, "methods", methods)
+		implementation = uti.ReplaceAll(implementation, "attributeMethods", methods)
 	}
 	return implementation
 }
@@ -510,7 +510,7 @@ func (v *classSynthesizer_) createConstantMethods(
 			methods += v.createConstantMethod(constantMethod)
 		}
 		implementation = classSynthesizerReference().constantMethods_
-		implementation = uti.ReplaceAll(implementation, "methods", methods)
+		implementation = uti.ReplaceAll(implementation, "constantMethods", methods)
 	}
 	return implementation
 }
@@ -562,7 +562,7 @@ func (v *classSynthesizer_) createConstructorMethods(
 			methods += v.createConstructorMethod(constructorMethod)
 		}
 		implementation = classSynthesizerReference().constructorMethods_
-		implementation = uti.ReplaceAll(implementation, "methods", methods)
+		implementation = uti.ReplaceAll(implementation, "constructorMethods", methods)
 	}
 	return implementation
 }
@@ -595,7 +595,7 @@ func (v *classSynthesizer_) createFunctionMethods(
 			methods += v.createFunctionMethod(functionMethod)
 		}
 		implementation = classSynthesizerReference().functionMethods_
-		implementation = uti.ReplaceAll(implementation, "methods", methods)
+		implementation = uti.ReplaceAll(implementation, "functionMethods", methods)
 	}
 	return implementation
 }
@@ -820,7 +820,7 @@ func (v *classSynthesizer_) createPrimaryMethods(
 	implementation = classSynthesizerReference().primaryMethods_
 	implementation = uti.ReplaceAll(
 		implementation,
-		"methods",
+		"primaryMethods",
 		methods,
 	)
 	var intrinsicMethod = v.createIntrinsicMethod()
@@ -1115,7 +1115,7 @@ var classSynthesizerReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
 	moduleImports_: `
 
-import (<Modules>)`,
+import (<ImportedPackages>)`,
 
 	packageAlias_: `
 	<~packageName> <packagePath>`,
@@ -1128,7 +1128,7 @@ func <~ClassName><Constraints>() <~ClassName>ClassLike<Arguments> {
 }`,
 
 	constructorMethods_: `
-// Constructor Methods<Methods>`,
+// Constructor Methods<ConstructorMethods>`,
 
 	constructorMethod_: `
 
@@ -1155,7 +1155,7 @@ func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>L
 
 	constantMethods_: `
 
-// Constant Methods<Methods>`,
+// Constant Methods<ConstantMethods>`,
 
 	constantMethod_: `
 
@@ -1165,7 +1165,7 @@ func (c *<~className>Class_<Arguments>) <~MethodName>() <ResultType> {
 
 	functionMethods_: `
 
-// Function Methods<Methods>`,
+// Function Methods<FunctionMethods>`,
 
 	functionMethod_: `
 
@@ -1177,7 +1177,7 @@ func (c *<~className>Class_<Arguments>) <~MethodName>(<Parameters>) <ResultType>
 
 	attributeMethods_: `
 
-// Attribute Methods<Methods>`,
+// Attribute Methods<AttributeMethods>`,
 
 	getterMethod_: `
 
@@ -1195,14 +1195,14 @@ func (v <*><~className>_<Arguments>) <~MethodName>(
 
 	aspectInterface_: `
 
-// <AspectType> Methods<Methods>`,
+// <AspectType> Methods<AspectMethods>`,
 
 	primaryMethods_: `
 // Primary Methods
 
 func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments> {
 	return <~className>Reference<Arguments>()
-}<IntrinsicMethod><Methods>`,
+}<IntrinsicMethod><PrimaryMethods>`,
 
 	intrinsicMethod_: `
 

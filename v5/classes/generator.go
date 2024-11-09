@@ -64,6 +64,10 @@ func (v *generator_) GenerateClass(
 	var constructorMethods = synthesizer.CreateConstructorMethods()
 	class = uti.ReplaceAll(class, "constructorMethods", constructorMethods)
 
+	// Create the constant methods.
+	var constantMethods = synthesizer.CreateConstantMethods()
+	class = uti.ReplaceAll(class, "constantMethods", constantMethods)
+
 	// Create the function methods.
 	var functionMethods = synthesizer.CreateFunctionMethods()
 	class = uti.ReplaceAll(class, "functionMethods", functionMethods)
