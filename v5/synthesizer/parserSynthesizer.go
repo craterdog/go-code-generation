@@ -398,12 +398,14 @@ import (
 )`,
 
 	accessFunction_: `
+// Access Function
 
 func Parser() ParserClassLike {
 	return parserReference()
 }`,
 
 	constructorMethods_: `
+// Constructor Methods
 
 func (c *parserClass_) Make() ParserLike {
 	var instance = &parser_{
@@ -594,6 +596,7 @@ func (v *parser_) parse<~RuleName>() (
 `,
 
 	primaryMethods_: `
+// Primary Methods
 
 func (v *parser_) GetClass() ParserClassLike {
 	return parserReference()
@@ -618,7 +621,8 @@ func (v *parser_) ParseSource(
 	return <syntaxName_>
 }`,
 
-	privateMethods_: `<ParseMethods>
+	privateMethods_: `
+// Private Methods<ParseMethods>
 
 func (v *parser_) parseDelimiter(
 	expectedValue string,
@@ -781,6 +785,7 @@ func (v *parser_) remove(
 `,
 
 	instanceStructure_: `
+// Instance Structure
 
 type parser_ struct {
 	// Declare the instance attributes.
@@ -790,6 +795,7 @@ type parser_ struct {
 }`,
 
 	classStructure_: `
+// Class Structure
 
 type parserClass_ struct {
 	// Declare the class constants.
@@ -799,6 +805,7 @@ type parserClass_ struct {
 }`,
 
 	classReference_: `
+// Class Reference
 
 func parserReference() *parserClass_ {
 	return parserReference_

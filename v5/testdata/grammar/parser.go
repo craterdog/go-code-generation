@@ -24,9 +24,13 @@ import (
 
 // CLASS INTERFACE
 
+// Access Function
+
 func Parser() ParserClassLike {
 	return parserReference()
 }
+
+// Constructor Methods
 
 func (c *parserClass_) Make() ParserLike {
 	var instance = &parser_{
@@ -36,6 +40,8 @@ func (c *parserClass_) Make() ParserLike {
 }
 
 // INSTANCE INTERFACE
+
+// Primary Methods
 
 func (v *parser_) GetClass() ParserClassLike {
 	return parserReference()
@@ -61,6 +67,8 @@ func (v *parser_) ParseSource(
 }
 
 // PROTECTED INTERFACE
+
+// Private Methods
 
 func (v *parser_) parseAlternative() (
 	alternative ast.AlternativeLike,
@@ -1519,6 +1527,8 @@ func (v *parser_) remove(
 ) {
 }
 
+// Instance Structure
+
 type parser_ struct {
 	// Declare the instance attributes.
 	source_ string                   // The original source code.
@@ -1526,12 +1536,16 @@ type parser_ struct {
 	next_   abs.StackLike[TokenLike] // A stack of read, but unprocessed tokens.
 }
 
+// Class Structure
+
 type parserClass_ struct {
 	// Declare the class constants.
 	queueSize_ uint
 	stackSize_ uint
 	syntax_    abs.CatalogLike[string, string]
 }
+
+// Class Reference
 
 func parserReference() *parserClass_ {
 	return parserReference_
