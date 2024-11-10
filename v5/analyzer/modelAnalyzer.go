@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package classes
+package analyzer
 
 import (
 	fmt "fmt"
@@ -26,17 +26,17 @@ import (
 
 // Access Function
 
-func Analyzer() AnalyzerClassLike {
-	return analyzerReference()
+func ModelAnalyzer() ModelAnalyzerClassLike {
+	return modelAnalyzerReference()
 }
 
 // Constructor Methods
 
-func (c *analyzerClass_) Make(
+func (c *modelAnalyzerClass_) Make(
 	model ast.ModelLike,
 	className string,
-) AnalyzerLike {
-	var instance = &analyzer_{
+) ModelAnalyzerLike {
+	var instance = &modelAnalyzer_{
 		// Initialize the instance attributes.
 	}
 	instance.analyzeClass(model, className)
@@ -48,71 +48,71 @@ func (c *analyzerClass_) Make(
 
 // Primary Methods
 
-func (v *analyzer_) GetClass() AnalyzerClassLike {
-	return analyzerReference()
+func (v *modelAnalyzer_) GetClass() ModelAnalyzerClassLike {
+	return modelAnalyzerReference()
 }
 
-func (v *analyzer_) GetLegalNotice() string {
+func (v *modelAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *analyzer_) GetModuleImports() ast.ModuleImportsLike {
-	return v.moduleImports_
+func (v *modelAnalyzer_) GetPackageImports() ast.ModuleImportsLike {
+	return v.packageImports_
 }
 
-func (v *analyzer_) IsGeneric() bool {
+func (v *modelAnalyzer_) IsGeneric() bool {
 	return v.isGeneric_
 }
 
-func (v *analyzer_) GetTypeConstraints() string {
+func (v *modelAnalyzer_) GetTypeConstraints() string {
 	return v.typeConstraints_
 }
 
-func (v *analyzer_) GetTypeArguments() string {
+func (v *modelAnalyzer_) GetTypeArguments() string {
 	return v.typeArguments_
 }
 
-func (v *analyzer_) IsIntrinsic() bool {
+func (v *modelAnalyzer_) IsIntrinsic() bool {
 	return v.isIntrinsic_
 }
 
-func (v *analyzer_) GetIntrinsicType() ast.AbstractionLike {
+func (v *modelAnalyzer_) GetIntrinsicType() ast.AbstractionLike {
 	return v.intrinsicType_
 }
 
-func (v *analyzer_) GetConstants() abs.CatalogLike[string, string] {
+func (v *modelAnalyzer_) GetConstants() abs.CatalogLike[string, string] {
 	return v.constants_
 }
 
-func (v *analyzer_) GetAttributes() abs.CatalogLike[string, string] {
+func (v *modelAnalyzer_) GetAttributes() abs.CatalogLike[string, string] {
 	return v.attributes_
 }
 
-func (v *analyzer_) GetConstructorMethods() abs.ListLike[ast.ConstructorMethodLike] {
+func (v *modelAnalyzer_) GetConstructorMethods() abs.ListLike[ast.ConstructorMethodLike] {
 	return v.constructorMethods_
 }
 
-func (v *analyzer_) GetConstantMethods() abs.ListLike[ast.ConstantMethodLike] {
+func (v *modelAnalyzer_) GetConstantMethods() abs.ListLike[ast.ConstantMethodLike] {
 	return v.constantMethods_
 }
 
-func (v *analyzer_) GetFunctionMethods() abs.ListLike[ast.FunctionMethodLike] {
+func (v *modelAnalyzer_) GetFunctionMethods() abs.ListLike[ast.FunctionMethodLike] {
 	return v.functionMethods_
 }
 
-func (v *analyzer_) GetPrimaryMethods() abs.ListLike[ast.PrimaryMethodLike] {
+func (v *modelAnalyzer_) GetPrimaryMethods() abs.ListLike[ast.PrimaryMethodLike] {
 	return v.primaryMethods_
 }
 
-func (v *analyzer_) GetAttributeMethods() abs.ListLike[ast.AttributeMethodLike] {
+func (v *modelAnalyzer_) GetAttributeMethods() abs.ListLike[ast.AttributeMethodLike] {
 	return v.attributeMethods_
 }
 
-func (v *analyzer_) GetAspectInterfaces() abs.ListLike[ast.AspectInterfaceLike] {
+func (v *modelAnalyzer_) GetAspectInterfaces() abs.ListLike[ast.AspectInterfaceLike] {
 	return v.aspectInterfaces_
 }
 
-func (v *analyzer_) GetAspectDeclarations() abs.ListLike[ast.AspectDeclarationLike] {
+func (v *modelAnalyzer_) GetAspectDeclarations() abs.ListLike[ast.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -120,7 +120,7 @@ func (v *analyzer_) GetAspectDeclarations() abs.ListLike[ast.AspectDeclarationLi
 
 // Private Methods
 
-func (v *analyzer_) analyzeAspectDeclarations(
+func (v *modelAnalyzer_) analyzeAspectDeclarations(
 	interfaceDeclarations ast.InterfaceDeclarationsLike,
 ) {
 	var aspectSection = interfaceDeclarations.GetOptionalAspectSection()
@@ -132,7 +132,7 @@ func (v *analyzer_) analyzeAspectDeclarations(
 	}
 }
 
-func (v *analyzer_) analyzeAspectInterfaces(
+func (v *modelAnalyzer_) analyzeAspectInterfaces(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
@@ -145,7 +145,7 @@ func (v *analyzer_) analyzeAspectInterfaces(
 	}
 }
 
-func (v *analyzer_) analyzeAttributeMethods(
+func (v *modelAnalyzer_) analyzeAttributeMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
 	v.attributeMethods_ = col.List[ast.AttributeMethodLike]()
@@ -160,12 +160,12 @@ func (v *analyzer_) analyzeAttributeMethods(
 	}
 }
 
-func (v *analyzer_) analyzeClass(
+func (v *modelAnalyzer_) analyzeClass(
 	model ast.ModelLike,
 	className string,
 ) {
-	var moduleDeclaration = model.GetModuleDeclaration()
-	v.analyzeModuleDeclaration(moduleDeclaration)
+	var packageDeclaration = model.GetModuleDeclaration()
+	v.analyzePackageDeclaration(packageDeclaration)
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	v.analyzeAspectDeclarations(interfaceDeclarations)
 	var classSection = interfaceDeclarations.GetClassSection()
@@ -192,7 +192,7 @@ func (v *analyzer_) analyzeClass(
 	}
 }
 
-func (v *analyzer_) analyzeClassConstants(
+func (v *modelAnalyzer_) analyzeClassConstants(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	v.constants_ = col.Catalog[string, string]()
@@ -209,7 +209,7 @@ func (v *analyzer_) analyzeClassConstants(
 	}
 }
 
-func (v *analyzer_) analyzeClassGenerics(
+func (v *modelAnalyzer_) analyzeClassGenerics(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	v.isGeneric_ = false
@@ -222,7 +222,7 @@ func (v *analyzer_) analyzeClassGenerics(
 	}
 }
 
-func (v *analyzer_) analyzeClassStructure(
+func (v *modelAnalyzer_) analyzeClassStructure(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
 	v.isIntrinsic_ = false
@@ -241,7 +241,7 @@ func (v *analyzer_) analyzeClassStructure(
 	}
 }
 
-func (v *analyzer_) analyzeConstantMethods(
+func (v *modelAnalyzer_) analyzeConstantMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	v.constantMethods_ = col.List[ast.ConstantMethodLike]()
@@ -256,7 +256,7 @@ func (v *analyzer_) analyzeConstantMethods(
 	}
 }
 
-func (v *analyzer_) analyzeConstructorMethods(
+func (v *modelAnalyzer_) analyzeConstructorMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	v.constructorMethods_ = col.List[ast.ConstructorMethodLike]()
@@ -269,7 +269,7 @@ func (v *analyzer_) analyzeConstructorMethods(
 	}
 }
 
-func (v *analyzer_) analyzeFunctionMethods(
+func (v *modelAnalyzer_) analyzeFunctionMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	v.functionMethods_ = col.List[ast.FunctionMethodLike]()
@@ -284,13 +284,13 @@ func (v *analyzer_) analyzeFunctionMethods(
 	}
 }
 
-func (v *analyzer_) analyzeModuleDeclaration(
-	moduleDeclaration ast.ModuleDeclarationLike,
+func (v *modelAnalyzer_) analyzePackageDeclaration(
+	packageDeclaration ast.ModuleDeclarationLike,
 ) {
-	v.legalNotice_ = moduleDeclaration.GetLegalNotice().GetComment()
+	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 }
 
-func (v *analyzer_) analyzePrimaryMethods(
+func (v *modelAnalyzer_) analyzePrimaryMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
 	v.primaryMethods_ = col.List[ast.PrimaryMethodLike]()
@@ -303,7 +303,7 @@ func (v *analyzer_) analyzePrimaryMethods(
 	}
 }
 
-func (v *analyzer_) analyzePrivateAttributes(
+func (v *modelAnalyzer_) analyzePrivateAttributes(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	var classMethods = classDeclaration.GetClassMethods()
@@ -326,7 +326,7 @@ func (v *analyzer_) analyzePrivateAttributes(
 	}
 }
 
-func (v *analyzer_) analyzePublicAttributes(
+func (v *modelAnalyzer_) analyzePublicAttributes(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
 	v.attributes_ = col.Catalog[string, string]()
@@ -352,7 +352,7 @@ func (v *analyzer_) analyzePublicAttributes(
 	}
 }
 
-func (v *analyzer_) analyzeTypeArguments(
+func (v *modelAnalyzer_) analyzeTypeArguments(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	if v.isGeneric_ {
@@ -372,7 +372,7 @@ func (v *analyzer_) analyzeTypeArguments(
 	}
 }
 
-func (v *analyzer_) analyzeTypeConstraints(
+func (v *modelAnalyzer_) analyzeTypeConstraints(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	if v.isGeneric_ {
@@ -394,7 +394,7 @@ func (v *analyzer_) analyzeTypeConstraints(
 	}
 }
 
-func (v *analyzer_) extractAttributeName(
+func (v *modelAnalyzer_) extractAttributeName(
 	accessorName string,
 ) string {
 	var attributeName string
@@ -428,7 +428,7 @@ func (v *analyzer_) extractAttributeName(
 	return attributeName
 }
 
-func (v *analyzer_) extractClassName(
+func (v *modelAnalyzer_) extractClassName(
 	classDeclaration ast.ClassDeclarationLike,
 ) string {
 	var className = classDeclaration.GetDeclaration().GetName()
@@ -437,7 +437,7 @@ func (v *analyzer_) extractClassName(
 	return className
 }
 
-func (v *analyzer_) extractType(
+func (v *modelAnalyzer_) extractType(
 	abstraction ast.AbstractionLike,
 ) string {
 	var abstractType string
@@ -475,7 +475,7 @@ func (v *analyzer_) extractType(
 
 // Instance Structure
 
-type analyzer_ struct {
+type modelAnalyzer_ struct {
 	// Declare the instance attributes.
 	legalNotice_        string
 	isGeneric_          bool
@@ -492,7 +492,7 @@ type analyzer_ struct {
 	attributeMethods_   abs.ListLike[ast.AttributeMethodLike]
 	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
 	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]
-	moduleImports_      ast.ModuleImportsLike
+	packageImports_     ast.ModuleImportsLike
 
 	// Declare the inherited aspects.
 	gra.Methodical
@@ -500,16 +500,16 @@ type analyzer_ struct {
 
 // Class Structure
 
-type analyzerClass_ struct {
+type modelAnalyzerClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func analyzerReference() *analyzerClass_ {
-	return analyzerReference_
+func modelAnalyzerReference() *modelAnalyzerClass_ {
+	return modelAnalyzerReference_
 }
 
-var analyzerReference_ = &analyzerClass_{
+var modelAnalyzerReference_ = &modelAnalyzerClass_{
 	// Initialize the class constants.
 }

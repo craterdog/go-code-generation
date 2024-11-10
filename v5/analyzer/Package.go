@@ -11,9 +11,9 @@
 */
 
 /*
-Package "classes" provides a template-based code generator that can generate
-a concrete class definition based on the class model declared in a Package.go
-file.
+Package "analyzer" provides classes that can analyze the abstract syntax trees
+(ASTs) for different languages and pull out the parts that are needed by each
+template-driven code synthesizer.
 
 For detailed documentation on this package refer to the wiki:
   - https://github.com/craterdog/go-code-generation/wiki
@@ -27,62 +27,50 @@ be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
-package classes
+package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	not "github.com/craterdog/go-syntax-notation/v5"
 )
-
-// Type Declarations
-
-// Functional Declarations
 
 // Class Declarations
 
 /*
-AnalyzerClassLike defines the set of class constants, constructors and
-functions that must be supported by all analyzer-class-like classes.
+ModelAnalyzerClassLike defines the set of class constants, constructors and
+functions that must be supported by all model-analyzer-class-like classes.
 */
-type AnalyzerClassLike interface {
+type ModelAnalyzerClassLike interface {
 	// Constructor Methods
 	Make(
 		model mod.ModelLike,
 		className string,
-	) AnalyzerLike
+	) ModelAnalyzerLike
 }
 
 /*
-ClassSynthesizerClassLike defines the set of class constants, constructors and
-functions that must be supported by all example-synthesizer-class-like classes.
+SyntaxAnalyzerClassLike defines the set of class constants, constructors and
+functions that must be supported by all syntax-analyzer-class-like classes.
 */
-type ClassSynthesizerClassLike interface {
+type SyntaxAnalyzerClassLike interface {
 	// Constructor Methods
 	Make(
-		model mod.ModelLike,
-		className string,
-	) ClassSynthesizerLike
-}
-
-/*
-GeneratorClassLike defines the set of class constants, constructors and
-functions that must be supported by all generator-class-like classes.
-*/
-type GeneratorClassLike interface {
-	// Constructor Methods
-	Make() GeneratorLike
+		syntax not.SyntaxLike,
+	) SyntaxAnalyzerLike
 }
 
 // Instance Declarations
 
 /*
-AnalyzerLike defines the set of aspects and methods that must be supported by
-all analyzer-like instances.
+ModelAnalyzerLike defines the set of aspects and methods that must be supported by
+all model-analyzer-like instances.
 */
-type AnalyzerLike interface {
+type ModelAnalyzerLike interface {
 	// Primary Methods
-	GetClass() AnalyzerClassLike
+	GetClass() ModelAnalyzerClassLike
 	GetLegalNotice() string
+	GetPackageImports() mod.ModuleImportsLike
 	IsGeneric() bool
 	GetTypeConstraints() string
 	GetTypeArguments() string
@@ -97,57 +85,44 @@ type AnalyzerLike interface {
 	GetAttributeMethods() abs.ListLike[mod.AttributeMethodLike]
 	GetAspectInterfaces() abs.ListLike[mod.AspectInterfaceLike]
 	GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike]
-	GetModuleImports() mod.ModuleImportsLike
 }
 
 /*
-ClassSynthesizerLike defines the set of aspects and methods that must be
-supported by all example-synthesizer-like instances.
+SyntaxAnalyzerLike defines the set of aspects and methods that must be supported by
+all syntax-analyzer-like instances.
 */
-type ClassSynthesizerLike interface {
+type SyntaxAnalyzerLike interface {
 	// Primary Methods
-	GetClass() ClassSynthesizerClassLike
+	GetClass() SyntaxAnalyzerClassLike
+	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
+	GetIdentifiers(
+		ruleName string,
+	) abs.Sequential[not.IdentifierLike]
+	GetLegalNotice() string
+	GetReferences(
+		ruleName string,
+	) abs.Sequential[not.ReferenceLike]
+	GetRuleNames() abs.Sequential[string]
+	GetSyntaxMap() string
+	GetSyntaxName() string
+	GetTerms(
+		ruleName string,
+	) abs.Sequential[not.TermLike]
+	GetTokenNames() abs.Sequential[string]
+	GetVariableType(
+		reference not.ReferenceLike,
+	) string
+	GetVariables(
+		ruleName string,
+	) abs.Sequential[string]
+	HasPlurals() bool
+	IsDelimited(
+		ruleName string,
+	) bool
+	IsPlural(
+		name string,
+	) bool
 
 	// Aspect Interfaces
-	TemplateDriven
-}
-
-/*
-GeneratorLike defines the set of aspects and methods that must be supported by
-all generator-like instances.
-*/
-type GeneratorLike interface {
-	// Primary Methods
-	GetClass() GeneratorClassLike
-	GenerateClass(
-		moduleName string,
-		wikiPath string,
-		packageName string,
-		className string,
-		synthesizer TemplateDriven,
-	) string
-}
-
-// Aspect Declarations
-
-/*
-TemplateDriven defines the set of method signatures that must be supported by
-all template-driven synthesizers.
-*/
-type TemplateDriven interface {
-	CreateLegalNotice() string
-	CreateAccessFunction() string
-	CreateConstructorMethods() string
-	CreateConstantMethods() string
-	CreateFunctionMethods() string
-	CreatePrimaryMethods() string
-	CreateAttributeMethods() string
-	CreateAspectMethods() string
-	CreatePrivateMethods() string
-	CreateInstanceStructure() string
-	CreateClassStructure() string
-	CreateClassReference() string
-	PerformGlobalUpdates(
-		source string,
-	) string
+	not.Methodical
 }

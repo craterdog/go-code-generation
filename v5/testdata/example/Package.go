@@ -1,4 +1,3 @@
-
 /*
 ................................................................................
 .                  Copyright (c) 2024.  All Rights Reserved.                   .
@@ -27,10 +26,6 @@ other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
 package example
-
-import (
-// abs "github.com/craterdog/go-collection-framework/v4/collection"
-)
 
 // Type Declarations
 

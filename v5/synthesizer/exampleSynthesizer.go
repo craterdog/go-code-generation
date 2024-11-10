@@ -10,7 +10,11 @@
 ................................................................................
 */
 
-package packages
+package synthesizer
+
+import (
+	uti "github.com/craterdog/go-missing-utilities/v2"
+)
 
 // CLASS INTERFACE
 
@@ -49,11 +53,6 @@ func (v *exampleSynthesizer_) CreatePackageDescription() string {
 	return packageDescription
 }
 
-func (v *exampleSynthesizer_) CreateModuleImports() string {
-	var moduleImports = exampleSynthesizerReference().moduleImports_
-	return moduleImports
-}
-
 func (v *exampleSynthesizer_) CreateTypeDeclarations() string {
 	var typeDeclarations = exampleSynthesizerReference().typeDeclarations_
 	return typeDeclarations
@@ -79,6 +78,14 @@ func (v *exampleSynthesizer_) CreateAspectDeclarations() string {
 	return aspectDeclarations
 }
 
+func (v *exampleSynthesizer_) PerformGlobalUpdates(
+	source string,
+) string {
+	var packageImports = exampleSynthesizerReference().packageImports_
+	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	return source
+}
+
 // PROTECTED INTERFACE
 
 // Instance Structure
@@ -93,7 +100,7 @@ type exampleSynthesizerClass_ struct {
 	// Declare the class constants.
 	legalNotice_            string
 	packageDescription_     string
-	moduleImports_          string
+	packageImports_         string
 	typeDeclarations_       string
 	functionalDeclarations_ string
 	classDeclarations_      string
@@ -126,7 +133,7 @@ var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	packageDescription_: `
 Package "example" provides...`,
 
-	moduleImports_: `
+	packageImports_: `
 
 import (
 // abs "github.com/craterdog/go-collection-framework/v4/collection"

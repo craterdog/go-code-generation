@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package classes
+package generator
 
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func Generator() GeneratorClassLike {
-	return generatorReference()
+func ClassGenerator() ClassGeneratorClassLike {
+	return classGeneratorReference()
 }
 
 // Constructor Methods
 
-func (c *generatorClass_) Make() GeneratorLike {
-	var instance = &generator_{
+func (c *classGeneratorClass_) Make() ClassGeneratorLike {
+	var instance = &classGenerator_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -38,103 +38,103 @@ func (c *generatorClass_) Make() GeneratorLike {
 
 // Primary Methods
 
-func (v *generator_) GetClass() GeneratorClassLike {
-	return generatorReference()
+func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
+	return classGeneratorReference()
 }
 
-func (v *generator_) GenerateClass(
+func (v *classGenerator_) GenerateClass(
 	moduleName string,
 	wikiPath string,
 	packageName string,
 	className string,
-	synthesizer TemplateDriven,
+	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var class = generatorReference().classTemplate_
+	var source = classGeneratorReference().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	class = uti.ReplaceAll(class, "legalNotice", legalNotice)
+	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
 	// Create the access function.
 	var accessFunction = synthesizer.CreateAccessFunction()
-	class = uti.ReplaceAll(class, "accessFunction", accessFunction)
+	source = uti.ReplaceAll(source, "accessFunction", accessFunction)
 
 	// Create the constructor methods.
 	var constructorMethods = synthesizer.CreateConstructorMethods()
-	class = uti.ReplaceAll(class, "constructorMethods", constructorMethods)
+	source = uti.ReplaceAll(source, "constructorMethods", constructorMethods)
 
 	// Create the constant methods.
 	var constantMethods = synthesizer.CreateConstantMethods()
-	class = uti.ReplaceAll(class, "constantMethods", constantMethods)
+	source = uti.ReplaceAll(source, "constantMethods", constantMethods)
 
 	// Create the function methods.
 	var functionMethods = synthesizer.CreateFunctionMethods()
-	class = uti.ReplaceAll(class, "functionMethods", functionMethods)
+	source = uti.ReplaceAll(source, "functionMethods", functionMethods)
 
 	// Create the primary methods.
 	var primaryMethods = synthesizer.CreatePrimaryMethods()
-	class = uti.ReplaceAll(class, "primaryMethods", primaryMethods)
+	source = uti.ReplaceAll(source, "primaryMethods", primaryMethods)
 
 	// Create the attribute methods.
 	var attributeMethods = synthesizer.CreateAttributeMethods()
-	class = uti.ReplaceAll(class, "attributeMethods", attributeMethods)
+	source = uti.ReplaceAll(source, "attributeMethods", attributeMethods)
 
 	// Create the aspect methods.
 	var aspectMethods = synthesizer.CreateAspectMethods()
-	class = uti.ReplaceAll(class, "aspectMethods", aspectMethods)
+	source = uti.ReplaceAll(source, "aspectMethods", aspectMethods)
 
 	// Create the private methods.
 	var privateMethods = synthesizer.CreatePrivateMethods()
-	class = uti.ReplaceAll(class, "privateMethods", privateMethods)
+	source = uti.ReplaceAll(source, "privateMethods", privateMethods)
 
 	// Create the instance structure.
 	var instanceStructure = synthesizer.CreateInstanceStructure()
-	class = uti.ReplaceAll(class, "instanceStructure", instanceStructure)
+	source = uti.ReplaceAll(source, "instanceStructure", instanceStructure)
 
 	// Create the class structure.
 	var classStructure = synthesizer.CreateClassStructure()
-	class = uti.ReplaceAll(class, "classStructure", classStructure)
+	source = uti.ReplaceAll(source, "classStructure", classStructure)
 
 	// Create the class reference.
 	var classReference = synthesizer.CreateClassReference()
-	class = uti.ReplaceAll(class, "classReference", classReference)
+	source = uti.ReplaceAll(source, "classReference", classReference)
 
 	// Perform global updates (this must be done last).
-	class = synthesizer.PerformGlobalUpdates(class)
-	class = uti.ReplaceAll(class, "moduleName", moduleName)
-	class = uti.ReplaceAll(class, "wikiPath", wikiPath)
-	class = uti.ReplaceAll(class, "packageName", packageName)
-	class = uti.ReplaceAll(class, "className", className)
+	source = synthesizer.PerformGlobalUpdates(source)
+	source = uti.ReplaceAll(source, "moduleName", moduleName)
+	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
+	source = uti.ReplaceAll(source, "packageName", packageName)
+	source = uti.ReplaceAll(source, "className", className)
 
-	return class
+	return source
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type generator_ struct {
+type classGenerator_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type generatorClass_ struct {
+type classGeneratorClass_ struct {
 	// Declare the class constants.
 	classTemplate_ string
 }
 
 // Class Reference
 
-func generatorReference() *generatorClass_ {
-	return generatorReference_
+func classGeneratorReference() *classGeneratorClass_ {
+	return classGeneratorReference_
 }
 
-var generatorReference_ = &generatorClass_{
+var classGeneratorReference_ = &classGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice>
-package <PackageName><ModuleImports>
+package <PackageName><ClassImports>
 
 // CLASS INTERFACE
 <AccessFunction>

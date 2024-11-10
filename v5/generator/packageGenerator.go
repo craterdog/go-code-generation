@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package packages
+package generator
 
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func Generator() GeneratorClassLike {
-	return generatorReference()
+func PackageGenerator() PackageGeneratorClassLike {
+	return packageGeneratorReference()
 }
 
 // Constructor Methods
 
-func (c *generatorClass_) Make() GeneratorLike {
-	var instance = &generator_{
+func (c *packageGeneratorClass_) Make() PackageGeneratorLike {
+	var instance = &packageGenerator_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -38,81 +38,78 @@ func (c *generatorClass_) Make() GeneratorLike {
 
 // Primary Methods
 
-func (v *generator_) GetClass() GeneratorClassLike {
-	return generatorReference()
+func (v *packageGenerator_) GetClass() PackageGeneratorClassLike {
+	return packageGeneratorReference()
 }
 
-func (v *generator_) GeneratePackage(
+func (v *packageGenerator_) GeneratePackage(
 	moduleName string,
 	wikiPath string,
 	packageName string,
-	synthesizer TemplateDriven,
+	synthesizer PackageTemplateDriven,
 ) string {
 	// Begin with a package template.
-	var result = generatorReference().packageTemplate_
+	var source = packageGeneratorReference().packageTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
+	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
 	// Create the package description.
 	var packageDescription = synthesizer.CreatePackageDescription()
-	result = uti.ReplaceAll(result, "packageDescription", packageDescription)
+	source = uti.ReplaceAll(source, "packageDescription", packageDescription)
 
 	// Create the type declarations.
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
-	result = uti.ReplaceAll(result, "typeDeclarations", typeDeclarations)
+	source = uti.ReplaceAll(source, "typeDeclarations", typeDeclarations)
 
 	// Create the functional declarations.
 	var functionalDeclarations = synthesizer.CreateFunctionalDeclarations()
-	result = uti.ReplaceAll(result, "functionalDeclarations", functionalDeclarations)
+	source = uti.ReplaceAll(source, "functionalDeclarations", functionalDeclarations)
 
 	// Create the class declarations.
 	var classDeclarations = synthesizer.CreateClassDeclarations()
-	result = uti.ReplaceAll(result, "classDeclarations", classDeclarations)
+	source = uti.ReplaceAll(source, "classDeclarations", classDeclarations)
 
 	// Create the instance declarations.
 	var instanceDeclarations = synthesizer.CreateInstanceDeclarations()
-	result = uti.ReplaceAll(result, "instanceDeclarations", instanceDeclarations)
+	source = uti.ReplaceAll(source, "instanceDeclarations", instanceDeclarations)
 
 	// Create the aspect declarations.
 	var aspectDeclarations = synthesizer.CreateAspectDeclarations()
-	result = uti.ReplaceAll(result, "aspectDeclarations", aspectDeclarations)
+	source = uti.ReplaceAll(source, "aspectDeclarations", aspectDeclarations)
 
-	// Create the module imports (this must be done last).
-	var moduleImports = synthesizer.CreateModuleImports()
-	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
+	// Perform global updates (this must be done last).
+	source = synthesizer.PerformGlobalUpdates(source)
+	source = uti.ReplaceAll(source, "moduleName", moduleName)
+	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
+	source = uti.ReplaceAll(source, "packageName", packageName)
 
-	// Update the package information.
-	result = uti.ReplaceAll(result, "moduleName", moduleName)
-	result = uti.ReplaceAll(result, "wikiPath", wikiPath)
-	result = uti.ReplaceAll(result, "packageName", packageName)
-
-	return result
+	return source
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type generator_ struct {
+type packageGenerator_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type generatorClass_ struct {
+type packageGeneratorClass_ struct {
 	// Declare the class constants.
 	packageTemplate_ string
 }
 
 // Class Reference
 
-func generatorReference() *generatorClass_ {
-	return generatorReference_
+func packageGeneratorReference() *packageGeneratorClass_ {
+	return packageGeneratorReference_
 }
 
-var generatorReference_ = &generatorClass_{
+var packageGeneratorReference_ = &packageGeneratorClass_{
 	// Initialize the class constants.
 	packageTemplate_: `<LegalNotice>
 /*<PackageDescription>
@@ -129,7 +126,7 @@ be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
-package <PackageName><ModuleImports>
+package <PackageName><PackageImports>
 
 // Type Declarations<TypeDeclarations>
 

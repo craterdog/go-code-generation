@@ -10,11 +10,12 @@
 ................................................................................
 */
 
-package classes
+package synthesizer
 
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5/ast"
+	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -37,7 +38,7 @@ func (c *classSynthesizerClass_) Make(
 ) ClassSynthesizerLike {
 	var instance = &classSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: Analyzer().Make(model, className),
+		analyzer_: ana.ModelAnalyzer().Make(model, className),
 	}
 	return instance
 }
@@ -688,78 +689,59 @@ func (v *classSynthesizer_) createIntrinsicMethod() (
 }
 
 func (v *classSynthesizer_) createImportedPackages(
-	moduleImports mod.ModuleImportsLike,
-	class string,
-) (
-	implementation string,
-) {
-	if uti.IsDefined(moduleImports) {
-		var importedPackages = moduleImports.GetImportedPackages().GetIterator()
-		for importedPackages.HasNext() {
-			var importedPackage = importedPackages.GetNext()
+	packageImports mod.ModuleImportsLike,
+	source string,
+) string {
+	var importedPackages string
+	if uti.IsDefined(packageImports) {
+		var packages = packageImports.GetImportedPackages().GetIterator()
+		for packages.HasNext() {
+			var importedPackage = packages.GetNext()
 			var packageName = importedPackage.GetName()
 			var prefix = packageName + "."
 			var packagePath = importedPackage.GetPath()
-			if sts.Contains(class, prefix) && !sts.Contains(implementation, prefix) {
+			if sts.Contains(source, prefix) && !sts.Contains(importedPackages, prefix) {
 				var packageAlias = classSynthesizerReference().packageAlias_
 				packageAlias = uti.ReplaceAll(packageAlias, "packageName", packageName)
 				packageAlias = uti.ReplaceAll(packageAlias, "packagePath", packagePath)
-				implementation += packageAlias
+				importedPackages += packageAlias
 			}
 		}
 	}
-	if sts.Contains(class, "fmt.") && !sts.Contains(implementation, "fmt") {
+	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "fmt")
 		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"fmt\"")
-		implementation += packageAlias
+		importedPackages += packageAlias
 	}
-	if sts.Contains(class, "uti.") && !sts.Contains(implementation, "uti") {
+	if sts.Contains(source, "uti.") && !sts.Contains(importedPackages, "uti") {
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "uti")
 		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-missing-utilities/v2\"")
-		implementation += packageAlias
+		importedPackages += packageAlias
 	}
-	if sts.Contains(class, "col.") && !sts.Contains(implementation, "col") {
+	if sts.Contains(source, "col.") && !sts.Contains(importedPackages, "col") {
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "col")
 		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-collection-framework/v4\"")
-		implementation += packageAlias
+		importedPackages += packageAlias
 	}
-	if sts.Contains(class, "abs.") && !sts.Contains(implementation, "abs") {
+	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "abs")
 		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-collection-framework/v4/collection\"")
-		implementation += packageAlias
+		importedPackages += packageAlias
 	}
-	if sts.Contains(class, "syn.") && !sts.Contains(implementation, "syn") {
+	if sts.Contains(source, "syn.") && !sts.Contains(importedPackages, "syn") {
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "syn")
 		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"sync\"")
-		implementation += packageAlias
+		importedPackages += packageAlias
 	}
-	if uti.IsDefined(implementation) {
-		implementation += "\n"
-	}
-	return implementation
-}
-
-func (v *classSynthesizer_) createModuleImports(
-	imports mod.ModuleImportsLike,
-	source string,
-) (
-	implementation string,
-) {
-	var importedPackages = v.createImportedPackages(imports, source)
 	if uti.IsDefined(importedPackages) {
-		implementation = classSynthesizerReference().moduleImports_
-		implementation = uti.ReplaceAll(
-			implementation,
-			"importedPackages",
-			importedPackages,
-		)
+		importedPackages += "\n"
 	}
-	return implementation
+	return importedPackages
 }
 
 func (v *classSynthesizer_) createParameters(
@@ -869,16 +851,25 @@ func (v *classSynthesizer_) createSetterMethod(
 func (v *classSynthesizer_) performGlobalUpdates(
 	source string,
 ) string {
-	// Set the module imports.
-	var imports = v.analyzer_.GetModuleImports()
-	var moduleImports = v.createModuleImports(imports, source)
+	// Update the class imports.
+	var classImports string
+	var packageImports = v.analyzer_.GetPackageImports()
+	var importedPackages = v.createImportedPackages(packageImports, source)
+	if uti.IsDefined(importedPackages) {
+		classImports = classSynthesizerReference().classImports_
+		classImports = uti.ReplaceAll(
+			classImports,
+			"importedPackages",
+			importedPackages,
+		)
+	}
 	source = uti.ReplaceAll(
 		source,
-		"moduleImports",
-		moduleImports,
+		"classImports",
+		classImports,
 	)
 
-	// Set the instance method targets to "by value" if necessary.
+	// Update the instance method targets to "by value" if necessary.
 	var star = "*"
 	if v.analyzer_.IsIntrinsic() {
 		star = ""
@@ -1063,14 +1054,14 @@ func (v *classSynthesizer_) replaceResultType(
 
 type classSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ AnalyzerLike
+	analyzer_ ana.ModelAnalyzerLike
 }
 
 // Class Structure
 
 type classSynthesizerClass_ struct {
 	// Declare the class constants.
-	moduleImports_           string
+	classImports_            string
 	packageAlias_            string
 	accessFunction_          string
 	constructorMethods_      string
@@ -1113,7 +1104,7 @@ func classSynthesizerReference() *classSynthesizerClass_ {
 
 var classSynthesizerReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
-	moduleImports_: `
+	classImports_: `
 
 import (<ImportedPackages>)`,
 

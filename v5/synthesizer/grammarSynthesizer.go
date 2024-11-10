@@ -10,9 +10,10 @@
 ................................................................................
 */
 
-package packages
+package synthesizer
 
 import (
+	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
@@ -32,7 +33,7 @@ func (c *grammarSynthesizerClass_) Make(
 ) GrammarSynthesizerLike {
 	var instance = &grammarSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: Analyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
 	}
 	return instance
 }
@@ -55,11 +56,6 @@ func (v *grammarSynthesizer_) CreateLegalNotice() string {
 func (v *grammarSynthesizer_) CreatePackageDescription() string {
 	var packageDescription = grammarSynthesizerReference().packageDescription_
 	return packageDescription
-}
-
-func (v *grammarSynthesizer_) CreateModuleImports() string {
-	var moduleImports = grammarSynthesizerReference().moduleImports_
-	return moduleImports
 }
 
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
@@ -105,6 +101,14 @@ func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 		processRules,
 	)
 	return aspectDeclarations
+}
+
+func (v *grammarSynthesizer_) PerformGlobalUpdates(
+	source string,
+) string {
+	var packageImports = grammarSynthesizerReference().packageImports_
+	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	return source
 }
 
 // PROTECTED INTERFACE
@@ -181,7 +185,7 @@ func (v *grammarSynthesizer_) generateTokenTypes() (
 
 type grammarSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ AnalyzerLike
+	analyzer_ ana.SyntaxAnalyzerLike
 }
 
 // Class Structure
@@ -189,7 +193,7 @@ type grammarSynthesizer_ struct {
 type grammarSynthesizerClass_ struct {
 	// Declare the class constants.
 	packageDescription_   string
-	moduleImports_        string
+	packageImports_       string
 	typeDeclarations_     string
 	tokenType_            string
 	classDeclarations_    string
@@ -220,7 +224,7 @@ abstract syntax tree (AST) for this module:
   - Visitor walks the AST and calls processor methods for each node in the tree.
   - Processor provides empty processor methods to be inherited by the processors.`,
 
-	moduleImports_: `
+	packageImports_: `
 
 import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"

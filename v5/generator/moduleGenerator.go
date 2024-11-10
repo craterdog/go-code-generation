@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package modules
+package generator
 
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func Generator() GeneratorClassLike {
-	return generatorReference()
+func ModuleGenerator() ModuleGeneratorClassLike {
+	return moduleGeneratorReference()
 }
 
 // Constructor Methods
 
-func (c *generatorClass_) Make() GeneratorLike {
-	var instance = &generator_{
+func (c *moduleGeneratorClass_) Make() ModuleGeneratorLike {
+	var instance = &moduleGenerator_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -38,63 +38,64 @@ func (c *generatorClass_) Make() GeneratorLike {
 
 // Primary Methods
 
-func (v *generator_) GetClass() GeneratorClassLike {
-	return generatorReference()
+func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
+	return moduleGeneratorReference()
 }
 
-func (v *generator_) GenerateModule(
-	wiki string,
-	synthesizer TemplateDriven,
+func (v *moduleGenerator_) GenerateModule(
+	moduleName string,
+	wikiPath string,
+	synthesizer ModuleTemplateDriven,
 ) string {
 	// Begin with a module template.
-	var result = generatorReference().moduleTemplate_
+	var source = moduleGeneratorReference().moduleTemplate_
 
-	// Insert the legal notice.
+	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	result = uti.ReplaceAll(result, "legalNotice", legalNotice)
+	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
-	// Insert the type aliases.
+	// Create the type aliases.
 	var typeAliases = synthesizer.CreateTypeAliases()
-	result = uti.ReplaceAll(result, "typeAliases", typeAliases)
+	source = uti.ReplaceAll(source, "typeAliases", typeAliases)
 
-	// Insert the universal constructors.
+	// Create the universal constructors.
 	var universalConstructors = synthesizer.CreateUniversalConstructors()
-	result = uti.ReplaceAll(result, "universalConstructors", universalConstructors)
+	source = uti.ReplaceAll(source, "universalConstructors", universalConstructors)
 
-	// Insert the global functions.
+	// Create the global functions.
 	var globalFunctions = synthesizer.CreateGlobalFunctions()
-	result = uti.ReplaceAll(result, "globalFunctions", globalFunctions)
+	source = uti.ReplaceAll(source, "globalFunctions", globalFunctions)
 
-	// Insert the module imports (this must be done last).
-	var moduleImports = synthesizer.CreateModuleImports()
-	result = uti.ReplaceAll(result, "moduleImports", moduleImports)
-	result = uti.ReplaceAll(result, "wiki", wiki)
+	// Perform global updates (this must be done last).
+	source = synthesizer.PerformGlobalUpdates(source)
+	source = uti.ReplaceAll(source, "moduleName", moduleName)
+	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
 
-	return result
+	return source
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type generator_ struct {
+type moduleGenerator_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type generatorClass_ struct {
+type moduleGeneratorClass_ struct {
 	// Declare the class constants.
 	moduleTemplate_ string
 }
 
 // Class Reference
 
-func generatorReference() *generatorClass_ {
-	return generatorReference_
+func moduleGeneratorReference() *moduleGeneratorClass_ {
+	return moduleGeneratorReference_
 }
 
-var generatorReference_ = &generatorClass_{
+var moduleGeneratorReference_ = &moduleGeneratorClass_{
 	// Initialize the class constants.
 	moduleTemplate_: `<Notice>
 /*

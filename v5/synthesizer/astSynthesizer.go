@@ -10,9 +10,10 @@
 ................................................................................
 */
 
-package packages
+package synthesizer
 
 import (
+	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
@@ -32,7 +33,7 @@ func (c *astSynthesizerClass_) Make(
 ) AstSynthesizerLike {
 	var instance = &astSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: Analyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
 	}
 	return instance
 }
@@ -55,14 +56,6 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 func (v *astSynthesizer_) CreatePackageDescription() string {
 	var packageDescription = astSynthesizerReference().packageDescription_
 	return packageDescription
-}
-
-func (v *astSynthesizer_) CreateModuleImports() string {
-	var moduleImports string
-	if v.analyzer_.HasPlurals() {
-		moduleImports = astSynthesizerReference().moduleImports_
-	}
-	return moduleImports
 }
 
 func (v *astSynthesizer_) CreateTypeDeclarations() string {
@@ -98,6 +91,13 @@ func (v *astSynthesizer_) CreateInstanceDeclarations() string {
 func (v *astSynthesizer_) CreateAspectDeclarations() string {
 	var aspectDeclarations string
 	return aspectDeclarations
+}
+
+func (v *astSynthesizer_) PerformGlobalUpdates(
+	source string,
+) string {
+	source = v.performGlobalUpdates(source)
+	return source
 }
 
 // PROTECTED INTERFACE
@@ -241,11 +241,22 @@ func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
 	return true
 }
 
+func (v *astSynthesizer_) performGlobalUpdates(
+	source string,
+) string {
+	var packageImports string
+	if v.analyzer_.HasPlurals() {
+		packageImports = astSynthesizerReference().packageImports_
+	}
+	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	return source
+}
+
 // Instance Structure
 
 type astSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ AnalyzerLike
+	analyzer_ ana.SyntaxAnalyzerLike
 }
 
 // Class Structure
@@ -253,7 +264,7 @@ type astSynthesizer_ struct {
 type astSynthesizerClass_ struct {
 	// Declare the class constants.
 	packageDescription_      string
-	moduleImports_           string
+	packageImports_          string
 	classDeclaration_        string
 	singularRuleParameter_   string
 	pluralRuleParameter_     string
@@ -282,7 +293,7 @@ based on the "Syntax.cdsn" grammar for the module.  Each AST class manages the
 attributes associated with its corresponding rule definition found in the
 grammar.`,
 
-	moduleImports_: `
+	packageImports_: `
 
 import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
