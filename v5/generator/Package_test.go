@@ -69,6 +69,39 @@ func TestAstGeneration(t *tes.T) {
 	}
 }
 
+func TestScannerGeneration(t *tes.T) {
+	// Validate the language grammar.
+	var filename = directory + "Syntax.cdsn"
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var source = string(bytes)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
+	ass.Equal(t, source, actual)
+
+	// Generate the scanner concrete class.
+	var generator = gen.ClassGenerator().Make()
+	var packageName = "grammar"
+	var className = "scanner"
+	filename = directory + packageName + "/" + className + ".go"
+	var scannerSynthesizer = syn.ScannerSynthesizer().Make(syntax)
+	source = generator.GenerateClass(
+		moduleName,
+		wikiPath,
+		packageName,
+		className,
+		scannerSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func TestParserGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"

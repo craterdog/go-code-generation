@@ -437,7 +437,7 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.delimited_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()
 	var implicit = map[string]string{
-		"newline": `"(?:\\r?\\n)"`,
+		"newline": `"(?:" + eol_ + ")"`,
 		"space":   `"(?:[ \\t]+)"`,
 	}
 	v.regexps_ = col.Catalog[string, string](implicit)
