@@ -53,19 +53,52 @@ func TestAstGeneration(t *tes.T) {
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
 		filename = directory + packageName + "/" + className + ".go"
-		var astSynthesizer = syn.ClassSynthesizer().Make(model, className)
+		var classSynthesizer = syn.ClassSynthesizer().Make(model, className)
 		source = generator.GenerateClass(
 			moduleName,
 			wikiPath,
 			packageName,
 			className,
-			astSynthesizer,
+			classSynthesizer,
 		)
 		bytes = []byte(source)
 		err = osx.WriteFile(filename, bytes, 0644)
 		if err != nil {
 			panic(err)
 		}
+	}
+}
+
+func TestParserGeneration(t *tes.T) {
+	// Validate the language grammar.
+	var filename = directory + "Syntax.cdsn"
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var source = string(bytes)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
+	ass.Equal(t, source, actual)
+
+	// Generate the parser concrete class.
+	var generator = gen.ClassGenerator().Make()
+	var packageName = "grammar"
+	var className = "parser"
+	filename = directory + packageName + "/" + className + ".go"
+	var parserSynthesizer = syn.ParserSynthesizer().Make(syntax)
+	source = generator.GenerateClass(
+		moduleName,
+		wikiPath,
+		packageName,
+		className,
+		parserSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -110,6 +143,7 @@ func TestExampleGeneration(t *tes.T) {
 	}
 }
 
+/*
 func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
@@ -172,3 +206,4 @@ func TestPackageGeneration(t *tes.T) {
 		panic(err)
 	}
 }
+*/
