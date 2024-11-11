@@ -61,7 +61,11 @@ func (v *grammarSynthesizer_) CreatePackageDescription() string {
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
 	var typeDeclarations = grammarSynthesizerReference().typeDeclarations_
 	var tokenTypes = v.generateTokenTypes()
-	typeDeclarations = uti.ReplaceAll(typeDeclarations, "tokenTypes", tokenTypes)
+	typeDeclarations = uti.ReplaceAll(
+		typeDeclarations,
+		"tokenTypes",
+		tokenTypes,
+	)
 	return typeDeclarations
 }
 
@@ -107,7 +111,11 @@ func (v *grammarSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var packageImports = grammarSynthesizerReference().packageImports_
-	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	source = uti.ReplaceAll(
+		source,
+		"packageImports",
+		packageImports,
+	)
 	return source
 }
 
@@ -117,68 +125,74 @@ func (v *grammarSynthesizer_) PerformGlobalUpdates(
 
 func (v *grammarSynthesizer_) generateProcessRule(
 	ruleName string,
-) (
-	implementation string,
-) {
-	implementation = grammarSynthesizerReference().processRule_
+) string {
+	var processRule = grammarSynthesizerReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		implementation = grammarSynthesizerReference().processIndexedRule_
+		processRule = grammarSynthesizerReference().processIndexedRule_
 	}
-	implementation = uti.ReplaceAll(implementation, "ruleName", ruleName)
-	return implementation
+	processRule = uti.ReplaceAll(
+		processRule,
+		"ruleName",
+		ruleName,
+	)
+	return processRule
 }
 
-func (v *grammarSynthesizer_) generateProcessRules() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetRuleNames().GetIterator()
-	for iterator.HasNext() {
-		var ruleName = iterator.GetNext()
+func (v *grammarSynthesizer_) generateProcessRules() string {
+	var processRules string
+	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
 		var processRule = v.generateProcessRule(ruleName)
-		implementation += processRule
+		processRules += processRule
 	}
-	return implementation
+	return processRules
 }
 
 func (v *grammarSynthesizer_) generateProcessToken(
 	tokenName string,
-) (
-	implementation string,
-) {
+) string {
+	var processToken string
 	if tokenName == "delimiter" {
-		return implementation
+		return processToken
 	}
-	implementation = grammarSynthesizerReference().processToken_
+	processToken = grammarSynthesizerReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		implementation = grammarSynthesizerReference().processIndexedToken_
+		processToken = grammarSynthesizerReference().processIndexedToken_
 	}
-	implementation = uti.ReplaceAll(implementation, "tokenName", tokenName)
-	return implementation
+	processToken = uti.ReplaceAll(
+		processToken,
+		"tokenName",
+		tokenName,
+	)
+	return processToken
 }
 
-func (v *grammarSynthesizer_) generateProcessTokens() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetTokenNames().GetIterator()
-	for iterator.HasNext() {
-		var tokenName = iterator.GetNext()
+func (v *grammarSynthesizer_) generateProcessTokens() string {
+	var processTokens string
+	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
 		var processToken = v.generateProcessToken(tokenName)
-		implementation += processToken
+		processTokens += processToken
 	}
-	return implementation
+	return processTokens
 }
 
-func (v *grammarSynthesizer_) generateTokenTypes() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetTokenNames().GetIterator()
-	for iterator.HasNext() {
-		var tokenName = iterator.GetNext()
+func (v *grammarSynthesizer_) generateTokenTypes() string {
+	var tokenTypes string
+	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
 		var tokenType = grammarSynthesizerReference().tokenType_
-		tokenType = uti.ReplaceAll(tokenType, "tokenName", tokenName)
-		implementation += tokenType
+		tokenType = uti.ReplaceAll(
+			tokenType,
+			"tokenName",
+			tokenName,
+		)
+		tokenTypes += tokenType
 	}
-	return implementation
+	return tokenTypes
 }
 
 // Instance Structure

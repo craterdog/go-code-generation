@@ -91,7 +91,11 @@ func (v *scannerSynthesizer_) CreateAspectMethods() string {
 func (v *scannerSynthesizer_) CreatePrivateMethods() string {
 	var privateMethods = scannerSynthesizerReference().privateMethods_
 	var foundCases = v.createFoundCases()
-	privateMethods = uti.ReplaceAll(privateMethods, "foundCases", foundCases)
+	privateMethods = uti.ReplaceAll(
+		privateMethods,
+		"foundCases",
+		foundCases,
+	)
 	return privateMethods
 }
 
@@ -119,11 +123,11 @@ func (v *scannerSynthesizer_) CreateClassReference() string {
 		"tokenMatchers",
 		tokenMatchers,
 	)
-	var expressions = v.createExpressions()
+	var regularExpressions = v.createRegularExpressions()
 	classReference = uti.ReplaceAll(
 		classReference,
-		"expressions",
-		expressions,
+		"regularExpressions",
+		regularExpressions,
 	)
 	return classReference
 }
@@ -132,7 +136,11 @@ func (v *scannerSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var classImports = scannerSynthesizerReference().classImports_
-	source = uti.ReplaceAll(source, "classImports", classImports)
+	source = uti.ReplaceAll(
+		source,
+		"classImports",
+		classImports,
+	)
 	return source
 }
 
@@ -140,60 +148,75 @@ func (v *scannerSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *scannerSynthesizer_) createExpressions() (
-	implementation string,
-) {
+func (v *scannerSynthesizer_) createRegularExpressions() string {
+	var regularExpressions string
 	var expressions = v.analyzer_.GetExpressions().GetIterator()
 	for expressions.HasNext() {
 		var association = expressions.GetNext()
 		var expressionName = association.GetKey()
-		var regexp = association.GetValue()
-		var expression = scannerSynthesizerReference().expression_
-		expression = uti.ReplaceAll(expression, "expressionName", expressionName)
-		expression = uti.ReplaceAll(expression, "regexp", regexp)
-		implementation += expression
+		var expressionValue = association.GetValue()
+		var regularExpression = scannerSynthesizerReference().regularExpression_
+		regularExpression = uti.ReplaceAll(
+			regularExpression,
+			"expressionName",
+			expressionName,
+		)
+		regularExpression = uti.ReplaceAll(
+			regularExpression,
+			"expressionValue",
+			expressionValue,
+		)
+		regularExpressions += regularExpression
 	}
-	return implementation
+	return regularExpressions
 }
 
-func (v *scannerSynthesizer_) createFoundCases() (
-	implementation string,
-) {
+func (v *scannerSynthesizer_) createFoundCases() string {
+	var foundCases string
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var foundCase = scannerSynthesizerReference().foundCase_
-		foundCase = uti.ReplaceAll(foundCase, "tokenName", tokenName)
-		implementation += foundCase
+		foundCase = uti.ReplaceAll(
+			foundCase,
+			"tokenName",
+			tokenName,
+		)
+		foundCases += foundCase
 	}
-	return implementation
+	return foundCases
 }
 
-func (v *scannerSynthesizer_) createTokenIdentifiers() (
-	implementation string,
-) {
-	implementation = `ErrorToken: "error",`
+func (v *scannerSynthesizer_) createTokenIdentifiers() string {
+	var tokenIdentifiers = `ErrorToken: "error",`
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var tokenIdentifier = scannerSynthesizerReference().tokenIdentifier_
-		tokenIdentifier = uti.ReplaceAll(tokenIdentifier, "tokenName", tokenName)
-		implementation += tokenIdentifier
+		tokenIdentifier = uti.ReplaceAll(
+			tokenIdentifier,
+			"tokenName",
+			tokenName,
+		)
+		tokenIdentifiers += tokenIdentifier
 	}
-	return implementation
+	return tokenIdentifiers
 }
 
-func (v *scannerSynthesizer_) createTokenMatchers() (
-	implementation string,
-) {
+func (v *scannerSynthesizer_) createTokenMatchers() string {
+	var tokenMatchers string
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var tokenMatcher = scannerSynthesizerReference().tokenMatcher_
-		tokenMatcher = uti.ReplaceAll(tokenMatcher, "tokenName", tokenName)
-		implementation += tokenMatcher
+		tokenMatcher = uti.ReplaceAll(
+			tokenMatcher,
+			"tokenName",
+			tokenName,
+		)
+		tokenMatchers += tokenMatcher
 	}
-	return implementation
+	return tokenMatchers
 }
 
 // Instance Structure
@@ -224,7 +247,7 @@ type scannerSynthesizerClass_ struct {
 	classReference_      string
 	tokenIdentifier_     string
 	tokenMatcher_        string
-	expression_          string
+	regularExpression_   string
 }
 
 // Class Reference
@@ -535,7 +558,7 @@ const (
 	lower_   = "\\p{Ll}"
 	upper_   = "\\p{Lu}"
 
-	// Define the regular expression patterns for each token type.<Expressions>
+	// Define the regular expression patterns for each token type.<RegularExpressions>
 )`,
 
 	tokenIdentifier_: `
@@ -544,6 +567,6 @@ const (
 	tokenMatcher_: `
 		<~TokenName>Token: reg.MustCompile("^" + <~tokenName>_),`,
 
-	expression_: `
-	<~expressionName>_ = <Regexp>`,
+	regularExpression_: `
+	<~expressionName>_ = <ExpressionValue>`,
 }

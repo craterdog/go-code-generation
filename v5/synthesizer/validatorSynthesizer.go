@@ -86,9 +86,17 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 func (v *validatorSynthesizer_) CreateAspectMethods() string {
 	var aspectMethods = validatorSynthesizerReference().aspectMethods_
 	var processTokens = v.createProcessTokens()
-	aspectMethods = uti.ReplaceAll(aspectMethods, "processTokens", processTokens)
+	aspectMethods = uti.ReplaceAll(
+		aspectMethods,
+		"processTokens",
+		processTokens,
+	)
 	var processRules = v.createProcessRules()
-	aspectMethods = uti.ReplaceAll(aspectMethods, "processRules", processRules)
+	aspectMethods = uti.ReplaceAll(
+		aspectMethods,
+		"processRules",
+		processRules,
+	)
 	return aspectMethods
 }
 
@@ -116,9 +124,17 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	source = uti.ReplaceAll(source, "syntaxName", syntaxName)
+	source = uti.ReplaceAll(
+		source,
+		"syntaxName",
+		syntaxName,
+	)
 	var classImports = validatorSynthesizerReference().classImports_
-	source = uti.ReplaceAll(source, "classImports", classImports)
+	source = uti.ReplaceAll(
+		source,
+		"classImports",
+		classImports,
+	)
 	return source
 }
 
@@ -128,55 +144,58 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
-) (
-	implementation string,
-) {
-	implementation = validatorSynthesizerReference().processRule_
+) string {
+	var processRule = validatorSynthesizerReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		implementation = validatorSynthesizerReference().processIndexedRule_
+		processRule = validatorSynthesizerReference().processIndexedRule_
 	}
-	implementation = uti.ReplaceAll(implementation, "ruleName", ruleName)
-	return implementation
+	processRule = uti.ReplaceAll(
+		processRule,
+		"ruleName",
+		ruleName,
+	)
+	return processRule
 }
 
-func (v *validatorSynthesizer_) createProcessRules() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetRuleNames().GetIterator()
-	for iterator.HasNext() {
-		var ruleName = iterator.GetNext()
+func (v *validatorSynthesizer_) createProcessRules() string {
+	var processRules string
+	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
 		var processRule = v.createProcessRule(ruleName)
-		implementation += processRule
+		processRules += processRule
 	}
-	return implementation
+	return processRules
 }
 
 func (v *validatorSynthesizer_) createProcessToken(
 	tokenName string,
-) (
-	implementation string,
-) {
+) string {
+	var processToken string
 	if tokenName == "delimiter" {
-		return implementation
+		return processToken
 	}
-	implementation = validatorSynthesizerReference().processToken_
+	processToken = validatorSynthesizerReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		implementation = validatorSynthesizerReference().processIndexedToken_
+		processToken = validatorSynthesizerReference().processIndexedToken_
 	}
-	implementation = uti.ReplaceAll(implementation, "tokenName", tokenName)
-	return implementation
+	processToken = uti.ReplaceAll(
+		processToken,
+		"tokenName",
+		tokenName,
+	)
+	return processToken
 }
 
-func (v *validatorSynthesizer_) createProcessTokens() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetTokenNames().GetIterator()
-	for iterator.HasNext() {
-		var tokenName = iterator.GetNext()
+func (v *validatorSynthesizer_) createProcessTokens() string {
+	var processTokens string
+	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
 		var processToken = v.createProcessToken(tokenName)
-		implementation += processToken
+		processTokens += processToken
 	}
-	return implementation
+	return processTokens
 }
 
 // Instance Structure

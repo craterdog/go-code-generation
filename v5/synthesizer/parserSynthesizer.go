@@ -91,7 +91,11 @@ func (v *parserSynthesizer_) CreateAspectMethods() string {
 func (v *parserSynthesizer_) CreatePrivateMethods() string {
 	var parseMethods = v.createParseMethods()
 	var privateMethods = parserSynthesizerReference().privateMethods_
-	privateMethods = uti.ReplaceAll(privateMethods, "parseMethods", parseMethods)
+	privateMethods = uti.ReplaceAll(
+		privateMethods,
+		"parseMethods",
+		parseMethods,
+	)
 	return privateMethods
 }
 
@@ -114,11 +118,23 @@ func (v *parserSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var syntaxMap = v.analyzer_.GetSyntaxMap()
-	source = uti.ReplaceAll(source, "syntaxMap", syntaxMap)
+	source = uti.ReplaceAll(
+		source,
+		"syntaxMap",
+		syntaxMap,
+	)
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	source = uti.ReplaceAll(source, "syntaxName", syntaxName)
+	source = uti.ReplaceAll(
+		source,
+		"syntaxName",
+		syntaxName,
+	)
 	var classImports = parserSynthesizerReference().classImports_
-	source = uti.ReplaceAll(source, "classImports", classImports)
+	source = uti.ReplaceAll(
+		source,
+		"classImports",
+		classImports,
+	)
 	return source
 }
 
@@ -142,13 +158,21 @@ func (v *parserSynthesizer_) createArguments(
 		arguments += "\n\t\t"
 	}
 	var argument = variableNames.GetNext()
-	arguments += uti.ReplaceAll("<argument_>", "argument", argument)
+	arguments += uti.ReplaceAll(
+		"<argument_>",
+		"argument",
+		argument,
+	)
 
 	// Define any additional arguments.
 	for variableNames.HasNext() {
 		arguments += ",\n\t\t"
 		argument = variableNames.GetNext()
-		arguments += uti.ReplaceAll("<argument_>", "argument", argument)
+		arguments += uti.ReplaceAll(
+			"<argument_>",
+			"argument",
+			argument,
+		)
 	}
 	if variableNames.GetSize() > 1 {
 		// Use the multiline argument style.
@@ -160,28 +184,26 @@ func (v *parserSynthesizer_) createArguments(
 
 func (v *parserSynthesizer_) createCardinality(
 	cardinality not.CardinalityLike,
-	optionalTemplate string,
-	requiredTemplate string,
-	repeatedTemplate string,
-) (
-	implementation string,
-) {
+	optionalCardinality string,
+	requiredCardinality string,
+	repeatedCardinality string,
+) string {
 	var unlimited = "mat.MaxInt"
 	var first string
 	var last = unlimited
-	implementation = requiredTemplate
+	var actualCardinality = requiredCardinality
 	if uti.IsUndefined(cardinality) {
-		return implementation
+		return actualCardinality
 	}
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
-		implementation = repeatedTemplate
+		actualCardinality = repeatedCardinality
 		switch actual.GetAny().(string) {
 		case "?":
 			// This is the "{0..1}" case.
 			first = "0"
 			last = "1"
-			implementation = optionalTemplate
+			actualCardinality = optionalCardinality
 		case "*":
 			// This is the "{0..}" case.
 			first = "0"
@@ -204,24 +226,28 @@ func (v *parserSynthesizer_) createCardinality(
 			// This is the "{m..n}" case.
 		}
 	}
-	implementation = uti.ReplaceAll(implementation, "first", first)
-	implementation = uti.ReplaceAll(implementation, "last", last)
-	return implementation
+	actualCardinality = uti.ReplaceAll(
+		actualCardinality,
+		"first",
+		first,
+	)
+	actualCardinality = uti.ReplaceAll(
+		actualCardinality,
+		"last",
+		last,
+	)
+	return actualCardinality
 }
 
-func (v *parserSynthesizer_) createDelimiterStep() (
-	implementation string,
-) {
-	implementation = parserSynthesizerReference().parseDelimiterStep_
-	return implementation
+func (v *parserSynthesizer_) createDelimiterStep() string {
+	var delimiterStep = parserSynthesizerReference().parseDelimiterStep_
+	return delimiterStep
 }
 
 func (v *parserSynthesizer_) createInlineImplementation(
 	ruleName string,
-) (
-	implementation string,
-) {
-	implementation = parserSynthesizerReference().declarationStep_
+) string {
+	var implementation = parserSynthesizerReference().declarationStep_
 	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() {
@@ -238,26 +264,41 @@ func (v *parserSynthesizer_) createInlineImplementation(
 			case not.MatchesType(identifier, not.UppercaseToken):
 				parseStep = v.createRuleStep(cardinality)
 			}
-			parseStep = uti.ReplaceAll(parseStep, "variableName", variableName)
-			parseStep = uti.ReplaceAll(parseStep, "identifier", identifier)
+			parseStep = uti.ReplaceAll(
+				parseStep,
+				"variableName",
+				variableName,
+			)
+			parseStep = uti.ReplaceAll(
+				parseStep,
+				"identifier",
+				identifier,
+			)
 		case string:
 			var delimiter = actual
 			parseStep = v.createDelimiterStep()
-			parseStep = uti.ReplaceAll(parseStep, "delimiter", delimiter)
+			parseStep = uti.ReplaceAll(
+				parseStep,
+				"delimiter",
+				delimiter,
+			)
 		}
 		implementation += parseStep
 	}
 	var foundStep = parserSynthesizerReference().parseFoundStep_
 	var arguments = v.createArguments(ruleName)
-	implementation += uti.ReplaceAll(foundStep, "arguments", arguments)
+	implementation += uti.ReplaceAll(
+		foundStep,
+		"arguments",
+		arguments,
+	)
 	return implementation
 }
 
 func (v *parserSynthesizer_) createMultilineImplementation(
 	ruleName string,
-) (
-	implementation string,
-) {
+) string {
+	var implementation string
 	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
 	for identifiers.HasNext() {
 		var identifier = identifiers.GetNext().GetAny().(string)
@@ -268,7 +309,11 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 		case not.MatchesType(identifier, not.UppercaseToken):
 			parseCase = parserSynthesizerReference().parseRuleCase_
 		}
-		implementation += uti.ReplaceAll(parseCase, "identifier", identifier)
+		implementation += uti.ReplaceAll(
+			parseCase,
+			"identifier",
+			identifier,
+		)
 	}
 	implementation += parserSynthesizerReference().parseDefaultCase_
 	return implementation
@@ -276,9 +321,7 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 
 func (v *parserSynthesizer_) createParseMethod(
 	ruleName string,
-) (
-	implementation string,
-) {
+) string {
 	var methodImplementation string
 	var references = v.analyzer_.GetReferences(ruleName)
 	if uti.IsDefined(references) {
@@ -286,59 +329,58 @@ func (v *parserSynthesizer_) createParseMethod(
 	} else {
 		methodImplementation = v.createMultilineImplementation(ruleName)
 	}
-	implementation = parserSynthesizerReference().parseMethod_
-	implementation = uti.ReplaceAll(
-		implementation,
+	var parseMethod = parserSynthesizerReference().parseMethod_
+	parseMethod = uti.ReplaceAll(
+		parseMethod,
 		"methodImplementation",
 		methodImplementation,
 	)
-	implementation = uti.ReplaceAll(implementation, "ruleName", ruleName)
-	return implementation
+	parseMethod = uti.ReplaceAll(
+		parseMethod,
+		"ruleName",
+		ruleName,
+	)
+	return parseMethod
 }
 
-func (v *parserSynthesizer_) createParseMethods() (
-	implementation string,
-) {
+func (v *parserSynthesizer_) createParseMethods() string {
+	var parseMethods string
 	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
-		implementation += v.createParseMethod(ruleName)
+		parseMethods += v.createParseMethod(ruleName)
 	}
-	return implementation
+	return parseMethods
 }
 
 func (v *parserSynthesizer_) createRuleStep(
 	cardinality not.CardinalityLike,
-) (
-	implementation string,
-) {
+) string {
 	var optionalStep = parserSynthesizerReference().parseOptionalRuleStep_
 	var requiredStep = parserSynthesizerReference().parseRequiredRuleStep_
 	var repeatedStep = parserSynthesizerReference().parseRepeatedRuleStep_
-	implementation = v.createCardinality(
+	var ruleStep = v.createCardinality(
 		cardinality,
 		optionalStep,
 		requiredStep,
 		repeatedStep,
 	)
-	return implementation
+	return ruleStep
 }
 
 func (v *parserSynthesizer_) createTokenStep(
 	cardinality not.CardinalityLike,
-) (
-	implementation string,
-) {
+) string {
 	var optionalStep = parserSynthesizerReference().parseOptionalTokenStep_
 	var requiredStep = parserSynthesizerReference().parseRequiredTokenStep_
 	var repeatedStep = parserSynthesizerReference().parseRepeatedTokenStep_
-	implementation = v.createCardinality(
+	var tokenStep = v.createCardinality(
 		cardinality,
 		optionalStep,
 		requiredStep,
 		repeatedStep,
 	)
-	return implementation
+	return tokenStep
 }
 
 // Instance Structure

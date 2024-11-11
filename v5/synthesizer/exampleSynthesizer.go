@@ -82,7 +82,11 @@ func (v *exampleSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var packageImports = exampleSynthesizerReference().packageImports_
-	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	source = uti.ReplaceAll(
+		source,
+		"packageImports",
+		packageImports,
+	)
 	return source
 }
 

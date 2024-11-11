@@ -106,9 +106,7 @@ func (v *astSynthesizer_) PerformGlobalUpdates(
 
 func (v *astSynthesizer_) createClassDeclaration(
 	className string,
-) (
-	implementation string,
-) {
+) string {
 	var parameters string
 	var references = v.analyzer_.GetReferences(className)
 	if uti.IsDefined(references) {
@@ -133,40 +131,52 @@ func (v *astSynthesizer_) createClassDeclaration(
 		// This class represents a multiline rule.
 		parameters += "\n\t\tany_ any,\n\t"
 	}
-	implementation = astSynthesizerReference().classDeclaration_
-	implementation = uti.ReplaceAll(implementation, "parameters", parameters)
-	implementation = uti.ReplaceAll(implementation, "className", className)
-	return implementation
+	var classDeclaration = astSynthesizerReference().classDeclaration_
+	classDeclaration = uti.ReplaceAll(
+		classDeclaration,
+		"parameters",
+		parameters,
+	)
+	classDeclaration = uti.ReplaceAll(
+		classDeclaration,
+		"className",
+		className,
+	)
+	return classDeclaration
 }
 
 func (v *astSynthesizer_) createGetterMethod(
 	isPlural bool,
 	attributeName string,
 	attributeType string,
-) (
-	implementation string,
-) {
-	implementation = astSynthesizerReference().ruleGetterMethod_
+) string {
+	var getterMethod = astSynthesizerReference().ruleGetterMethod_
 	if attributeType == "string" {
-		implementation = astSynthesizerReference().tokenGetterMethod_
+		getterMethod = astSynthesizerReference().tokenGetterMethod_
 		if isPlural {
-			implementation = astSynthesizerReference().pluralTokenGetterMethod_
+			getterMethod = astSynthesizerReference().pluralTokenGetterMethod_
 		}
 	} else {
 		if isPlural {
-			implementation = astSynthesizerReference().pluralRuleGetterMethod_
+			getterMethod = astSynthesizerReference().pluralRuleGetterMethod_
 		}
 	}
-	implementation = uti.ReplaceAll(implementation, "attributeName", attributeName)
-	implementation = uti.ReplaceAll(implementation, "attributeType", attributeType)
-	return implementation
+	getterMethod = uti.ReplaceAll(
+		getterMethod,
+		"attributeName",
+		attributeName,
+	)
+	getterMethod = uti.ReplaceAll(
+		getterMethod,
+		"attributeType",
+		attributeType,
+	)
+	return getterMethod
 }
 
 func (v *astSynthesizer_) createInstanceDeclaration(
 	className string,
-) (
-	implementation string,
-) {
+) string {
 	var getterMethods string
 	var references = v.analyzer_.GetReferences(className)
 	if uti.IsDefined(references) {
@@ -188,20 +198,33 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 		// This instance represents a multiline rule.
 		getterMethods += "\n\tGetAny() any"
 	}
-	implementation = astSynthesizerReference().instanceDeclaration_
-	implementation = uti.ReplaceAll(
-		implementation,
+	var instanceDeclaration = astSynthesizerReference().instanceDeclaration_
+	var primaryMethods = astSynthesizerReference().primaryMethods_
+	instanceDeclaration = uti.ReplaceAll(
+		instanceDeclaration,
 		"primaryMethods",
-		astSynthesizerReference().primaryMethods_,
+		primaryMethods,
 	)
-	var template string
+	var attributeMethods string
 	if uti.IsDefined(getterMethods) {
-		template = astSynthesizerReference().attributeMethods_
-		template = uti.ReplaceAll(template, "getterMethods", getterMethods)
+		attributeMethods = astSynthesizerReference().attributeMethods_
+		attributeMethods = uti.ReplaceAll(
+			attributeMethods,
+			"getterMethods",
+			getterMethods,
+		)
 	}
-	implementation = uti.ReplaceAll(implementation, "attributeMethods", template)
-	implementation = uti.ReplaceAll(implementation, "className", className)
-	return implementation
+	instanceDeclaration = uti.ReplaceAll(
+		instanceDeclaration,
+		"attributeMethods",
+		attributeMethods,
+	)
+	instanceDeclaration = uti.ReplaceAll(
+		instanceDeclaration,
+		"className",
+		className,
+	)
+	return instanceDeclaration
 }
 
 func (v *astSynthesizer_) createParameter(
@@ -222,8 +245,16 @@ func (v *astSynthesizer_) createParameter(
 			parameter = astSynthesizerReference().pluralRuleParameter_
 		}
 	}
-	parameter = uti.ReplaceAll(parameter, "parameterName", parameterName)
-	parameter = uti.ReplaceAll(parameter, "parameterType", parameterType)
+	parameter = uti.ReplaceAll(
+		parameter,
+		"parameterName",
+		parameterName,
+	)
+	parameter = uti.ReplaceAll(
+		parameter,
+		"parameterType",
+		parameterType,
+	)
 	return parameter
 }
 
@@ -248,7 +279,11 @@ func (v *astSynthesizer_) performGlobalUpdates(
 	if v.analyzer_.HasPlurals() {
 		packageImports = astSynthesizerReference().packageImports_
 	}
-	source = uti.ReplaceAll(source, "packageImports", packageImports)
+	source = uti.ReplaceAll(
+		source,
+		"packageImports",
+		packageImports,
+	)
 	return source
 }
 

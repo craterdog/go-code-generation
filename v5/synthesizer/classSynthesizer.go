@@ -233,15 +233,12 @@ func (v *classSynthesizer_) extractType(
 }
 
 func (v *classSynthesizer_) createAspectInterface(
-	declarations abs.Sequential[mod.AspectDeclarationLike],
-	aspectInterface mod.AspectInterfaceLike,
-) (
-	implementation string,
-) {
+	sequence abs.Sequential[mod.AspectDeclarationLike],
+	aspectType mod.AbstractionLike,
+) string {
 	var methods string
-	var aspectType = aspectInterface.GetAbstraction()
-	if uti.IsDefined(declarations) {
-		var aspectDeclarations = declarations.GetIterator()
+	if uti.IsDefined(sequence) {
+		var aspectDeclarations = sequence.GetIterator()
 		for aspectDeclarations.HasNext() {
 			var aspectDeclaration = aspectDeclarations.GetNext()
 			var declaration = aspectDeclaration.GetDeclaration()
@@ -258,44 +255,41 @@ func (v *classSynthesizer_) createAspectInterface(
 			}
 		}
 	}
-	implementation = classSynthesizerReference().aspectInterface_
-	implementation = uti.ReplaceAll(
-		implementation,
+	var aspectInterface = classSynthesizerReference().aspectInterface_
+	aspectInterface = uti.ReplaceAll(
+		aspectInterface,
 		"aspectType",
 		v.extractType(aspectType),
 	)
-	implementation = uti.ReplaceAll(
-		implementation,
+	aspectInterface = uti.ReplaceAll(
+		aspectInterface,
 		"aspectMethods",
 		methods,
 	)
-	return implementation
+	return aspectInterface
 }
 
 func (v *classSynthesizer_) createAspectInterfaces(
 	declarations abs.Sequential[mod.AspectDeclarationLike],
 	interfaces abs.Sequential[mod.AspectInterfaceLike],
-) (
-	implementation string,
-) {
+) string {
+	var aspectInterfaces string
 	if uti.IsDefined(interfaces) {
-		var aspectInterfaces = interfaces.GetIterator()
-		for aspectInterfaces.HasNext() {
-			var aspectInterface = aspectInterfaces.GetNext()
-			implementation += v.createAspectInterface(declarations, aspectInterface)
+		var aspects = interfaces.GetIterator()
+		for aspects.HasNext() {
+			var aspectInterface = aspects.GetNext()
+			var aspectType = aspectInterface.GetAbstraction()
+			aspectInterfaces += v.createAspectInterface(declarations, aspectType)
 		}
 	}
-	return implementation
+	return aspectInterfaces
 }
 
 func (v *classSynthesizer_) createAspectMethod(
 	aspectType mod.AbstractionLike,
-	aspectMethod mod.AspectMethodLike,
+	method mod.MethodLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
-) (
-	implementation string,
-) {
-	var method = aspectMethod.GetMethod()
+) string {
 	var methodName = method.GetName()
 	var methodParameters = method.GetParameters()
 	var methodResult = method.GetOptionalResult()
@@ -307,385 +301,446 @@ func (v *classSynthesizer_) createAspectMethod(
 	}
 	var parameters = v.createParameters(methodParameters)
 	var resultType = v.createResult(methodResult)
-	implementation = classSynthesizerReference().instanceMethod_
+	var aspectMethod = classSynthesizerReference().instanceMethod_
 	if uti.IsDefined(resultType) {
-		implementation = classSynthesizerReference().instanceFunction_
-		implementation = uti.ReplaceAll(implementation, "resultType", resultType)
+		aspectMethod = classSynthesizerReference().instanceFunction_
+		aspectMethod = uti.ReplaceAll(
+			aspectMethod,
+			"resultType",
+			resultType,
+		)
 	}
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "parameters", parameters)
-	return implementation
+	aspectMethod = uti.ReplaceAll(
+		aspectMethod,
+		"methodName",
+		methodName,
+	)
+	aspectMethod = uti.ReplaceAll(
+		aspectMethod,
+		"parameters",
+		parameters,
+	)
+	return aspectMethod
 }
 
 func (v *classSynthesizer_) createAspectMethods(
 	aspectType mod.AbstractionLike,
 	aspectDeclaration mod.AspectDeclarationLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
-) (
-	implementation string,
-) {
-	var aspectMethods = aspectDeclaration.GetAspectMethods().GetIterator()
-	for aspectMethods.HasNext() {
-		var aspectMethod = aspectMethods.GetNext()
-		implementation += v.createAspectMethod(
+) string {
+	var aspectMethods string
+	var methods = aspectDeclaration.GetAspectMethods().GetIterator()
+	for methods.HasNext() {
+		var aspectMethod = methods.GetNext()
+		var method = aspectMethod.GetMethod()
+		aspectMethods += v.createAspectMethod(
 			aspectType,
-			aspectMethod,
+			method,
 			mappings,
 		)
 	}
-	return implementation
+	return aspectMethods
 }
 
 func (v *classSynthesizer_) createAttributeCheck(
 	parameter mod.ParameterLike,
-) (
-	implementation string,
-) {
+) string {
+	var attributeCheck string
 	var parameterName = parameter.GetName()
 	var attributeName = sts.TrimSuffix(parameterName, "_")
 	// Ignore optional attributes.
 	if !sts.HasPrefix(attributeName, "optional") {
-		var template = classSynthesizerReference().attributeCheck_
-		template = uti.ReplaceAll(template, "attributeName", attributeName)
-		implementation += template
+		attributeCheck = classSynthesizerReference().attributeCheck_
+		attributeCheck = uti.ReplaceAll(
+			attributeCheck,
+			"attributeName",
+			attributeName,
+		)
 	}
-	return implementation
+	return attributeCheck
 }
 
 func (v *classSynthesizer_) createAttributeChecks(
-	parameters abs.Sequential[mod.ParameterLike],
-) (
-	implementation string,
-) {
-	var iterator = parameters.GetIterator()
-	for iterator.HasNext() {
-		var parameter = iterator.GetNext()
+	sequence abs.Sequential[mod.ParameterLike],
+) string {
+	var attributeChecks string
+	var parameters = sequence.GetIterator()
+	for parameters.HasNext() {
+		var parameter = parameters.GetNext()
 		var attributeCheck = v.createAttributeCheck(parameter)
-		implementation += attributeCheck
+		attributeChecks += attributeCheck
 	}
-	return implementation
+	return attributeChecks
 }
 
-func (v *classSynthesizer_) createAttributeDeclarations() (
-	implementation string,
-) {
+func (v *classSynthesizer_) createAttributeDeclarations() string {
+	var declarations string
 	var attributes = v.analyzer_.GetAttributes().GetIterator()
 	for attributes.HasNext() {
 		var attribute = attributes.GetNext()
 		var attributeName = attribute.GetKey()
 		var attributeType = attribute.GetValue()
 		var declaration = classSynthesizerReference().attributeDeclaration_
-		declaration = uti.ReplaceAll(declaration, "attributeName", attributeName)
-		declaration = uti.ReplaceAll(declaration, "attributeType", attributeType)
-		implementation += declaration
+		declaration = uti.ReplaceAll(
+			declaration,
+			"attributeName",
+			attributeName,
+		)
+		declaration = uti.ReplaceAll(
+			declaration,
+			"attributeType",
+			attributeType,
+		)
+		declarations += declaration
 	}
-	return implementation
+	return declarations
 }
 
 func (v *classSynthesizer_) createAttributeInitializations(
-	parameters abs.Sequential[mod.ParameterLike],
-) (
-	implementation string,
-) {
-	var iterator = parameters.GetIterator()
-	for iterator.HasNext() {
-		var parameter = iterator.GetNext()
+	sequence abs.Sequential[mod.ParameterLike],
+) string {
+	var initializations string
+	var parameters = sequence.GetIterator()
+	for parameters.HasNext() {
+		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var attributeName = sts.TrimSuffix(parameterName, "_")
 		if uti.IsDefined(v.analyzer_.GetAttributes().GetValue(attributeName)) {
-			var template = classSynthesizerReference().attributeInitialization_
-			template = uti.ReplaceAll(template, "attributeName", attributeName)
-			implementation += template
+			var initialization = classSynthesizerReference().attributeInitialization_
+			initialization = uti.ReplaceAll(
+				initialization,
+				"attributeName",
+				attributeName,
+			)
+			initializations += initialization
 		}
 	}
-	return implementation
+	return initializations
 }
 
 func (v *classSynthesizer_) createAttributeMethods(
-	attributes abs.Sequential[mod.AttributeMethodLike],
-) (
-	implementation string,
-) {
-	if uti.IsDefined(attributes) {
-		var methods string
-		var attributeMethods = attributes.GetIterator()
-		for attributeMethods.HasNext() {
-			var method string
-			var attributeMethod = attributeMethods.GetNext()
-			switch actual := attributeMethod.GetAny().(type) {
+	sequence abs.Sequential[mod.AttributeMethodLike],
+) string {
+	var methods string
+	if uti.IsDefined(sequence) {
+		var attributeMethods string
+		var attributes = sequence.GetIterator()
+		for attributes.HasNext() {
+			var attributeMethod string
+			var attribute = attributes.GetNext()
+			switch actual := attribute.GetAny().(type) {
 			case mod.GetterMethodLike:
-				method = v.createGetterMethod(actual)
+				attributeMethod = v.createGetterMethod(actual)
 			case mod.SetterMethodLike:
-				method = v.createSetterMethod(actual)
+				attributeMethod = v.createSetterMethod(actual)
 			}
-			methods += method
+			attributeMethods += attributeMethod
 		}
-		implementation = classSynthesizerReference().attributeMethods_
-		implementation = uti.ReplaceAll(implementation, "attributeMethods", methods)
+		methods = classSynthesizerReference().attributeMethods_
+		methods = uti.ReplaceAll(
+			methods,
+			"attributeMethods",
+			attributeMethods,
+		)
 	}
-	return implementation
+	return methods
 }
 
-func (v *classSynthesizer_) createClassReference() (
-	implementation string,
-) {
-	implementation = classSynthesizerReference().classReference_
+func (v *classSynthesizer_) createClassReference() string {
+	var classReference = classSynthesizerReference().classReference_
 	if v.analyzer_.IsGeneric() {
-		implementation = classSynthesizerReference().classMap_
+		classReference = classSynthesizerReference().classMap_
 	}
 	var constantInitializations = v.createConstantInitializations()
-	implementation = uti.ReplaceAll(
-		implementation,
+	classReference = uti.ReplaceAll(
+		classReference,
 		"constantInitializations",
 		constantInitializations,
 	)
-	return implementation
+	return classReference
 }
 
-func (v *classSynthesizer_) createClassStructure() (
-	implementation string,
-) {
-	implementation = classSynthesizerReference().classStructure_
+func (v *classSynthesizer_) createClassStructure() string {
+	var classStructure = classSynthesizerReference().classStructure_
 	var constantDeclarations = v.createConstantDeclarations()
-	implementation = uti.ReplaceAll(
-		implementation,
+	classStructure = uti.ReplaceAll(
+		classStructure,
 		"constantDeclarations",
 		constantDeclarations,
 	)
-	return implementation
+	return classStructure
 }
 
-func (v *classSynthesizer_) createConstantDeclarations() (
-	implementation string,
-) {
+func (v *classSynthesizer_) createConstantDeclarations() string {
+	var declarations string
 	var constants = v.analyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
 		var constantType = constant.GetValue()
 		var declaration = classSynthesizerReference().constantDeclaration_
-		declaration = uti.ReplaceAll(declaration, "constantName", constantName)
-		declaration = uti.ReplaceAll(declaration, "constantType", constantType)
-		implementation += declaration
+		declaration = uti.ReplaceAll(
+			declaration,
+			"constantName",
+			constantName,
+		)
+		declaration = uti.ReplaceAll(
+			declaration,
+			"constantType",
+			constantType,
+		)
+		declarations += declaration
 	}
-	return implementation
+	return declarations
 }
 
-func (v *classSynthesizer_) createConstantInitializations() (
-	implementation string,
-) {
+func (v *classSynthesizer_) createConstantInitializations() string {
+	var initializations string
 	var constants = v.analyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
 		var initialization = classSynthesizerReference().constantInitialization_
-		initialization = uti.ReplaceAll(initialization, "constantName", constantName)
-		implementation += initialization
+		initialization = uti.ReplaceAll(
+			initialization,
+			"constantName",
+			constantName,
+		)
+		initializations += initialization
 	}
-	return implementation
+	return initializations
 }
 
 func (v *classSynthesizer_) createConstantMethod(
 	constantMethod mod.ConstantMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = constantMethod.GetName()
 	var resultType = v.extractType(constantMethod.GetAbstraction())
-	implementation = classSynthesizerReference().constantMethod_
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "resultType", resultType)
-	return implementation
+	var method = classSynthesizerReference().constantMethod_
+	method = uti.ReplaceAll(
+		method,
+		"methodName",
+		methodName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"resultType",
+		resultType,
+	)
+	return method
 }
 
 func (v *classSynthesizer_) createConstantMethods(
-	constants abs.Sequential[mod.ConstantMethodLike],
-) (
-	implementation string,
-) {
-	if uti.IsDefined(constants) {
-		var methods string
-		var constantMethods = constants.GetIterator()
-		for constantMethods.HasNext() {
-			var constantMethod = constantMethods.GetNext()
-			methods += v.createConstantMethod(constantMethod)
+	sequence abs.Sequential[mod.ConstantMethodLike],
+) string {
+	var methods string
+	if uti.IsDefined(sequence) {
+		var constantMethods string
+		var constants = sequence.GetIterator()
+		for constants.HasNext() {
+			var constantMethod = constants.GetNext()
+			constantMethods += v.createConstantMethod(constantMethod)
 		}
-		implementation = classSynthesizerReference().constantMethods_
-		implementation = uti.ReplaceAll(implementation, "constantMethods", methods)
+		methods = classSynthesizerReference().constantMethods_
+		methods = uti.ReplaceAll(
+			methods,
+			"constantMethods",
+			constantMethods,
+		)
 	}
-	return implementation
+	return methods
 }
 
 func (v *classSynthesizer_) createConstructorMethod(
 	constructorMethod mod.ConstructorMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = constructorMethod.GetName()
 	var constructorParameters = constructorMethod.GetParameters()
 	var parameters = v.createParameters(constructorParameters)
 	var resultType = v.extractType(constructorMethod.GetAbstraction())
 	var instanceInstantiation = v.createInstanceInstantiation(constructorMethod)
-	implementation = classSynthesizerReference().constructorMethod_
-	implementation = uti.ReplaceAll(
-		implementation,
+	var method = classSynthesizerReference().constructorMethod_
+	method = uti.ReplaceAll(
+		method,
 		"methodName",
 		methodName,
 	)
-	implementation = uti.ReplaceAll(
-		implementation,
+	method = uti.ReplaceAll(
+		method,
 		"parameters",
 		parameters,
 	)
-	implementation = uti.ReplaceAll(
-		implementation,
+	method = uti.ReplaceAll(
+		method,
 		"resultType",
 		resultType,
 	)
-	implementation = uti.ReplaceAll(
-		implementation,
+	method = uti.ReplaceAll(
+		method,
 		"instanceInstantiation",
 		instanceInstantiation,
 	)
-	return implementation
+	return method
 }
 
 func (v *classSynthesizer_) createConstructorMethods(
-	constructors abs.Sequential[mod.ConstructorMethodLike],
-) (
-	implementation string,
-) {
-	if uti.IsDefined(constructors) {
-		var methods string
-		var constructorMethods = constructors.GetIterator()
-		for constructorMethods.HasNext() {
-			var constructorMethod = constructorMethods.GetNext()
-			methods += v.createConstructorMethod(constructorMethod)
+	sequence abs.Sequential[mod.ConstructorMethodLike],
+) string {
+	var methods string
+	if uti.IsDefined(sequence) {
+		var constructorMethods string
+		var constructors = sequence.GetIterator()
+		for constructors.HasNext() {
+			var constructorMethod = constructors.GetNext()
+			constructorMethods += v.createConstructorMethod(constructorMethod)
 		}
-		implementation = classSynthesizerReference().constructorMethods_
-		implementation = uti.ReplaceAll(implementation, "constructorMethods", methods)
+		methods = classSynthesizerReference().constructorMethods_
+		methods = uti.ReplaceAll(
+			methods,
+			"constructorMethods",
+			constructorMethods,
+		)
 	}
-	return implementation
+	return methods
 }
 
 func (v *classSynthesizer_) createFunctionMethod(
 	functionMethod mod.FunctionMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = functionMethod.GetName()
 	var parameters = v.createParameters(functionMethod.GetParameters())
 	var resultType = v.createResult(functionMethod.GetResult())
-	implementation = classSynthesizerReference().functionMethod_
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "parameters", parameters)
-	implementation = uti.ReplaceAll(implementation, "resultType", resultType)
-	return implementation
+	var method = classSynthesizerReference().functionMethod_
+	method = uti.ReplaceAll(
+		method,
+		"methodName",
+		methodName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"parameters",
+		parameters,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"resultType",
+		resultType,
+	)
+	return method
 }
 
 func (v *classSynthesizer_) createFunctionMethods(
-	functions abs.Sequential[mod.FunctionMethodLike],
-) (
-	implementation string,
-) {
-	if uti.IsDefined(functions) {
-		var methods string
-		var functionMethods = functions.GetIterator()
-		for functionMethods.HasNext() {
-			var functionMethod = functionMethods.GetNext()
-			methods += v.createFunctionMethod(functionMethod)
+	sequence abs.Sequential[mod.FunctionMethodLike],
+) string {
+	var methods string
+	if uti.IsDefined(sequence) {
+		var functionMethods string
+		var functions = sequence.GetIterator()
+		for functions.HasNext() {
+			var functionMethod = functions.GetNext()
+			functionMethods += v.createFunctionMethod(functionMethod)
 		}
-		implementation = classSynthesizerReference().functionMethods_
-		implementation = uti.ReplaceAll(implementation, "functionMethods", methods)
+		methods = classSynthesizerReference().functionMethods_
+		methods = uti.ReplaceAll(
+			methods,
+			"functionMethods",
+			functionMethods,
+		)
 	}
-	return implementation
+	return methods
 }
 
 func (v *classSynthesizer_) createGetterMethod(
 	getterMethod mod.GetterMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = getterMethod.GetName()
 	var attributeName = v.extractAttributeName(methodName)
 	var attributeType = v.extractType(getterMethod.GetAbstraction())
-	implementation = classSynthesizerReference().getterMethod_
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "attributeName", attributeName)
-	implementation = uti.ReplaceAll(implementation, "attributeType", attributeType)
-	return implementation
+	var method = classSynthesizerReference().getterMethod_
+	method = uti.ReplaceAll(
+		method,
+		"methodName",
+		methodName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"attributeName",
+		attributeName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"attributeType",
+		attributeType,
+	)
+	return method
 }
 
 func (v *classSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = constructorMethod.GetName()
-	implementation = classSynthesizerReference().instanceInstantiation_
+	var instantiation = classSynthesizerReference().instanceInstantiation_
 	if v.analyzer_.IsIntrinsic() {
 		if methodName == "Make" {
-			implementation = classSynthesizerReference().intrinsicInstantiation_
+			instantiation = classSynthesizerReference().intrinsicInstantiation_
 		}
 	} else {
 		if methodName == "Make" || sts.HasPrefix(methodName, "MakeWith") {
-			implementation = classSynthesizerReference().structureInstantiation_
+			instantiation = classSynthesizerReference().structureInstantiation_
 			var constructorParameters = constructorMethod.GetParameters()
 			var attributeChecks = v.createAttributeChecks(constructorParameters)
 			var attributeInitializations = v.createAttributeInitializations(
 				constructorParameters,
 			)
-			implementation = uti.ReplaceAll(
-				implementation,
+			instantiation = uti.ReplaceAll(
+				instantiation,
 				"attributeChecks",
 				attributeChecks,
 			)
-			implementation = uti.ReplaceAll(
-				implementation,
+			instantiation = uti.ReplaceAll(
+				instantiation,
 				"attributeInitializations",
 				attributeInitializations,
 			)
 		}
 	}
-	return implementation
+	return instantiation
 }
 
-func (v *classSynthesizer_) createInstanceStructure() (
-	implementation string,
-) {
+func (v *classSynthesizer_) createInstanceStructure() string {
+	var structure string
 	if v.analyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
-		implementation = classSynthesizerReference().instanceIntrinsic_
-		implementation = uti.ReplaceAll(
-			implementation,
+		structure = classSynthesizerReference().instanceIntrinsic_
+		structure = uti.ReplaceAll(
+			structure,
 			"intrinsicType",
 			intrinsicType,
 		)
 	} else {
-		implementation = classSynthesizerReference().instanceStructure_
+		structure = classSynthesizerReference().instanceStructure_
 		var attributeDeclarations = v.createAttributeDeclarations()
-		implementation = uti.ReplaceAll(
-			implementation,
+		structure = uti.ReplaceAll(
+			structure,
 			"attributeDeclarations",
 			attributeDeclarations,
 		)
 	}
-	return implementation
+	return structure
 }
 
-func (v *classSynthesizer_) createIntrinsicMethod() (
-	implementation string,
-) {
+func (v *classSynthesizer_) createIntrinsicMethod() string {
+	var method string
 	if v.analyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
-		implementation = classSynthesizerReference().intrinsicMethod_
-		implementation = uti.ReplaceAll(
-			implementation,
+		method = classSynthesizerReference().intrinsicMethod_
+		method = uti.ReplaceAll(
+			method,
 			"intrinsicType",
 			intrinsicType,
 		)
 	}
-	return implementation
+	return method
 }
 
 func (v *classSynthesizer_) createImportedPackages(
@@ -702,40 +757,88 @@ func (v *classSynthesizer_) createImportedPackages(
 			var packagePath = importedPackage.GetPath()
 			if sts.Contains(source, prefix) && !sts.Contains(importedPackages, prefix) {
 				var packageAlias = classSynthesizerReference().packageAlias_
-				packageAlias = uti.ReplaceAll(packageAlias, "packageName", packageName)
-				packageAlias = uti.ReplaceAll(packageAlias, "packagePath", packagePath)
+				packageAlias = uti.ReplaceAll(
+					packageAlias,
+					"packageName",
+					packageName,
+				)
+				packageAlias = uti.ReplaceAll(
+					packageAlias,
+					"packagePath",
+					packagePath,
+				)
 				importedPackages += packageAlias
 			}
 		}
 	}
 	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
 		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "fmt")
-		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"fmt\"")
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageName",
+			"fmt",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"\"fmt\"",
+		)
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "uti.") && !sts.Contains(importedPackages, "uti") {
 		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "uti")
-		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-missing-utilities/v2\"")
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageName",
+			"uti",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"\"github.com/craterdog/go-missing-utilities/v2\"",
+		)
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "col.") && !sts.Contains(importedPackages, "col") {
 		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "col")
-		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-collection-framework/v4\"")
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageName",
+			"col",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"\"github.com/craterdog/go-collection-framework/v4\"",
+		)
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
 		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "abs")
-		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"github.com/craterdog/go-collection-framework/v4/collection\"")
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageName",
+			"abs",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"\"github.com/craterdog/go-collection-framework/v4/collection\"",
+		)
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "syn.") && !sts.Contains(importedPackages, "syn") {
 		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(packageAlias, "packageName", "syn")
-		packageAlias = uti.ReplaceAll(packageAlias, "packagePath", "\"sync\"")
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageName",
+			"syn",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"\"sync\"",
+		)
 		importedPackages += packageAlias
 	}
 	if uti.IsDefined(importedPackages) {
@@ -745,65 +848,80 @@ func (v *classSynthesizer_) createImportedPackages(
 }
 
 func (v *classSynthesizer_) createParameters(
-	parameters abs.Sequential[mod.ParameterLike],
-) (
-	implementation string,
-) {
-	var iterator = parameters.GetIterator()
-	for iterator.HasNext() {
-		var parameter = iterator.GetNext()
+	sequence abs.Sequential[mod.ParameterLike],
+) string {
+	var methodParameters string
+	var parameters = sequence.GetIterator()
+	for parameters.HasNext() {
+		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var parameterType = v.extractType(parameter.GetAbstraction())
-		var template = classSynthesizerReference().methodParameter_
-		template = uti.ReplaceAll(template, "parameterName", parameterName)
-		template = uti.ReplaceAll(template, "parameterType", parameterType)
-		implementation += template
+		var methodParameter = classSynthesizerReference().methodParameter_
+		methodParameter = uti.ReplaceAll(
+			methodParameter,
+			"parameterName",
+			parameterName,
+		)
+		methodParameter = uti.ReplaceAll(
+			methodParameter,
+			"parameterType",
+			parameterType,
+		)
+		methodParameters += methodParameter
 	}
-	if uti.IsDefined(implementation) {
-		implementation += "\n"
+	if uti.IsDefined(methodParameters) {
+		methodParameters += "\n"
 	}
-	return implementation
+	return methodParameters
 }
 
 func (v *classSynthesizer_) createPrimaryMethod(
-	primaryMethod mod.PrimaryMethodLike,
-) (
-	implementation string,
-) {
-	var method = primaryMethod.GetMethod()
+	method mod.MethodLike,
+) string {
 	var methodName = method.GetName()
 	var parameters = v.createParameters(method.GetParameters())
 	var resultType = v.createResult(method.GetOptionalResult())
-	implementation = classSynthesizerReference().instanceMethod_
+	var primaryMethod = classSynthesizerReference().instanceMethod_
 	if uti.IsDefined(resultType) {
-		implementation = classSynthesizerReference().instanceFunction_
-		implementation = uti.ReplaceAll(implementation, "resultType", resultType)
+		primaryMethod = classSynthesizerReference().instanceFunction_
+		primaryMethod = uti.ReplaceAll(
+			primaryMethod,
+			"resultType",
+			resultType,
+		)
 	}
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "parameters", parameters)
-	return implementation
+	primaryMethod = uti.ReplaceAll(
+		primaryMethod,
+		"methodName",
+		methodName,
+	)
+	primaryMethod = uti.ReplaceAll(
+		primaryMethod,
+		"parameters",
+		parameters,
+	)
+	return primaryMethod
 }
 
 func (v *classSynthesizer_) createPrimaryMethods(
-	primaries abs.Sequential[mod.PrimaryMethodLike],
-) (
-	implementation string,
-) {
-	var methods string
-	var primaryMethods = primaries.GetIterator()
-	for primaryMethods.HasNext() {
-		var primaryMethod = primaryMethods.GetNext()
-		if primaryMethod.GetMethod().GetName() == "GetClass" ||
-			primaryMethod.GetMethod().GetName() == "GetIntrinsic" {
+	sequence abs.Sequential[mod.PrimaryMethodLike],
+) string {
+	var primaryMethods string
+	var methods = sequence.GetIterator()
+	for methods.HasNext() {
+		var method = methods.GetNext().GetMethod()
+		if method.GetName() == "GetClass" ||
+			method.GetName() == "GetIntrinsic" {
 			continue
 		}
-		methods += v.createPrimaryMethod(primaryMethod)
+		var primaryMethod = v.createPrimaryMethod(method)
+		primaryMethods += primaryMethod
 	}
-	implementation = classSynthesizerReference().primaryMethods_
+	var implementation = classSynthesizerReference().primaryMethods_
 	implementation = uti.ReplaceAll(
 		implementation,
 		"primaryMethods",
-		methods,
+		primaryMethods,
 	)
 	var intrinsicMethod = v.createIntrinsicMethod()
 	implementation = uti.ReplaceAll(
@@ -816,36 +934,49 @@ func (v *classSynthesizer_) createPrimaryMethods(
 
 func (v *classSynthesizer_) createResult(
 	result mod.ResultLike,
-) (
-	implementation string,
-) {
+) string {
+	var results string
 	if uti.IsDefined(result) {
 		switch actual := result.GetAny().(type) {
 		case mod.AbstractionLike:
-			implementation = v.extractType(actual)
+			results = v.extractType(actual)
 		case mod.MultivalueLike:
-			implementation = "(" + v.createParameters(actual.GetParameters()) + "\n)"
+			results = "(" + v.createParameters(actual.GetParameters()) + "\n)"
 		}
 	}
-	return implementation
+	return results
 }
 
 func (v *classSynthesizer_) createSetterMethod(
 	setterMethod mod.SetterMethodLike,
-) (
-	implementation string,
-) {
+) string {
 	var methodName = setterMethod.GetName()
 	var attributeName = v.extractAttributeName(methodName)
 	var parameter = setterMethod.GetParameter()
 	var attributeType = v.extractType(parameter.GetAbstraction())
 	var attributeCheck = v.createAttributeCheck(parameter)
-	implementation = classSynthesizerReference().setterMethod_
-	implementation = uti.ReplaceAll(implementation, "methodName", methodName)
-	implementation = uti.ReplaceAll(implementation, "attributeName", attributeName)
-	implementation = uti.ReplaceAll(implementation, "attributeType", attributeType)
-	implementation = uti.ReplaceAll(implementation, "attributeCheck", attributeCheck)
-	return implementation
+	var method = classSynthesizerReference().setterMethod_
+	method = uti.ReplaceAll(
+		method,
+		"methodName",
+		methodName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"attributeName",
+		attributeName,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"attributeType",
+		attributeType,
+	)
+	method = uti.ReplaceAll(
+		method,
+		"attributeCheck",
+		attributeCheck,
+	)
+	return method
 }
 
 func (v *classSynthesizer_) performGlobalUpdates(
@@ -992,13 +1123,13 @@ func (v *classSynthesizer_) replaceParameterType(
 }
 
 func (v *classSynthesizer_) replaceParameterTypes(
-	parameters abs.Sequential[mod.ParameterLike],
+	sequence abs.Sequential[mod.ParameterLike],
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) abs.Sequential[mod.ParameterLike] {
 	var replacedParameters = col.List[mod.ParameterLike]()
-	var iterator = parameters.GetIterator()
-	for iterator.HasNext() {
-		var parameter = iterator.GetNext()
+	var parameters = sequence.GetIterator()
+	for parameters.HasNext() {
+		var parameter = parameters.GetNext()
 		parameter = v.replaceParameterType(parameter, mappings)
 		replacedParameters.AppendValue(parameter)
 	}

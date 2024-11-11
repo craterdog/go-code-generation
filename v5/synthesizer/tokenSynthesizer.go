@@ -112,7 +112,11 @@ func (v *tokenSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var classImports = tokenSynthesizerReference().classImports_
-	source = uti.ReplaceAll(source, "classImports", classImports)
+	source = uti.ReplaceAll(
+		source,
+		"classImports",
+		classImports,
+	)
 	return source
 }
 

@@ -86,9 +86,17 @@ func (v *processorSynthesizer_) CreateAttributeMethods() string {
 func (v *processorSynthesizer_) CreateAspectMethods() string {
 	var aspectMethods = processorSynthesizerReference().aspectMethods_
 	var processTokens = v.createProcessTokens()
-	aspectMethods = uti.ReplaceAll(aspectMethods, "processTokens", processTokens)
+	aspectMethods = uti.ReplaceAll(
+		aspectMethods,
+		"processTokens",
+		processTokens,
+	)
 	var processRules = v.createProcessRules()
-	aspectMethods = uti.ReplaceAll(aspectMethods, "processRules", processRules)
+	aspectMethods = uti.ReplaceAll(
+		aspectMethods,
+		"processRules",
+		processRules,
+	)
 	return aspectMethods
 }
 
@@ -116,7 +124,11 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	var classImports = processorSynthesizerReference().classImports_
-	source = uti.ReplaceAll(source, "classImports", classImports)
+	source = uti.ReplaceAll(
+		source,
+		"classImports",
+		classImports,
+	)
 	return source
 }
 
@@ -126,55 +138,58 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 
 func (v *processorSynthesizer_) createProcessRule(
 	ruleName string,
-) (
-	implementation string,
-) {
-	implementation = processorSynthesizerReference().processRule_
+) string {
+	var processRule = processorSynthesizerReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		implementation = processorSynthesizerReference().processIndexedRule_
+		processRule = processorSynthesizerReference().processIndexedRule_
 	}
-	implementation = uti.ReplaceAll(implementation, "ruleName", ruleName)
-	return implementation
+	processRule = uti.ReplaceAll(
+		processRule,
+		"ruleName",
+		ruleName,
+	)
+	return processRule
 }
 
-func (v *processorSynthesizer_) createProcessRules() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetRuleNames().GetIterator()
-	for iterator.HasNext() {
-		var ruleName = iterator.GetNext()
+func (v *processorSynthesizer_) createProcessRules() string {
+	var processRules string
+	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
 		var processRule = v.createProcessRule(ruleName)
-		implementation += processRule
+		processRules += processRule
 	}
-	return implementation
+	return processRules
 }
 
 func (v *processorSynthesizer_) createProcessToken(
 	tokenName string,
-) (
-	implementation string,
-) {
+) string {
+	var processToken string
 	if tokenName == "delimiter" {
-		return implementation
+		return processToken
 	}
-	implementation = processorSynthesizerReference().processToken_
+	processToken = processorSynthesizerReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		implementation = processorSynthesizerReference().processIndexedToken_
+		processToken = processorSynthesizerReference().processIndexedToken_
 	}
-	implementation = uti.ReplaceAll(implementation, "tokenName", tokenName)
-	return implementation
+	processToken = uti.ReplaceAll(
+		processToken,
+		"tokenName",
+		tokenName,
+	)
+	return processToken
 }
 
-func (v *processorSynthesizer_) createProcessTokens() (
-	implementation string,
-) {
-	var iterator = v.analyzer_.GetTokenNames().GetIterator()
-	for iterator.HasNext() {
-		var tokenName = iterator.GetNext()
+func (v *processorSynthesizer_) createProcessTokens() string {
+	var processTokens string
+	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
 		var processToken = v.createProcessToken(tokenName)
-		implementation += processToken
+		processTokens += processToken
 	}
-	return implementation
+	return processTokens
 }
 
 // Instance Structure
