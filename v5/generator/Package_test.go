@@ -234,6 +234,39 @@ func TestProcessorGeneration(t *tes.T) {
 	}
 }
 
+func TestValidatorGeneration(t *tes.T) {
+	// Validate the language grammar.
+	var filename = directory + "Syntax.cdsn"
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var source = string(bytes)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
+	ass.Equal(t, source, actual)
+
+	// Generate the validator concrete class.
+	var generator = gen.ClassGenerator().Make()
+	var packageName = "grammar"
+	var className = "validator"
+	filename = directory + packageName + "/" + className + ".go"
+	var validatorSynthesizer = syn.ValidatorSynthesizer().Make(syntax)
+	source = generator.GenerateClass(
+		moduleName,
+		wikiPath,
+		packageName,
+		className,
+		validatorSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func TestExampleGeneration(t *tes.T) {
 	// Validate the class model.
 	var packageName = "example"
