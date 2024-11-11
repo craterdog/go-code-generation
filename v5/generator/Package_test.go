@@ -168,6 +168,39 @@ func TestParserGeneration(t *tes.T) {
 	}
 }
 
+func TestVisitorGeneration(t *tes.T) {
+	// Validate the language grammar.
+	var filename = directory + "Syntax.cdsn"
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var source = string(bytes)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
+	ass.Equal(t, source, actual)
+
+	// Generate the visitor concrete class.
+	var generator = gen.ClassGenerator().Make()
+	var packageName = "grammar"
+	var className = "visitor"
+	filename = directory + packageName + "/" + className + ".go"
+	var visitorSynthesizer = syn.VisitorSynthesizer().Make(syntax)
+	source = generator.GenerateClass(
+		moduleName,
+		wikiPath,
+		packageName,
+		className,
+		visitorSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func TestFormatterGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
