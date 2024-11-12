@@ -32,6 +32,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
+	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
@@ -89,6 +90,17 @@ type GrammarSynthesizerClassLike interface {
 	Make(
 		syntax not.SyntaxLike,
 	) GrammarSynthesizerLike
+}
+
+/*
+ModuleSynthesizerClassLike defines the set of class constants, constructors and
+functions that must be supported by all module-synthesizer-class-like classes.
+*/
+type ModuleSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		models abs.Sequential[mod.ModelLike],
+	) ModuleSynthesizerLike
 }
 
 /*
@@ -217,6 +229,18 @@ type GrammarSynthesizerLike interface {
 
 	// Aspect Interfaces
 	gen.PackageTemplateDriven
+}
+
+/*
+ModuleSynthesizerLike defines the set of aspects and methods that must be
+supported by all module-synthesizer-like instances.
+*/
+type ModuleSynthesizerLike interface {
+	// Primary Methods
+	GetClass() ModuleSynthesizerClassLike
+
+	// Aspect Interfaces
+	gen.ModuleTemplateDriven
 }
 
 /*
