@@ -43,7 +43,6 @@ func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
 }
 
 func (v *moduleGenerator_) GenerateModule(
-	moduleName string,
 	wikiPath string,
 	synthesizer ModuleTemplateDriven,
 ) string {
@@ -68,7 +67,6 @@ func (v *moduleGenerator_) GenerateModule(
 
 	// Perform global updates (this must be done last).
 	source = synthesizer.PerformGlobalUpdates(source)
-	source = uti.ReplaceAll(source, "moduleName", moduleName)
 	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
 
 	return source
@@ -97,23 +95,25 @@ func moduleGeneratorReference() *moduleGeneratorClass_ {
 
 var moduleGeneratorReference_ = &moduleGeneratorClass_{
 	// Initialize the class constants.
-	moduleTemplate_: `<Notice>
+	moduleTemplate_: `<LegalNotice>
 /*
 Package "module" defines type aliases for the commonly used types defined in the
 packages contained in this module.  It also provides a universal constructor for
-each commonly used class that is exported by this module.  Each constructor
+each commonly used class that is exported by the module.  Each constructor
 delegates the actual construction process to its corresponding concrete class
-defined in a package contained within this module.
+defined in the corresponding package contained within this module.
 
 For detailed documentation on this entire module refer to the wiki:
-  - <Wiki>
+  - <WikiPath>
 */
 package module<ModuleImports>
 
-// Type Aliases<TypeAliases>
+// TYPE ALIASES
+<TypeAliases>
 
-// Universal Constructors<UniversalConstructors>
+// UNIVERSAL CONSTRUCTORS
+<UniversalConstructors>
 
-// Global Functions<GlobalFunctions>
-`,
+// GLOBAL FUNCTIONS
+<GlobalFunctions>`,
 }

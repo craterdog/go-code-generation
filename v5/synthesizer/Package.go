@@ -99,7 +99,7 @@ functions that must be supported by all module-synthesizer-class-like classes.
 type ModuleSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		models abs.Sequential[mod.ModelLike],
+		models abs.CatalogLike[string, mod.ModelLike],
 	) ModuleSynthesizerLike
 }
 

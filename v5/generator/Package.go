@@ -78,7 +78,6 @@ type ModuleGeneratorLike interface {
 	// Primary Methods
 	GetClass() ModuleGeneratorClassLike
 	GenerateModule(
-		moduleName string,
 		wikiPath string,
 		synthesizer ModuleTemplateDriven,
 	) string

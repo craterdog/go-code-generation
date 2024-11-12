@@ -16,6 +16,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
+	col "github.com/craterdog/go-collection-framework/v4"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
@@ -341,7 +342,36 @@ func TestExampleGeneration(t *tes.T) {
 	}
 }
 
-/*
+func TestModuleGeneration(t *tes.T) {
+	var models = col.Catalog[string, mod.ModelLike]()
+	var packages = []string{
+		"ast",
+		"grammar",
+	}
+	for _, packageName := range packages {
+		var filename = directory + packageName + "/Package.go"
+		var bytes, err = osx.ReadFile(filename)
+		if err != nil {
+			panic(err)
+		}
+		var source = string(bytes)
+		var model = mod.ParseSource(source)
+		models.SetValue(packageName, model)
+	}
+	var generator = gen.ModuleGenerator().Make()
+	var moduleSynthesizer = syn.ModuleSynthesizer().Make(models)
+	var source = generator.GenerateModule(
+		wikiPath,
+		moduleSynthesizer,
+	)
+	var filename = directory + "Module.go"
+	var bytes = []byte(source)
+	var err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
@@ -404,4 +434,3 @@ func TestPackageGeneration(t *tes.T) {
 		panic(err)
 	}
 }
-*/

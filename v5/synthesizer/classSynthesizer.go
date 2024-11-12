@@ -752,15 +752,15 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packages = packageImports.GetImportedPackages().GetIterator()
 		for packages.HasNext() {
 			var importedPackage = packages.GetNext()
-			var packageName = importedPackage.GetName()
-			var prefix = packageName + "."
+			var packageAcronym = importedPackage.GetName()
+			var prefix = packageAcronym + "."
 			var packagePath = importedPackage.GetPath()
 			if sts.Contains(source, prefix) && !sts.Contains(importedPackages, prefix) {
 				var packageAlias = classSynthesizerReference().packageAlias_
 				packageAlias = uti.ReplaceAll(
 					packageAlias,
-					"packageName",
-					packageName,
+					"packageAcronym",
+					packageAcronym,
 				)
 				packageAlias = uti.ReplaceAll(
 					packageAlias,
@@ -775,7 +775,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
-			"packageName",
+			"packageAcronym",
 			"fmt",
 		)
 		packageAlias = uti.ReplaceAll(
@@ -789,7 +789,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
-			"packageName",
+			"packageAcronym",
 			"uti",
 		)
 		packageAlias = uti.ReplaceAll(
@@ -803,7 +803,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
-			"packageName",
+			"packageAcronym",
 			"col",
 		)
 		packageAlias = uti.ReplaceAll(
@@ -817,7 +817,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
-			"packageName",
+			"packageAcronym",
 			"abs",
 		)
 		packageAlias = uti.ReplaceAll(
@@ -831,7 +831,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packageAlias = classSynthesizerReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
-			"packageName",
+			"packageAcronym",
 			"syn",
 		)
 		packageAlias = uti.ReplaceAll(
@@ -1240,7 +1240,7 @@ var classSynthesizerReference_ = &classSynthesizerClass_{
 import (<ImportedPackages>)`,
 
 	packageAlias_: `
-	<~packageName> <packagePath>`,
+	<~packageAcronym> <packagePath>`,
 
 	accessFunction_: `
 // Access Function

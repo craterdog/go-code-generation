@@ -66,8 +66,6 @@ const (
 	UppercaseToken
 )
 
-// Functional Declarations
-
 // Class Declarations
 
 /*

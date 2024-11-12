@@ -137,11 +137,7 @@ var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	packageDescription_: `
 Package "example" provides...`,
 
-	packageImports_: `
-
-import (
-// abs "github.com/craterdog/go-collection-framework/v4/collection"
-)`,
+	packageImports_: ``,
 
 	typeDeclarations_: `
 
