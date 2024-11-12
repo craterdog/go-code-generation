@@ -16,6 +16,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v5/ast"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
+	sts "strings"
 )
 
 // CLASS INTERFACE
@@ -49,11 +50,31 @@ func (v *moduleSynthesizer_) GetClass() ModuleSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *moduleSynthesizer_) CreateLegalNotice() string {
-	return ""
+	var packageNames = v.models_.GetKeys().AsArray()
+	var firstPackage = packageNames[0]
+	var firstModel = v.models_.GetValue(firstPackage)
+	var moduleDeclaration = firstModel.GetModuleDeclaration()
+	var legalNotice = moduleDeclaration.GetLegalNotice().GetComment()
+	return legalNotice
 }
 
 func (v *moduleSynthesizer_) CreateTypeAliases() string {
-	return ""
+	var typeAliases string
+	var models = v.models_.GetIterator()
+	for models.HasNext() {
+		var association = models.GetNext()
+		var packageName = association.GetKey()
+		var model = association.GetValue()
+		var packageAliases = v.createPackageAliases(packageName, model)
+		var packageAcronym = packageName[0:3]
+		packageAliases = uti.ReplaceAll(
+			packageAliases,
+			"packageAcronym",
+			packageAcronym,
+		)
+		typeAliases += packageAliases
+	}
+	return typeAliases
 }
 
 func (v *moduleSynthesizer_) CreateUniversalConstructors() string {
@@ -96,6 +117,40 @@ func (v *moduleSynthesizer_) createImportedPackages(
 	return importedPackages
 }
 
+func (v *moduleSynthesizer_) createPackageAliases(
+	packageName string,
+	model mod.ModelLike,
+) string {
+	var typeAliases string
+	var interfaceDeclarations = model.GetInterfaceDeclarations()
+	var classSection = interfaceDeclarations.GetClassSection()
+	var classes = classSection.GetClassDeclarations().GetIterator()
+	for classes.HasNext() {
+		var class = classes.GetNext()
+		var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
+		var typeAlias = moduleSynthesizerReference().typeAlias_
+		typeAlias = uti.ReplaceAll(
+			typeAlias,
+			"className",
+			className,
+		)
+		typeAliases += typeAlias
+	}
+	var packageAliases = moduleSynthesizerReference().packageAliases_
+	packageAliases = uti.ReplaceAll(
+		packageAliases,
+		"packageName",
+		packageName,
+	)
+	packageAliases = uti.ReplaceAll(
+		packageAliases,
+		"typeAliases",
+		typeAliases,
+	)
+
+	return packageAliases
+}
+
 // Instance Structure
 
 type moduleSynthesizer_ struct {
@@ -107,8 +162,10 @@ type moduleSynthesizer_ struct {
 
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
-	moduleImports_ string
-	packageAlias_  string
+	moduleImports_  string
+	packageAlias_   string
+	packageAliases_ string
+	typeAlias_      string
 }
 
 // Class Reference
@@ -125,4 +182,14 @@ import (<ImportedPackages>)`,
 
 	packageAlias_: `
 	<~packageAcronym> <packagePath>`,
+
+	packageAliases_: `
+
+// <~PackageName>
+
+type (<TypeAliases>
+)`,
+
+	typeAlias_: `
+	<~ClassName>Like = <~packageAcronym>.<~ClassName>Like`,
 }

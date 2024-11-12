@@ -108,12 +108,9 @@ For detailed documentation on this entire module refer to the wiki:
 */
 package module<ModuleImports>
 
-// TYPE ALIASES
-<TypeAliases>
+// TYPE ALIASES<TypeAliases>
 
-// UNIVERSAL CONSTRUCTORS
-<UniversalConstructors>
+// UNIVERSAL CONSTRUCTORS<UniversalConstructors>
 
-// GLOBAL FUNCTIONS
-<GlobalFunctions>`,
+// GLOBAL FUNCTIONS<GlobalFunctions>`,
 }
