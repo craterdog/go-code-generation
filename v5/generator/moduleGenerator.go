@@ -61,10 +61,6 @@ func (v *moduleGenerator_) GenerateModule(
 	var universalConstructors = synthesizer.CreateUniversalConstructors()
 	source = uti.ReplaceAll(source, "universalConstructors", universalConstructors)
 
-	// Create the global functions.
-	var globalFunctions = synthesizer.CreateGlobalFunctions()
-	source = uti.ReplaceAll(source, "globalFunctions", globalFunctions)
-
 	// Perform global updates (this must be done last).
 	source = synthesizer.PerformGlobalUpdates(source)
 	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
@@ -110,7 +106,5 @@ package module<ModuleImports>
 
 // TYPE ALIASES<TypeAliases>
 
-// UNIVERSAL CONSTRUCTORS<UniversalConstructors>
-
-// GLOBAL FUNCTIONS<GlobalFunctions>`,
+// UNIVERSAL CONSTRUCTORS<UniversalConstructors>`,
 }
