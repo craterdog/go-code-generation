@@ -73,10 +73,13 @@ type (
 
 func Alternative(arguments ...any) AlternativeLike {
 	// Initialize the possible arguments.
+	var option OptionLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case OptionLike:
+			option = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Alternative constructor: %T\n",
@@ -88,7 +91,7 @@ func Alternative(arguments ...any) AlternativeLike {
 
 	// Call the appropriate constructor.
 	var alternative AlternativeLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Alternative constructor matching the arguments was not found: $v\n",
@@ -101,10 +104,13 @@ func Alternative(arguments ...any) AlternativeLike {
 
 func Cardinality(arguments ...any) CardinalityLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Cardinality constructor: %T\n",
@@ -116,7 +122,7 @@ func Cardinality(arguments ...any) CardinalityLike {
 
 	// Call the appropriate constructor.
 	var cardinality CardinalityLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Cardinality constructor matching the arguments was not found: $v\n",
@@ -129,10 +135,13 @@ func Cardinality(arguments ...any) CardinalityLike {
 
 func Character(arguments ...any) CharacterLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Character constructor: %T\n",
@@ -144,7 +153,7 @@ func Character(arguments ...any) CharacterLike {
 
 	// Call the appropriate constructor.
 	var character CharacterLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Character constructor matching the arguments was not found: $v\n",
@@ -157,10 +166,13 @@ func Character(arguments ...any) CharacterLike {
 
 func Constrained(arguments ...any) ConstrainedLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Constrained constructor: %T\n",
@@ -172,7 +184,7 @@ func Constrained(arguments ...any) ConstrainedLike {
 
 	// Call the appropriate constructor.
 	var constrained ConstrainedLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Constrained constructor matching the arguments was not found: $v\n",
@@ -185,10 +197,13 @@ func Constrained(arguments ...any) ConstrainedLike {
 
 func Definition(arguments ...any) DefinitionLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Definition constructor: %T\n",
@@ -200,7 +215,7 @@ func Definition(arguments ...any) DefinitionLike {
 
 	// Call the appropriate constructor.
 	var definition DefinitionLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Definition constructor matching the arguments was not found: $v\n",
@@ -213,10 +228,13 @@ func Definition(arguments ...any) DefinitionLike {
 
 func Element(arguments ...any) ElementLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Element constructor: %T\n",
@@ -228,7 +246,7 @@ func Element(arguments ...any) ElementLike {
 
 	// Call the appropriate constructor.
 	var element ElementLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Element constructor matching the arguments was not found: $v\n",
@@ -241,10 +259,16 @@ func Element(arguments ...any) ElementLike {
 
 func Explicit(arguments ...any) ExplicitLike {
 	// Initialize the possible arguments.
+	var glyph string
+	var optionalExtent ExtentLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			glyph = actual
+		case ExtentLike:
+			optionalExtent = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Explicit constructor: %T\n",
@@ -256,7 +280,7 @@ func Explicit(arguments ...any) ExplicitLike {
 
 	// Call the appropriate constructor.
 	var explicit ExplicitLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Explicit constructor matching the arguments was not found: $v\n",
@@ -269,10 +293,19 @@ func Explicit(arguments ...any) ExplicitLike {
 
 func Expression(arguments ...any) ExpressionLike {
 	// Initialize the possible arguments.
+	var lowercase string
+	var pattern PatternLike
+	var optionalNote string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			lowercase = actual
+		case PatternLike:
+			pattern = actual
+		case string:
+			optionalNote = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Expression constructor: %T\n",
@@ -284,7 +317,7 @@ func Expression(arguments ...any) ExpressionLike {
 
 	// Call the appropriate constructor.
 	var expression ExpressionLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Expression constructor matching the arguments was not found: $v\n",
@@ -297,10 +330,13 @@ func Expression(arguments ...any) ExpressionLike {
 
 func Extent(arguments ...any) ExtentLike {
 	// Initialize the possible arguments.
+	var glyph string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			glyph = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Extent constructor: %T\n",
@@ -312,7 +348,7 @@ func Extent(arguments ...any) ExtentLike {
 
 	// Call the appropriate constructor.
 	var extent ExtentLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Extent constructor matching the arguments was not found: $v\n",
@@ -325,10 +361,16 @@ func Extent(arguments ...any) ExtentLike {
 
 func Filter(arguments ...any) FilterLike {
 	// Initialize the possible arguments.
+	var optionalExcluded string
+	var characters abs.Sequential[CharacterLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			optionalExcluded = actual
+		case abs.Sequential[CharacterLike]:
+			characters = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Filter constructor: %T\n",
@@ -340,7 +382,7 @@ func Filter(arguments ...any) FilterLike {
 
 	// Call the appropriate constructor.
 	var filter FilterLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Filter constructor matching the arguments was not found: $v\n",
@@ -353,10 +395,13 @@ func Filter(arguments ...any) FilterLike {
 
 func Group(arguments ...any) GroupLike {
 	// Initialize the possible arguments.
+	var pattern PatternLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case PatternLike:
+			pattern = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Group constructor: %T\n",
@@ -368,7 +413,7 @@ func Group(arguments ...any) GroupLike {
 
 	// Call the appropriate constructor.
 	var group GroupLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Group constructor matching the arguments was not found: $v\n",
@@ -381,10 +426,13 @@ func Group(arguments ...any) GroupLike {
 
 func Identifier(arguments ...any) IdentifierLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Identifier constructor: %T\n",
@@ -396,7 +444,7 @@ func Identifier(arguments ...any) IdentifierLike {
 
 	// Call the appropriate constructor.
 	var identifier IdentifierLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Identifier constructor matching the arguments was not found: $v\n",
@@ -409,10 +457,16 @@ func Identifier(arguments ...any) IdentifierLike {
 
 func Inline(arguments ...any) InlineLike {
 	// Initialize the possible arguments.
+	var terms abs.Sequential[TermLike]
+	var optionalNote string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case abs.Sequential[TermLike]:
+			terms = actual
+		case string:
+			optionalNote = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Inline constructor: %T\n",
@@ -424,7 +478,7 @@ func Inline(arguments ...any) InlineLike {
 
 	// Call the appropriate constructor.
 	var inline InlineLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Inline constructor matching the arguments was not found: $v\n",
@@ -437,10 +491,13 @@ func Inline(arguments ...any) InlineLike {
 
 func Limit(arguments ...any) LimitLike {
 	// Initialize the possible arguments.
+	var optionalNumber string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			optionalNumber = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Limit constructor: %T\n",
@@ -452,7 +509,7 @@ func Limit(arguments ...any) LimitLike {
 
 	// Call the appropriate constructor.
 	var limit LimitLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Limit constructor matching the arguments was not found: $v\n",
@@ -465,10 +522,16 @@ func Limit(arguments ...any) LimitLike {
 
 func Line(arguments ...any) LineLike {
 	// Initialize the possible arguments.
+	var identifier IdentifierLike
+	var optionalNote string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case IdentifierLike:
+			identifier = actual
+		case string:
+			optionalNote = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Line constructor: %T\n",
@@ -480,7 +543,7 @@ func Line(arguments ...any) LineLike {
 
 	// Call the appropriate constructor.
 	var line LineLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Line constructor matching the arguments was not found: $v\n",
@@ -493,10 +556,13 @@ func Line(arguments ...any) LineLike {
 
 func Multiline(arguments ...any) MultilineLike {
 	// Initialize the possible arguments.
+	var lines abs.Sequential[LineLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case abs.Sequential[LineLike]:
+			lines = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Multiline constructor: %T\n",
@@ -508,7 +574,7 @@ func Multiline(arguments ...any) MultilineLike {
 
 	// Call the appropriate constructor.
 	var multiline MultilineLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Multiline constructor matching the arguments was not found: $v\n",
@@ -521,10 +587,13 @@ func Multiline(arguments ...any) MultilineLike {
 
 func Notice(arguments ...any) NoticeLike {
 	// Initialize the possible arguments.
+	var comment string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			comment = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Notice constructor: %T\n",
@@ -536,7 +605,7 @@ func Notice(arguments ...any) NoticeLike {
 
 	// Call the appropriate constructor.
 	var notice NoticeLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Notice constructor matching the arguments was not found: $v\n",
@@ -549,10 +618,13 @@ func Notice(arguments ...any) NoticeLike {
 
 func Option(arguments ...any) OptionLike {
 	// Initialize the possible arguments.
+	var repetitions abs.Sequential[RepetitionLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case abs.Sequential[RepetitionLike]:
+			repetitions = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Option constructor: %T\n",
@@ -564,7 +636,7 @@ func Option(arguments ...any) OptionLike {
 
 	// Call the appropriate constructor.
 	var option OptionLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Option constructor matching the arguments was not found: $v\n",
@@ -577,10 +649,16 @@ func Option(arguments ...any) OptionLike {
 
 func Pattern(arguments ...any) PatternLike {
 	// Initialize the possible arguments.
+	var option OptionLike
+	var alternatives abs.Sequential[AlternativeLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case OptionLike:
+			option = actual
+		case abs.Sequential[AlternativeLike]:
+			alternatives = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Pattern constructor: %T\n",
@@ -592,7 +670,7 @@ func Pattern(arguments ...any) PatternLike {
 
 	// Call the appropriate constructor.
 	var pattern PatternLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Pattern constructor matching the arguments was not found: $v\n",
@@ -605,10 +683,16 @@ func Pattern(arguments ...any) PatternLike {
 
 func Quantified(arguments ...any) QuantifiedLike {
 	// Initialize the possible arguments.
+	var number string
+	var optionalLimit LimitLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			number = actual
+		case LimitLike:
+			optionalLimit = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Quantified constructor: %T\n",
@@ -620,7 +704,7 @@ func Quantified(arguments ...any) QuantifiedLike {
 
 	// Call the appropriate constructor.
 	var quantified QuantifiedLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Quantified constructor matching the arguments was not found: $v\n",
@@ -633,10 +717,16 @@ func Quantified(arguments ...any) QuantifiedLike {
 
 func Reference(arguments ...any) ReferenceLike {
 	// Initialize the possible arguments.
+	var identifier IdentifierLike
+	var optionalCardinality CardinalityLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case IdentifierLike:
+			identifier = actual
+		case CardinalityLike:
+			optionalCardinality = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Reference constructor: %T\n",
@@ -648,7 +738,7 @@ func Reference(arguments ...any) ReferenceLike {
 
 	// Call the appropriate constructor.
 	var reference ReferenceLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Reference constructor matching the arguments was not found: $v\n",
@@ -661,10 +751,16 @@ func Reference(arguments ...any) ReferenceLike {
 
 func Repetition(arguments ...any) RepetitionLike {
 	// Initialize the possible arguments.
+	var element ElementLike
+	var optionalCardinality CardinalityLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case ElementLike:
+			element = actual
+		case CardinalityLike:
+			optionalCardinality = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Repetition constructor: %T\n",
@@ -676,7 +772,7 @@ func Repetition(arguments ...any) RepetitionLike {
 
 	// Call the appropriate constructor.
 	var repetition RepetitionLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Repetition constructor matching the arguments was not found: $v\n",
@@ -689,10 +785,16 @@ func Repetition(arguments ...any) RepetitionLike {
 
 func Rule(arguments ...any) RuleLike {
 	// Initialize the possible arguments.
+	var uppercase string
+	var definition DefinitionLike
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			uppercase = actual
+		case DefinitionLike:
+			definition = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Rule constructor: %T\n",
@@ -704,7 +806,7 @@ func Rule(arguments ...any) RuleLike {
 
 	// Call the appropriate constructor.
 	var rule RuleLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Rule constructor matching the arguments was not found: $v\n",
@@ -717,10 +819,25 @@ func Rule(arguments ...any) RuleLike {
 
 func Syntax(arguments ...any) SyntaxLike {
 	// Initialize the possible arguments.
+	var notice NoticeLike
+	var comment1 string
+	var rules abs.Sequential[RuleLike]
+	var comment2 string
+	var expressions abs.Sequential[ExpressionLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case NoticeLike:
+			notice = actual
+		case string:
+			comment1 = actual
+		case abs.Sequential[RuleLike]:
+			rules = actual
+		case string:
+			comment2 = actual
+		case abs.Sequential[ExpressionLike]:
+			expressions = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Syntax constructor: %T\n",
@@ -732,7 +849,7 @@ func Syntax(arguments ...any) SyntaxLike {
 
 	// Call the appropriate constructor.
 	var syntax SyntaxLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Syntax constructor matching the arguments was not found: $v\n",
@@ -745,10 +862,13 @@ func Syntax(arguments ...any) SyntaxLike {
 
 func Term(arguments ...any) TermLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Term constructor: %T\n",
@@ -760,7 +880,7 @@ func Term(arguments ...any) TermLike {
 
 	// Call the appropriate constructor.
 	var term TermLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Term constructor matching the arguments was not found: $v\n",
@@ -773,10 +893,13 @@ func Term(arguments ...any) TermLike {
 
 func Text(arguments ...any) TextLike {
 	// Initialize the possible arguments.
+	var any_ any
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case any:
+			any_ = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Text constructor: %T\n",
@@ -788,7 +911,7 @@ func Text(arguments ...any) TextLike {
 
 	// Call the appropriate constructor.
 	var text TextLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Text constructor matching the arguments was not found: $v\n",
@@ -806,7 +929,7 @@ func Formatter(arguments ...any) FormatterLike {
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Formatter constructor: %T\n",
@@ -818,7 +941,7 @@ func Formatter(arguments ...any) FormatterLike {
 
 	// Call the appropriate constructor.
 	var formatter FormatterLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Formatter constructor matching the arguments was not found: $v\n",
@@ -834,7 +957,7 @@ func Parser(arguments ...any) ParserLike {
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Parser constructor: %T\n",
@@ -846,7 +969,7 @@ func Parser(arguments ...any) ParserLike {
 
 	// Call the appropriate constructor.
 	var parser ParserLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Parser constructor matching the arguments was not found: $v\n",
@@ -862,7 +985,7 @@ func Processor(arguments ...any) ProcessorLike {
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Processor constructor: %T\n",
@@ -874,7 +997,7 @@ func Processor(arguments ...any) ProcessorLike {
 
 	// Call the appropriate constructor.
 	var processor ProcessorLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Processor constructor matching the arguments was not found: $v\n",
@@ -887,10 +1010,16 @@ func Processor(arguments ...any) ProcessorLike {
 
 func Scanner(arguments ...any) ScannerLike {
 	// Initialize the possible arguments.
+	var source string
+	var tokens abs.QueueLike[TokenLike]
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case string:
+			source = actual
+		case abs.QueueLike[TokenLike]:
+			tokens = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Scanner constructor: %T\n",
@@ -902,7 +1031,7 @@ func Scanner(arguments ...any) ScannerLike {
 
 	// Call the appropriate constructor.
 	var scanner ScannerLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Scanner constructor matching the arguments was not found: $v\n",
@@ -915,10 +1044,22 @@ func Scanner(arguments ...any) ScannerLike {
 
 func Token(arguments ...any) TokenLike {
 	// Initialize the possible arguments.
+	var line uint
+	var position uint
+	var type_ TokenType
+	var value string
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case uint:
+			line = actual
+		case uint:
+			position = actual
+		case TokenType:
+			type_ = actual
+		case string:
+			value = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Token constructor: %T\n",
@@ -930,7 +1071,7 @@ func Token(arguments ...any) TokenLike {
 
 	// Call the appropriate constructor.
 	var token TokenLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Token constructor matching the arguments was not found: $v\n",
@@ -946,7 +1087,7 @@ func Validator(arguments ...any) ValidatorLike {
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Validator constructor: %T\n",
@@ -958,7 +1099,7 @@ func Validator(arguments ...any) ValidatorLike {
 
 	// Call the appropriate constructor.
 	var validator ValidatorLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Validator constructor matching the arguments was not found: $v\n",
@@ -971,10 +1112,13 @@ func Validator(arguments ...any) ValidatorLike {
 
 func Visitor(arguments ...any) VisitorLike {
 	// Initialize the possible arguments.
+	var processor Methodical
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
-		switch actual := argument.(type) {<ValidationCases>
+		switch actual := argument.(type) {
+		case Methodical:
+			processor = actual
 		default:
 			var message = fmt.Sprintf(
 				"An unknown argument type was passed into the Visitor constructor: %T\n",
@@ -986,7 +1130,7 @@ func Visitor(arguments ...any) VisitorLike {
 
 	// Call the appropriate constructor.
 	var visitor VisitorLike
-	switch {<ConstructionCases>
+	switch {
 		default:
 			var message = fmt.Sprintf(
 				"A Visitor constructor matching the arguments was not found: $v\n",
