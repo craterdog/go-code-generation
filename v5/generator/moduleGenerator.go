@@ -43,6 +43,7 @@ func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
 }
 
 func (v *moduleGenerator_) GenerateModule(
+	moduleName string,
 	wikiPath string,
 	synthesizer ModuleTemplateDriven,
 ) string {
@@ -63,6 +64,7 @@ func (v *moduleGenerator_) GenerateModule(
 
 	// Perform global updates (this must be done last).
 	source = synthesizer.PerformGlobalUpdates(source)
+	source = uti.ReplaceAll(source, "moduleName", moduleName)
 	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
 
 	return source

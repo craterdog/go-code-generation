@@ -361,6 +361,7 @@ func TestModuleGeneration(t *tes.T) {
 	var generator = gen.ModuleGenerator().Make()
 	var moduleSynthesizer = syn.ModuleSynthesizer().Make(models)
 	var source = generator.GenerateModule(
+		moduleName,
 		wikiPath,
 		moduleSynthesizer,
 	)

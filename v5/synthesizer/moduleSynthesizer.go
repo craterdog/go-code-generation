@@ -280,6 +280,13 @@ func (v *moduleSynthesizer_) createImportedPackages(
 	source string,
 ) string {
 	var importedPackages string
+	var packageNames = v.models_.GetKeys().GetIterator()
+	for packageNames.HasNext() {
+		var packageName = packageNames.GetNext()
+		var importedPackage = moduleSynthesizerReference().importedPackage_
+		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
+		importedPackages += importedPackage
+	}
 	return importedPackages
 }
 
@@ -367,7 +374,7 @@ type moduleSynthesizer_ struct {
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
 	moduleImports_          string
-	packageAlias_           string
+	importedPackage_        string
 	packageAliases_         string
 	typeAlias_              string
 	universalConstructors_  string
@@ -387,10 +394,11 @@ var moduleSynthesizerReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
 	moduleImports_: `
 
-import (<ImportedPackages>)`,
+import (<ImportedPackages>
+)`,
 
-	packageAlias_: `
-	<~packageAcronym> <packagePath>`,
+	importedPackage_: `
+	<~packageAcronym> "<moduleName>/<~packageName>"`,
 
 	packageAliases_: `
 
@@ -428,7 +436,7 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 	switch {<Constructions>
 		default:
 			var message = fmt.Sprintf(
-				"A <~ClassName> constructor matching the arguments was not found: $v\n",
+				"No <~ClassName> constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)

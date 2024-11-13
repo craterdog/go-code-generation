@@ -22,6 +22,11 @@ For detailed documentation on this entire module refer to the wiki:
 */
 package module
 
+import (
+	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
+)
+
 // TYPE ALIASES
 
 // Ast
@@ -94,7 +99,7 @@ func Alternative(arguments ...any) AlternativeLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Alternative constructor matching the arguments was not found: $v\n",
+				"No Alternative constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -125,7 +130,7 @@ func Cardinality(arguments ...any) CardinalityLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Cardinality constructor matching the arguments was not found: $v\n",
+				"No Cardinality constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -156,7 +161,7 @@ func Character(arguments ...any) CharacterLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Character constructor matching the arguments was not found: $v\n",
+				"No Character constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -187,7 +192,7 @@ func Constrained(arguments ...any) ConstrainedLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Constrained constructor matching the arguments was not found: $v\n",
+				"No Constrained constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -218,7 +223,7 @@ func Definition(arguments ...any) DefinitionLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Definition constructor matching the arguments was not found: $v\n",
+				"No Definition constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -249,7 +254,7 @@ func Element(arguments ...any) ElementLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Element constructor matching the arguments was not found: $v\n",
+				"No Element constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -283,7 +288,7 @@ func Explicit(arguments ...any) ExplicitLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Explicit constructor matching the arguments was not found: $v\n",
+				"No Explicit constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -320,7 +325,7 @@ func Expression(arguments ...any) ExpressionLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Expression constructor matching the arguments was not found: $v\n",
+				"No Expression constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -351,7 +356,7 @@ func Extent(arguments ...any) ExtentLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Extent constructor matching the arguments was not found: $v\n",
+				"No Extent constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -385,7 +390,7 @@ func Filter(arguments ...any) FilterLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Filter constructor matching the arguments was not found: $v\n",
+				"No Filter constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -416,7 +421,7 @@ func Group(arguments ...any) GroupLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Group constructor matching the arguments was not found: $v\n",
+				"No Group constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -447,7 +452,7 @@ func Identifier(arguments ...any) IdentifierLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Identifier constructor matching the arguments was not found: $v\n",
+				"No Identifier constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -481,7 +486,7 @@ func Inline(arguments ...any) InlineLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Inline constructor matching the arguments was not found: $v\n",
+				"No Inline constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -512,7 +517,7 @@ func Limit(arguments ...any) LimitLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Limit constructor matching the arguments was not found: $v\n",
+				"No Limit constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -546,7 +551,7 @@ func Line(arguments ...any) LineLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Line constructor matching the arguments was not found: $v\n",
+				"No Line constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -577,7 +582,7 @@ func Multiline(arguments ...any) MultilineLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Multiline constructor matching the arguments was not found: $v\n",
+				"No Multiline constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -608,7 +613,7 @@ func Notice(arguments ...any) NoticeLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Notice constructor matching the arguments was not found: $v\n",
+				"No Notice constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -639,7 +644,7 @@ func Option(arguments ...any) OptionLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Option constructor matching the arguments was not found: $v\n",
+				"No Option constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -673,7 +678,7 @@ func Pattern(arguments ...any) PatternLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Pattern constructor matching the arguments was not found: $v\n",
+				"No Pattern constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -707,7 +712,7 @@ func Quantified(arguments ...any) QuantifiedLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Quantified constructor matching the arguments was not found: $v\n",
+				"No Quantified constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -741,7 +746,7 @@ func Reference(arguments ...any) ReferenceLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Reference constructor matching the arguments was not found: $v\n",
+				"No Reference constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -775,7 +780,7 @@ func Repetition(arguments ...any) RepetitionLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Repetition constructor matching the arguments was not found: $v\n",
+				"No Repetition constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -809,7 +814,7 @@ func Rule(arguments ...any) RuleLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Rule constructor matching the arguments was not found: $v\n",
+				"No Rule constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -852,7 +857,7 @@ func Syntax(arguments ...any) SyntaxLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Syntax constructor matching the arguments was not found: $v\n",
+				"No Syntax constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -883,7 +888,7 @@ func Term(arguments ...any) TermLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Term constructor matching the arguments was not found: $v\n",
+				"No Term constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -914,7 +919,7 @@ func Text(arguments ...any) TextLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Text constructor matching the arguments was not found: $v\n",
+				"No Text constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -944,7 +949,7 @@ func Formatter(arguments ...any) FormatterLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Formatter constructor matching the arguments was not found: $v\n",
+				"No Formatter constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -972,7 +977,7 @@ func Parser(arguments ...any) ParserLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Parser constructor matching the arguments was not found: $v\n",
+				"No Parser constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -1000,7 +1005,7 @@ func Processor(arguments ...any) ProcessorLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Processor constructor matching the arguments was not found: $v\n",
+				"No Processor constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -1034,7 +1039,7 @@ func Scanner(arguments ...any) ScannerLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Scanner constructor matching the arguments was not found: $v\n",
+				"No Scanner constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -1074,7 +1079,7 @@ func Token(arguments ...any) TokenLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Token constructor matching the arguments was not found: $v\n",
+				"No Token constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -1102,7 +1107,7 @@ func Validator(arguments ...any) ValidatorLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Validator constructor matching the arguments was not found: $v\n",
+				"No Validator constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
@@ -1133,7 +1138,7 @@ func Visitor(arguments ...any) VisitorLike {
 	switch {
 		default:
 			var message = fmt.Sprintf(
-				"A Visitor constructor matching the arguments was not found: $v\n",
+				"No Visitor constructor matching the arguments was found: $v\n",
 				arguments,
 			)
 			panic(message)
