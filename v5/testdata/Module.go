@@ -72,7 +72,7 @@ type (
 // Ast
 
 func Alternative(arguments ...any) AlternativeLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -86,13 +86,21 @@ func Alternative(arguments ...any) AlternativeLike {
 		}
 	}
 
-	// Call the constructor.
-	var alternative = ast.Alternative().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var alternative AlternativeLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Alternative constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return alternative
 }
 
 func Cardinality(arguments ...any) CardinalityLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -106,13 +114,21 @@ func Cardinality(arguments ...any) CardinalityLike {
 		}
 	}
 
-	// Call the constructor.
-	var cardinality = ast.Cardinality().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var cardinality CardinalityLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Cardinality constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return cardinality
 }
 
 func Character(arguments ...any) CharacterLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -126,13 +142,21 @@ func Character(arguments ...any) CharacterLike {
 		}
 	}
 
-	// Call the constructor.
-	var character = ast.Character().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var character CharacterLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Character constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return character
 }
 
 func Constrained(arguments ...any) ConstrainedLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -146,13 +170,21 @@ func Constrained(arguments ...any) ConstrainedLike {
 		}
 	}
 
-	// Call the constructor.
-	var constrained = ast.Constrained().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var constrained ConstrainedLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Constrained constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return constrained
 }
 
 func Definition(arguments ...any) DefinitionLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -166,13 +198,21 @@ func Definition(arguments ...any) DefinitionLike {
 		}
 	}
 
-	// Call the constructor.
-	var definition = ast.Definition().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var definition DefinitionLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Definition constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return definition
 }
 
 func Element(arguments ...any) ElementLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -186,13 +226,21 @@ func Element(arguments ...any) ElementLike {
 		}
 	}
 
-	// Call the constructor.
-	var element = ast.Element().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var element ElementLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Element constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return element
 }
 
 func Explicit(arguments ...any) ExplicitLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -206,13 +254,21 @@ func Explicit(arguments ...any) ExplicitLike {
 		}
 	}
 
-	// Call the constructor.
-	var explicit = ast.Explicit().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var explicit ExplicitLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Explicit constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return explicit
 }
 
 func Expression(arguments ...any) ExpressionLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -226,13 +282,21 @@ func Expression(arguments ...any) ExpressionLike {
 		}
 	}
 
-	// Call the constructor.
-	var expression = ast.Expression().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var expression ExpressionLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Expression constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return expression
 }
 
 func Extent(arguments ...any) ExtentLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -246,13 +310,21 @@ func Extent(arguments ...any) ExtentLike {
 		}
 	}
 
-	// Call the constructor.
-	var extent = ast.Extent().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var extent ExtentLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Extent constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return extent
 }
 
 func Filter(arguments ...any) FilterLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -266,13 +338,21 @@ func Filter(arguments ...any) FilterLike {
 		}
 	}
 
-	// Call the constructor.
-	var filter = ast.Filter().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var filter FilterLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Filter constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return filter
 }
 
 func Group(arguments ...any) GroupLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -286,13 +366,21 @@ func Group(arguments ...any) GroupLike {
 		}
 	}
 
-	// Call the constructor.
-	var group = ast.Group().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var group GroupLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Group constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return group
 }
 
 func Identifier(arguments ...any) IdentifierLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -306,13 +394,21 @@ func Identifier(arguments ...any) IdentifierLike {
 		}
 	}
 
-	// Call the constructor.
-	var identifier = ast.Identifier().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var identifier IdentifierLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Identifier constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return identifier
 }
 
 func Inline(arguments ...any) InlineLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -326,13 +422,21 @@ func Inline(arguments ...any) InlineLike {
 		}
 	}
 
-	// Call the constructor.
-	var inline = ast.Inline().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var inline InlineLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Inline constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return inline
 }
 
 func Limit(arguments ...any) LimitLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -346,13 +450,21 @@ func Limit(arguments ...any) LimitLike {
 		}
 	}
 
-	// Call the constructor.
-	var limit = ast.Limit().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var limit LimitLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Limit constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return limit
 }
 
 func Line(arguments ...any) LineLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -366,13 +478,21 @@ func Line(arguments ...any) LineLike {
 		}
 	}
 
-	// Call the constructor.
-	var line = ast.Line().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var line LineLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Line constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return line
 }
 
 func Multiline(arguments ...any) MultilineLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -386,13 +506,21 @@ func Multiline(arguments ...any) MultilineLike {
 		}
 	}
 
-	// Call the constructor.
-	var multiline = ast.Multiline().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var multiline MultilineLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Multiline constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return multiline
 }
 
 func Notice(arguments ...any) NoticeLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -406,13 +534,21 @@ func Notice(arguments ...any) NoticeLike {
 		}
 	}
 
-	// Call the constructor.
-	var notice = ast.Notice().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var notice NoticeLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Notice constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return notice
 }
 
 func Option(arguments ...any) OptionLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -426,13 +562,21 @@ func Option(arguments ...any) OptionLike {
 		}
 	}
 
-	// Call the constructor.
-	var option = ast.Option().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var option OptionLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Option constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return option
 }
 
 func Pattern(arguments ...any) PatternLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -446,13 +590,21 @@ func Pattern(arguments ...any) PatternLike {
 		}
 	}
 
-	// Call the constructor.
-	var pattern = ast.Pattern().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var pattern PatternLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Pattern constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return pattern
 }
 
 func Quantified(arguments ...any) QuantifiedLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -466,13 +618,21 @@ func Quantified(arguments ...any) QuantifiedLike {
 		}
 	}
 
-	// Call the constructor.
-	var quantified = ast.Quantified().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var quantified QuantifiedLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Quantified constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return quantified
 }
 
 func Reference(arguments ...any) ReferenceLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -486,13 +646,21 @@ func Reference(arguments ...any) ReferenceLike {
 		}
 	}
 
-	// Call the constructor.
-	var reference = ast.Reference().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var reference ReferenceLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Reference constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return reference
 }
 
 func Repetition(arguments ...any) RepetitionLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -506,13 +674,21 @@ func Repetition(arguments ...any) RepetitionLike {
 		}
 	}
 
-	// Call the constructor.
-	var repetition = ast.Repetition().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var repetition RepetitionLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Repetition constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return repetition
 }
 
 func Rule(arguments ...any) RuleLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -526,13 +702,21 @@ func Rule(arguments ...any) RuleLike {
 		}
 	}
 
-	// Call the constructor.
-	var rule = ast.Rule().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var rule RuleLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Rule constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return rule
 }
 
 func Syntax(arguments ...any) SyntaxLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -546,13 +730,21 @@ func Syntax(arguments ...any) SyntaxLike {
 		}
 	}
 
-	// Call the constructor.
-	var syntax = ast.Syntax().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var syntax SyntaxLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Syntax constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return syntax
 }
 
 func Term(arguments ...any) TermLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -566,13 +758,21 @@ func Term(arguments ...any) TermLike {
 		}
 	}
 
-	// Call the constructor.
-	var term = ast.Term().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var term TermLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Term constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return term
 }
 
 func Text(arguments ...any) TextLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -586,15 +786,23 @@ func Text(arguments ...any) TextLike {
 		}
 	}
 
-	// Call the constructor.
-	var text = ast.Text().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var text TextLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Text constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return text
 }
 
 // Grammar
 
 func Formatter(arguments ...any) FormatterLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -608,13 +816,21 @@ func Formatter(arguments ...any) FormatterLike {
 		}
 	}
 
-	// Call the constructor.
-	var formatter = gra.Formatter().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var formatter FormatterLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Formatter constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return formatter
 }
 
 func Parser(arguments ...any) ParserLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -628,13 +844,21 @@ func Parser(arguments ...any) ParserLike {
 		}
 	}
 
-	// Call the constructor.
-	var parser = gra.Parser().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var parser ParserLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Parser constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return parser
 }
 
 func Processor(arguments ...any) ProcessorLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -648,13 +872,21 @@ func Processor(arguments ...any) ProcessorLike {
 		}
 	}
 
-	// Call the constructor.
-	var processor = gra.Processor().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var processor ProcessorLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Processor constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return processor
 }
 
 func Scanner(arguments ...any) ScannerLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -668,13 +900,21 @@ func Scanner(arguments ...any) ScannerLike {
 		}
 	}
 
-	// Call the constructor.
-	var scanner = gra.Scanner().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var scanner ScannerLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Scanner constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return scanner
 }
 
 func Token(arguments ...any) TokenLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -688,13 +928,21 @@ func Token(arguments ...any) TokenLike {
 		}
 	}
 
-	// Call the constructor.
-	var token = gra.Token().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var token TokenLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Token constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return token
 }
 
 func Validator(arguments ...any) ValidatorLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -708,13 +956,21 @@ func Validator(arguments ...any) ValidatorLike {
 		}
 	}
 
-	// Call the constructor.
-	var validator = gra.Validator().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var validator ValidatorLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Validator constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return validator
 }
 
 func Visitor(arguments ...any) VisitorLike {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -728,7 +984,15 @@ func Visitor(arguments ...any) VisitorLike {
 		}
 	}
 
-	// Call the constructor.
-	var visitor = gra.Visitor().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var visitor VisitorLike
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A Visitor constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return visitor
 }

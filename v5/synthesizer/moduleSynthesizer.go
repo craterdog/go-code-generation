@@ -14,6 +14,7 @@ package synthesizer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5/ast"
+	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
@@ -66,12 +67,6 @@ func (v *moduleSynthesizer_) CreateTypeAliases() string {
 		var packageName = association.GetKey()
 		var model = association.GetValue()
 		var packageAliases = v.createPackageAliases(packageName, model)
-		var packageAcronym = packageName[0:3]
-		packageAliases = uti.ReplaceAll(
-			packageAliases,
-			"packageAcronym",
-			packageAcronym,
-		)
 		typeAliases += packageAliases
 	}
 	return typeAliases
@@ -85,12 +80,6 @@ func (v *moduleSynthesizer_) CreateUniversalConstructors() string {
 		var packageName = association.GetKey()
 		var model = association.GetValue()
 		var constructorFunctions = v.createConstructorFunctions(packageName, model)
-		var packageAcronym = packageName[0:3]
-		constructorFunctions = uti.ReplaceAll(
-			constructorFunctions,
-			"packageAcronym",
-			packageAcronym,
-		)
 		universalConstructors += constructorFunctions
 	}
 	return universalConstructors
@@ -121,6 +110,34 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
+func (v *moduleSynthesizer_) createArgumentInitializations(
+	constructorMethods abs.ListLike[mod.ConstructorMethodLike],
+) string {
+	return ""
+}
+
+func (v *moduleSynthesizer_) createConstructorFunction(
+	model mod.ModelLike,
+	class mod.ClassDeclarationLike,
+) string {
+	var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
+	var analyzer = ana.ModelAnalyzer().Make(model, className)
+	var constructorMethods = analyzer.GetConstructorMethods()
+	var argumentInitializations = v.createArgumentInitializations(constructorMethods)
+	var constructorFunction = moduleSynthesizerReference().constructorFunction_
+	constructorFunction = uti.ReplaceAll(
+		constructorFunction,
+		"className",
+		className,
+	)
+	constructorFunction = uti.ReplaceAll(
+		constructorFunction,
+		"argumentInitializations",
+		argumentInitializations,
+	)
+	return constructorFunction
+}
+
 func (v *moduleSynthesizer_) createConstructorFunctions(
 	packageName string,
 	model mod.ModelLike,
@@ -131,28 +148,41 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 	var classes = classSection.GetClassDeclarations().GetIterator()
 	for classes.HasNext() {
 		var class = classes.GetNext()
-		var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
-		var constructorFunction = moduleSynthesizerReference().constructorFunction_
-		constructorFunction = uti.ReplaceAll(
-			constructorFunction,
-			"className",
-			className,
-		)
+		var constructorFunction = v.createConstructorFunction(model, class)
 		constructorFunctions += constructorFunction
 	}
 	var universalConstructors = moduleSynthesizerReference().universalConstructors_
 	universalConstructors = uti.ReplaceAll(
 		universalConstructors,
-		"packageName",
-		packageName,
-	)
-	universalConstructors = uti.ReplaceAll(
-		universalConstructors,
 		"constructorFunctions",
 		constructorFunctions,
 	)
-
+	universalConstructors = v.replacePackageAttributes(
+		universalConstructors,
+		packageName,
+	)
 	return universalConstructors
+}
+
+func (v *moduleSynthesizer_) createTypeAlias(
+	model mod.ModelLike,
+	class mod.ClassDeclarationLike,
+) string {
+	var typeAlias string
+	var declaration = class.GetDeclaration()
+	var className = sts.TrimSuffix(declaration.GetName(), "ClassLike")
+	var analyzer = ana.ModelAnalyzer().Make(model, className)
+	if analyzer.IsGeneric() {
+		// Type aliases are not supported for generic types in Go.
+		return typeAlias
+	}
+	typeAlias = moduleSynthesizerReference().typeAlias_
+	typeAlias = uti.ReplaceAll(
+		typeAlias,
+		"className",
+		className,
+	)
+	return typeAlias
 }
 
 func (v *moduleSynthesizer_) createPackageAliases(
@@ -165,27 +195,19 @@ func (v *moduleSynthesizer_) createPackageAliases(
 	var classes = classSection.GetClassDeclarations().GetIterator()
 	for classes.HasNext() {
 		var class = classes.GetNext()
-		var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
-		var typeAlias = moduleSynthesizerReference().typeAlias_
-		typeAlias = uti.ReplaceAll(
-			typeAlias,
-			"className",
-			className,
-		)
+		var typeAlias = v.createTypeAlias(model, class)
 		typeAliases += typeAlias
 	}
 	var packageAliases = moduleSynthesizerReference().packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
-		"packageName",
-		packageName,
-	)
-	packageAliases = uti.ReplaceAll(
-		packageAliases,
 		"typeAliases",
 		typeAliases,
 	)
-
+	packageAliases = v.replacePackageAttributes(
+		packageAliases,
+		packageName,
+	)
 	return packageAliases
 }
 
@@ -194,6 +216,24 @@ func (v *moduleSynthesizer_) createImportedPackages(
 ) string {
 	var importedPackages string
 	return importedPackages
+}
+
+func (v *moduleSynthesizer_) replacePackageAttributes(
+	source string,
+	packageName string,
+) string {
+	source = uti.ReplaceAll(
+		source,
+		"packageName",
+		packageName,
+	)
+	var packageAcronym = packageName[0:3]
+	source = uti.ReplaceAll(
+		source,
+		"packageAcronym",
+		packageAcronym,
+	)
+	return source
 }
 
 // Instance Structure
@@ -207,12 +247,15 @@ type moduleSynthesizer_ struct {
 
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
-	moduleImports_   string
-	packageAlias_    string
-	packageAliases_  string
-	typeAlias_       string
-	universalConstructors_ string
-	constructorFunction_   string
+	moduleImports_          string
+	packageAlias_           string
+	packageAliases_         string
+	typeAlias_              string
+	universalConstructors_  string
+	constructorFunction_    string
+	argumentInitialization_ string
+	validationCase_         string
+	constructionCase_       string
 }
 
 // Class Reference
@@ -247,7 +290,7 @@ type (<TypeAliases>
 	constructorFunction_: `
 
 func <~ClassName>(arguments ...any) <~ClassName>Like {
-	// Initialize the possible arguments.<ArgumentInitialization>
+	// Initialize the possible arguments.<ArgumentInitializations>
 
 	// Process the actual arguments.
 	for _, argument := range arguments {
@@ -261,8 +304,25 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 		}
 	}
 
-	// Call the constructor.
-	var <className_> = <~packageAcronym>.<~ClassName>().Make(<Arguments>)
+	// Call the appropriate constructor.
+	var <className_> <~ClassName>Like
+	switch {<ConstructionCases>
+		default:
+			var message = fmt.Sprintf(
+				"A <~ClassName> constructor matching the arguments was not found: $v\n",
+				arguments,
+			)
+			panic(message)
+	}
 	return <className_>
 }`,
+
+	argumentInitialization_: `
+}`,
+
+	validationCase_: `
+}`,
+
+	constructionCase_: `
+	var <className_> = <~packageAcronym>.<~ClassName>().Make(<Arguments>)`,
 }
