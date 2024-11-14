@@ -23,10 +23,10 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
-	fmt "fmt"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	ast "github.com/craterdog/go-syntax-notation/v5/ast"
 	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
+	fmt "fmt"
+	abs "github.com/craterdog/go-collection-framework/v4/collection"
 )
 
 // TYPE ALIASES
@@ -36,44 +36,44 @@ import (
 type (
 	AlternativeLike = ast.AlternativeLike
 	CardinalityLike = ast.CardinalityLike
-	CharacterLike   = ast.CharacterLike
+	CharacterLike = ast.CharacterLike
 	ConstrainedLike = ast.ConstrainedLike
-	DefinitionLike  = ast.DefinitionLike
-	ElementLike     = ast.ElementLike
-	ExplicitLike    = ast.ExplicitLike
-	ExpressionLike  = ast.ExpressionLike
-	ExtentLike      = ast.ExtentLike
-	FilterLike      = ast.FilterLike
-	GroupLike       = ast.GroupLike
-	IdentifierLike  = ast.IdentifierLike
-	InlineLike      = ast.InlineLike
-	LimitLike       = ast.LimitLike
-	LineLike        = ast.LineLike
-	MultilineLike   = ast.MultilineLike
-	NoticeLike      = ast.NoticeLike
-	OptionLike      = ast.OptionLike
-	PatternLike     = ast.PatternLike
-	QuantifiedLike  = ast.QuantifiedLike
-	ReferenceLike   = ast.ReferenceLike
-	RepetitionLike  = ast.RepetitionLike
-	RuleLike        = ast.RuleLike
-	SyntaxLike      = ast.SyntaxLike
-	TermLike        = ast.TermLike
-	TextLike        = ast.TextLike
+	DefinitionLike = ast.DefinitionLike
+	ElementLike = ast.ElementLike
+	ExplicitLike = ast.ExplicitLike
+	ExpressionLike = ast.ExpressionLike
+	ExtentLike = ast.ExtentLike
+	FilterLike = ast.FilterLike
+	GroupLike = ast.GroupLike
+	IdentifierLike = ast.IdentifierLike
+	InlineLike = ast.InlineLike
+	LimitLike = ast.LimitLike
+	LineLike = ast.LineLike
+	MultilineLike = ast.MultilineLike
+	NoticeLike = ast.NoticeLike
+	OptionLike = ast.OptionLike
+	PatternLike = ast.PatternLike
+	QuantifiedLike = ast.QuantifiedLike
+	ReferenceLike = ast.ReferenceLike
+	RepetitionLike = ast.RepetitionLike
+	RuleLike = ast.RuleLike
+	SyntaxLike = ast.SyntaxLike
+	TermLike = ast.TermLike
+	TextLike = ast.TextLike
 )
 
 // Grammar
 
 type (
-	TokenType     = gra.TokenType
+	TokenType = gra.TokenType
 	FormatterLike = gra.FormatterLike
-	ParserLike    = gra.ParserLike
+	ParserLike = gra.ParserLike
 	ProcessorLike = gra.ProcessorLike
-	ScannerLike   = gra.ScannerLike
-	TokenLike     = gra.TokenLike
+	ScannerLike = gra.ScannerLike
+	TokenLike = gra.TokenLike
 	ValidatorLike = gra.ValidatorLike
-	VisitorLike   = gra.VisitorLike
-	Methodical    = gra.Methodical
+	VisitorLike = gra.VisitorLike
+	Methodical = gra.Methodical
 )
 
 // UNIVERSAL CONSTRUCTORS
@@ -112,7 +112,7 @@ func Alternative(arguments ...any) AlternativeLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Alternative constructor matching the arguments was found: $v\n",
+			"No Alternative constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -146,13 +146,13 @@ func Cardinality(arguments ...any) CardinalityLike {
 	var cardinality CardinalityLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		cardinality = ast.Cardinality().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Cardinality constructor matching the arguments was found: $v\n",
+			"No Cardinality constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -186,13 +186,13 @@ func Character(arguments ...any) CharacterLike {
 	var character CharacterLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		character = ast.Character().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Character constructor matching the arguments was found: $v\n",
+			"No Character constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -226,13 +226,13 @@ func Constrained(arguments ...any) ConstrainedLike {
 	var constrained ConstrainedLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		constrained = ast.Constrained().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Constrained constructor matching the arguments was found: $v\n",
+			"No Constrained constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -266,13 +266,13 @@ func Definition(arguments ...any) DefinitionLike {
 	var definition DefinitionLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		definition = ast.Definition().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Definition constructor matching the arguments was found: $v\n",
+			"No Definition constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -306,13 +306,13 @@ func Element(arguments ...any) ElementLike {
 	var element ElementLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		element = ast.Element().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Element constructor matching the arguments was found: $v\n",
+			"No Element constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -356,7 +356,7 @@ func Explicit(arguments ...any) ExplicitLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Explicit constructor matching the arguments was found: $v\n",
+			"No Explicit constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -402,7 +402,7 @@ func Expression(arguments ...any) ExpressionLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Expression constructor matching the arguments was found: $v\n",
+			"No Expression constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -442,7 +442,7 @@ func Extent(arguments ...any) ExtentLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Extent constructor matching the arguments was found: $v\n",
+			"No Extent constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -486,7 +486,7 @@ func Filter(arguments ...any) FilterLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Filter constructor matching the arguments was found: $v\n",
+			"No Filter constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -526,7 +526,7 @@ func Group(arguments ...any) GroupLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Group constructor matching the arguments was found: $v\n",
+			"No Group constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -560,13 +560,13 @@ func Identifier(arguments ...any) IdentifierLike {
 	var identifier IdentifierLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		identifier = ast.Identifier().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Identifier constructor matching the arguments was found: $v\n",
+			"No Identifier constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -610,7 +610,7 @@ func Inline(arguments ...any) InlineLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Inline constructor matching the arguments was found: $v\n",
+			"No Inline constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -650,7 +650,7 @@ func Limit(arguments ...any) LimitLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Limit constructor matching the arguments was found: $v\n",
+			"No Limit constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -694,7 +694,7 @@ func Line(arguments ...any) LineLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Line constructor matching the arguments was found: $v\n",
+			"No Line constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -734,7 +734,7 @@ func Multiline(arguments ...any) MultilineLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Multiline constructor matching the arguments was found: $v\n",
+			"No Multiline constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -774,7 +774,7 @@ func Notice(arguments ...any) NoticeLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Notice constructor matching the arguments was found: $v\n",
+			"No Notice constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -814,7 +814,7 @@ func Option(arguments ...any) OptionLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Option constructor matching the arguments was found: $v\n",
+			"No Option constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -858,7 +858,7 @@ func Pattern(arguments ...any) PatternLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Pattern constructor matching the arguments was found: $v\n",
+			"No Pattern constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -902,7 +902,7 @@ func Quantified(arguments ...any) QuantifiedLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Quantified constructor matching the arguments was found: $v\n",
+			"No Quantified constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -946,7 +946,7 @@ func Reference(arguments ...any) ReferenceLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Reference constructor matching the arguments was found: $v\n",
+			"No Reference constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -990,7 +990,7 @@ func Repetition(arguments ...any) RepetitionLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Repetition constructor matching the arguments was found: $v\n",
+			"No Repetition constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1034,7 +1034,7 @@ func Rule(arguments ...any) RuleLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Rule constructor matching the arguments was found: $v\n",
+			"No Rule constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1088,7 +1088,7 @@ func Syntax(arguments ...any) SyntaxLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Syntax constructor matching the arguments was found: $v\n",
+			"No Syntax constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1122,13 +1122,13 @@ func Term(arguments ...any) TermLike {
 	var term TermLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		term = ast.Term().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Term constructor matching the arguments was found: $v\n",
+			"No Term constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1162,13 +1162,13 @@ func Text(arguments ...any) TextLike {
 	var text TextLike
 	switch argumentTypes {
 	case "any":
-		var any_ = arguments[0].(any)
+		var any_ = arguments[0]
 		text = ast.Text().Make(
 			any_,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Text constructor matching the arguments was found: $v\n",
+			"No Text constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1205,7 +1205,7 @@ func Formatter(arguments ...any) FormatterLike {
 		formatter = gra.Formatter().Make()
 	default:
 		var message = fmt.Sprintf(
-			"No Formatter constructor matching the arguments was found: $v\n",
+			"No Formatter constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1240,7 +1240,7 @@ func Parser(arguments ...any) ParserLike {
 		parser = gra.Parser().Make()
 	default:
 		var message = fmt.Sprintf(
-			"No Parser constructor matching the arguments was found: $v\n",
+			"No Parser constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1275,7 +1275,7 @@ func Processor(arguments ...any) ProcessorLike {
 		processor = gra.Processor().Make()
 	default:
 		var message = fmt.Sprintf(
-			"No Processor constructor matching the arguments was found: $v\n",
+			"No Processor constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1319,7 +1319,7 @@ func Scanner(arguments ...any) ScannerLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Scanner constructor matching the arguments was found: $v\n",
+			"No Scanner constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1369,7 +1369,7 @@ func Token(arguments ...any) TokenLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Token constructor matching the arguments was found: $v\n",
+			"No Token constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1404,7 +1404,7 @@ func Validator(arguments ...any) ValidatorLike {
 		validator = gra.Validator().Make()
 	default:
 		var message = fmt.Sprintf(
-			"No Validator constructor matching the arguments was found: $v\n",
+			"No Validator constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -1444,7 +1444,7 @@ func Visitor(arguments ...any) VisitorLike {
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No Visitor constructor matching the arguments was found: $v\n",
+			"No Visitor constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)

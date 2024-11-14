@@ -108,5 +108,6 @@ package module<ModuleImports>
 
 // TYPE ALIASES<TypeAliases>
 
-// UNIVERSAL CONSTRUCTORS<UniversalConstructors>`,
+// UNIVERSAL CONSTRUCTORS<UniversalConstructors>
+`,
 }

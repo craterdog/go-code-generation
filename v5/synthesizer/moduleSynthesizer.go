@@ -93,6 +93,7 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 	var moduleImports string
 	var importedPackages = v.createImportedPackages(source)
 	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
 		moduleImports = moduleSynthesizerReference().moduleImports_
 		moduleImports = uti.ReplaceAll(
 			moduleImports,
@@ -283,6 +284,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 			typeAliases += typeAlias
 		}
 	}
+	typeAliases += "\n"
 	var packageAliases = moduleSynthesizerReference().packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
@@ -349,6 +351,9 @@ func (v *moduleSynthesizer_) createArgumentAssignments(
 		var argumentName = parameter.GetName()
 		var argumentType = v.extractType(parameter.GetAbstraction())
 		var argumentAssignment = moduleSynthesizerReference().argumentAssignment_
+		if argumentType == "any" {
+			argumentAssignment = moduleSynthesizerReference().argumentAny_
+		}
 		argumentAssignment = uti.ReplaceAll(
 			argumentAssignment,
 			"argumentName",
@@ -400,9 +405,9 @@ func (v *moduleSynthesizer_) extractArgumentNames(
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var argumentName = parameter.GetName()
-		argumentNames += "\n\t\t\t\t" + argumentName + ","
+		argumentNames += "\n\t\t\t" + argumentName + ","
 	}
-	argumentNames += "\n\t\t\t"
+	argumentNames += "\n\t\t"
 	return argumentNames
 }
 
@@ -499,6 +504,7 @@ type moduleSynthesizerClass_ struct {
 	argumentCase_          string
 	constructionCase_      string
 	argumentAssignment_    string
+	argumentAny_           string
 }
 
 // Class Reference
@@ -511,8 +517,7 @@ var moduleSynthesizerReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
 	moduleImports_: `
 
-import (<ImportedPackages>
-)`,
+import (<ImportedPackages>)`,
 
 	packageAlias_: `
 	<~packageAcronym> <packagePath>`,
@@ -524,8 +529,7 @@ import (<ImportedPackages>
 
 // <~PackageName>
 
-type (<TypeAliases>
-)`,
+type (<TypeAliases>)`,
 
 	typeAlias_: `
 	<TypeName> = <~packageAcronym>.<TypeName>`,
@@ -553,18 +557,18 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 	var length = len(argumentTypes)
 	if length > 0 {
 		// Remove the trailing comma.
-		argumentTypes = argumentTypes[:length - 1]
+		argumentTypes = argumentTypes[:length-1]
 	}
 
 	// Call the corresponding constructor.
 	var <className_> <~ClassName>Like
 	switch argumentTypes {<ConstructionCases>
-		default:
-			var message = fmt.Sprintf(
-				"No <~ClassName> constructor matching the arguments was found: $v\n",
-				arguments,
-			)
-			panic(message)
+	default:
+		var message = fmt.Sprintf(
+			"No <~ClassName> constructor matching the arguments was found: %v\n",
+			arguments,
+		)
+		panic(message)
 	}
 	return <className_>
 }`,
@@ -574,9 +578,12 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 			argumentTypes += "<ArgumentType>, "`,
 
 	constructionCase_: `
-		case "<ArgumentTypes>":<ArgumentAssignments>
-			<className_> = <~packageAcronym>.<~ClassName>().Make(<ArgumentNames>)`,
+	case "<ArgumentTypes>":<ArgumentAssignments>
+		<className_> = <~packageAcronym>.<~ClassName>().Make(<ArgumentNames>)`,
 
 	argumentAssignment_: `
-			var <argumentName_> = arguments[<index>].(<ArgumentType>)`,
+		var <argumentName_> = arguments[<index>].(<ArgumentType>)`,
+
+	argumentAny_: `
+		var <argumentName_> = arguments[<index>]`,
 }
