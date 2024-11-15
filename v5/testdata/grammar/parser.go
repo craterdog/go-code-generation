@@ -694,7 +694,7 @@ aspectInterfacesLoop:
 		aspectInterface, token, ok = v.parseAspectInterface()
 		if !ok {
 			switch {
-			case count >= 0:
+			case count >= 1:
 				break aspectInterfacesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple AspectInterface rules.
@@ -703,7 +703,7 @@ aspectInterfacesLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$AspectSubsection", token)
-				message += "0 or more AspectInterface rules are required."
+				message += "1 or more AspectInterface rules are required."
 				panic(message)
 			}
 		}
@@ -778,7 +778,7 @@ attributeMethodsLoop:
 		attributeMethod, token, ok = v.parseAttributeMethod()
 		if !ok {
 			switch {
-			case count >= 0:
+			case count >= 1:
 				break attributeMethodsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple AttributeMethod rules.
@@ -787,7 +787,7 @@ attributeMethodsLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$AttributeSubsection", token)
-				message += "0 or more AttributeMethod rules are required."
+				message += "1 or more AttributeMethod rules are required."
 				panic(message)
 			}
 		}
@@ -960,38 +960,20 @@ func (v *parser_) parseClassMethods() (
 		panic(message)
 	}
 
-	// Attempt to parse a single ConstantSubsection rule.
-	var constantSubsection ast.ConstantSubsectionLike
-	constantSubsection, token, ok = v.parseConstantSubsection()
-	switch {
-	case ok:
+	// Attempt to parse an optional ConstantSubsection rule.
+	var optionalConstantSubsection ast.ConstantSubsectionLike
+	optionalConstantSubsection, _, ok = v.parseConstantSubsection()
+	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single ClassMethods rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$ClassMethods", token)
-		panic(message)
 	}
 
-	// Attempt to parse a single FunctionSubsection rule.
-	var functionSubsection ast.FunctionSubsectionLike
-	functionSubsection, token, ok = v.parseFunctionSubsection()
-	switch {
-	case ok:
+	// Attempt to parse an optional FunctionSubsection rule.
+	var optionalFunctionSubsection ast.FunctionSubsectionLike
+	optionalFunctionSubsection, _, ok = v.parseFunctionSubsection()
+	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single ClassMethods rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$ClassMethods", token)
-		panic(message)
 	}
 
 	// Found a single ClassMethods rule.
@@ -999,8 +981,8 @@ func (v *parser_) parseClassMethods() (
 	v.remove(tokens)
 	classMethods = ast.ClassMethods().Make(
 		constructorSubsection,
-		constantSubsection,
-		functionSubsection,
+		optionalConstantSubsection,
+		optionalFunctionSubsection,
 	)
 	return
 }
@@ -1180,7 +1162,7 @@ constantMethodsLoop:
 		constantMethod, token, ok = v.parseConstantMethod()
 		if !ok {
 			switch {
-			case count >= 0:
+			case count >= 1:
 				break constantMethodsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple ConstantMethod rules.
@@ -1189,7 +1171,7 @@ constantMethodsLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$ConstantSubsection", token)
-				message += "0 or more ConstantMethod rules are required."
+				message += "1 or more ConstantMethod rules are required."
 				panic(message)
 			}
 		}
@@ -1856,7 +1838,7 @@ functionMethodsLoop:
 		functionMethod, token, ok = v.parseFunctionMethod()
 		if !ok {
 			switch {
-			case count >= 0:
+			case count >= 1:
 				break functionMethodsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple FunctionMethod rules.
@@ -1865,7 +1847,7 @@ functionMethodsLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$FunctionSubsection", token)
-				message += "0 or more FunctionMethod rules are required."
+				message += "1 or more FunctionMethod rules are required."
 				panic(message)
 			}
 		}
@@ -2332,38 +2314,20 @@ func (v *parser_) parseInstanceMethods() (
 		panic(message)
 	}
 
-	// Attempt to parse a single AttributeSubsection rule.
-	var attributeSubsection ast.AttributeSubsectionLike
-	attributeSubsection, token, ok = v.parseAttributeSubsection()
-	switch {
-	case ok:
+	// Attempt to parse an optional AttributeSubsection rule.
+	var optionalAttributeSubsection ast.AttributeSubsectionLike
+	optionalAttributeSubsection, _, ok = v.parseAttributeSubsection()
+	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single InstanceMethods rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$InstanceMethods", token)
-		panic(message)
 	}
 
-	// Attempt to parse a single AspectSubsection rule.
-	var aspectSubsection ast.AspectSubsectionLike
-	aspectSubsection, token, ok = v.parseAspectSubsection()
-	switch {
-	case ok:
+	// Attempt to parse an optional AspectSubsection rule.
+	var optionalAspectSubsection ast.AspectSubsectionLike
+	optionalAspectSubsection, _, ok = v.parseAspectSubsection()
+	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single InstanceMethods rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$InstanceMethods", token)
-		panic(message)
 	}
 
 	// Found a single InstanceMethods rule.
@@ -2371,8 +2335,8 @@ func (v *parser_) parseInstanceMethods() (
 	v.remove(tokens)
 	instanceMethods = ast.InstanceMethods().Make(
 		primarySubsection,
-		attributeSubsection,
-		aspectSubsection,
+		optionalAttributeSubsection,
+		optionalAspectSubsection,
 	)
 	return
 }
@@ -3956,26 +3920,26 @@ var parserReference_ = &parserClass_{
 			"$Multivalue":            `"(" Parameter+ ")"`,
 			"$ClassSection":          `"// Class Declarations" ClassDeclaration+`,
 			"$ClassDeclaration":      `Declaration "interface" "{" ClassMethods "}"`,
-			"$ClassMethods":          `ConstructorSubsection ConstantSubsection FunctionSubsection`,
+			"$ClassMethods":          `ConstructorSubsection ConstantSubsection? FunctionSubsection?`,
 			"$ConstructorSubsection": `"// Constructor Methods" ConstructorMethod+`,
 			"$ConstructorMethod":     `name "(" Parameter* ")" Abstraction`,
-			"$ConstantSubsection":    `"// Constant Methods" ConstantMethod*`,
+			"$ConstantSubsection":    `"// Constant Methods" ConstantMethod+`,
 			"$ConstantMethod":        `name "(" ")" Abstraction`,
-			"$FunctionSubsection":    `"// Function Methods" FunctionMethod*`,
+			"$FunctionSubsection":    `"// Function Methods" FunctionMethod+`,
 			"$FunctionMethod":        `name "(" Parameter* ")" Result`,
 			"$InstanceSection":       `"// Instance Declarations" InstanceDeclaration+`,
 			"$InstanceDeclaration":   `Declaration "interface" "{" InstanceMethods "}"`,
-			"$InstanceMethods":       `PrimarySubsection AttributeSubsection AspectSubsection`,
+			"$InstanceMethods":       `PrimarySubsection AttributeSubsection? AspectSubsection?`,
 			"$PrimarySubsection":     `"// Primary Methods" PrimaryMethod+`,
 			"$PrimaryMethod":         `Method`,
 			"$Method":                `name "(" Parameter* ")" Result?`,
-			"$AttributeSubsection":   `"// Attribute Methods" AttributeMethod*`,
+			"$AttributeSubsection":   `"// Attribute Methods" AttributeMethod+`,
 			"$AttributeMethod": `
   - GetterMethod
   - SetterMethod`,
 			"$GetterMethod":      `name "(" ")" Abstraction`,
 			"$SetterMethod":      `name "(" Parameter ")"`,
-			"$AspectSubsection":  `"// Aspect Interfaces" AspectInterface*`,
+			"$AspectSubsection":  `"// Aspect Interfaces" AspectInterface+`,
 			"$AspectInterface":   `Abstraction`,
 			"$AspectSection":     `"// Aspect Declarations" AspectDeclaration*`,
 			"$AspectDeclaration": `Declaration "interface" "{" AspectMethod+ "}"`,

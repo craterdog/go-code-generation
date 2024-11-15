@@ -326,20 +326,24 @@ func (v *visitor_) visitClassMethods(classMethods ast.ClassMethodsLike) {
 	// Visit slot 1 between references.
 	v.processor_.ProcessClassMethodsSlot(1)
 
-	// Visit a single constantSubsection rule.
-	var constantSubsection = classMethods.GetConstantSubsection()
-	v.processor_.PreprocessConstantSubsection(constantSubsection)
-	v.visitConstantSubsection(constantSubsection)
-	v.processor_.PostprocessConstantSubsection(constantSubsection)
+	// Visit an optional constantSubsection rule.
+	var optionalConstantSubsection = classMethods.GetOptionalConstantSubsection()
+	if uti.IsDefined(optionalConstantSubsection) {
+		v.processor_.PreprocessConstantSubsection(optionalConstantSubsection)
+		v.visitConstantSubsection(optionalConstantSubsection)
+		v.processor_.PostprocessConstantSubsection(optionalConstantSubsection)
+	}
 
 	// Visit slot 2 between references.
 	v.processor_.ProcessClassMethodsSlot(2)
 
-	// Visit a single functionSubsection rule.
-	var functionSubsection = classMethods.GetFunctionSubsection()
-	v.processor_.PreprocessFunctionSubsection(functionSubsection)
-	v.visitFunctionSubsection(functionSubsection)
-	v.processor_.PostprocessFunctionSubsection(functionSubsection)
+	// Visit an optional functionSubsection rule.
+	var optionalFunctionSubsection = classMethods.GetOptionalFunctionSubsection()
+	if uti.IsDefined(optionalFunctionSubsection) {
+		v.processor_.PreprocessFunctionSubsection(optionalFunctionSubsection)
+		v.visitFunctionSubsection(optionalFunctionSubsection)
+		v.processor_.PostprocessFunctionSubsection(optionalFunctionSubsection)
+	}
 }
 
 func (v *visitor_) visitClassSection(classSection ast.ClassSectionLike) {
@@ -739,20 +743,24 @@ func (v *visitor_) visitInstanceMethods(instanceMethods ast.InstanceMethodsLike)
 	// Visit slot 1 between references.
 	v.processor_.ProcessInstanceMethodsSlot(1)
 
-	// Visit a single attributeSubsection rule.
-	var attributeSubsection = instanceMethods.GetAttributeSubsection()
-	v.processor_.PreprocessAttributeSubsection(attributeSubsection)
-	v.visitAttributeSubsection(attributeSubsection)
-	v.processor_.PostprocessAttributeSubsection(attributeSubsection)
+	// Visit an optional attributeSubsection rule.
+	var optionalAttributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
+	if uti.IsDefined(optionalAttributeSubsection) {
+		v.processor_.PreprocessAttributeSubsection(optionalAttributeSubsection)
+		v.visitAttributeSubsection(optionalAttributeSubsection)
+		v.processor_.PostprocessAttributeSubsection(optionalAttributeSubsection)
+	}
 
 	// Visit slot 2 between references.
 	v.processor_.ProcessInstanceMethodsSlot(2)
 
-	// Visit a single aspectSubsection rule.
-	var aspectSubsection = instanceMethods.GetAspectSubsection()
-	v.processor_.PreprocessAspectSubsection(aspectSubsection)
-	v.visitAspectSubsection(aspectSubsection)
-	v.processor_.PostprocessAspectSubsection(aspectSubsection)
+	// Visit an optional aspectSubsection rule.
+	var optionalAspectSubsection = instanceMethods.GetOptionalAspectSubsection()
+	if uti.IsDefined(optionalAspectSubsection) {
+		v.processor_.PreprocessAspectSubsection(optionalAspectSubsection)
+		v.visitAspectSubsection(optionalAspectSubsection)
+		v.processor_.PostprocessAspectSubsection(optionalAspectSubsection)
+	}
 }
 
 func (v *visitor_) visitInstanceSection(instanceSection ast.InstanceSectionLike) {

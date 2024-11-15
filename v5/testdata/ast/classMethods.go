@@ -28,23 +28,17 @@ func ClassMethods() ClassMethodsClassLike {
 
 func (c *classMethodsClass_) Make(
 	constructorSubsection ConstructorSubsectionLike,
-	constantSubsection ConstantSubsectionLike,
-	functionSubsection FunctionSubsectionLike,
+	optionalConstantSubsection ConstantSubsectionLike,
+	optionalFunctionSubsection FunctionSubsectionLike,
 ) ClassMethodsLike {
 	if uti.IsUndefined(constructorSubsection) {
 		panic("The \"constructorSubsection\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(constantSubsection) {
-		panic("The \"constantSubsection\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(functionSubsection) {
-		panic("The \"functionSubsection\" attribute is required by this class.")
-	}
 	var instance = &classMethods_{
 		// Initialize the instance attributes.
-		constructorSubsection_: constructorSubsection,
-		constantSubsection_:    constantSubsection,
-		functionSubsection_:    functionSubsection,
+		constructorSubsection_:      constructorSubsection,
+		optionalConstantSubsection_: optionalConstantSubsection,
+		optionalFunctionSubsection_: optionalFunctionSubsection,
 	}
 	return instance
 
@@ -68,12 +62,12 @@ func (v *classMethods_) GetConstructorSubsection() ConstructorSubsectionLike {
 	return v.constructorSubsection_
 }
 
-func (v *classMethods_) GetConstantSubsection() ConstantSubsectionLike {
-	return v.constantSubsection_
+func (v *classMethods_) GetOptionalConstantSubsection() ConstantSubsectionLike {
+	return v.optionalConstantSubsection_
 }
 
-func (v *classMethods_) GetFunctionSubsection() FunctionSubsectionLike {
-	return v.functionSubsection_
+func (v *classMethods_) GetOptionalFunctionSubsection() FunctionSubsectionLike {
+	return v.optionalFunctionSubsection_
 }
 
 // PROTECTED INTERFACE
@@ -84,9 +78,9 @@ func (v *classMethods_) GetFunctionSubsection() FunctionSubsectionLike {
 
 type classMethods_ struct {
 	// Declare the instance attributes.
-	constructorSubsection_ ConstructorSubsectionLike
-	constantSubsection_    ConstantSubsectionLike
-	functionSubsection_    FunctionSubsectionLike
+	constructorSubsection_      ConstructorSubsectionLike
+	optionalConstantSubsection_ ConstantSubsectionLike
+	optionalFunctionSubsection_ FunctionSubsectionLike
 }
 
 // Class Structure

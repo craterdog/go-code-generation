@@ -239,8 +239,8 @@ type ClassMethodsClassLike interface {
 	// Constructor Methods
 	Make(
 		constructorSubsection ConstructorSubsectionLike,
-		constantSubsection ConstantSubsectionLike,
-		functionSubsection FunctionSubsectionLike,
+		optionalConstantSubsection ConstantSubsectionLike,
+		optionalFunctionSubsection FunctionSubsectionLike,
 	) ClassMethodsLike
 }
 
@@ -460,8 +460,8 @@ type InstanceMethodsClassLike interface {
 	// Constructor Methods
 	Make(
 		primarySubsection PrimarySubsectionLike,
-		attributeSubsection AttributeSubsectionLike,
-		aspectSubsection AspectSubsectionLike,
+		optionalAttributeSubsection AttributeSubsectionLike,
+		optionalAspectSubsection AspectSubsectionLike,
 	) InstanceMethodsLike
 }
 
@@ -965,8 +965,8 @@ type ClassMethodsLike interface {
 
 	// Attribute Methods
 	GetConstructorSubsection() ConstructorSubsectionLike
-	GetConstantSubsection() ConstantSubsectionLike
-	GetFunctionSubsection() FunctionSubsectionLike
+	GetOptionalConstantSubsection() ConstantSubsectionLike
+	GetOptionalFunctionSubsection() FunctionSubsectionLike
 }
 
 /*
@@ -1203,8 +1203,8 @@ type InstanceMethodsLike interface {
 
 	// Attribute Methods
 	GetPrimarySubsection() PrimarySubsectionLike
-	GetAttributeSubsection() AttributeSubsectionLike
-	GetAspectSubsection() AspectSubsectionLike
+	GetOptionalAttributeSubsection() AttributeSubsectionLike
+	GetOptionalAspectSubsection() AspectSubsectionLike
 }
 
 /*

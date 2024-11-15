@@ -28,23 +28,17 @@ func InstanceMethods() InstanceMethodsClassLike {
 
 func (c *instanceMethodsClass_) Make(
 	primarySubsection PrimarySubsectionLike,
-	attributeSubsection AttributeSubsectionLike,
-	aspectSubsection AspectSubsectionLike,
+	optionalAttributeSubsection AttributeSubsectionLike,
+	optionalAspectSubsection AspectSubsectionLike,
 ) InstanceMethodsLike {
 	if uti.IsUndefined(primarySubsection) {
 		panic("The \"primarySubsection\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(attributeSubsection) {
-		panic("The \"attributeSubsection\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(aspectSubsection) {
-		panic("The \"aspectSubsection\" attribute is required by this class.")
-	}
 	var instance = &instanceMethods_{
 		// Initialize the instance attributes.
-		primarySubsection_:   primarySubsection,
-		attributeSubsection_: attributeSubsection,
-		aspectSubsection_:    aspectSubsection,
+		primarySubsection_:           primarySubsection,
+		optionalAttributeSubsection_: optionalAttributeSubsection,
+		optionalAspectSubsection_:    optionalAspectSubsection,
 	}
 	return instance
 
@@ -68,12 +62,12 @@ func (v *instanceMethods_) GetPrimarySubsection() PrimarySubsectionLike {
 	return v.primarySubsection_
 }
 
-func (v *instanceMethods_) GetAttributeSubsection() AttributeSubsectionLike {
-	return v.attributeSubsection_
+func (v *instanceMethods_) GetOptionalAttributeSubsection() AttributeSubsectionLike {
+	return v.optionalAttributeSubsection_
 }
 
-func (v *instanceMethods_) GetAspectSubsection() AspectSubsectionLike {
-	return v.aspectSubsection_
+func (v *instanceMethods_) GetOptionalAspectSubsection() AspectSubsectionLike {
+	return v.optionalAspectSubsection_
 }
 
 // PROTECTED INTERFACE
@@ -84,9 +78,9 @@ func (v *instanceMethods_) GetAspectSubsection() AspectSubsectionLike {
 
 type instanceMethods_ struct {
 	// Declare the instance attributes.
-	primarySubsection_   PrimarySubsectionLike
-	attributeSubsection_ AttributeSubsectionLike
-	aspectSubsection_    AspectSubsectionLike
+	primarySubsection_           PrimarySubsectionLike
+	optionalAttributeSubsection_ AttributeSubsectionLike
+	optionalAspectSubsection_    AspectSubsectionLike
 }
 
 // Class Structure
