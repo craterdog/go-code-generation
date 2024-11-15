@@ -137,7 +137,9 @@ var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	packageDescription_: `
 Package "example" provides...`,
 
-	packageImports_: ``,
+	packageImports_: `
+import ()
+`,
 
 	typeDeclarations_: `
 

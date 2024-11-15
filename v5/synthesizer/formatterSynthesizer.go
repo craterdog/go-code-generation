@@ -239,18 +239,19 @@ func formatterSynthesizerReference() *formatterSynthesizerClass_ {
 var formatterSynthesizerReference_ = &formatterSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	ast "<ModuleName>/ast"
 	sts "strings"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Formatter() FormatterClassLike {
 	return formatterReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -264,7 +265,8 @@ func (c *formatterClass_) Make() FormatterLike {
 	}
 	instance.visitor_ = Visitor().Make(instance)
 	return instance
-}`,
+}
+`,
 
 	primaryMethods_: `
 // Primary Methods
@@ -276,33 +278,32 @@ func (v *formatter_) GetClass() FormatterClassLike {
 func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) string {
 	v.visitor_.Visit<~SyntaxName>(<syntaxName_>)
 	return v.getResult()
-}`,
+}
+`,
 
 	aspectMethods_: `
 // Methodical Methods
-
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-
 func (v *formatter_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
 	v.appendString(<tokenName_>)
-}`,
+}
+`,
 
 	processIndexedToken_: `
-
 func (v *formatter_) Process<~TokenName>(
 	<tokenName_> string,
 	index uint,
 	size uint,
 ) {
 	v.appendString(<tokenName_>)
-}`,
+}
+`,
 
 	processRule_: `
-
 func (v *formatter_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
@@ -319,10 +320,10 @@ func (v *formatter_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
 	// TBD - Add formatting of the delimited rule.
-}`,
+}
+`,
 
 	processIndexedRule_: `
-
 func (v *formatter_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
@@ -343,7 +344,8 @@ func (v *formatter_) Postprocess<~RuleName>(
 	size uint,
 ) {
 	// TBD - Add formatting of the delimited rule.
-}`,
+}
+`,
 
 	privateMethods_: `
 // Private Methods
@@ -366,7 +368,8 @@ func (v *formatter_) getResult() string {
 	var result = v.result_.String()
 	v.result_.Reset()
 	return result
-}`,
+}
+`,
 
 	instanceStructure_: `
 // Instance Structure
@@ -379,14 +382,16 @@ type formatter_ struct {
 
 	// Declare the inherited aspects.
 	Methodical
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
 
 type formatterClass_ struct {
 	// Declare the class constants.
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -397,5 +402,6 @@ func formatterReference() *formatterClass_ {
 
 var formatterReference_ = &formatterClass_{
 	// Initialize the class constants.
-}`,
+}
+`,
 }

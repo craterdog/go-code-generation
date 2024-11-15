@@ -239,14 +239,13 @@ abstract syntax tree (AST) for this module:
   - Processor provides empty processor methods to be inherited by the processors.`,
 
 	packageImports_: `
-
 import (
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	ast "<ModuleName>/ast"
-)`,
+	abs "github.com/craterdog/go-collection-framework/v4/collection"
+)
+`,
 
 	typeDeclarations_: `
-
 /*
 TokenType is a constrained type representing any token type recognized by a
 scanner.
@@ -255,13 +254,13 @@ type TokenType uint8
 
 const (
 	ErrorToken TokenType = iota<TokenTypes>
-)`,
+)
+`,
 
 	tokenType_: `
 	<~TokenName>Token`,
 
 	classDeclarations_: `
-
 /*
 FormatterClassLike is a class interface that defines the complete set of
 class constants, constructors and functions that must be supported by each
@@ -358,10 +357,10 @@ type VisitorClassLike interface {
 	Make(
 		processor Methodical,
 	) VisitorLike
-}`,
+}
+`,
 
 	instanceDeclarations_: `
-
 /*
 FormatterLike is an instance interface that defines the complete set of
 instance attributes, abstractions and methods that must be supported by each
@@ -457,16 +456,17 @@ type VisitorLike interface {
 	Visit<~SyntaxName>(
 		<syntaxName_> ast.<~SyntaxName>Like,
 	)
-}`,
+}
+`,
 
 	aspectDeclarations_: `
-
 /*
 Methodical defines the set of method signatures that must be supported
 by all methodical processors.
 */
 type Methodical interface {<ProcessTokens><ProcessRules>
-}`,
+}
+`,
 
 	processToken_: `
 	Process<~TokenName>(

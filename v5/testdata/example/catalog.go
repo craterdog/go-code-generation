@@ -32,7 +32,6 @@ func (c *catalogClass_[K, V]) Make() CatalogLike[K, V] {
 		// Initialize the instance attributes.
 	}
 	return instance
-
 }
 
 func (c *catalogClass_[K, V]) MakeFromArray(
@@ -41,7 +40,6 @@ func (c *catalogClass_[K, V]) MakeFromArray(
 	var instance CatalogLike[K, V]
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 func (c *catalogClass_[K, V]) MakeFromMap(
@@ -50,7 +48,6 @@ func (c *catalogClass_[K, V]) MakeFromMap(
 	var instance CatalogLike[K, V]
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 func (c *catalogClass_[K, V]) MakeFromSequence(
@@ -59,7 +56,6 @@ func (c *catalogClass_[K, V]) MakeFromSequence(
 	var instance CatalogLike[K, V]
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 // Constant Methods

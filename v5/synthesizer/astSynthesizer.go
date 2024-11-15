@@ -329,13 +329,12 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	packageImports_: `
-
 import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
-)`,
+)
+`,
 
 	classDeclaration_: `
-
 /*
 <~ClassName>ClassLike is a class interface that defines the complete set
 of class constructors, constants and functions that must be supported by
@@ -344,7 +343,8 @@ each concrete <~class-name>-like class.
 type <~ClassName>ClassLike interface {
 	// Constructor Methods
 	Make(<Parameters>) <~ClassName>Like
-}`,
+}
+`,
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
@@ -354,13 +354,13 @@ type <~ClassName>ClassLike interface {
 	pluralTokenParameter_: `
 		<parameterName_> abs.Sequential[string],`,
 	instanceDeclaration_: `
-
 /*
 <~ClassName>Like is an instance interface that defines the complete set
 of primary, attribute and aspect methods that must be supported by each
 instance of a concrete <~class-name>-like class.
 */
-type <~ClassName>Like interface {<PrimaryMethods><AttributeMethods>}`,
+type <~ClassName>Like interface {<PrimaryMethods><AttributeMethods>}
+`,
 	primaryMethods_: `
 	// Primary Methods
 	GetClass() <~ClassName>ClassLike

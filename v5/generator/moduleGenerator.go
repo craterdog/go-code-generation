@@ -104,10 +104,10 @@ defined in the corresponding package contained within this module.
 For detailed documentation on this entire module refer to the wiki:
   - <WikiPath>
 */
-package module<ModuleImports>
-
-// TYPE ALIASES<TypeAliases>
-
-// UNIVERSAL CONSTRUCTORS<UniversalConstructors>
-`,
+package module
+<ModuleImports>
+// TYPE ALIASES
+<TypeAliases>
+// UNIVERSAL CONSTRUCTORS
+<UniversalConstructors>`,
 }

@@ -259,7 +259,6 @@ func scannerSynthesizerReference() *scannerSynthesizerClass_ {
 var scannerSynthesizerReference_ = &scannerSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	fmt "fmt"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
@@ -267,14 +266,16 @@ import (
 	reg "regexp"
 	sts "strings"
 	uni "unicode"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Scanner() ScannerClassLike {
 	return scannerReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -298,7 +299,8 @@ func (c *scannerClass_) Make(
 	}
 	go instance.scanTokens() // Start scanning tokens in the background.
 	return instance
-}`,
+}
+`,
 
 	functionMethods_: `
 // Function Methods
@@ -333,38 +335,40 @@ func (c *scannerClass_) MatchesType(
 	var matcher = c.matchers_[tokenType]
 	var match = matcher.FindString(tokenValue)
 	return uti.IsDefined(match)
-}`,
+}
+`,
 
 	primaryMethods_: `
 // Primary Methods
 
 func (v *scanner_) GetClass() ScannerClassLike {
 	return scannerReference()
-}`,
+}
+`,
 
 	methodicalMethods_: `
-// Methodical Methods<ProcessTokens><ProcessRules>`,
+// Methodical Methods
+<ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-
 func (v *scanner_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
 	v.validateToken(<tokenName_>, <~TokenName>Token)
-}`,
+}
+`,
 
 	processIndexedToken_: `
-
 func (v *scanner_) Process<~TokenName>(
 	<tokenName_> string,
 	index uint,
 	size uint,
 ) {
 	v.validateToken(<tokenName_>, <~TokenName>Token)
-}`,
+}
+`,
 
 	processRule_: `
-
 func (v *scanner_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
@@ -381,10 +385,10 @@ func (v *scanner_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
 	// TBD - Add any validation checks.
-}`,
+}
+`,
 
 	processIndexedRule_: `
-
 func (v *scanner_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
@@ -405,7 +409,8 @@ func (v *scanner_) Postprocess<~RuleName>(
 	size uint,
 ) {
 	// TBD - Add any validation checks.
-}`,
+}
+`,
 
 	privateMethods_: `
 // Private Methods
@@ -494,7 +499,8 @@ loop:
 		}
 	}
 	v.tokens_.CloseQueue()
-}`,
+}
+`,
 
 	foundCase_: `
 		case v.foundToken(<~TokenName>Token):`,
@@ -510,7 +516,8 @@ type scanner_ struct {
 	position_ uint // The position in the current line of the next rune.
 	runes_    []rune
 	tokens_   abs.QueueLike[TokenLike]
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
@@ -519,7 +526,8 @@ type scannerClass_ struct {
 	// Declare the class constants.
 	tokens_   map[TokenType]string
 	matchers_ map[TokenType]*reg.Regexp
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -559,7 +567,8 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expression patterns for each token type.<RegularExpressions>
-)`,
+)
+`,
 
 	tokenIdentifier_: `
 		<~TokenName>Token: "<~tokenName>",`,

@@ -92,15 +92,12 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 ) string {
 	var moduleImports string
 	var importedPackages = v.createImportedPackages(source)
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-		moduleImports = moduleSynthesizerReference().moduleImports_
-		moduleImports = uti.ReplaceAll(
-			moduleImports,
-			"importedPackages",
-			importedPackages,
-		)
-	}
+	moduleImports = moduleSynthesizerReference().moduleImports_
+	moduleImports = uti.ReplaceAll(
+		moduleImports,
+		"importedPackages",
+		importedPackages,
+	)
 	source = uti.ReplaceAll(
 		source,
 		"moduleImports",
@@ -297,6 +294,9 @@ func (v *moduleSynthesizer_) createImportedPackages(
 			"\"github.com/craterdog/go-collection-framework/v4/collection\"",
 		)
 		importedPackages += packageAlias
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
 	}
 	return importedPackages
 }
@@ -510,8 +510,8 @@ func moduleSynthesizerReference() *moduleSynthesizerClass_ {
 var moduleSynthesizerReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
 	moduleImports_: `
-
-import (<ImportedPackages>)`,
+import (<ImportedPackages>)
+`,
 
 	packageAlias_: `
 	<~packageAcronym> <packagePath>`,
@@ -520,17 +520,17 @@ import (<ImportedPackages>)`,
 	<~packageAcronym> "<moduleName>/<~packageName>"`,
 
 	packageAliases_: `
-
 // <~PackageName>
 
-type (<TypeAliases>)`,
+type (<TypeAliases>)
+`,
 
 	typeAlias_: `
 	<TypeName> = <~packageAcronym>.<TypeName>`,
 
 	universalConstructors_: `
-
-// <~PackageName><ConstructorFunctions>`,
+// <~PackageName><ConstructorFunctions>
+`,
 
 	constructorFunction_: `
 

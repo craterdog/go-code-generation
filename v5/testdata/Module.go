@@ -23,9 +23,9 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
+	fmt "fmt"
 	ast "github.com/craterdog/go-class-model/v5/ast"
 	gra "github.com/craterdog/go-class-model/v5/grammar"
-	fmt "fmt"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 )
 
@@ -34,76 +34,76 @@ import (
 // Ast
 
 type (
-	AbstractionLike = ast.AbstractionLike
-	AdditionalArgumentLike = ast.AdditionalArgumentLike
-	AdditionalConstraintLike = ast.AdditionalConstraintLike
-	AdditionalValueLike = ast.AdditionalValueLike
-	ArgumentLike = ast.ArgumentLike
-	ArgumentsLike = ast.ArgumentsLike
-	ArrayLike = ast.ArrayLike
-	AspectDeclarationLike = ast.AspectDeclarationLike
-	AspectInterfaceLike = ast.AspectInterfaceLike
-	AspectMethodLike = ast.AspectMethodLike
-	AspectSectionLike = ast.AspectSectionLike
-	AspectSubsectionLike = ast.AspectSubsectionLike
-	AttributeMethodLike = ast.AttributeMethodLike
-	AttributeSubsectionLike = ast.AttributeSubsectionLike
-	ChannelLike = ast.ChannelLike
-	ClassDeclarationLike = ast.ClassDeclarationLike
-	ClassMethodsLike = ast.ClassMethodsLike
-	ClassSectionLike = ast.ClassSectionLike
-	ConstantMethodLike = ast.ConstantMethodLike
-	ConstantSubsectionLike = ast.ConstantSubsectionLike
-	ConstraintLike = ast.ConstraintLike
-	ConstraintsLike = ast.ConstraintsLike
-	ConstructorMethodLike = ast.ConstructorMethodLike
+	AbstractionLike           = ast.AbstractionLike
+	AdditionalArgumentLike    = ast.AdditionalArgumentLike
+	AdditionalConstraintLike  = ast.AdditionalConstraintLike
+	AdditionalValueLike       = ast.AdditionalValueLike
+	ArgumentLike              = ast.ArgumentLike
+	ArgumentsLike             = ast.ArgumentsLike
+	ArrayLike                 = ast.ArrayLike
+	AspectDeclarationLike     = ast.AspectDeclarationLike
+	AspectInterfaceLike       = ast.AspectInterfaceLike
+	AspectMethodLike          = ast.AspectMethodLike
+	AspectSectionLike         = ast.AspectSectionLike
+	AspectSubsectionLike      = ast.AspectSubsectionLike
+	AttributeMethodLike       = ast.AttributeMethodLike
+	AttributeSubsectionLike   = ast.AttributeSubsectionLike
+	ChannelLike               = ast.ChannelLike
+	ClassDeclarationLike      = ast.ClassDeclarationLike
+	ClassMethodsLike          = ast.ClassMethodsLike
+	ClassSectionLike          = ast.ClassSectionLike
+	ConstantMethodLike        = ast.ConstantMethodLike
+	ConstantSubsectionLike    = ast.ConstantSubsectionLike
+	ConstraintLike            = ast.ConstraintLike
+	ConstraintsLike           = ast.ConstraintsLike
+	ConstructorMethodLike     = ast.ConstructorMethodLike
 	ConstructorSubsectionLike = ast.ConstructorSubsectionLike
-	DeclarationLike = ast.DeclarationLike
-	EnumerationLike = ast.EnumerationLike
-	FunctionMethodLike = ast.FunctionMethodLike
-	FunctionSubsectionLike = ast.FunctionSubsectionLike
+	DeclarationLike           = ast.DeclarationLike
+	EnumerationLike           = ast.EnumerationLike
+	FunctionMethodLike        = ast.FunctionMethodLike
+	FunctionSubsectionLike    = ast.FunctionSubsectionLike
 	FunctionalDeclarationLike = ast.FunctionalDeclarationLike
-	FunctionalSectionLike = ast.FunctionalSectionLike
-	GetterMethodLike = ast.GetterMethodLike
-	ImportedPackageLike = ast.ImportedPackageLike
-	InstanceDeclarationLike = ast.InstanceDeclarationLike
-	InstanceMethodsLike = ast.InstanceMethodsLike
-	InstanceSectionLike = ast.InstanceSectionLike
+	FunctionalSectionLike     = ast.FunctionalSectionLike
+	GetterMethodLike          = ast.GetterMethodLike
+	ImportedPackageLike       = ast.ImportedPackageLike
+	InstanceDeclarationLike   = ast.InstanceDeclarationLike
+	InstanceMethodsLike       = ast.InstanceMethodsLike
+	InstanceSectionLike       = ast.InstanceSectionLike
 	InterfaceDeclarationsLike = ast.InterfaceDeclarationsLike
-	LegalNoticeLike = ast.LegalNoticeLike
-	MapLike = ast.MapLike
-	MethodLike = ast.MethodLike
-	ModelLike = ast.ModelLike
-	ModuleDeclarationLike = ast.ModuleDeclarationLike
-	ModuleHeaderLike = ast.ModuleHeaderLike
-	ModuleImportsLike = ast.ModuleImportsLike
-	MultivalueLike = ast.MultivalueLike
-	NoneLike = ast.NoneLike
-	ParameterLike = ast.ParameterLike
-	PrefixLike = ast.PrefixLike
-	PrimaryMethodLike = ast.PrimaryMethodLike
-	PrimarySubsectionLike = ast.PrimarySubsectionLike
+	LegalNoticeLike           = ast.LegalNoticeLike
+	MapLike                   = ast.MapLike
+	MethodLike                = ast.MethodLike
+	ModelLike                 = ast.ModelLike
+	ModuleDeclarationLike     = ast.ModuleDeclarationLike
+	ModuleHeaderLike          = ast.ModuleHeaderLike
+	ModuleImportsLike         = ast.ModuleImportsLike
+	MultivalueLike            = ast.MultivalueLike
+	NoneLike                  = ast.NoneLike
+	ParameterLike             = ast.ParameterLike
+	PrefixLike                = ast.PrefixLike
+	PrimaryMethodLike         = ast.PrimaryMethodLike
+	PrimarySubsectionLike     = ast.PrimarySubsectionLike
 	PrimitiveDeclarationsLike = ast.PrimitiveDeclarationsLike
-	ResultLike = ast.ResultLike
-	SetterMethodLike = ast.SetterMethodLike
-	SuffixLike = ast.SuffixLike
-	TypeDeclarationLike = ast.TypeDeclarationLike
-	TypeSectionLike = ast.TypeSectionLike
-	ValueLike = ast.ValueLike
+	ResultLike                = ast.ResultLike
+	SetterMethodLike          = ast.SetterMethodLike
+	SuffixLike                = ast.SuffixLike
+	TypeDeclarationLike       = ast.TypeDeclarationLike
+	TypeSectionLike           = ast.TypeSectionLike
+	ValueLike                 = ast.ValueLike
 )
 
 // Grammar
 
 type (
-	TokenType = gra.TokenType
+	TokenType     = gra.TokenType
 	FormatterLike = gra.FormatterLike
-	ParserLike = gra.ParserLike
+	ParserLike    = gra.ParserLike
 	ProcessorLike = gra.ProcessorLike
-	ScannerLike = gra.ScannerLike
-	TokenLike = gra.TokenLike
+	ScannerLike   = gra.ScannerLike
+	TokenLike     = gra.TokenLike
 	ValidatorLike = gra.ValidatorLike
-	VisitorLike = gra.VisitorLike
-	Methodical = gra.Methodical
+	VisitorLike   = gra.VisitorLike
+	Methodical    = gra.Methodical
 )
 
 // UNIVERSAL CONSTRUCTORS

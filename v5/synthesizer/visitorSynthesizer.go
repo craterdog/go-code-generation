@@ -411,19 +411,20 @@ func visitorSynthesizerReference() *visitorSynthesizerClass_ {
 var visitorSynthesizerReference_ = &visitorSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	fmt "fmt"
 	ast "<ModuleName>/ast"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Visitor() VisitorClassLike {
 	return visitorReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -439,7 +440,8 @@ func (c *visitorClass_) Make(
 		processor_: processor,
 	}
 	return instance
-}`,
+}
+`,
 
 	primaryMethods_: `
 // Primary Methods
@@ -454,14 +456,16 @@ func (v *visitor_) Visit<~SyntaxName>(
 	v.processor_.Preprocess<~SyntaxName>(<syntaxName_>)
 	v.visit<~SyntaxName>(<syntaxName_>)
 	v.processor_.Postprocess<~SyntaxName>(<syntaxName_>)
-}`,
+}
+`,
 
 	privateMethods_: `
-// Private Methods<VisitMethods>`,
+// Private Methods
+<VisitMethods>`,
 
 	visitMethod_: `
-
-func (v *visitor_) visit<~TargetName>(<targetName_> ast.<~TargetName>Like) {<MethodImplementation>}`,
+func (v *visitor_) visit<~TargetName>(<targetName_> ast.<~TargetName>Like) {<MethodImplementation>}
+`,
 
 	multilineCases_: `
 	// Visit the possible <~targetName> types.
@@ -595,14 +599,16 @@ func (v *visitor_) visit<~TargetName>(<targetName_> ast.<~TargetName>Like) {<Met
 type visitor_ struct {
 	// Declare the instance attributes.
 	processor_ Methodical
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
 
 type visitorClass_ struct {
 	// Declare the class constants.
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -613,5 +619,6 @@ func visitorReference() *visitorClass_ {
 
 var visitorReference_ = &visitorClass_{
 	// Initialize the class constants.
-}`,
+}
+`,
 }

@@ -32,7 +32,6 @@ func (c *arrayClass_[V]) Make(
 ) ArrayLike[V] {
 	var instance = array_[V](intrinsic)
 	return instance
-
 }
 
 func (c *arrayClass_[V]) MakeFromSize(
@@ -41,7 +40,6 @@ func (c *arrayClass_[V]) MakeFromSize(
 	var instance ArrayLike[V]
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 func (c *arrayClass_[V]) MakeFromSequence(
@@ -50,7 +48,6 @@ func (c *arrayClass_[V]) MakeFromSequence(
 	var instance ArrayLike[V]
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 // Constant Methods

@@ -227,17 +227,18 @@ func processorSynthesizerReference() *processorSynthesizerClass_ {
 var processorSynthesizerReference_ = &processorSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	ast "<ModuleName>/ast"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Processor() ProcessorClassLike {
 	return processorReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -247,38 +248,38 @@ func (c *processorClass_) Make() ProcessorLike {
 		// Initialize the instance attributes.
 	}
 	return instance
-}`,
+}
+`,
 
 	primaryMethods_: `
 // Primary Methods
 
 func (v *processor_) GetClass() ProcessorClassLike {
 	return processorReference()
-}`,
+}
+`,
 
 	aspectMethods_: `
 // Methodical Methods
-
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-
 func (v *processor_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
-}`,
+}
+`,
 
 	processIndexedToken_: `
-
 func (v *processor_) Process<~TokenName>(
 	<tokenName_> string,
 	index uint,
 	size uint,
 ) {
-}`,
+}
+`,
 
 	processRule_: `
-
 func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
@@ -292,10 +293,10 @@ func (v *processor_) Process<~RuleName>Slot(
 func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
-}`,
+}
+`,
 
 	processIndexedRule_: `
-
 func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
@@ -313,11 +314,11 @@ func (v *processor_) Postprocess<~RuleName>(
 	index uint,
 	size uint,
 ) {
-}`,
+}
+`,
 
 	privateMethods_: `
 // Private Methods
-
 `,
 
 	instanceStructure_: `
@@ -325,14 +326,16 @@ func (v *processor_) Postprocess<~RuleName>(
 
 type processor_ struct {
 	// Declare the instance attributes.
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
 
 type processorClass_ struct {
 	// Declare the class constants.
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -343,5 +346,6 @@ func processorReference() *processorClass_ {
 
 var processorReference_ = &processorClass_{
 	// Initialize the class constants.
-}`,
+}
+`,
 }

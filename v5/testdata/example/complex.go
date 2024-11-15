@@ -47,7 +47,6 @@ func (c *complexClass_) Make(
 		form_:          form,
 	}
 	return instance
-
 }
 
 func (c *complexClass_) MakeFromValue(
@@ -56,7 +55,6 @@ func (c *complexClass_) MakeFromValue(
 	var instance ComplexLike
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 // Constant Methods

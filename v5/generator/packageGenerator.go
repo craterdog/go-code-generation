@@ -126,16 +126,16 @@ be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
-package <PackageName><PackageImports>
-
-// Type Declarations<TypeDeclarations>
-
-// Functional Declarations<FunctionalDeclarations>
-
-// Class Declarations<ClassDeclarations>
-
-// Instance Declarations<InstanceDeclarations>
-
-// Aspect Declarations<AspectDeclarations>
-`,
+package <PackageName>
+<PackageImports>
+// Type Declarations
+<TypeDeclarations>
+// Functional Declarations
+<FunctionalDeclarations>
+// Class Declarations
+<ClassDeclarations>
+// Instance Declarations
+<InstanceDeclarations>
+// Aspect Declarations
+<AspectDeclarations>`,
 }

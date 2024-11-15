@@ -155,17 +155,18 @@ func tokenSynthesizerReference() *tokenSynthesizerClass_ {
 var tokenSynthesizerReference_ = &tokenSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Token() TokenClassLike {
 	return tokenReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -196,14 +197,16 @@ func (c *tokenClass_) Make(
 		value_:    value,
 	}
 	return instance
-}`,
+}
+`,
 
 	primaryMethods_: `
 // Primary Methods
 
 func (v *token_) GetClass() TokenClassLike {
 	return tokenReference()
-}`,
+}
+`,
 
 	attributeMethods_: `
 // Attribute Methods
@@ -222,11 +225,11 @@ func (v *token_) GetType() TokenType {
 
 func (v *token_) GetValue() string {
 	return v.value_
-}`,
+}
+`,
 
 	privateMethods_: `
 // Private Methods
-
 `,
 
 	instanceStructure_: `
@@ -238,14 +241,16 @@ type token_ struct {
 	position_ uint
 	type_     TokenType
 	value_    string
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
 
 type tokenClass_ struct {
 	// Declare the class constants.
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -256,5 +261,6 @@ func tokenReference() *tokenClass_ {
 
 var tokenReference_ = &tokenClass_{
 	// Initialize the class constants.
-}`,
+}
+`,
 }

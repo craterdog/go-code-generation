@@ -986,14 +986,12 @@ func (v *classSynthesizer_) performGlobalUpdates(
 	var classImports string
 	var packageImports = v.analyzer_.GetPackageImports()
 	var importedPackages = v.createImportedPackages(packageImports, source)
-	if uti.IsDefined(importedPackages) {
-		classImports = classSynthesizerReference().classImports_
-		classImports = uti.ReplaceAll(
-			classImports,
-			"importedPackages",
-			importedPackages,
-		)
-	}
+	classImports = classSynthesizerReference().classImports_
+	classImports = uti.ReplaceAll(
+		classImports,
+		"importedPackages",
+		importedPackages,
+	)
 	source = uti.ReplaceAll(
 		source,
 		"classImports",
@@ -1236,8 +1234,8 @@ func classSynthesizerReference() *classSynthesizerClass_ {
 var classSynthesizerReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
-import (<ImportedPackages>)`,
+import (<ImportedPackages>)
+`,
 
 	packageAlias_: `
 	<~packageAcronym> <packagePath>`,
@@ -1247,15 +1245,16 @@ import (<ImportedPackages>)`,
 
 func <~ClassName><Constraints>() <~ClassName>ClassLike<Arguments> {
 	return <~className>Reference<Arguments>()
-}`,
+}
+`,
 
 	constructorMethods_: `
-// Constructor Methods<ConstructorMethods>`,
+// Constructor Methods
+<ConstructorMethods>`,
 
 	constructorMethod_: `
-
-func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>Like<Arguments> {<InstanceInstantiation>
-}`,
+func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>Like<Arguments> {<InstanceInstantiation>}
+`,
 
 	instanceInstantiation_: `
 	var instance <~ClassName>Like<Arguments>
@@ -1276,104 +1275,101 @@ func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>L
 `,
 
 	constantMethods_: `
-
-// Constant Methods<ConstantMethods>`,
+// Constant Methods
+<ConstantMethods>`,
 
 	constantMethod_: `
-
 func (c *<~className>Class_<Arguments>) <~MethodName>() <ResultType> {
 	return c.<~methodName>_
-}`,
+}
+`,
 
 	functionMethods_: `
-
-// Function Methods<FunctionMethods>`,
+// Function Methods
+<FunctionMethods>`,
 
 	functionMethod_: `
-
 func (c *<~className>Class_<Arguments>) <~MethodName>(<Parameters>) <ResultType> {
 	var result_ <ResultType>
 	// TBD - Add the function implementation.
 	return result_
-}`,
+}
+`,
 
 	attributeMethods_: `
-
-// Attribute Methods<AttributeMethods>`,
+// Attribute Methods
+<AttributeMethods>`,
 
 	getterMethod_: `
-
 func (v <*><~className>_<Arguments>) <~MethodName>() <AttributeType> {
 	return v.<~attributeName>_
-}`,
+}
+`,
 
 	setterMethod_: `
-
 func (v <*><~className>_<Arguments>) <~MethodName>(
 	<attributeName_> <AttributeType>,
 ) {<AttributeCheck>
 	v.<~attributeName>_ = <attributeName_>
-}`,
+}
+`,
 
 	aspectInterface_: `
-
-// <AspectType> Methods<AspectMethods>`,
+// <AspectType> Methods
+<AspectMethods>`,
 
 	primaryMethods_: `
 // Primary Methods
 
 func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments> {
 	return <~className>Reference<Arguments>()
-}<IntrinsicMethod><PrimaryMethods>`,
+}
+<IntrinsicMethod><PrimaryMethods>`,
 
 	intrinsicMethod_: `
-
 func (v <*><~className>_<Arguments>) GetIntrinsic() <IntrinsicType> {
 	return <IntrinsicType>(v)
-}`,
+}
+`,
 
 	instanceMethod_: `
-
 func (v <*><~className>_<Arguments>) <~MethodName>(<Parameters>) {
 	// TBD - Add the method implementation.
-}`,
+}
+`,
 
 	instanceFunction_: `
-
 func (v <*><~className>_<Arguments>) <~MethodName>(<Parameters>) <ResultType> {
 	var result_ <ResultType>
 	// TBD - Add the method implementation.
 	return result_
-}`,
+}
+`,
 
 	methodParameter_: `
 	<parameterName_> <ParameterType>,`,
 
 	aspectMethods_: `
-
 // Aspect Methods
-
 `,
 
 	privateMethods_: `
 // Private Methods
-
 `,
 
 	instanceIntrinsic_: `
-
 // Instance Structure
 
 type <~className>_<Constraints> <IntrinsicType>
 `,
 
 	instanceStructure_: `
-
 // Instance Structure
 
 type <~className>_<Constraints> struct {
 	// Declare the instance attributes.<AttributeDeclarations>
-}`,
+}
+`,
 
 	attributeDeclaration_: `
 	<~attributeName>_ <AttributeType>`,
@@ -1387,12 +1383,12 @@ type <~className>_<Constraints> struct {
 		<~attributeName>_: <attributeName_>,`,
 
 	classStructure_: `
-
 // Class Structure
 
 type <~className>Class_<Constraints> struct {
 	// Declare the class constants.<ConstantDeclarations>
-}`,
+}
+`,
 
 	constantDeclaration_: `
 	<~constantName>_ <ConstantType>`,
@@ -1401,7 +1397,6 @@ type <~className>Class_<Constraints> struct {
 	// <~constantName>_: constantValue,`,
 
 	classReference_: `
-
 // Class Reference
 
 func <~className>Reference() *<~className>Class_ {
@@ -1410,10 +1405,10 @@ func <~className>Reference() *<~className>Class_ {
 
 var <~className>Reference_ = &<~className>Class_{
 	// Initialize the class constants.<ConstantInitializations>
-}`,
+}
+`,
 
 	classMap_: `
-
 // Class Reference
 
 var <~className>Map_ = map[string]any{}
@@ -1442,5 +1437,6 @@ func <~className>Reference<Constraints>() *<~className>Class_<Arguments> {
 
 	// Return a reference to the bound class type.
 	return class
-}`,
+}
+`,
 }

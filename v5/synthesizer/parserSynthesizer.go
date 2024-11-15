@@ -428,7 +428,6 @@ func parserSynthesizerReference() *parserSynthesizerClass_ {
 var parserSynthesizerReference_ = &parserSynthesizerClass_{
 	// Initialize the class constants.
 	classImports_: `
-
 import (
 	fmt "fmt"
 	col "github.com/craterdog/go-collection-framework/v4"
@@ -437,14 +436,16 @@ import (
 	ast "<ModuleName>/ast"
 	mat "math"
 	sts "strings"
-)`,
+)
+`,
 
 	accessFunction_: `
 // Access Function
 
 func Parser() ParserClassLike {
 	return parserReference()
-}`,
+}
+`,
 
 	constructorMethods_: `
 // Constructor Methods
@@ -454,15 +455,16 @@ func (c *parserClass_) Make() ParserLike {
 		// Initialize the instance attributes.
 	}
 	return instance
-}`,
+}
+`,
 
 	parseMethod_: `
-
 func (v *parser_) parse<~RuleName>() (
 	<ruleName_> ast.<~RuleName>Like,
 	token TokenLike,
 	ok bool,
-) {<MethodImplementation>}`,
+) {<MethodImplementation>}
+`,
 
 	parseDelimiterStep_: `
 	// Attempt to parse a single <delimiter> delimiter.
@@ -661,11 +663,12 @@ func (v *parser_) ParseSource(
 		panic(message)
 	}
 	return <syntaxName_>
-}`,
+}
+`,
 
 	privateMethods_: `
-// Private Methods<ParseMethods>
-
+// Private Methods
+<ParseMethods>
 func (v *parser_) parseDelimiter(
 	expectedValue string,
 ) (
@@ -805,7 +808,8 @@ func (v *parser_) putBack(
 func (v *parser_) remove(
 	tokens abs.Sequential[TokenLike],
 ) {
-}`,
+}
+`,
 
 	possibleDelimiter_: `
 	// Attempt to parse a single "<delimiter>" delimiter.
@@ -834,7 +838,8 @@ type parser_ struct {
 	source_ string                   // The original source code.
 	tokens_ abs.QueueLike[TokenLike] // A queue of unread tokens from the scanner.
 	next_   abs.StackLike[TokenLike] // A stack of read, but unprocessed tokens.
-}`,
+}
+`,
 
 	classStructure_: `
 // Class Structure
@@ -844,7 +849,8 @@ type parserClass_ struct {
 	queueSize_ uint
 	stackSize_ uint
 	syntax_    abs.CatalogLike[string, string]
-}`,
+}
+`,
 
 	classReference_: `
 // Class Reference
@@ -861,5 +867,6 @@ var parserReference_ = &parserClass_{
 		map[string]string{<SyntaxMap>
 		},
 	),
-}`,
+}
+`,
 }

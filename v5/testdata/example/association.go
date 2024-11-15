@@ -44,7 +44,6 @@ func (c *associationClass_[K, V]) Make(
 		value_: value,
 	}
 	return instance
-
 }
 
 // Constant Methods

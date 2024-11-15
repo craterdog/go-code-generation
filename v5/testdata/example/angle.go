@@ -12,6 +12,8 @@
 
 package example
 
+import ()
+
 // CLASS INTERFACE
 
 // Access Function
@@ -27,7 +29,6 @@ func (c *angleClass_) Make(
 ) AngleLike {
 	var instance = angle_(intrinsic)
 	return instance
-
 }
 
 func (c *angleClass_) MakeFromString(
@@ -36,7 +37,6 @@ func (c *angleClass_) MakeFromString(
 	var instance AngleLike
 	// TBD - Add the constructor implementation.
 	return instance
-
 }
 
 // Constant Methods
