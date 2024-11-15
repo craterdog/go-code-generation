@@ -561,7 +561,7 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 	}
 
 	// Call the corresponding constructor.
-	var <className_> <~ClassName>Like
+	var instance_ <~ClassName>Like
 	switch argumentTypes {<ConstructionCases>
 	default:
 		var message = fmt.Sprintf(
@@ -570,7 +570,7 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 		)
 		panic(message)
 	}
-	return <className_>
+	return instance_
 }`,
 
 	argumentCase_: `
@@ -579,7 +579,7 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 
 	constructionCase_: `
 	case "<ArgumentTypes>":<ArgumentAssignments>
-		<className_> = <~packageAcronym>.<~ClassName>().Make(<ArgumentNames>)`,
+		instance_ = <~packageAcronym>.<~ClassName>().Make(<ArgumentNames>)`,
 
 	argumentAssignment_: `
 		var <argumentName_> = arguments[<index>].(<ArgumentType>)`,
