@@ -1,6 +1,6 @@
-module github.com/craterdog/go-syntax-notation/v5
+module github.com/craterdog/go-class-model/v5
 
-go 1.23.2
+go 1.22
 
 require (
 	github.com/craterdog/go-collection-framework/v4 v4.17.0

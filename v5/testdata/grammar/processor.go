@@ -13,7 +13,7 @@
 package grammar
 
 import (
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-class-model/v5/ast"
 )
 
 // CLASS INTERFACE
@@ -48,28 +48,8 @@ func (v *processor_) ProcessComment(
 ) {
 }
 
-func (v *processor_) ProcessExcluded(
-	excluded string,
-) {
-}
-
-func (v *processor_) ProcessGlyph(
-	glyph string,
-) {
-}
-
-func (v *processor_) ProcessIntrinsic(
-	intrinsic string,
-) {
-}
-
-func (v *processor_) ProcessLiteral(
-	literal string,
-) {
-}
-
-func (v *processor_) ProcessLowercase(
-	lowercase string,
+func (v *processor_) ProcessName(
+	name string,
 ) {
 }
 
@@ -78,23 +58,8 @@ func (v *processor_) ProcessNewline(
 ) {
 }
 
-func (v *processor_) ProcessNote(
-	note string,
-) {
-}
-
-func (v *processor_) ProcessNumber(
-	number string,
-) {
-}
-
-func (v *processor_) ProcessOptional(
-	optional string,
-) {
-}
-
-func (v *processor_) ProcessRepeated(
-	repeated string,
+func (v *processor_) ProcessPath(
+	path string,
 ) {
 }
 
@@ -103,426 +68,911 @@ func (v *processor_) ProcessSpace(
 ) {
 }
 
-func (v *processor_) ProcessUppercase(
-	uppercase string,
+func (v *processor_) PreprocessAbstraction(
+	abstraction ast.AbstractionLike,
 ) {
 }
 
-func (v *processor_) PreprocessAlternative(
-	alternative ast.AlternativeLike,
+func (v *processor_) ProcessAbstractionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessAbstraction(
+	abstraction ast.AbstractionLike,
+) {
+}
+
+func (v *processor_) PreprocessAdditionalArgument(
+	additionalArgument ast.AdditionalArgumentLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessAlternativeSlot(
+func (v *processor_) ProcessAdditionalArgumentSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessAlternative(
-	alternative ast.AlternativeLike,
+func (v *processor_) PostprocessAdditionalArgument(
+	additionalArgument ast.AdditionalArgumentLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessCardinality(
-	cardinality ast.CardinalityLike,
-) {
-}
-
-func (v *processor_) ProcessCardinalitySlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessCardinality(
-	cardinality ast.CardinalityLike,
-) {
-}
-
-func (v *processor_) PreprocessCharacter(
-	character ast.CharacterLike,
+func (v *processor_) PreprocessAdditionalConstraint(
+	additionalConstraint ast.AdditionalConstraintLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessCharacterSlot(
+func (v *processor_) ProcessAdditionalConstraintSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessCharacter(
-	character ast.CharacterLike,
+func (v *processor_) PostprocessAdditionalConstraint(
+	additionalConstraint ast.AdditionalConstraintLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessConstrained(
-	constrained ast.ConstrainedLike,
-) {
-}
-
-func (v *processor_) ProcessConstrainedSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessConstrained(
-	constrained ast.ConstrainedLike,
-) {
-}
-
-func (v *processor_) PreprocessDefinition(
-	definition ast.DefinitionLike,
-) {
-}
-
-func (v *processor_) ProcessDefinitionSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessDefinition(
-	definition ast.DefinitionLike,
-) {
-}
-
-func (v *processor_) PreprocessElement(
-	element ast.ElementLike,
-) {
-}
-
-func (v *processor_) ProcessElementSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessElement(
-	element ast.ElementLike,
-) {
-}
-
-func (v *processor_) PreprocessExplicit(
-	explicit ast.ExplicitLike,
-) {
-}
-
-func (v *processor_) ProcessExplicitSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessExplicit(
-	explicit ast.ExplicitLike,
-) {
-}
-
-func (v *processor_) PreprocessExpression(
-	expression ast.ExpressionLike,
+func (v *processor_) PreprocessAdditionalValue(
+	additionalValue ast.AdditionalValueLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessExpressionSlot(
+func (v *processor_) ProcessAdditionalValueSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessExpression(
-	expression ast.ExpressionLike,
+func (v *processor_) PostprocessAdditionalValue(
+	additionalValue ast.AdditionalValueLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessExtent(
-	extent ast.ExtentLike,
+func (v *processor_) PreprocessArgument(
+	argument ast.ArgumentLike,
 ) {
 }
 
-func (v *processor_) ProcessExtentSlot(
+func (v *processor_) ProcessArgumentSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessExtent(
-	extent ast.ExtentLike,
+func (v *processor_) PostprocessArgument(
+	argument ast.ArgumentLike,
 ) {
 }
 
-func (v *processor_) PreprocessFilter(
-	filter ast.FilterLike,
+func (v *processor_) PreprocessArguments(
+	arguments ast.ArgumentsLike,
 ) {
 }
 
-func (v *processor_) ProcessFilterSlot(
+func (v *processor_) ProcessArgumentsSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessFilter(
-	filter ast.FilterLike,
+func (v *processor_) PostprocessArguments(
+	arguments ast.ArgumentsLike,
 ) {
 }
 
-func (v *processor_) PreprocessGroup(
-	group ast.GroupLike,
+func (v *processor_) PreprocessArray(
+	array ast.ArrayLike,
 ) {
 }
 
-func (v *processor_) ProcessGroupSlot(
+func (v *processor_) ProcessArraySlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessGroup(
-	group ast.GroupLike,
+func (v *processor_) PostprocessArray(
+	array ast.ArrayLike,
 ) {
 }
 
-func (v *processor_) PreprocessIdentifier(
-	identifier ast.IdentifierLike,
-) {
-}
-
-func (v *processor_) ProcessIdentifierSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessIdentifier(
-	identifier ast.IdentifierLike,
-) {
-}
-
-func (v *processor_) PreprocessInline(
-	inline ast.InlineLike,
-) {
-}
-
-func (v *processor_) ProcessInlineSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessInline(
-	inline ast.InlineLike,
-) {
-}
-
-func (v *processor_) PreprocessLimit(
-	limit ast.LimitLike,
-) {
-}
-
-func (v *processor_) ProcessLimitSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessLimit(
-	limit ast.LimitLike,
-) {
-}
-
-func (v *processor_) PreprocessLine(
-	line ast.LineLike,
+func (v *processor_) PreprocessAspectDeclaration(
+	aspectDeclaration ast.AspectDeclarationLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessLineSlot(
+func (v *processor_) ProcessAspectDeclarationSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessLine(
-	line ast.LineLike,
+func (v *processor_) PostprocessAspectDeclaration(
+	aspectDeclaration ast.AspectDeclarationLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessMultiline(
-	multiline ast.MultilineLike,
-) {
-}
-
-func (v *processor_) ProcessMultilineSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessMultiline(
-	multiline ast.MultilineLike,
-) {
-}
-
-func (v *processor_) PreprocessNotice(
-	notice ast.NoticeLike,
-) {
-}
-
-func (v *processor_) ProcessNoticeSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessNotice(
-	notice ast.NoticeLike,
-) {
-}
-
-func (v *processor_) PreprocessOption(
-	option ast.OptionLike,
-) {
-}
-
-func (v *processor_) ProcessOptionSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessOption(
-	option ast.OptionLike,
-) {
-}
-
-func (v *processor_) PreprocessPattern(
-	pattern ast.PatternLike,
-) {
-}
-
-func (v *processor_) ProcessPatternSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessPattern(
-	pattern ast.PatternLike,
-) {
-}
-
-func (v *processor_) PreprocessQuantified(
-	quantified ast.QuantifiedLike,
-) {
-}
-
-func (v *processor_) ProcessQuantifiedSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessQuantified(
-	quantified ast.QuantifiedLike,
-) {
-}
-
-func (v *processor_) PreprocessReference(
-	reference ast.ReferenceLike,
-) {
-}
-
-func (v *processor_) ProcessReferenceSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessReference(
-	reference ast.ReferenceLike,
-) {
-}
-
-func (v *processor_) PreprocessRepetition(
-	repetition ast.RepetitionLike,
+func (v *processor_) PreprocessAspectInterface(
+	aspectInterface ast.AspectInterfaceLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessRepetitionSlot(
+func (v *processor_) ProcessAspectInterfaceSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessRepetition(
-	repetition ast.RepetitionLike,
+func (v *processor_) PostprocessAspectInterface(
+	aspectInterface ast.AspectInterfaceLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessRule(
-	rule ast.RuleLike,
+func (v *processor_) PreprocessAspectMethod(
+	aspectMethod ast.AspectMethodLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessRuleSlot(
+func (v *processor_) ProcessAspectMethodSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessRule(
-	rule ast.RuleLike,
+func (v *processor_) PostprocessAspectMethod(
+	aspectMethod ast.AspectMethodLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessSyntax(
-	syntax ast.SyntaxLike,
+func (v *processor_) PreprocessAspectSection(
+	aspectSection ast.AspectSectionLike,
 ) {
 }
 
-func (v *processor_) ProcessSyntaxSlot(
+func (v *processor_) ProcessAspectSectionSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessSyntax(
-	syntax ast.SyntaxLike,
+func (v *processor_) PostprocessAspectSection(
+	aspectSection ast.AspectSectionLike,
 ) {
 }
 
-func (v *processor_) PreprocessTerm(
-	term ast.TermLike,
+func (v *processor_) PreprocessAspectSubsection(
+	aspectSubsection ast.AspectSubsectionLike,
+) {
+}
+
+func (v *processor_) ProcessAspectSubsectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessAspectSubsection(
+	aspectSubsection ast.AspectSubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessAttributeMethod(
+	attributeMethod ast.AttributeMethodLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) ProcessTermSlot(
+func (v *processor_) ProcessAttributeMethodSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessTerm(
-	term ast.TermLike,
+func (v *processor_) PostprocessAttributeMethod(
+	attributeMethod ast.AttributeMethodLike,
 	index uint,
 	size uint,
 ) {
 }
 
-func (v *processor_) PreprocessText(
-	text ast.TextLike,
+func (v *processor_) PreprocessAttributeSubsection(
+	attributeSubsection ast.AttributeSubsectionLike,
 ) {
 }
 
-func (v *processor_) ProcessTextSlot(
+func (v *processor_) ProcessAttributeSubsectionSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessText(
-	text ast.TextLike,
+func (v *processor_) PostprocessAttributeSubsection(
+	attributeSubsection ast.AttributeSubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessChannel(
+	channel ast.ChannelLike,
+) {
+}
+
+func (v *processor_) ProcessChannelSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessChannel(
+	channel ast.ChannelLike,
+) {
+}
+
+func (v *processor_) PreprocessClassDeclaration(
+	classDeclaration ast.ClassDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessClassDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessClassDeclaration(
+	classDeclaration ast.ClassDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessClassMethods(
+	classMethods ast.ClassMethodsLike,
+) {
+}
+
+func (v *processor_) ProcessClassMethodsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessClassMethods(
+	classMethods ast.ClassMethodsLike,
+) {
+}
+
+func (v *processor_) PreprocessClassSection(
+	classSection ast.ClassSectionLike,
+) {
+}
+
+func (v *processor_) ProcessClassSectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessClassSection(
+	classSection ast.ClassSectionLike,
+) {
+}
+
+func (v *processor_) PreprocessConstantMethod(
+	constantMethod ast.ConstantMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessConstantMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstantMethod(
+	constantMethod ast.ConstantMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessConstantSubsection(
+	constantSubsection ast.ConstantSubsectionLike,
+) {
+}
+
+func (v *processor_) ProcessConstantSubsectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstantSubsection(
+	constantSubsection ast.ConstantSubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessConstraint(
+	constraint ast.ConstraintLike,
+) {
+}
+
+func (v *processor_) ProcessConstraintSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstraint(
+	constraint ast.ConstraintLike,
+) {
+}
+
+func (v *processor_) PreprocessConstraints(
+	constraints ast.ConstraintsLike,
+) {
+}
+
+func (v *processor_) ProcessConstraintsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstraints(
+	constraints ast.ConstraintsLike,
+) {
+}
+
+func (v *processor_) PreprocessConstructorMethod(
+	constructorMethod ast.ConstructorMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessConstructorMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstructorMethod(
+	constructorMethod ast.ConstructorMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessConstructorSubsection(
+	constructorSubsection ast.ConstructorSubsectionLike,
+) {
+}
+
+func (v *processor_) ProcessConstructorSubsectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessConstructorSubsection(
+	constructorSubsection ast.ConstructorSubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessDeclaration(
+	declaration ast.DeclarationLike,
+) {
+}
+
+func (v *processor_) ProcessDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessDeclaration(
+	declaration ast.DeclarationLike,
+) {
+}
+
+func (v *processor_) PreprocessEnumeration(
+	enumeration ast.EnumerationLike,
+) {
+}
+
+func (v *processor_) ProcessEnumerationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessEnumeration(
+	enumeration ast.EnumerationLike,
+) {
+}
+
+func (v *processor_) PreprocessFunctionMethod(
+	functionMethod ast.FunctionMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessFunctionMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessFunctionMethod(
+	functionMethod ast.FunctionMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessFunctionSubsection(
+	functionSubsection ast.FunctionSubsectionLike,
+) {
+}
+
+func (v *processor_) ProcessFunctionSubsectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessFunctionSubsection(
+	functionSubsection ast.FunctionSubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessFunctionalDeclaration(
+	functionalDeclaration ast.FunctionalDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessFunctionalDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessFunctionalDeclaration(
+	functionalDeclaration ast.FunctionalDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessFunctionalSection(
+	functionalSection ast.FunctionalSectionLike,
+) {
+}
+
+func (v *processor_) ProcessFunctionalSectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessFunctionalSection(
+	functionalSection ast.FunctionalSectionLike,
+) {
+}
+
+func (v *processor_) PreprocessGetterMethod(
+	getterMethod ast.GetterMethodLike,
+) {
+}
+
+func (v *processor_) ProcessGetterMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessGetterMethod(
+	getterMethod ast.GetterMethodLike,
+) {
+}
+
+func (v *processor_) PreprocessImportedPackage(
+	importedPackage ast.ImportedPackageLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessImportedPackageSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessImportedPackage(
+	importedPackage ast.ImportedPackageLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessInstanceDeclaration(
+	instanceDeclaration ast.InstanceDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessInstanceDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessInstanceDeclaration(
+	instanceDeclaration ast.InstanceDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessInstanceMethods(
+	instanceMethods ast.InstanceMethodsLike,
+) {
+}
+
+func (v *processor_) ProcessInstanceMethodsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessInstanceMethods(
+	instanceMethods ast.InstanceMethodsLike,
+) {
+}
+
+func (v *processor_) PreprocessInstanceSection(
+	instanceSection ast.InstanceSectionLike,
+) {
+}
+
+func (v *processor_) ProcessInstanceSectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessInstanceSection(
+	instanceSection ast.InstanceSectionLike,
+) {
+}
+
+func (v *processor_) PreprocessInterfaceDeclarations(
+	interfaceDeclarations ast.InterfaceDeclarationsLike,
+) {
+}
+
+func (v *processor_) ProcessInterfaceDeclarationsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessInterfaceDeclarations(
+	interfaceDeclarations ast.InterfaceDeclarationsLike,
+) {
+}
+
+func (v *processor_) PreprocessLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+) {
+}
+
+func (v *processor_) ProcessLegalNoticeSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+) {
+}
+
+func (v *processor_) PreprocessMap(
+	map_ ast.MapLike,
+) {
+}
+
+func (v *processor_) ProcessMapSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessMap(
+	map_ ast.MapLike,
+) {
+}
+
+func (v *processor_) PreprocessMethod(
+	method ast.MethodLike,
+) {
+}
+
+func (v *processor_) ProcessMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessMethod(
+	method ast.MethodLike,
+) {
+}
+
+func (v *processor_) PreprocessModel(
+	model ast.ModelLike,
+) {
+}
+
+func (v *processor_) ProcessModelSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessModel(
+	model ast.ModelLike,
+) {
+}
+
+func (v *processor_) PreprocessModuleDeclaration(
+	moduleDeclaration ast.ModuleDeclarationLike,
+) {
+}
+
+func (v *processor_) ProcessModuleDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessModuleDeclaration(
+	moduleDeclaration ast.ModuleDeclarationLike,
+) {
+}
+
+func (v *processor_) PreprocessModuleHeader(
+	moduleHeader ast.ModuleHeaderLike,
+) {
+}
+
+func (v *processor_) ProcessModuleHeaderSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessModuleHeader(
+	moduleHeader ast.ModuleHeaderLike,
+) {
+}
+
+func (v *processor_) PreprocessModuleImports(
+	moduleImports ast.ModuleImportsLike,
+) {
+}
+
+func (v *processor_) ProcessModuleImportsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessModuleImports(
+	moduleImports ast.ModuleImportsLike,
+) {
+}
+
+func (v *processor_) PreprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+}
+
+func (v *processor_) ProcessMultivalueSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+}
+
+func (v *processor_) PreprocessNone(
+	none ast.NoneLike,
+) {
+}
+
+func (v *processor_) ProcessNoneSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessNone(
+	none ast.NoneLike,
+) {
+}
+
+func (v *processor_) PreprocessParameter(
+	parameter ast.ParameterLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessParameterSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessParameter(
+	parameter ast.ParameterLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessPrefix(
+	prefix ast.PrefixLike,
+) {
+}
+
+func (v *processor_) ProcessPrefixSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessPrefix(
+	prefix ast.PrefixLike,
+) {
+}
+
+func (v *processor_) PreprocessPrimaryMethod(
+	primaryMethod ast.PrimaryMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessPrimaryMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessPrimaryMethod(
+	primaryMethod ast.PrimaryMethodLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessPrimarySubsection(
+	primarySubsection ast.PrimarySubsectionLike,
+) {
+}
+
+func (v *processor_) ProcessPrimarySubsectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessPrimarySubsection(
+	primarySubsection ast.PrimarySubsectionLike,
+) {
+}
+
+func (v *processor_) PreprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
+) {
+}
+
+func (v *processor_) ProcessPrimitiveDeclarationsSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
+) {
+}
+
+func (v *processor_) PreprocessResult(
+	result ast.ResultLike,
+) {
+}
+
+func (v *processor_) ProcessResultSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessResult(
+	result ast.ResultLike,
+) {
+}
+
+func (v *processor_) PreprocessSetterMethod(
+	setterMethod ast.SetterMethodLike,
+) {
+}
+
+func (v *processor_) ProcessSetterMethodSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessSetterMethod(
+	setterMethod ast.SetterMethodLike,
+) {
+}
+
+func (v *processor_) PreprocessSuffix(
+	suffix ast.SuffixLike,
+) {
+}
+
+func (v *processor_) ProcessSuffixSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessSuffix(
+	suffix ast.SuffixLike,
+) {
+}
+
+func (v *processor_) PreprocessTypeDeclaration(
+	typeDeclaration ast.TypeDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessTypeDeclarationSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessTypeDeclaration(
+	typeDeclaration ast.TypeDeclarationLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessTypeSection(
+	typeSection ast.TypeSectionLike,
+) {
+}
+
+func (v *processor_) ProcessTypeSectionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessTypeSection(
+	typeSection ast.TypeSectionLike,
+) {
+}
+
+func (v *processor_) PreprocessValue(
+	value ast.ValueLike,
+) {
+}
+
+func (v *processor_) ProcessValueSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessValue(
+	value ast.ValueLike,
 ) {
 }
 

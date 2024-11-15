@@ -14,8 +14,8 @@ package grammar
 
 import (
 	fmt "fmt"
+	ast "github.com/craterdog/go-class-model/v5/ast"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
 )
 
 // CLASS INTERFACE
@@ -49,518 +49,959 @@ func (v *visitor_) GetClass() VisitorClassLike {
 	return visitorReference()
 }
 
-func (v *visitor_) VisitSyntax(
-	syntax ast.SyntaxLike,
+func (v *visitor_) VisitModel(
+	model ast.ModelLike,
 ) {
-	v.processor_.PreprocessSyntax(syntax)
-	v.visitSyntax(syntax)
-	v.processor_.PostprocessSyntax(syntax)
+	v.processor_.PreprocessModel(model)
+	v.visitModel(model)
+	v.processor_.PostprocessModel(model)
 }
 
 // PROTECTED INTERFACE
 
 // Private Methods
 
-func (v *visitor_) visitAlternative(alternative ast.AlternativeLike) {
-	// Visit a single option rule.
-	var option = alternative.GetOption()
-	v.processor_.PreprocessOption(option)
-	v.visitOption(option)
-	v.processor_.PostprocessOption(option)
-}
-
-func (v *visitor_) visitCardinality(cardinality ast.CardinalityLike) {
-	// Visit the possible cardinality types.
-	switch actual := cardinality.GetAny().(type) {
-	case ast.ConstrainedLike:
-		v.processor_.PreprocessConstrained(actual)
-		v.visitConstrained(actual)
-		v.processor_.PostprocessConstrained(actual)
-	case ast.QuantifiedLike:
-		v.processor_.PreprocessQuantified(actual)
-		v.visitQuantified(actual)
-		v.processor_.PostprocessQuantified(actual)
-	case string:
-		switch {
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
+func (v *visitor_) visitAbstraction(abstraction ast.AbstractionLike) {
+	// Visit an optional prefix rule.
+	var optionalPrefix = abstraction.GetOptionalPrefix()
+	if uti.IsDefined(optionalPrefix) {
+		v.processor_.PreprocessPrefix(optionalPrefix)
+		v.visitPrefix(optionalPrefix)
+		v.processor_.PostprocessPrefix(optionalPrefix)
 	}
-}
-
-func (v *visitor_) visitCharacter(character ast.CharacterLike) {
-	// Visit the possible character types.
-	switch actual := character.GetAny().(type) {
-	case ast.ExplicitLike:
-		v.processor_.PreprocessExplicit(actual)
-		v.visitExplicit(actual)
-		v.processor_.PostprocessExplicit(actual)
-	case string:
-		switch {
-		case Scanner().MatchesType(actual, IntrinsicToken):
-			v.processor_.ProcessIntrinsic(actual)
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
-}
-
-func (v *visitor_) visitConstrained(constrained ast.ConstrainedLike) {
-	// Visit the possible constrained types.
-	switch actual := constrained.GetAny().(type) {
-	case string:
-		switch {
-		case Scanner().MatchesType(actual, OptionalToken):
-			v.processor_.ProcessOptional(actual)
-		case Scanner().MatchesType(actual, RepeatedToken):
-			v.processor_.ProcessRepeated(actual)
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
-}
-
-func (v *visitor_) visitDefinition(definition ast.DefinitionLike) {
-	// Visit the possible definition types.
-	switch actual := definition.GetAny().(type) {
-	case ast.MultilineLike:
-		v.processor_.PreprocessMultiline(actual)
-		v.visitMultiline(actual)
-		v.processor_.PostprocessMultiline(actual)
-	case ast.InlineLike:
-		v.processor_.PreprocessInline(actual)
-		v.visitInline(actual)
-		v.processor_.PostprocessInline(actual)
-	case string:
-		switch {
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
-}
-
-func (v *visitor_) visitElement(element ast.ElementLike) {
-	// Visit the possible element types.
-	switch actual := element.GetAny().(type) {
-	case ast.GroupLike:
-		v.processor_.PreprocessGroup(actual)
-		v.visitGroup(actual)
-		v.processor_.PostprocessGroup(actual)
-	case ast.FilterLike:
-		v.processor_.PreprocessFilter(actual)
-		v.visitFilter(actual)
-		v.processor_.PostprocessFilter(actual)
-	case ast.TextLike:
-		v.processor_.PreprocessText(actual)
-		v.visitText(actual)
-		v.processor_.PostprocessText(actual)
-	case string:
-		switch {
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
-}
-
-func (v *visitor_) visitExplicit(explicit ast.ExplicitLike) {
-	// Visit a single glyph token.
-	var glyph = explicit.GetGlyph()
-	v.processor_.ProcessGlyph(glyph)
 
 	// Visit slot 1 between references.
-	v.processor_.ProcessExplicitSlot(1)
+	v.processor_.ProcessAbstractionSlot(1)
 
-	// Visit an optional extent rule.
-	var optionalExtent = explicit.GetOptionalExtent()
-	if uti.IsDefined(optionalExtent) {
-		v.processor_.PreprocessExtent(optionalExtent)
-		v.visitExtent(optionalExtent)
-		v.processor_.PostprocessExtent(optionalExtent)
-	}
-}
-
-func (v *visitor_) visitExpression(expression ast.ExpressionLike) {
-	// Visit a single lowercase token.
-	var lowercase = expression.GetLowercase()
-	v.processor_.ProcessLowercase(lowercase)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessExpressionSlot(1)
-
-	// Visit a single pattern rule.
-	var pattern = expression.GetPattern()
-	v.processor_.PreprocessPattern(pattern)
-	v.visitPattern(pattern)
-	v.processor_.PostprocessPattern(pattern)
+	// Visit a single name token.
+	var name = abstraction.GetName()
+	v.processor_.ProcessName(name)
 
 	// Visit slot 2 between references.
-	v.processor_.ProcessExpressionSlot(2)
+	v.processor_.ProcessAbstractionSlot(2)
 
-	// Visit an optional note token.
-	var optionalNote = expression.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitExtent(extent ast.ExtentLike) {
-	// Visit a single glyph token.
-	var glyph = extent.GetGlyph()
-	v.processor_.ProcessGlyph(glyph)
-}
-
-func (v *visitor_) visitFilter(filter ast.FilterLike) {
-	// Visit an optional excluded token.
-	var optionalExcluded = filter.GetOptionalExcluded()
-	if uti.IsDefined(optionalExcluded) {
-		v.processor_.ProcessExcluded(optionalExcluded)
-	}
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessFilterSlot(1)
-
-	// Visit each character rule.
-	var characterIndex uint
-	var characters = filter.GetCharacters().GetIterator()
-	var charactersSize = uint(characters.GetSize())
-	for characters.HasNext() {
-		characterIndex++
-		var character = characters.GetNext()
-		v.processor_.PreprocessCharacter(
-			character,
-			characterIndex,
-			charactersSize,
-		)
-		v.visitCharacter(character)
-		v.processor_.PostprocessCharacter(
-			character,
-			characterIndex,
-			charactersSize,
-		)
-	}
-}
-
-func (v *visitor_) visitGroup(group ast.GroupLike) {
-	// Visit a single pattern rule.
-	var pattern = group.GetPattern()
-	v.processor_.PreprocessPattern(pattern)
-	v.visitPattern(pattern)
-	v.processor_.PostprocessPattern(pattern)
-}
-
-func (v *visitor_) visitIdentifier(identifier ast.IdentifierLike) {
-	// Visit the possible identifier types.
-	switch actual := identifier.GetAny().(type) {
-	case string:
-		switch {
-		case Scanner().MatchesType(actual, LowercaseToken):
-			v.processor_.ProcessLowercase(actual)
-		case Scanner().MatchesType(actual, UppercaseToken):
-			v.processor_.ProcessUppercase(actual)
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
-}
-
-func (v *visitor_) visitInline(inline ast.InlineLike) {
-	// Visit each term rule.
-	var termIndex uint
-	var terms = inline.GetTerms().GetIterator()
-	var termsSize = uint(terms.GetSize())
-	for terms.HasNext() {
-		termIndex++
-		var term = terms.GetNext()
-		v.processor_.PreprocessTerm(
-			term,
-			termIndex,
-			termsSize,
-		)
-		v.visitTerm(term)
-		v.processor_.PostprocessTerm(
-			term,
-			termIndex,
-			termsSize,
-		)
-	}
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessInlineSlot(1)
-
-	// Visit an optional note token.
-	var optionalNote = inline.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitLimit(limit ast.LimitLike) {
-	// Visit an optional number token.
-	var optionalNumber = limit.GetOptionalNumber()
-	if uti.IsDefined(optionalNumber) {
-		v.processor_.ProcessNumber(optionalNumber)
-	}
-}
-
-func (v *visitor_) visitLine(line ast.LineLike) {
-	// Visit a single identifier rule.
-	var identifier = line.GetIdentifier()
-	v.processor_.PreprocessIdentifier(identifier)
-	v.visitIdentifier(identifier)
-	v.processor_.PostprocessIdentifier(identifier)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessLineSlot(1)
-
-	// Visit an optional note token.
-	var optionalNote = line.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitMultiline(multiline ast.MultilineLike) {
-	// Visit each line rule.
-	var lineIndex uint
-	var lines = multiline.GetLines().GetIterator()
-	var linesSize = uint(lines.GetSize())
-	for lines.HasNext() {
-		lineIndex++
-		var line = lines.GetNext()
-		v.processor_.PreprocessLine(
-			line,
-			lineIndex,
-			linesSize,
-		)
-		v.visitLine(line)
-		v.processor_.PostprocessLine(
-			line,
-			lineIndex,
-			linesSize,
-		)
-	}
-}
-
-func (v *visitor_) visitNotice(notice ast.NoticeLike) {
-	// Visit a single comment token.
-	var comment = notice.GetComment()
-	v.processor_.ProcessComment(comment)
-}
-
-func (v *visitor_) visitOption(option ast.OptionLike) {
-	// Visit each repetition rule.
-	var repetitionIndex uint
-	var repetitions = option.GetRepetitions().GetIterator()
-	var repetitionsSize = uint(repetitions.GetSize())
-	for repetitions.HasNext() {
-		repetitionIndex++
-		var repetition = repetitions.GetNext()
-		v.processor_.PreprocessRepetition(
-			repetition,
-			repetitionIndex,
-			repetitionsSize,
-		)
-		v.visitRepetition(repetition)
-		v.processor_.PostprocessRepetition(
-			repetition,
-			repetitionIndex,
-			repetitionsSize,
-		)
-	}
-}
-
-func (v *visitor_) visitPattern(pattern ast.PatternLike) {
-	// Visit a single option rule.
-	var option = pattern.GetOption()
-	v.processor_.PreprocessOption(option)
-	v.visitOption(option)
-	v.processor_.PostprocessOption(option)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessPatternSlot(1)
-
-	// Visit each alternative rule.
-	var alternativeIndex uint
-	var alternatives = pattern.GetAlternatives().GetIterator()
-	var alternativesSize = uint(alternatives.GetSize())
-	for alternatives.HasNext() {
-		alternativeIndex++
-		var alternative = alternatives.GetNext()
-		v.processor_.PreprocessAlternative(
-			alternative,
-			alternativeIndex,
-			alternativesSize,
-		)
-		v.visitAlternative(alternative)
-		v.processor_.PostprocessAlternative(
-			alternative,
-			alternativeIndex,
-			alternativesSize,
-		)
-	}
-}
-
-func (v *visitor_) visitQuantified(quantified ast.QuantifiedLike) {
-	// Visit a single number token.
-	var number = quantified.GetNumber()
-	v.processor_.ProcessNumber(number)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessQuantifiedSlot(1)
-
-	// Visit an optional limit rule.
-	var optionalLimit = quantified.GetOptionalLimit()
-	if uti.IsDefined(optionalLimit) {
-		v.processor_.PreprocessLimit(optionalLimit)
-		v.visitLimit(optionalLimit)
-		v.processor_.PostprocessLimit(optionalLimit)
-	}
-}
-
-func (v *visitor_) visitReference(reference ast.ReferenceLike) {
-	// Visit a single identifier rule.
-	var identifier = reference.GetIdentifier()
-	v.processor_.PreprocessIdentifier(identifier)
-	v.visitIdentifier(identifier)
-	v.processor_.PostprocessIdentifier(identifier)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessReferenceSlot(1)
-
-	// Visit an optional cardinality rule.
-	var optionalCardinality = reference.GetOptionalCardinality()
-	if uti.IsDefined(optionalCardinality) {
-		v.processor_.PreprocessCardinality(optionalCardinality)
-		v.visitCardinality(optionalCardinality)
-		v.processor_.PostprocessCardinality(optionalCardinality)
-	}
-}
-
-func (v *visitor_) visitRepetition(repetition ast.RepetitionLike) {
-	// Visit a single element rule.
-	var element = repetition.GetElement()
-	v.processor_.PreprocessElement(element)
-	v.visitElement(element)
-	v.processor_.PostprocessElement(element)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessRepetitionSlot(1)
-
-	// Visit an optional cardinality rule.
-	var optionalCardinality = repetition.GetOptionalCardinality()
-	if uti.IsDefined(optionalCardinality) {
-		v.processor_.PreprocessCardinality(optionalCardinality)
-		v.visitCardinality(optionalCardinality)
-		v.processor_.PostprocessCardinality(optionalCardinality)
-	}
-}
-
-func (v *visitor_) visitRule(rule ast.RuleLike) {
-	// Visit a single uppercase token.
-	var uppercase = rule.GetUppercase()
-	v.processor_.ProcessUppercase(uppercase)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessRuleSlot(1)
-
-	// Visit a single definition rule.
-	var definition = rule.GetDefinition()
-	v.processor_.PreprocessDefinition(definition)
-	v.visitDefinition(definition)
-	v.processor_.PostprocessDefinition(definition)
-}
-
-func (v *visitor_) visitSyntax(syntax ast.SyntaxLike) {
-	// Visit a single notice rule.
-	var notice = syntax.GetNotice()
-	v.processor_.PreprocessNotice(notice)
-	v.visitNotice(notice)
-	v.processor_.PostprocessNotice(notice)
-
-	// Visit slot 1 between references.
-	v.processor_.ProcessSyntaxSlot(1)
-
-	// Visit a single comment token.
-	var comment1 = syntax.GetComment1()
-	v.processor_.ProcessComment(comment1)
-
-	// Visit slot 2 between references.
-	v.processor_.ProcessSyntaxSlot(2)
-
-	// Visit each rule rule.
-	var ruleIndex uint
-	var rules = syntax.GetRules().GetIterator()
-	var rulesSize = uint(rules.GetSize())
-	for rules.HasNext() {
-		ruleIndex++
-		var rule = rules.GetNext()
-		v.processor_.PreprocessRule(
-			rule,
-			ruleIndex,
-			rulesSize,
-		)
-		v.visitRule(rule)
-		v.processor_.PostprocessRule(
-			rule,
-			ruleIndex,
-			rulesSize,
-		)
+	// Visit an optional suffix rule.
+	var optionalSuffix = abstraction.GetOptionalSuffix()
+	if uti.IsDefined(optionalSuffix) {
+		v.processor_.PreprocessSuffix(optionalSuffix)
+		v.visitSuffix(optionalSuffix)
+		v.processor_.PostprocessSuffix(optionalSuffix)
 	}
 
 	// Visit slot 3 between references.
-	v.processor_.ProcessSyntaxSlot(3)
+	v.processor_.ProcessAbstractionSlot(3)
 
+	// Visit an optional arguments rule.
+	var optionalArguments = abstraction.GetOptionalArguments()
+	if uti.IsDefined(optionalArguments) {
+		v.processor_.PreprocessArguments(optionalArguments)
+		v.visitArguments(optionalArguments)
+		v.processor_.PostprocessArguments(optionalArguments)
+	}
+}
+
+func (v *visitor_) visitAdditionalArgument(additionalArgument ast.AdditionalArgumentLike) {
+	// Visit a single argument rule.
+	var argument = additionalArgument.GetArgument()
+	v.processor_.PreprocessArgument(argument)
+	v.visitArgument(argument)
+	v.processor_.PostprocessArgument(argument)
+}
+
+func (v *visitor_) visitAdditionalConstraint(additionalConstraint ast.AdditionalConstraintLike) {
+	// Visit a single constraint rule.
+	var constraint = additionalConstraint.GetConstraint()
+	v.processor_.PreprocessConstraint(constraint)
+	v.visitConstraint(constraint)
+	v.processor_.PostprocessConstraint(constraint)
+}
+
+func (v *visitor_) visitAdditionalValue(additionalValue ast.AdditionalValueLike) {
+	// Visit a single name token.
+	var name = additionalValue.GetName()
+	v.processor_.ProcessName(name)
+}
+
+func (v *visitor_) visitArgument(argument ast.ArgumentLike) {
+	// Visit a single abstraction rule.
+	var abstraction = argument.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitArguments(arguments ast.ArgumentsLike) {
+	// Visit a single argument rule.
+	var argument = arguments.GetArgument()
+	v.processor_.PreprocessArgument(argument)
+	v.visitArgument(argument)
+	v.processor_.PostprocessArgument(argument)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessArgumentsSlot(1)
+
+	// Visit each additionalArgument rule.
+	var additionalArgumentIndex uint
+	var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+	var additionalArgumentsSize = uint(additionalArguments.GetSize())
+	for additionalArguments.HasNext() {
+		additionalArgumentIndex++
+		var additionalArgument = additionalArguments.GetNext()
+		v.processor_.PreprocessAdditionalArgument(
+			additionalArgument,
+			additionalArgumentIndex,
+			additionalArgumentsSize,
+		)
+		v.visitAdditionalArgument(additionalArgument)
+		v.processor_.PostprocessAdditionalArgument(
+			additionalArgument,
+			additionalArgumentIndex,
+			additionalArgumentsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitArray(array ast.ArrayLike) {}
+
+func (v *visitor_) visitAspectDeclaration(aspectDeclaration ast.AspectDeclarationLike) {
+	// Visit a single declaration rule.
+	var declaration = aspectDeclaration.GetDeclaration()
+	v.processor_.PreprocessDeclaration(declaration)
+	v.visitDeclaration(declaration)
+	v.processor_.PostprocessDeclaration(declaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessAspectDeclarationSlot(1)
+
+	// Visit each aspectMethod rule.
+	var aspectMethodIndex uint
+	var aspectMethods = aspectDeclaration.GetAspectMethods().GetIterator()
+	var aspectMethodsSize = uint(aspectMethods.GetSize())
+	for aspectMethods.HasNext() {
+		aspectMethodIndex++
+		var aspectMethod = aspectMethods.GetNext()
+		v.processor_.PreprocessAspectMethod(
+			aspectMethod,
+			aspectMethodIndex,
+			aspectMethodsSize,
+		)
+		v.visitAspectMethod(aspectMethod)
+		v.processor_.PostprocessAspectMethod(
+			aspectMethod,
+			aspectMethodIndex,
+			aspectMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitAspectInterface(aspectInterface ast.AspectInterfaceLike) {
+	// Visit a single abstraction rule.
+	var abstraction = aspectInterface.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitAspectMethod(aspectMethod ast.AspectMethodLike) {
+	// Visit a single method rule.
+	var method = aspectMethod.GetMethod()
+	v.processor_.PreprocessMethod(method)
+	v.visitMethod(method)
+	v.processor_.PostprocessMethod(method)
+}
+
+func (v *visitor_) visitAspectSection(aspectSection ast.AspectSectionLike) {
+	// Visit each aspectDeclaration rule.
+	var aspectDeclarationIndex uint
+	var aspectDeclarations = aspectSection.GetAspectDeclarations().GetIterator()
+	var aspectDeclarationsSize = uint(aspectDeclarations.GetSize())
+	for aspectDeclarations.HasNext() {
+		aspectDeclarationIndex++
+		var aspectDeclaration = aspectDeclarations.GetNext()
+		v.processor_.PreprocessAspectDeclaration(
+			aspectDeclaration,
+			aspectDeclarationIndex,
+			aspectDeclarationsSize,
+		)
+		v.visitAspectDeclaration(aspectDeclaration)
+		v.processor_.PostprocessAspectDeclaration(
+			aspectDeclaration,
+			aspectDeclarationIndex,
+			aspectDeclarationsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitAspectSubsection(aspectSubsection ast.AspectSubsectionLike) {
+	// Visit each aspectInterface rule.
+	var aspectInterfaceIndex uint
+	var aspectInterfaces = aspectSubsection.GetAspectInterfaces().GetIterator()
+	var aspectInterfacesSize = uint(aspectInterfaces.GetSize())
+	for aspectInterfaces.HasNext() {
+		aspectInterfaceIndex++
+		var aspectInterface = aspectInterfaces.GetNext()
+		v.processor_.PreprocessAspectInterface(
+			aspectInterface,
+			aspectInterfaceIndex,
+			aspectInterfacesSize,
+		)
+		v.visitAspectInterface(aspectInterface)
+		v.processor_.PostprocessAspectInterface(
+			aspectInterface,
+			aspectInterfaceIndex,
+			aspectInterfacesSize,
+		)
+	}
+}
+
+func (v *visitor_) visitAttributeMethod(attributeMethod ast.AttributeMethodLike) {
+	// Visit the possible attributeMethod types.
+	switch actual := attributeMethod.GetAny().(type) {
+	case ast.GetterMethodLike:
+		v.processor_.PreprocessGetterMethod(actual)
+		v.visitGetterMethod(actual)
+		v.processor_.PostprocessGetterMethod(actual)
+	case ast.SetterMethodLike:
+		v.processor_.PreprocessSetterMethod(actual)
+		v.visitSetterMethod(actual)
+		v.processor_.PostprocessSetterMethod(actual)
+	case string:
+		switch {
+		default:
+			panic(fmt.Sprintf("Invalid token: %v", actual))
+		}
+	default:
+		panic(fmt.Sprintf("Invalid rule type: %T", actual))
+	}
+}
+
+func (v *visitor_) visitAttributeSubsection(attributeSubsection ast.AttributeSubsectionLike) {
+	// Visit each attributeMethod rule.
+	var attributeMethodIndex uint
+	var attributeMethods = attributeSubsection.GetAttributeMethods().GetIterator()
+	var attributeMethodsSize = uint(attributeMethods.GetSize())
+	for attributeMethods.HasNext() {
+		attributeMethodIndex++
+		var attributeMethod = attributeMethods.GetNext()
+		v.processor_.PreprocessAttributeMethod(
+			attributeMethod,
+			attributeMethodIndex,
+			attributeMethodsSize,
+		)
+		v.visitAttributeMethod(attributeMethod)
+		v.processor_.PostprocessAttributeMethod(
+			attributeMethod,
+			attributeMethodIndex,
+			attributeMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitChannel(channel ast.ChannelLike) {}
+
+func (v *visitor_) visitClassDeclaration(classDeclaration ast.ClassDeclarationLike) {
+	// Visit a single declaration rule.
+	var declaration = classDeclaration.GetDeclaration()
+	v.processor_.PreprocessDeclaration(declaration)
+	v.visitDeclaration(declaration)
+	v.processor_.PostprocessDeclaration(declaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessClassDeclarationSlot(1)
+
+	// Visit a single classMethods rule.
+	var classMethods = classDeclaration.GetClassMethods()
+	v.processor_.PreprocessClassMethods(classMethods)
+	v.visitClassMethods(classMethods)
+	v.processor_.PostprocessClassMethods(classMethods)
+}
+
+func (v *visitor_) visitClassMethods(classMethods ast.ClassMethodsLike) {
+	// Visit a single constructorSubsection rule.
+	var constructorSubsection = classMethods.GetConstructorSubsection()
+	v.processor_.PreprocessConstructorSubsection(constructorSubsection)
+	v.visitConstructorSubsection(constructorSubsection)
+	v.processor_.PostprocessConstructorSubsection(constructorSubsection)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessClassMethodsSlot(1)
+
+	// Visit a single constantSubsection rule.
+	var constantSubsection = classMethods.GetConstantSubsection()
+	v.processor_.PreprocessConstantSubsection(constantSubsection)
+	v.visitConstantSubsection(constantSubsection)
+	v.processor_.PostprocessConstantSubsection(constantSubsection)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessClassMethodsSlot(2)
+
+	// Visit a single functionSubsection rule.
+	var functionSubsection = classMethods.GetFunctionSubsection()
+	v.processor_.PreprocessFunctionSubsection(functionSubsection)
+	v.visitFunctionSubsection(functionSubsection)
+	v.processor_.PostprocessFunctionSubsection(functionSubsection)
+}
+
+func (v *visitor_) visitClassSection(classSection ast.ClassSectionLike) {
+	// Visit each classDeclaration rule.
+	var classDeclarationIndex uint
+	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
+	var classDeclarationsSize = uint(classDeclarations.GetSize())
+	for classDeclarations.HasNext() {
+		classDeclarationIndex++
+		var classDeclaration = classDeclarations.GetNext()
+		v.processor_.PreprocessClassDeclaration(
+			classDeclaration,
+			classDeclarationIndex,
+			classDeclarationsSize,
+		)
+		v.visitClassDeclaration(classDeclaration)
+		v.processor_.PostprocessClassDeclaration(
+			classDeclaration,
+			classDeclarationIndex,
+			classDeclarationsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitConstantMethod(constantMethod ast.ConstantMethodLike) {
+	// Visit a single name token.
+	var name = constantMethod.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessConstantMethodSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = constantMethod.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitConstantSubsection(constantSubsection ast.ConstantSubsectionLike) {
+	// Visit each constantMethod rule.
+	var constantMethodIndex uint
+	var constantMethods = constantSubsection.GetConstantMethods().GetIterator()
+	var constantMethodsSize = uint(constantMethods.GetSize())
+	for constantMethods.HasNext() {
+		constantMethodIndex++
+		var constantMethod = constantMethods.GetNext()
+		v.processor_.PreprocessConstantMethod(
+			constantMethod,
+			constantMethodIndex,
+			constantMethodsSize,
+		)
+		v.visitConstantMethod(constantMethod)
+		v.processor_.PostprocessConstantMethod(
+			constantMethod,
+			constantMethodIndex,
+			constantMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitConstraint(constraint ast.ConstraintLike) {
+	// Visit a single name token.
+	var name = constraint.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessConstraintSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = constraint.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitConstraints(constraints ast.ConstraintsLike) {
+	// Visit a single constraint rule.
+	var constraint = constraints.GetConstraint()
+	v.processor_.PreprocessConstraint(constraint)
+	v.visitConstraint(constraint)
+	v.processor_.PostprocessConstraint(constraint)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessConstraintsSlot(1)
+
+	// Visit each additionalConstraint rule.
+	var additionalConstraintIndex uint
+	var additionalConstraints = constraints.GetAdditionalConstraints().GetIterator()
+	var additionalConstraintsSize = uint(additionalConstraints.GetSize())
+	for additionalConstraints.HasNext() {
+		additionalConstraintIndex++
+		var additionalConstraint = additionalConstraints.GetNext()
+		v.processor_.PreprocessAdditionalConstraint(
+			additionalConstraint,
+			additionalConstraintIndex,
+			additionalConstraintsSize,
+		)
+		v.visitAdditionalConstraint(additionalConstraint)
+		v.processor_.PostprocessAdditionalConstraint(
+			additionalConstraint,
+			additionalConstraintIndex,
+			additionalConstraintsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitConstructorMethod(constructorMethod ast.ConstructorMethodLike) {
+	// Visit a single name token.
+	var name = constructorMethod.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessConstructorMethodSlot(1)
+
+	// Visit each parameter rule.
+	var parameterIndex uint
+	var parameters = constructorMethod.GetParameters().GetIterator()
+	var parametersSize = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parameterIndex++
+		var parameter = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+	}
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessConstructorMethodSlot(2)
+
+	// Visit a single abstraction rule.
+	var abstraction = constructorMethod.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitConstructorSubsection(constructorSubsection ast.ConstructorSubsectionLike) {
+	// Visit each constructorMethod rule.
+	var constructorMethodIndex uint
+	var constructorMethods = constructorSubsection.GetConstructorMethods().GetIterator()
+	var constructorMethodsSize = uint(constructorMethods.GetSize())
+	for constructorMethods.HasNext() {
+		constructorMethodIndex++
+		var constructorMethod = constructorMethods.GetNext()
+		v.processor_.PreprocessConstructorMethod(
+			constructorMethod,
+			constructorMethodIndex,
+			constructorMethodsSize,
+		)
+		v.visitConstructorMethod(constructorMethod)
+		v.processor_.PostprocessConstructorMethod(
+			constructorMethod,
+			constructorMethodIndex,
+			constructorMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitDeclaration(declaration ast.DeclarationLike) {
 	// Visit a single comment token.
-	var comment2 = syntax.GetComment2()
-	v.processor_.ProcessComment(comment2)
+	var comment = declaration.GetComment()
+	v.processor_.ProcessComment(comment)
 
-	// Visit slot 4 between references.
-	v.processor_.ProcessSyntaxSlot(4)
+	// Visit slot 1 between references.
+	v.processor_.ProcessDeclarationSlot(1)
 
-	// Visit each expression rule.
-	var expressionIndex uint
-	var expressions = syntax.GetExpressions().GetIterator()
-	var expressionsSize = uint(expressions.GetSize())
-	for expressions.HasNext() {
-		expressionIndex++
-		var expression = expressions.GetNext()
-		v.processor_.PreprocessExpression(
-			expression,
-			expressionIndex,
-			expressionsSize,
+	// Visit a single name token.
+	var name = declaration.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessDeclarationSlot(2)
+
+	// Visit an optional constraints rule.
+	var optionalConstraints = declaration.GetOptionalConstraints()
+	if uti.IsDefined(optionalConstraints) {
+		v.processor_.PreprocessConstraints(optionalConstraints)
+		v.visitConstraints(optionalConstraints)
+		v.processor_.PostprocessConstraints(optionalConstraints)
+	}
+}
+
+func (v *visitor_) visitEnumeration(enumeration ast.EnumerationLike) {
+	// Visit a single value rule.
+	var value = enumeration.GetValue()
+	v.processor_.PreprocessValue(value)
+	v.visitValue(value)
+	v.processor_.PostprocessValue(value)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessEnumerationSlot(1)
+
+	// Visit each additionalValue rule.
+	var additionalValueIndex uint
+	var additionalValues = enumeration.GetAdditionalValues().GetIterator()
+	var additionalValuesSize = uint(additionalValues.GetSize())
+	for additionalValues.HasNext() {
+		additionalValueIndex++
+		var additionalValue = additionalValues.GetNext()
+		v.processor_.PreprocessAdditionalValue(
+			additionalValue,
+			additionalValueIndex,
+			additionalValuesSize,
 		)
-		v.visitExpression(expression)
-		v.processor_.PostprocessExpression(
-			expression,
-			expressionIndex,
-			expressionsSize,
+		v.visitAdditionalValue(additionalValue)
+		v.processor_.PostprocessAdditionalValue(
+			additionalValue,
+			additionalValueIndex,
+			additionalValuesSize,
 		)
 	}
 }
 
-func (v *visitor_) visitTerm(term ast.TermLike) {
-	// Visit the possible term types.
-	switch actual := term.GetAny().(type) {
-	case ast.ReferenceLike:
-		v.processor_.PreprocessReference(actual)
-		v.visitReference(actual)
-		v.processor_.PostprocessReference(actual)
+func (v *visitor_) visitFunctionMethod(functionMethod ast.FunctionMethodLike) {
+	// Visit a single name token.
+	var name = functionMethod.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessFunctionMethodSlot(1)
+
+	// Visit each parameter rule.
+	var parameterIndex uint
+	var parameters = functionMethod.GetParameters().GetIterator()
+	var parametersSize = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parameterIndex++
+		var parameter = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+	}
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessFunctionMethodSlot(2)
+
+	// Visit a single result rule.
+	var result = functionMethod.GetResult()
+	v.processor_.PreprocessResult(result)
+	v.visitResult(result)
+	v.processor_.PostprocessResult(result)
+}
+
+func (v *visitor_) visitFunctionSubsection(functionSubsection ast.FunctionSubsectionLike) {
+	// Visit each functionMethod rule.
+	var functionMethodIndex uint
+	var functionMethods = functionSubsection.GetFunctionMethods().GetIterator()
+	var functionMethodsSize = uint(functionMethods.GetSize())
+	for functionMethods.HasNext() {
+		functionMethodIndex++
+		var functionMethod = functionMethods.GetNext()
+		v.processor_.PreprocessFunctionMethod(
+			functionMethod,
+			functionMethodIndex,
+			functionMethodsSize,
+		)
+		v.visitFunctionMethod(functionMethod)
+		v.processor_.PostprocessFunctionMethod(
+			functionMethod,
+			functionMethodIndex,
+			functionMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitFunctionalDeclaration(functionalDeclaration ast.FunctionalDeclarationLike) {
+	// Visit a single declaration rule.
+	var declaration = functionalDeclaration.GetDeclaration()
+	v.processor_.PreprocessDeclaration(declaration)
+	v.visitDeclaration(declaration)
+	v.processor_.PostprocessDeclaration(declaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessFunctionalDeclarationSlot(1)
+
+	// Visit each parameter rule.
+	var parameterIndex uint
+	var parameters = functionalDeclaration.GetParameters().GetIterator()
+	var parametersSize = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parameterIndex++
+		var parameter = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+	}
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessFunctionalDeclarationSlot(2)
+
+	// Visit a single result rule.
+	var result = functionalDeclaration.GetResult()
+	v.processor_.PreprocessResult(result)
+	v.visitResult(result)
+	v.processor_.PostprocessResult(result)
+}
+
+func (v *visitor_) visitFunctionalSection(functionalSection ast.FunctionalSectionLike) {
+	// Visit each functionalDeclaration rule.
+	var functionalDeclarationIndex uint
+	var functionalDeclarations = functionalSection.GetFunctionalDeclarations().GetIterator()
+	var functionalDeclarationsSize = uint(functionalDeclarations.GetSize())
+	for functionalDeclarations.HasNext() {
+		functionalDeclarationIndex++
+		var functionalDeclaration = functionalDeclarations.GetNext()
+		v.processor_.PreprocessFunctionalDeclaration(
+			functionalDeclaration,
+			functionalDeclarationIndex,
+			functionalDeclarationsSize,
+		)
+		v.visitFunctionalDeclaration(functionalDeclaration)
+		v.processor_.PostprocessFunctionalDeclaration(
+			functionalDeclaration,
+			functionalDeclarationIndex,
+			functionalDeclarationsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitGetterMethod(getterMethod ast.GetterMethodLike) {
+	// Visit a single name token.
+	var name = getterMethod.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessGetterMethodSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = getterMethod.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitImportedPackage(importedPackage ast.ImportedPackageLike) {
+	// Visit a single name token.
+	var name = importedPackage.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessImportedPackageSlot(1)
+
+	// Visit a single path token.
+	var path = importedPackage.GetPath()
+	v.processor_.ProcessPath(path)
+}
+
+func (v *visitor_) visitInstanceDeclaration(instanceDeclaration ast.InstanceDeclarationLike) {
+	// Visit a single declaration rule.
+	var declaration = instanceDeclaration.GetDeclaration()
+	v.processor_.PreprocessDeclaration(declaration)
+	v.visitDeclaration(declaration)
+	v.processor_.PostprocessDeclaration(declaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessInstanceDeclarationSlot(1)
+
+	// Visit a single instanceMethods rule.
+	var instanceMethods = instanceDeclaration.GetInstanceMethods()
+	v.processor_.PreprocessInstanceMethods(instanceMethods)
+	v.visitInstanceMethods(instanceMethods)
+	v.processor_.PostprocessInstanceMethods(instanceMethods)
+}
+
+func (v *visitor_) visitInstanceMethods(instanceMethods ast.InstanceMethodsLike) {
+	// Visit a single primarySubsection rule.
+	var primarySubsection = instanceMethods.GetPrimarySubsection()
+	v.processor_.PreprocessPrimarySubsection(primarySubsection)
+	v.visitPrimarySubsection(primarySubsection)
+	v.processor_.PostprocessPrimarySubsection(primarySubsection)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessInstanceMethodsSlot(1)
+
+	// Visit a single attributeSubsection rule.
+	var attributeSubsection = instanceMethods.GetAttributeSubsection()
+	v.processor_.PreprocessAttributeSubsection(attributeSubsection)
+	v.visitAttributeSubsection(attributeSubsection)
+	v.processor_.PostprocessAttributeSubsection(attributeSubsection)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessInstanceMethodsSlot(2)
+
+	// Visit a single aspectSubsection rule.
+	var aspectSubsection = instanceMethods.GetAspectSubsection()
+	v.processor_.PreprocessAspectSubsection(aspectSubsection)
+	v.visitAspectSubsection(aspectSubsection)
+	v.processor_.PostprocessAspectSubsection(aspectSubsection)
+}
+
+func (v *visitor_) visitInstanceSection(instanceSection ast.InstanceSectionLike) {
+	// Visit each instanceDeclaration rule.
+	var instanceDeclarationIndex uint
+	var instanceDeclarations = instanceSection.GetInstanceDeclarations().GetIterator()
+	var instanceDeclarationsSize = uint(instanceDeclarations.GetSize())
+	for instanceDeclarations.HasNext() {
+		instanceDeclarationIndex++
+		var instanceDeclaration = instanceDeclarations.GetNext()
+		v.processor_.PreprocessInstanceDeclaration(
+			instanceDeclaration,
+			instanceDeclarationIndex,
+			instanceDeclarationsSize,
+		)
+		v.visitInstanceDeclaration(instanceDeclaration)
+		v.processor_.PostprocessInstanceDeclaration(
+			instanceDeclaration,
+			instanceDeclarationIndex,
+			instanceDeclarationsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitInterfaceDeclarations(interfaceDeclarations ast.InterfaceDeclarationsLike) {
+	// Visit a single classSection rule.
+	var classSection = interfaceDeclarations.GetClassSection()
+	v.processor_.PreprocessClassSection(classSection)
+	v.visitClassSection(classSection)
+	v.processor_.PostprocessClassSection(classSection)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessInterfaceDeclarationsSlot(1)
+
+	// Visit a single instanceSection rule.
+	var instanceSection = interfaceDeclarations.GetInstanceSection()
+	v.processor_.PreprocessInstanceSection(instanceSection)
+	v.visitInstanceSection(instanceSection)
+	v.processor_.PostprocessInstanceSection(instanceSection)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessInterfaceDeclarationsSlot(2)
+
+	// Visit a single aspectSection rule.
+	var aspectSection = interfaceDeclarations.GetAspectSection()
+	v.processor_.PreprocessAspectSection(aspectSection)
+	v.visitAspectSection(aspectSection)
+	v.processor_.PostprocessAspectSection(aspectSection)
+}
+
+func (v *visitor_) visitLegalNotice(legalNotice ast.LegalNoticeLike) {
+	// Visit a single comment token.
+	var comment = legalNotice.GetComment()
+	v.processor_.ProcessComment(comment)
+}
+
+func (v *visitor_) visitMap(map_ ast.MapLike) {
+	// Visit a single name token.
+	var name = map_.GetName()
+	v.processor_.ProcessName(name)
+}
+
+func (v *visitor_) visitMethod(method ast.MethodLike) {
+	// Visit a single name token.
+	var name = method.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessMethodSlot(1)
+
+	// Visit each parameter rule.
+	var parameterIndex uint
+	var parameters = method.GetParameters().GetIterator()
+	var parametersSize = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parameterIndex++
+		var parameter = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+	}
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessMethodSlot(2)
+
+	// Visit an optional result rule.
+	var optionalResult = method.GetOptionalResult()
+	if uti.IsDefined(optionalResult) {
+		v.processor_.PreprocessResult(optionalResult)
+		v.visitResult(optionalResult)
+		v.processor_.PostprocessResult(optionalResult)
+	}
+}
+
+func (v *visitor_) visitModel(model ast.ModelLike) {
+	// Visit a single moduleDeclaration rule.
+	var moduleDeclaration = model.GetModuleDeclaration()
+	v.processor_.PreprocessModuleDeclaration(moduleDeclaration)
+	v.visitModuleDeclaration(moduleDeclaration)
+	v.processor_.PostprocessModuleDeclaration(moduleDeclaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessModelSlot(1)
+
+	// Visit a single primitiveDeclarations rule.
+	var primitiveDeclarations = model.GetPrimitiveDeclarations()
+	v.processor_.PreprocessPrimitiveDeclarations(primitiveDeclarations)
+	v.visitPrimitiveDeclarations(primitiveDeclarations)
+	v.processor_.PostprocessPrimitiveDeclarations(primitiveDeclarations)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessModelSlot(2)
+
+	// Visit a single interfaceDeclarations rule.
+	var interfaceDeclarations = model.GetInterfaceDeclarations()
+	v.processor_.PreprocessInterfaceDeclarations(interfaceDeclarations)
+	v.visitInterfaceDeclarations(interfaceDeclarations)
+	v.processor_.PostprocessInterfaceDeclarations(interfaceDeclarations)
+}
+
+func (v *visitor_) visitModuleDeclaration(moduleDeclaration ast.ModuleDeclarationLike) {
+	// Visit a single legalNotice rule.
+	var legalNotice = moduleDeclaration.GetLegalNotice()
+	v.processor_.PreprocessLegalNotice(legalNotice)
+	v.visitLegalNotice(legalNotice)
+	v.processor_.PostprocessLegalNotice(legalNotice)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessModuleDeclarationSlot(1)
+
+	// Visit a single moduleHeader rule.
+	var moduleHeader = moduleDeclaration.GetModuleHeader()
+	v.processor_.PreprocessModuleHeader(moduleHeader)
+	v.visitModuleHeader(moduleHeader)
+	v.processor_.PostprocessModuleHeader(moduleHeader)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessModuleDeclarationSlot(2)
+
+	// Visit a single moduleImports rule.
+	var moduleImports = moduleDeclaration.GetModuleImports()
+	v.processor_.PreprocessModuleImports(moduleImports)
+	v.visitModuleImports(moduleImports)
+	v.processor_.PostprocessModuleImports(moduleImports)
+}
+
+func (v *visitor_) visitModuleHeader(moduleHeader ast.ModuleHeaderLike) {
+	// Visit a single comment token.
+	var comment = moduleHeader.GetComment()
+	v.processor_.ProcessComment(comment)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessModuleHeaderSlot(1)
+
+	// Visit a single name token.
+	var name = moduleHeader.GetName()
+	v.processor_.ProcessName(name)
+}
+
+func (v *visitor_) visitModuleImports(moduleImports ast.ModuleImportsLike) {
+	// Visit each importedPackage rule.
+	var importedPackageIndex uint
+	var importedPackages = moduleImports.GetImportedPackages().GetIterator()
+	var importedPackagesSize = uint(importedPackages.GetSize())
+	for importedPackages.HasNext() {
+		importedPackageIndex++
+		var importedPackage = importedPackages.GetNext()
+		v.processor_.PreprocessImportedPackage(
+			importedPackage,
+			importedPackageIndex,
+			importedPackagesSize,
+		)
+		v.visitImportedPackage(importedPackage)
+		v.processor_.PostprocessImportedPackage(
+			importedPackage,
+			importedPackageIndex,
+			importedPackagesSize,
+		)
+	}
+}
+
+func (v *visitor_) visitMultivalue(multivalue ast.MultivalueLike) {
+	// Visit each parameter rule.
+	var parameterIndex uint
+	var parameters = multivalue.GetParameters().GetIterator()
+	var parametersSize = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parameterIndex++
+		var parameter = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(
+			parameter,
+			parameterIndex,
+			parametersSize,
+		)
+	}
+}
+
+func (v *visitor_) visitNone(none ast.NoneLike) {
+	// Visit a single newline token.
+	var newline = none.GetNewline()
+	v.processor_.ProcessNewline(newline)
+}
+
+func (v *visitor_) visitParameter(parameter ast.ParameterLike) {
+	// Visit a single name token.
+	var name = parameter.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessParameterSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = parameter.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+}
+
+func (v *visitor_) visitPrefix(prefix ast.PrefixLike) {
+	// Visit the possible prefix types.
+	switch actual := prefix.GetAny().(type) {
+	case ast.ArrayLike:
+		v.processor_.PreprocessArray(actual)
+		v.visitArray(actual)
+		v.processor_.PostprocessArray(actual)
+	case ast.MapLike:
+		v.processor_.PreprocessMap(actual)
+		v.visitMap(actual)
+		v.processor_.PostprocessMap(actual)
+	case ast.ChannelLike:
+		v.processor_.PreprocessChannel(actual)
+		v.visitChannel(actual)
+		v.processor_.PostprocessChannel(actual)
 	case string:
 		switch {
-		case Scanner().MatchesType(actual, LiteralToken):
-			v.processor_.ProcessLiteral(actual)
 		default:
 			panic(fmt.Sprintf("Invalid token: %v", actual))
 		}
@@ -569,25 +1010,164 @@ func (v *visitor_) visitTerm(term ast.TermLike) {
 	}
 }
 
-func (v *visitor_) visitText(text ast.TextLike) {
-	// Visit the possible text types.
-	switch actual := text.GetAny().(type) {
+func (v *visitor_) visitPrimaryMethod(primaryMethod ast.PrimaryMethodLike) {
+	// Visit a single method rule.
+	var method = primaryMethod.GetMethod()
+	v.processor_.PreprocessMethod(method)
+	v.visitMethod(method)
+	v.processor_.PostprocessMethod(method)
+}
+
+func (v *visitor_) visitPrimarySubsection(primarySubsection ast.PrimarySubsectionLike) {
+	// Visit each primaryMethod rule.
+	var primaryMethodIndex uint
+	var primaryMethods = primarySubsection.GetPrimaryMethods().GetIterator()
+	var primaryMethodsSize = uint(primaryMethods.GetSize())
+	for primaryMethods.HasNext() {
+		primaryMethodIndex++
+		var primaryMethod = primaryMethods.GetNext()
+		v.processor_.PreprocessPrimaryMethod(
+			primaryMethod,
+			primaryMethodIndex,
+			primaryMethodsSize,
+		)
+		v.visitPrimaryMethod(primaryMethod)
+		v.processor_.PostprocessPrimaryMethod(
+			primaryMethod,
+			primaryMethodIndex,
+			primaryMethodsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitPrimitiveDeclarations(primitiveDeclarations ast.PrimitiveDeclarationsLike) {
+	// Visit a single typeSection rule.
+	var typeSection = primitiveDeclarations.GetTypeSection()
+	v.processor_.PreprocessTypeSection(typeSection)
+	v.visitTypeSection(typeSection)
+	v.processor_.PostprocessTypeSection(typeSection)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessPrimitiveDeclarationsSlot(1)
+
+	// Visit a single functionalSection rule.
+	var functionalSection = primitiveDeclarations.GetFunctionalSection()
+	v.processor_.PreprocessFunctionalSection(functionalSection)
+	v.visitFunctionalSection(functionalSection)
+	v.processor_.PostprocessFunctionalSection(functionalSection)
+}
+
+func (v *visitor_) visitResult(result ast.ResultLike) {
+	// Visit the possible result types.
+	switch actual := result.GetAny().(type) {
+	case ast.NoneLike:
+		v.processor_.PreprocessNone(actual)
+		v.visitNone(actual)
+		v.processor_.PostprocessNone(actual)
+	case ast.AbstractionLike:
+		v.processor_.PreprocessAbstraction(actual)
+		v.visitAbstraction(actual)
+		v.processor_.PostprocessAbstraction(actual)
+	case ast.MultivalueLike:
+		v.processor_.PreprocessMultivalue(actual)
+		v.visitMultivalue(actual)
+		v.processor_.PostprocessMultivalue(actual)
 	case string:
 		switch {
-		case Scanner().MatchesType(actual, IntrinsicToken):
-			v.processor_.ProcessIntrinsic(actual)
-		case Scanner().MatchesType(actual, GlyphToken):
-			v.processor_.ProcessGlyph(actual)
-		case Scanner().MatchesType(actual, LiteralToken):
-			v.processor_.ProcessLiteral(actual)
-		case Scanner().MatchesType(actual, LowercaseToken):
-			v.processor_.ProcessLowercase(actual)
 		default:
 			panic(fmt.Sprintf("Invalid token: %v", actual))
 		}
 	default:
 		panic(fmt.Sprintf("Invalid rule type: %T", actual))
 	}
+}
+
+func (v *visitor_) visitSetterMethod(setterMethod ast.SetterMethodLike) {
+	// Visit a single name token.
+	var name = setterMethod.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessSetterMethodSlot(1)
+
+	// Visit a single parameter rule.
+	var parameter = setterMethod.GetParameter()
+	if uti.IsDefined(parameter) {
+		v.processor_.PreprocessParameter(parameter, 1, 1)
+		v.visitParameter(parameter)
+		v.processor_.PostprocessParameter(parameter, 1, 1)
+	}
+}
+
+func (v *visitor_) visitSuffix(suffix ast.SuffixLike) {
+	// Visit a single name token.
+	var name = suffix.GetName()
+	v.processor_.ProcessName(name)
+}
+
+func (v *visitor_) visitTypeDeclaration(typeDeclaration ast.TypeDeclarationLike) {
+	// Visit a single declaration rule.
+	var declaration = typeDeclaration.GetDeclaration()
+	v.processor_.PreprocessDeclaration(declaration)
+	v.visitDeclaration(declaration)
+	v.processor_.PostprocessDeclaration(declaration)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessTypeDeclarationSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = typeDeclaration.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessTypeDeclarationSlot(2)
+
+	// Visit an optional enumeration rule.
+	var optionalEnumeration = typeDeclaration.GetOptionalEnumeration()
+	if uti.IsDefined(optionalEnumeration) {
+		v.processor_.PreprocessEnumeration(optionalEnumeration)
+		v.visitEnumeration(optionalEnumeration)
+		v.processor_.PostprocessEnumeration(optionalEnumeration)
+	}
+}
+
+func (v *visitor_) visitTypeSection(typeSection ast.TypeSectionLike) {
+	// Visit each typeDeclaration rule.
+	var typeDeclarationIndex uint
+	var typeDeclarations = typeSection.GetTypeDeclarations().GetIterator()
+	var typeDeclarationsSize = uint(typeDeclarations.GetSize())
+	for typeDeclarations.HasNext() {
+		typeDeclarationIndex++
+		var typeDeclaration = typeDeclarations.GetNext()
+		v.processor_.PreprocessTypeDeclaration(
+			typeDeclaration,
+			typeDeclarationIndex,
+			typeDeclarationsSize,
+		)
+		v.visitTypeDeclaration(typeDeclaration)
+		v.processor_.PostprocessTypeDeclaration(
+			typeDeclaration,
+			typeDeclarationIndex,
+			typeDeclarationsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitValue(value ast.ValueLike) {
+	// Visit a single name token.
+	var name = value.GetName()
+	v.processor_.ProcessName(name)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessValueSlot(1)
+
+	// Visit a single abstraction rule.
+	var abstraction = value.GetAbstraction()
+	v.processor_.PreprocessAbstraction(abstraction)
+	v.visitAbstraction(abstraction)
+	v.processor_.PostprocessAbstraction(abstraction)
 }
 
 // Instance Structure

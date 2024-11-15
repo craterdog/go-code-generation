@@ -11,10 +11,10 @@
 <!
 
 !>
-CRATER DOG SYNTAX NOTATION
-This document contains a formal definition of the Crater Dog Syntax Notation™
-(CDSN) using CDSN itself in homage to Douglas Hofstadter of Gödel, Escher, Bach
-fame.
+GO CLASS MODEL NOTATION
+This document contains a formal definition of the Go Class Model Notation™
+(GCMN) using Crater Dog Syntax Notation™ (CDSN):
+ * https://github.com/craterdog/go-syntax-notation/blob/main/v5/cdsn/Syntax.cdsn
 
 A language syntax consists of a set of rule definitions and regular expression
 patterns.
@@ -51,76 +51,125 @@ sequence of terms within in a rule definition may be separated by spaces which
 are ignored by the parser.  Newlines are also ignored unless explicitly
 specified as terms in one or more rule definitions.
 <!
-$Syntax: Notice comment Rule+ comment Expression+
+$Model: ModuleDeclaration PrimitiveDeclarations InterfaceDeclarations
 
-$Notice: comment
+$ModuleDeclaration: LegalNotice ModuleHeader ModuleImports
 
-$Rule: "$" uppercase ":" Definition
+$PrimitiveDeclarations: TypeSection FunctionalSection
 
-$Definition:
-  - Multiline
-  - Inline
+$InterfaceDeclarations: ClassSection InstanceSection AspectSection
 
-$Multiline: Line+
+$LegalNotice: comment
 
-$Line: "-" Identifier note?
+$ModuleHeader: comment "package" name
 
-$Identifier:
-  - lowercase
-  - uppercase
+$ModuleImports: "import" "(" ImportedPackage* ")"
 
-$Inline: Term+ note?
+$ImportedPackage: name path
 
-$Term:
-  - Reference
-  - literal
+$TypeSection: "// Type Declarations" TypeDeclaration*
 
-$Reference: Identifier Cardinality?  ! The default cardinality is one.
+$TypeDeclaration: Declaration Abstraction Enumeration?
 
-$Cardinality:
-  - Constrained
-  - Quantified
+$Declaration: comment "type" name Constraints?
 
-$Constrained:
-  - optional
-  - repeated
+$Constraints: "[" Constraint AdditionalConstraint* "]"
 
-$Quantified: "{" number Limit? "}"
+$Constraint: name Abstraction
 
-$Limit: ".." number?  ! The limit of a range of numbers is inclusive.
+$AdditionalConstraint: "," Constraint
 
-$Expression: "$" lowercase ":" Pattern note?
+$Abstraction: Prefix? name Suffix? Arguments?
 
-$Pattern: Option Alternative*
+$Prefix:
+  - Array
+  - Map
+  - Channel
 
-$Alternative: "|" Option
+$Array: "[" "]"
 
-$Option: Repetition+
+$Map: "map" "[" name "]"
 
-$Repetition: Element Cardinality?  ! The default cardinality is one.
+$Channel: "chan"
 
-$Element:
-  - Group
-  - Filter
-  - Text
+$Suffix: "." name
 
-$Group: "(" Pattern ")"
+$Arguments: "[" Argument AdditionalArgument* "]"
 
-$Filter: excluded? "[" Character+ "]"
+$Argument: Abstraction
 
-$Character:
-  - Explicit
-  - intrinsic
+$AdditionalArgument: "," Argument
 
-$Explicit: glyph Extent?
+$Enumeration: "const" "(" Value AdditionalValue* ")"
 
-$Extent: ".." glyph  ! The extent of a range of glyphs is inclusive.
+$Value: name Abstraction "=" "iota"
 
-$Text:
-  - intrinsic
-  - glyph
-  - literal
-  - lowercase
+$AdditionalValue: name
+
+$FunctionalSection: "// Functional Declarations" FunctionalDeclaration*
+
+$FunctionalDeclaration: Declaration "func" "(" Parameter* ")" Result
+
+$Parameter: name Abstraction ","
+
+$Result:
+  - None
+  - Abstraction
+  - Multivalue
+
+$None: newline
+
+$Multivalue: "(" Parameter+ ")"
+
+$ClassSection: "// Class Declarations" ClassDeclaration+
+
+$ClassDeclaration: Declaration "interface" "{" ClassMethods "}"
+
+$ClassMethods: ConstructorSubsection ConstantSubsection FunctionSubsection
+
+$ConstructorSubsection: "// Constructor Methods" ConstructorMethod+
+
+$ConstructorMethod: name "(" Parameter* ")" Abstraction
+
+$ConstantSubsection: "// Constant Methods" ConstantMethod*
+
+$ConstantMethod: name "(" ")" Abstraction
+
+$FunctionSubsection: "// Function Methods" FunctionMethod*
+
+$FunctionMethod: name "(" Parameter* ")" Result
+
+$InstanceSection: "// Instance Declarations" InstanceDeclaration+
+
+$InstanceDeclaration: Declaration "interface" "{" InstanceMethods "}"
+
+$InstanceMethods: PrimarySubsection AttributeSubsection AspectSubsection
+
+$PrimarySubsection: "// Primary Methods" PrimaryMethod+
+
+$PrimaryMethod: Method
+
+$Method: name "(" Parameter* ")" Result?
+
+$AttributeSubsection: "// Attribute Methods" AttributeMethod*
+
+$AttributeMethod:
+  - GetterMethod
+  - SetterMethod
+
+$GetterMethod: name "(" ")" Abstraction
+
+$SetterMethod: name "(" Parameter ")"
+
+$AspectSubsection: "// Aspect Interfaces" AspectInterface*
+
+$AspectInterface: Abstraction
+
+$AspectSection: "// Aspect Declarations" AspectDeclaration*
+
+$AspectDeclaration: Declaration "interface" "{" AspectMethod+ "}"
+
+$AspectMethod: Method
 
 !>
 EXPRESSION PATTERNS
@@ -134,31 +183,9 @@ patterns is greedy unless the pattern contains the ANY intrinsic character.  Any
 spaces within a regular expression pattern are part of the regular expression
 and are NOT ignored.
 <!
-$base16: ['0'..'9' 'a'..'f']
+$comment: "/*" EOL (ANY | EOL)* EOL "*/" EOL  ! Chooses the shortest possible match.
 
-$comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible match.
+$name: (LOWER | UPPER) (LOWER | UPPER | DIGIT)* "_"?
 
-$escape: '\' (unicode | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
-
-$excluded: "~"
-
-$glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
-
-$intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
-
-$literal: '"' (escape | ~['"' CONTROL])+ '"'
-
-$lowercase: LOWER (DIGIT | LOWER | UPPER)*
-
-$note: "! " ~[CONTROL]*
-
-$number: DIGIT+
-
-$optional: "?"
-
-$repeated: "*" | "+"
-
-$unicode: ('x' base16{2}) | ('u' base16{4}) | ('U' base16{8})
-
-$uppercase: UPPER (DIGIT | LOWER | UPPER)*
+$path: '"' ANY* '"'  ! Chooses the shortest possible match.
 

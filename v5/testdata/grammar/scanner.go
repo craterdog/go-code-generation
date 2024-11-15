@@ -178,18 +178,10 @@ loop:
 		// Find the next token type.
 		case v.foundToken(CommentToken):
 		case v.foundToken(DelimiterToken):
-		case v.foundToken(ExcludedToken):
-		case v.foundToken(GlyphToken):
-		case v.foundToken(IntrinsicToken):
-		case v.foundToken(LiteralToken):
-		case v.foundToken(LowercaseToken):
+		case v.foundToken(NameToken):
 		case v.foundToken(NewlineToken):
-		case v.foundToken(NoteToken):
-		case v.foundToken(NumberToken):
-		case v.foundToken(OptionalToken):
-		case v.foundToken(RepeatedToken):
+		case v.foundToken(PathToken):
 		case v.foundToken(SpaceToken):
-		case v.foundToken(UppercaseToken):
 		default:
 			v.foundError()
 			break loop
@@ -231,35 +223,19 @@ var scannerReference_ = &scannerClass_{
 		ErrorToken:     "error",
 		CommentToken:   "comment",
 		DelimiterToken: "delimiter",
-		ExcludedToken:  "excluded",
-		GlyphToken:     "glyph",
-		IntrinsicToken: "intrinsic",
-		LiteralToken:   "literal",
-		LowercaseToken: "lowercase",
+		NameToken:      "name",
 		NewlineToken:   "newline",
-		NoteToken:      "note",
-		NumberToken:    "number",
-		OptionalToken:  "optional",
-		RepeatedToken:  "repeated",
+		PathToken:      "path",
 		SpaceToken:     "space",
-		UppercaseToken: "uppercase",
 	},
 	matchers_: map[TokenType]*reg.Regexp{
 		// Define pattern matchers for each type of token.
 		CommentToken:   reg.MustCompile("^" + comment_),
 		DelimiterToken: reg.MustCompile("^" + delimiter_),
-		ExcludedToken:  reg.MustCompile("^" + excluded_),
-		GlyphToken:     reg.MustCompile("^" + glyph_),
-		IntrinsicToken: reg.MustCompile("^" + intrinsic_),
-		LiteralToken:   reg.MustCompile("^" + literal_),
-		LowercaseToken: reg.MustCompile("^" + lowercase_),
+		NameToken:      reg.MustCompile("^" + name_),
 		NewlineToken:   reg.MustCompile("^" + newline_),
-		NoteToken:      reg.MustCompile("^" + note_),
-		NumberToken:    reg.MustCompile("^" + number_),
-		OptionalToken:  reg.MustCompile("^" + optional_),
-		RepeatedToken:  reg.MustCompile("^" + repeated_),
+		PathToken:      reg.MustCompile("^" + path_),
 		SpaceToken:     reg.MustCompile("^" + space_),
-		UppercaseToken: reg.MustCompile("^" + uppercase_),
 	},
 }
 
@@ -283,21 +259,10 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expression patterns for each token type.
-	base16_    = "(?:[0-9a-f])"
-	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"
-	delimiter_ = "(?:\\}|\\||\\{|\\]|\\[|\\.\\.|\\)|\\(|\\$|:|-)"
-	escape_    = "(?:\\\\((?:" + unicode_ + ")|[abfnrtv\"\\\\]))"
-	excluded_  = "(?:~)"
-	glyph_     = "(?:'[^" + control_ + "]')"
-	intrinsic_ = "(?:ANY|CONTROL|DIGIT|EOL|LOWER|UPPER)"
-	literal_   = "(?:\"((?:" + escape_ + ")|[^\"" + control_ + "])+\")"
-	lowercase_ = "(?:" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	comment_   = "(?:/\\*" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "\\*/" + eol_ + ")"
+	delimiter_ = "(?:type|package|map|iota|interface|import|func|const|chan|\\}|\\{|\\]|\\[|\\.|\\)|\\(|=|// Type Declarations|// Primary Methods|// Instance Declarations|// Functional Declarations|// Function Methods|// Constructor Methods|// Constant Methods|// Class Declarations|// Attribute Methods|// Aspect Interfaces|// Aspect Declarations|,)"
+	name_      = "(?:(" + lower_ + "|" + upper_ + ")(" + lower_ + "|" + upper_ + "|" + digit_ + ")*_?)"
 	newline_   = "(?:" + eol_ + ")"
-	note_      = "(?:! [^" + control_ + "]*)"
-	number_    = "(?:" + digit_ + "+)"
-	optional_  = "(?:\\?)"
-	repeated_  = "(?:\\*|\\+)"
+	path_      = "(?:\"" + any_ + "*?\")"
 	space_     = "(?:[ \\t]+)"
-	unicode_   = "(?:(x(?:" + base16_ + "){2})|(u(?:" + base16_ + "){4})|(U(?:" + base16_ + "){8}))"
-	uppercase_ = "(?:" + upper_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
 )
