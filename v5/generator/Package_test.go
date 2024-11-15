@@ -16,7 +16,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
-	//col "github.com/craterdog/go-collection-framework/v4"
+	col "github.com/craterdog/go-collection-framework/v4"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
@@ -29,6 +29,88 @@ var directory = "../testdata/"
 var moduleName = "github.com/craterdog/go-class-model/v5"
 var wikiPath = "github.com/craterdog/go-class-model/wiki"
 
+func TestPackageGeneration(t *tes.T) {
+	// Validate the language grammar.
+	var filename = directory + "Syntax.cdsn"
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var source = string(bytes)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
+	ass.Equal(t, source, actual)
+
+	// Generate the AST Package.go file.
+	var generator = gen.PackageGenerator().Make()
+	filename = directory + "ast/Package.go"
+	var packageName = "ast"
+	var astSynthesizer = syn.AstSynthesizer().Make(syntax)
+	source = generator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		astSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	// Generate the grammar Package.go file.
+	filename = directory + "grammar/Package.go"
+	packageName = "grammar"
+	var grammarSynthesizer = syn.GrammarSynthesizer().Make(syntax)
+	source = generator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		grammarSynthesizer,
+	)
+	bytes = []byte(source)
+	err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func TestModuleGeneration(t *tes.T) {
+	var models = col.Catalog[string, mod.ModelLike]()
+	var packages = []string{
+		"ast",
+		"grammar",
+	}
+	for _, packageName := range packages {
+		var filename = directory + packageName + "/Package.go"
+		var bytes, err = osx.ReadFile(filename)
+		if err != nil {
+			panic(err)
+		}
+		var source = string(bytes)
+		var parser = mod.Parser()
+		var model = parser.ParseSource(source)
+		models.SetValue(packageName, model)
+	}
+	var generator = gen.ModuleGenerator().Make()
+	var moduleSynthesizer = syn.ModuleSynthesizer().Make(models)
+	var source = generator.GenerateModule(
+		moduleName,
+		wikiPath,
+		moduleSynthesizer,
+	)
+	var filename = directory + "Module.go"
+	var bytes = []byte(source)
+	var err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func TestAstGeneration(t *tes.T) {
 	// Validate the class model.
 	var packageName = "ast"
@@ -38,9 +120,12 @@ func TestAstGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var model = mod.ParseSource(source)
-	mod.ValidateModel(model)
-	var actual = mod.FormatModel(model)
+	var parser = mod.Parser()
+	var model = parser.ParseSource(source)
+	var validator = mod.Validator()
+	validator.ValidateModel(model)
+	var formatter = mod.Formatter()
+	var actual = formatter.FormatModel(model)
 	ass.Equal(t, source, actual)
 	var generator = gen.ClassGenerator().Make()
 
@@ -78,9 +163,12 @@ func TestTokenGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the token concrete class.
@@ -111,9 +199,12 @@ func TestScannerGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the scanner concrete class.
@@ -144,9 +235,12 @@ func TestParserGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the parser concrete class.
@@ -177,9 +271,12 @@ func TestVisitorGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the visitor concrete class.
@@ -210,9 +307,12 @@ func TestFormatterGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
@@ -243,9 +343,12 @@ func TestProcessorGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the processor concrete class.
@@ -276,9 +379,12 @@ func TestValidatorGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var parser = not.Parser()
+	var syntax = parser.ParseSource(source)
+	var validator = not.Validator()
+	validator.ValidateSyntax(syntax)
+	var formatter = not.Formatter()
+	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
@@ -310,13 +416,16 @@ func TestExampleGeneration(t *tes.T) {
 		panic(err)
 	}
 	var source = string(bytes)
-	var model = mod.ParseSource(source)
-	mod.ValidateModel(model)
-	var actual = mod.FormatModel(model)
+	var parser = mod.Parser()
+	var model = parser.ParseSource(source)
+	var validator = mod.Validator()
+	validator.ValidateModel(model)
+	var formatter = mod.Formatter()
+	var actual = formatter.FormatModel(model)
 	ass.Equal(t, source, actual)
-	var generator = gen.ClassGenerator().Make()
 
 	// Generate the example concrete classes.
+	var generator = gen.ClassGenerator().Make()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
@@ -341,99 +450,3 @@ func TestExampleGeneration(t *tes.T) {
 		}
 	}
 }
-
-/*
-func TestPackageGeneration(t *tes.T) {
-	// Validate the language grammar.
-	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
-	var generator = gen.PackageGenerator().Make()
-
-	// Generate the AST Package.go file.
-	filename = directory + "ast/Package.go"
-	var packageName = "ast"
-	var astSynthesizer = syn.AstSynthesizer().Make(syntax)
-	source = generator.GeneratePackage(
-		moduleName,
-		wikiPath,
-		packageName,
-		astSynthesizer,
-	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	// Generate the grammar Package.go file.
-	filename = directory + "grammar/Package.go"
-	packageName = "grammar"
-	var grammarSynthesizer = syn.GrammarSynthesizer().Make(syntax)
-	source = generator.GeneratePackage(
-		moduleName,
-		wikiPath,
-		packageName,
-		grammarSynthesizer,
-	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	// Generate the example Package.go file.
-	filename = directory + "example/Package.go"
-	packageName = "example"
-	var exampleSynthesizer = syn.GrammarSynthesizer().Make(syntax)
-	source = generator.GeneratePackage(
-		moduleName,
-		wikiPath,
-		packageName,
-		exampleSynthesizer,
-	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func TestModuleGeneration(t *tes.T) {
-	var models = col.Catalog[string, mod.ModelLike]()
-	var packages = []string{
-		"ast",
-		"grammar",
-	}
-	for _, packageName := range packages {
-		var filename = directory + packageName + "/Package.go"
-		var bytes, err = osx.ReadFile(filename)
-		if err != nil {
-			panic(err)
-		}
-		var source = string(bytes)
-		var model = mod.ParseSource(source)
-		models.SetValue(packageName, model)
-	}
-	var generator = gen.ModuleGenerator().Make()
-	var moduleSynthesizer = syn.ModuleSynthesizer().Make(models)
-	var source = generator.GenerateModule(
-		moduleName,
-		wikiPath,
-		moduleSynthesizer,
-	)
-	var filename = directory + "Module.go"
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
-}
-*/

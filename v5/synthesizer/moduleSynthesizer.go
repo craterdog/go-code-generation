@@ -307,23 +307,19 @@ func (v *moduleSynthesizer_) createPackageAliases(
 ) string {
 	var typeAliases string
 	var primitiveDeclarations = model.GetPrimitiveDeclarations()
-	var typeSection = primitiveDeclarations.GetOptionalTypeSection()
-	if uti.IsDefined(typeSection) {
-		var types = typeSection.GetTypeDeclarations().GetIterator()
-		for types.HasNext() {
-			var declaration = types.GetNext().GetDeclaration()
-			var typeAlias = v.createTypeAlias(model, declaration)
-			typeAliases += typeAlias
-		}
+	var typeSection = primitiveDeclarations.GetTypeSection()
+	var types = typeSection.GetTypeDeclarations().GetIterator()
+	for types.HasNext() {
+		var declaration = types.GetNext().GetDeclaration()
+		var typeAlias = v.createTypeAlias(model, declaration)
+		typeAliases += typeAlias
 	}
-	var functionalSection = primitiveDeclarations.GetOptionalFunctionalSection()
-	if uti.IsDefined(functionalSection) {
-		var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
-		for functionals.HasNext() {
-			var declaration = functionals.GetNext().GetDeclaration()
-			var typeAlias = v.createTypeAlias(model, declaration)
-			typeAliases += typeAlias
-		}
+	var functionalSection = primitiveDeclarations.GetFunctionalSection()
+	var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
+	for functionals.HasNext() {
+		var declaration = functionals.GetNext().GetDeclaration()
+		var typeAlias = v.createTypeAlias(model, declaration)
+		typeAliases += typeAlias
 	}
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var instanceSection = interfaceDeclarations.GetInstanceSection()
@@ -333,14 +329,12 @@ func (v *moduleSynthesizer_) createPackageAliases(
 		var typeAlias = v.createTypeAlias(model, declaration)
 		typeAliases += typeAlias
 	}
-	var aspectSection = interfaceDeclarations.GetOptionalAspectSection()
-	if uti.IsDefined(aspectSection) {
-		var aspects = aspectSection.GetAspectDeclarations().GetIterator()
-		for aspects.HasNext() {
-			var declaration = aspects.GetNext().GetDeclaration()
-			var typeAlias = v.createTypeAlias(model, declaration)
-			typeAliases += typeAlias
-		}
+	var aspectSection = interfaceDeclarations.GetAspectSection()
+	var aspects = aspectSection.GetAspectDeclarations().GetIterator()
+	for aspects.HasNext() {
+		var declaration = aspects.GetNext().GetDeclaration()
+		var typeAlias = v.createTypeAlias(model, declaration)
+		typeAliases += typeAlias
 	}
 	typeAliases += "\n"
 	var packageAliases = moduleSynthesizerReference().packageAliases_

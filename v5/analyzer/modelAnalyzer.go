@@ -123,13 +123,9 @@ func (v *modelAnalyzer_) GetAspectDeclarations() abs.ListLike[ast.AspectDeclarat
 func (v *modelAnalyzer_) analyzeAspectDeclarations(
 	interfaceDeclarations ast.InterfaceDeclarationsLike,
 ) {
-	var aspectSection = interfaceDeclarations.GetOptionalAspectSection()
-	if uti.IsDefined(aspectSection) {
-		var aspectDeclarations = aspectSection.GetAspectDeclarations()
-		v.aspectDeclarations_ = col.List[ast.AspectDeclarationLike](
-			aspectDeclarations,
-		)
-	}
+	var aspectSection = interfaceDeclarations.GetAspectSection()
+	var aspectDeclarations = aspectSection.GetAspectDeclarations()
+	v.aspectDeclarations_ = col.List[ast.AspectDeclarationLike](aspectDeclarations)
 }
 
 func (v *modelAnalyzer_) analyzeAspectInterfaces(
