@@ -744,7 +744,7 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 }
 
 func (v *classSynthesizer_) createImportedPackages(
-	packageImports mod.ModuleImportsLike,
+	packageImports mod.PackageImportsLike,
 	source string,
 ) string {
 	var importedPackages string

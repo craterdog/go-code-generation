@@ -56,8 +56,8 @@ func (v *moduleSynthesizer_) CreateLegalNotice() string {
 	var packageNames = v.models_.GetKeys().AsArray()
 	var firstPackage = packageNames[0]
 	var firstModel = v.models_.GetValue(firstPackage)
-	var moduleDeclaration = firstModel.GetModuleDeclaration()
-	var legalNotice = moduleDeclaration.GetLegalNotice().GetComment()
+	var packageDeclaration = firstModel.GetPackageDeclaration()
+	var legalNotice = packageDeclaration.GetLegalNotice().GetComment()
 	return legalNotice
 }
 

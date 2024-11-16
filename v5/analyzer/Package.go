@@ -70,7 +70,7 @@ type ModelAnalyzerLike interface {
 	// Primary Methods
 	GetClass() ModelAnalyzerClassLike
 	GetLegalNotice() string
-	GetPackageImports() mod.ModuleImportsLike
+	GetPackageImports() mod.PackageImportsLike
 	IsGeneric() bool
 	GetTypeConstraints() string
 	GetTypeArguments() string

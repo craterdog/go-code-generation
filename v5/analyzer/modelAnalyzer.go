@@ -55,7 +55,7 @@ func (v *modelAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *modelAnalyzer_) GetPackageImports() ast.ModuleImportsLike {
+func (v *modelAnalyzer_) GetPackageImports() ast.PackageImportsLike {
 	return v.packageImports_
 }
 
@@ -159,7 +159,7 @@ func (v *modelAnalyzer_) analyzeClass(
 	model ast.ModelLike,
 	className string,
 ) {
-	var packageDeclaration = model.GetModuleDeclaration()
+	var packageDeclaration = model.GetPackageDeclaration()
 	v.analyzePackageDeclaration(packageDeclaration)
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	v.analyzeAspectDeclarations(interfaceDeclarations)
@@ -280,7 +280,7 @@ func (v *modelAnalyzer_) analyzeFunctionMethods(
 }
 
 func (v *modelAnalyzer_) analyzePackageDeclaration(
-	packageDeclaration ast.ModuleDeclarationLike,
+	packageDeclaration ast.PackageDeclarationLike,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 }
@@ -487,7 +487,7 @@ type modelAnalyzer_ struct {
 	attributeMethods_   abs.ListLike[ast.AttributeMethodLike]
 	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
 	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]
-	packageImports_     ast.ModuleImportsLike
+	packageImports_     ast.PackageImportsLike
 }
 
 // Class Structure
