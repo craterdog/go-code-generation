@@ -106,7 +106,7 @@ func TestModuleGeneration(t *tes.T) {
 		moduleSynthesizer,
 	)
 	var filename = directory + "Module.go"
-	var bytes = []byte(source)
+	var bytes = replaceGlobalFunctions(filename, source)
 	var err = osx.WriteFile(filename, bytes, 0644)
 	if err != nil {
 		panic(err)
@@ -451,6 +451,24 @@ func TestExampleGeneration(t *tes.T) {
 			panic(err)
 		}
 	}
+}
+
+func replaceGlobalFunctions(
+	filename string,
+	source string,
+) []byte {
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var matcher = reg.MustCompile(
+		`// GLOBAL FUNCTIONS(.|\r?\n)*`,
+	)
+	var original = matcher.Find(bytes)
+	bytes = []byte(source)
+	var generated = matcher.Find(bytes)
+	bytes = byt.ReplaceAll(bytes, generated, original)
+	return bytes
 }
 
 func replaceMethodicalMethods(

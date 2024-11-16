@@ -2774,3 +2774,8 @@ func Visitor(arguments ...any) VisitorLike {
 	}
 	return instance_
 }
+
+// GLOBAL FUNCTIONS
+
+func Dummy() {
+}

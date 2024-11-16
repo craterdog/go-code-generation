@@ -114,5 +114,6 @@ package module
 // TYPE ALIASES
 <TypeAliases>
 // UNIVERSAL CONSTRUCTORS
-<UniversalConstructors>`,
+<UniversalConstructors>
+// GLOBAL FUNCTIONS`,
 }
