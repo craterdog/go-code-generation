@@ -134,6 +134,13 @@ func classGeneratorReference() *classGeneratorClass_ {
 var classGeneratorReference_ = &classGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice>
+/*
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 THIS CLASS FILE WAS AUTOMATICALLY GENERATED.                 │
+│                    ANY UPDATES TO IT WILL BE OVERWRITTEN.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+*/
+
 package <PackageName>
 <ClassImports>
 // CLASS INTERFACE

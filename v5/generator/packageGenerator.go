@@ -112,7 +112,13 @@ func packageGeneratorReference() *packageGeneratorClass_ {
 var packageGeneratorReference_ = &packageGeneratorClass_{
 	// Initialize the class constants.
 	packageTemplate_: `<LegalNotice>
-/*<PackageDescription>
+/*
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│             THIS "Package.go" FILE WAS AUTOMATICALLY GENERATED.              │
+│                    ANY UPDATES TO IT WILL BE OVERWRITTEN.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+<PackageDescription>
 
 For detailed documentation on this package refer to the wiki:
   - https://<WikiPath>
