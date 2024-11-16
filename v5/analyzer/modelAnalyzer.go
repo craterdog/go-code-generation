@@ -15,7 +15,6 @@ package analyzer
 import (
 	fmt "fmt"
 	ast "github.com/craterdog/go-class-model/v5/ast"
-	gra "github.com/craterdog/go-class-model/v5/grammar"
 	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -489,9 +488,6 @@ type modelAnalyzer_ struct {
 	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
 	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]
 	packageImports_     ast.ModuleImportsLike
-
-	// Declare the inherited aspects.
-	gra.Methodical
 }
 
 // Class Structure
