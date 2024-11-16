@@ -16,6 +16,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
+	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 )
 
 // CLASS INTERFACE
@@ -258,10 +259,11 @@ func (v *parserSynthesizer_) createInlineImplementation(
 			var cardinality = actual.GetOptionalCardinality()
 			var variableName = variables.GetNext()
 			var identifier = actual.GetIdentifier().GetAny().(string)
+			var scannerClass = gra.Scanner()
 			switch {
-			case not.MatchesType(identifier, not.LowercaseToken):
+			case scannerClass.MatchesType(identifier, gra.LowercaseToken):
 				parseStep = v.createTokenStep(cardinality)
-			case not.MatchesType(identifier, not.UppercaseToken):
+			case scannerClass.MatchesType(identifier, gra.UppercaseToken):
 				parseStep = v.createRuleStep(cardinality)
 			}
 			parseStep = uti.ReplaceAll(
@@ -303,10 +305,11 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 	for identifiers.HasNext() {
 		var identifier = identifiers.GetNext().GetAny().(string)
 		var parseCase string
+		var scannerClass = gra.Scanner()
 		switch {
-		case not.MatchesType(identifier, not.LowercaseToken):
+		case scannerClass.MatchesType(identifier, gra.LowercaseToken):
 			parseCase = parserSynthesizerReference().parseTokenCase_
-		case not.MatchesType(identifier, not.UppercaseToken):
+		case scannerClass.MatchesType(identifier, gra.UppercaseToken):
 			parseCase = parserSynthesizerReference().parseRuleCase_
 		}
 		implementation += uti.ReplaceAll(

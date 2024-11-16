@@ -17,6 +17,7 @@ import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
+	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 	stc "strconv"
 	sts "strings"
 )
@@ -40,7 +41,7 @@ func (c *syntaxAnalyzerClass_) Make(
 		// Initialize the inherited aspects.
 		Methodical: not.Processor(),
 	}
-	instance.visitor_ = not.Visitor(instance)
+	instance.visitor_ = gra.Visitor().Make(instance)
 	instance.visitor_.VisitSyntax(syntax)
 	return instance
 
@@ -107,10 +108,11 @@ func (v *syntaxAnalyzer_) GetVariableType(
 ) string {
 	var variableType string
 	var identifier = reference.GetIdentifier().GetAny().(string)
+	var scannerClass = gra.Scanner()
 	switch {
-	case not.MatchesType(identifier, not.LowercaseToken):
+	case scannerClass.MatchesType(identifier, gra.LowercaseToken):
 		variableType = "string"
-	case not.MatchesType(identifier, not.UppercaseToken):
+	case scannerClass.MatchesType(identifier, gra.UppercaseToken):
 		variableType = uti.MakeUpperCase(identifier) + "Like"
 	}
 	return variableType
@@ -292,8 +294,9 @@ func (v *syntaxAnalyzer_) PostprocessGroup(
 func (v *syntaxAnalyzer_) PreprocessIdentifier(
 	identifier not.IdentifierLike,
 ) {
+	var scannerClass = gra.Scanner()
 	var name = identifier.GetAny().(string)
-	if not.MatchesType(name, not.LowercaseToken) {
+	if scannerClass.MatchesType(name, gra.LowercaseToken) {
 		v.tokenNames_.AddValue(name)
 	}
 }

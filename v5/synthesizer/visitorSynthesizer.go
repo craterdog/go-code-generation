@@ -16,6 +16,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
+	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 	stc "strconv"
 )
 
@@ -161,10 +162,11 @@ func (v *visitorSynthesizer_) createInlineReference(
 ) string {
 	var inlineReference string
 	var identifier = reference.GetIdentifier().GetAny().(string)
+	var scannerClass = gra.Scanner()
 	switch {
-	case not.MatchesType(identifier, not.LowercaseToken):
+	case scannerClass.MatchesType(identifier, gra.LowercaseToken):
 		inlineReference = v.createInlineToken(reference, variableName)
-	case not.MatchesType(identifier, not.UppercaseToken):
+	case scannerClass.MatchesType(identifier, gra.UppercaseToken):
 		inlineReference = v.createInlineRule(reference, variableName)
 	}
 	return inlineReference
@@ -246,13 +248,14 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 ) string {
 	var implementation string
 	var tokenCases, ruleCases string
+	var scannerClass = gra.Scanner()
 	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
 	for identifiers.HasNext() {
 		var identifier = identifiers.GetNext().GetAny().(string)
 		switch {
-		case not.MatchesType(identifier, not.LowercaseToken):
+		case scannerClass.MatchesType(identifier, gra.LowercaseToken):
 			tokenCases += v.createMultilineToken(identifier)
-		case not.MatchesType(identifier, not.UppercaseToken):
+		case scannerClass.MatchesType(identifier, gra.UppercaseToken):
 			ruleCases += v.createMultilineRule(identifier)
 		}
 	}
@@ -316,13 +319,14 @@ func (v *visitorSynthesizer_) createPlurality(
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
 		var token = actual.GetAny().(string)
+		var scannerClass = gra.Scanner()
 		switch {
-		case not.MatchesType(token, not.OptionalToken):
+		case scannerClass.MatchesType(token, gra.OptionalToken):
 			plurality = "optional"
 			if v.analyzer_.IsPlural(name) {
 				plurality = "singular"
 			}
-		case not.MatchesType(token, not.RepeatedToken):
+		case scannerClass.MatchesType(token, gra.RepeatedToken):
 			plurality = "repeated"
 		}
 	case not.QuantifiedLike:
