@@ -13,6 +13,7 @@
 package generator_test
 
 import (
+	byt "bytes"
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
@@ -21,6 +22,7 @@ import (
 	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
+	reg "regexp"
 	sts "strings"
 	tes "testing"
 )
@@ -328,7 +330,7 @@ func TestFormatterGeneration(t *tes.T) {
 		className,
 		formatterSynthesizer,
 	)
-	bytes = []byte(source)
+	bytes = replaceMethodicalMethods(filename, source)
 	err = osx.WriteFile(filename, bytes, 0644)
 	if err != nil {
 		panic(err)
@@ -400,7 +402,7 @@ func TestValidatorGeneration(t *tes.T) {
 		className,
 		validatorSynthesizer,
 	)
-	bytes = []byte(source)
+	bytes = replaceMethodicalMethods(filename, source)
 	err = osx.WriteFile(filename, bytes, 0644)
 	if err != nil {
 		panic(err)
@@ -449,4 +451,22 @@ func TestExampleGeneration(t *tes.T) {
 			panic(err)
 		}
 	}
+}
+
+func replaceMethodicalMethods(
+	filename string,
+	source string,
+) []byte {
+	var bytes, err = osx.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	var matcher = reg.MustCompile(
+		`// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`,
+	)
+	var original = matcher.Find(bytes)
+	bytes = []byte(source)
+	var generated = matcher.Find(bytes)
+	bytes = byt.ReplaceAll(bytes, generated, original)
+	return bytes
 }
