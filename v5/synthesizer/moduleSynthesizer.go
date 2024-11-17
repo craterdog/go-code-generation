@@ -170,6 +170,57 @@ func (v *moduleSynthesizer_) createArgumentCases(
 	return argumentCases
 }
 
+func (v *moduleSynthesizer_) createAspectAliases(
+	model mod.ModelLike,
+	interfaceDeclarations mod.InterfaceDeclarationsLike,
+) (
+	aspectAliases string,
+) {
+	var nameAliases string
+	var aspectSection = interfaceDeclarations.GetAspectSection()
+	var aspects = aspectSection.GetAspectDeclarations().GetIterator()
+	for aspects.HasNext() {
+		var declaration = aspects.GetNext().GetDeclaration()
+		var nameAlias = v.createNameAlias(model, declaration)
+		nameAliases += nameAlias
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		aspectAliases = moduleSynthesizerReference().typeAliases_
+		aspectAliases = uti.ReplaceAll(
+			aspectAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
+func (v *moduleSynthesizer_) createClassAliases(
+	model mod.ModelLike,
+	interfaceDeclarations mod.InterfaceDeclarationsLike,
+) (
+	classAliases string,
+) {
+	var nameAliases string
+	var instanceSection = interfaceDeclarations.GetInstanceSection()
+	var instances = instanceSection.GetInstanceDeclarations().GetIterator()
+	for instances.HasNext() {
+		var declaration = instances.GetNext().GetDeclaration()
+		nameAliases += v.createNameAlias(model, declaration)
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		classAliases = moduleSynthesizerReference().typeAliases_
+		classAliases = uti.ReplaceAll(
+			classAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
 func (v *moduleSynthesizer_) createConstructionCases(
 	constructorMethods abs.ListLike[mod.ConstructorMethodLike],
 ) string {
@@ -256,6 +307,73 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 	return universalConstructors
 }
 
+func (v *moduleSynthesizer_) createEnumerationAlias(
+	name string,
+) string {
+	var nameAlias = moduleSynthesizerReference().nameAlias_
+	nameAlias = uti.ReplaceAll(
+		nameAlias,
+		"name",
+		name,
+	)
+	return nameAlias
+}
+
+func (v *moduleSynthesizer_) createEnumerationAliases(
+	model mod.ModelLike,
+	enumeration mod.EnumerationLike,
+) (
+	constAliases string,
+) {
+	if uti.IsUndefined(enumeration) {
+		return
+	}
+	var value = enumeration.GetValue()
+	var name = value.GetName()
+	var nameAliases = v.createEnumerationAlias(name)
+	var values = enumeration.GetAdditionalValues().GetIterator()
+	for values.HasNext() {
+		name = values.GetNext().GetName()
+		nameAliases += v.createEnumerationAlias(name)
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		constAliases = moduleSynthesizerReference().constAliases_
+		constAliases = uti.ReplaceAll(
+			constAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
+func (v *moduleSynthesizer_) createFunctionalAliases(
+	model mod.ModelLike,
+	primitiveDeclarations mod.PrimitiveDeclarationsLike,
+) (
+	functionalAliases string,
+) {
+	var nameAliases string
+	var functionalSection = primitiveDeclarations.GetFunctionalSection()
+	var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
+	for functionals.HasNext() {
+		var declaration = functionals.GetNext().GetDeclaration()
+		var nameAlias = v.createNameAlias(model, declaration)
+		nameAliases += nameAlias
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		functionalAliases = moduleSynthesizerReference().typeAliases_
+		functionalAliases = uti.ReplaceAll(
+			functionalAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
 func (v *moduleSynthesizer_) createImportedPackages(
 	source string,
 ) string {
@@ -301,42 +419,48 @@ func (v *moduleSynthesizer_) createImportedPackages(
 	return importedPackages
 }
 
+func (v *moduleSynthesizer_) createNameAlias(
+	model mod.ModelLike,
+	declaration mod.DeclarationLike,
+) (
+	nameAlias string,
+) {
+	var name = declaration.GetName()
+	if uti.IsDefined(declaration.GetOptionalConstraints()) {
+		// Type aliases are not supported for generic types in Go.
+		return
+	}
+	nameAlias = moduleSynthesizerReference().nameAlias_
+	nameAlias = uti.ReplaceAll(
+		nameAlias,
+		"name",
+		name,
+	)
+	return
+}
+
 func (v *moduleSynthesizer_) createPackageAliases(
 	packageName string,
 	model mod.ModelLike,
 ) string {
-	var typeAliases string
 	var primitiveDeclarations = model.GetPrimitiveDeclarations()
-	var typeSection = primitiveDeclarations.GetTypeSection()
-	var types = typeSection.GetTypeDeclarations().GetIterator()
-	for types.HasNext() {
-		var declaration = types.GetNext().GetDeclaration()
-		var typeAlias = v.createTypeAlias(model, declaration)
-		typeAliases += typeAlias
-	}
-	var functionalSection = primitiveDeclarations.GetFunctionalSection()
-	var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
-	for functionals.HasNext() {
-		var declaration = functionals.GetNext().GetDeclaration()
-		var typeAlias = v.createTypeAlias(model, declaration)
-		typeAliases += typeAlias
-	}
+	var typeAliases = v.createTypeAliases(
+		model,
+		primitiveDeclarations,
+	)
+	typeAliases += v.createFunctionalAliases(
+		model,
+		primitiveDeclarations,
+	)
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
-	var instanceSection = interfaceDeclarations.GetInstanceSection()
-	var instances = instanceSection.GetInstanceDeclarations().GetIterator()
-	for instances.HasNext() {
-		var declaration = instances.GetNext().GetDeclaration()
-		var typeAlias = v.createTypeAlias(model, declaration)
-		typeAliases += typeAlias
-	}
-	var aspectSection = interfaceDeclarations.GetAspectSection()
-	var aspects = aspectSection.GetAspectDeclarations().GetIterator()
-	for aspects.HasNext() {
-		var declaration = aspects.GetNext().GetDeclaration()
-		var typeAlias = v.createTypeAlias(model, declaration)
-		typeAliases += typeAlias
-	}
-	typeAliases += "\n"
+	typeAliases += v.createClassAliases(
+		model,
+		interfaceDeclarations,
+	)
+	typeAliases += v.createAspectAliases(
+		model,
+		interfaceDeclarations,
+	)
 	var packageAliases = moduleSynthesizerReference().packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
@@ -350,23 +474,34 @@ func (v *moduleSynthesizer_) createPackageAliases(
 	return packageAliases
 }
 
-func (v *moduleSynthesizer_) createTypeAlias(
+func (v *moduleSynthesizer_) createTypeAliases(
 	model mod.ModelLike,
-	declaration mod.DeclarationLike,
-) string {
-	var typeAlias string
-	var typeName = declaration.GetName()
-	if uti.IsDefined(declaration.GetOptionalConstraints()) {
-		// Type aliases are not supported for generic types in Go.
-		return typeAlias
+	primitiveDeclarations mod.PrimitiveDeclarationsLike,
+) (
+	typeAliases string,
+) {
+	var nameAliases string
+	var constAliases string
+	var typeSection = primitiveDeclarations.GetTypeSection()
+	var types = typeSection.GetTypeDeclarations().GetIterator()
+	for types.HasNext() {
+		var typeDeclaration = types.GetNext()
+		var declaration = typeDeclaration.GetDeclaration()
+		nameAliases += v.createNameAlias(model, declaration)
+		var enumeration = typeDeclaration.GetOptionalEnumeration()
+		constAliases += v.createEnumerationAliases(model, enumeration)
 	}
-	typeAlias = moduleSynthesizerReference().typeAlias_
-	typeAlias = uti.ReplaceAll(
-		typeAlias,
-		"typeName",
-		typeName,
-	)
-	return typeAlias
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		typeAliases = moduleSynthesizerReference().typeAliases_
+		typeAliases = uti.ReplaceAll(
+			typeAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	typeAliases += constAliases
+	return
 }
 
 func (v *moduleSynthesizer_) extractArgumentNames(
@@ -492,7 +627,9 @@ type moduleSynthesizerClass_ struct {
 	packageAlias_          string
 	importedPackage_       string
 	packageAliases_        string
-	typeAlias_             string
+	typeAliases_           string
+	constAliases_          string
+	nameAlias_             string
 	universalConstructors_ string
 	constructorFunction_   string
 	argumentCase_          string
@@ -520,13 +657,19 @@ import (<ImportedPackages>)
 	<~packageAcronym> "<moduleName>/<~packageName>"`,
 
 	packageAliases_: `
-// <~PackageName>
-
-type (<TypeAliases>)
+// <~PackageName><TypeAliases>
 `,
 
-	typeAlias_: `
-	<TypeName> = <~packageAcronym>.<TypeName>`,
+	typeAliases_: `
+
+type (<NameAliases>)`,
+
+	constAliases_: `
+
+const (<NameAliases>)`,
+
+	nameAlias_: `
+	<Name> = <~packageAcronym>.<Name>`,
 
 	universalConstructors_: `
 // <~PackageName><ConstructorFunctions>
