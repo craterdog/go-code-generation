@@ -179,7 +179,7 @@ const (
 	functionalDeclarations_: `
 
 /*
-NormFunction[V any] is a functional type that defines the signature for any
+NormFunction[V any] is a functional type that declares the signature for any
 mathematical norm function.
 */
 type NormFunction[V any] func(
@@ -187,7 +187,7 @@ type NormFunction[V any] func(
 ) float64
 
 /*
-RankingFunction[V any] is a functional type that defines the signature for any
+RankingFunction[V any] is a functional type that declares the signature for any
 function that can determine the relative ranking of two values.
 */
 type RankingFunction[V any] func(
@@ -196,7 +196,7 @@ type RankingFunction[V any] func(
 ) Rank
 
 /*
-TrigonometricFunction is a functional type that defines the signature for any
+TrigonometricFunction is a functional type that declares the signature for any
 trigonometric function.
 */
 type TrigonometricFunction func(
@@ -206,7 +206,7 @@ type TrigonometricFunction func(
 	classDeclarations_: `
 
 /*
-AngleClassLike is a class interface that defines the set of class constants,
+AngleClassLike is a class interface that declares the set of class constants,
 constructors and functions that must be supported by each angle-like concrete
 class.
 */
@@ -240,7 +240,7 @@ type AngleClassLike interface {
 }
 
 /*
-ArrayClassLike[V any] is a class interface that defines the complete set of
+ArrayClassLike[V any] is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete array-like class.
 */
@@ -261,7 +261,7 @@ type ArrayClassLike[V any] interface {
 }
 
 /*
-AssociationClassLike[K comparable, V any] is a class interface that defines
+AssociationClassLike[K comparable, V any] is a class interface that declares
 the complete set of class constants, constructors and functions that must be
 supported by each concrete association-like class.
 */
@@ -274,7 +274,7 @@ type AssociationClassLike[K comparable, V any] interface {
 }
 
 /*
-CatalogClassLike[K comparable, V any] is a class interface that defines the
+CatalogClassLike[K comparable, V any] is a class interface that declares the
 complete set of class constants, constructors and functions that must be
 supported by each concrete catalog-like class.
 
@@ -317,7 +317,7 @@ type CatalogClassLike[K comparable, V any] interface {
 }
 
 /*
-ComplexClassLike is a class interface that defines the set of class constants,
+ComplexClassLike is a class interface that declares the set of class constants,
 constructors and functions that must be supported by each complex-like concrete
 class.
 */
@@ -368,7 +368,7 @@ type ComplexClassLike interface {
 	instanceDeclarations_: `
 
 /*
-AngleLike is an instance interface that defines the complete set of attributes,
+AngleLike is an instance interface that declares the complete set of attributes,
 abstractions and methods that must be supported by each instance of a concrete
 angle-like class.
 */
@@ -383,7 +383,7 @@ type AngleLike interface {
 }
 
 /*
-ArrayLike[V any] is an instance interface that defines the complete set of
+ArrayLike[V any] is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete array-like class.
 
@@ -408,7 +408,7 @@ type ArrayLike[V any] interface {
 }
 
 /*
-AssociationLike[K comparable, V any] is an instance interface that defines the
+AssociationLike[K comparable, V any] is an instance interface that declares the
 complete set of instance attributes, abstractions and methods that must be
 supported by each instance of a concrete association-like class.
 */
@@ -425,7 +425,7 @@ type AssociationLike[K comparable, V any] interface {
 }
 
 /*
-CatalogLike[K comparable, V any] is an instance interface that defines the
+CatalogLike[K comparable, V any] is an instance interface that declares the
 complete set of instance attributes, abstractions and methods that must be
 supported by each instance of a concrete catalog-like class.
 */
@@ -443,7 +443,7 @@ type CatalogLike[K comparable, V any] interface {
 }
 
 /*
-ComplexLike is an instance interface that defines the complete set of attributes,
+ComplexLike is an instance interface that declares the complete set of attributes,
 abstractions and methods that must be supported by each instance of a concrete
 complex-like class.
 */
@@ -468,7 +468,7 @@ type ComplexLike interface {
 	aspectDeclarations_: `
 
 /*
-Accessible[V any] is an aspect interface that defines a set of method signatures
+Accessible[V any] is an aspect interface that declares a set of method signatures
 that must be supported by each instance of an accessible concrete class.  The
 values in an accessible class are accessed using indices. The indices of an
 accessible class are ORDINAL rather than ZERO based—which never really made
@@ -495,7 +495,7 @@ type Accessible[V any] interface {
 }
 
 /*
-Angular is an aspect interface that defines a set of method signatures that
+Angular is an aspect interface that declares a set of method signatures that
 must be supported by each instance of an angular concrete class.
 */
 type Angular interface {
@@ -506,7 +506,7 @@ type Angular interface {
 }
 
 /*
-Associative[K comparable, V any] defines the set of method signatures that
+Associative[K comparable, V any] declares the set of method signatures that
 must be supported by all sequences of key-value associations.
 */
 type Associative[K comparable, V any] interface {
@@ -524,7 +524,7 @@ type Associative[K comparable, V any] interface {
 }
 
 /*
-Continuous is an aspect interface that defines a set of method signatures
+Continuous is an aspect interface that declares a set of method signatures
 that must be supported by each instance of a continuous concrete class.
 */
 type Continuous interface {
@@ -534,7 +534,7 @@ type Continuous interface {
 }
 
 /*
-Sequential[V any] is an aspect interface that defines a set of method signatures
+Sequential[V any] is an aspect interface that declares a set of method signatures
 that must be supported by each instance of a sequential concrete class.
 
 NOTE: that sizes should be of type "uint" but the Go language does not allow
@@ -548,7 +548,7 @@ type Sequential[V any] interface {
 }
 
 /*
-Updatable[V any] is an aspect interface that defines a set of method signatures
+Updatable[V any] is an aspect interface that declares a set of method signatures
 that must be supported by each instance of an updatable concrete class.
 */
 type Updatable[V any] interface {

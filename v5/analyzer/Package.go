@@ -22,7 +22,7 @@ This package follows the Crater Dog Technologies™ Go Coding Conventions locate
 here:
   - https://github.com/craterdog/go-class-model/wiki
 
-Additional concrete implementations of the classes defined by this package can
+Additional concrete implementations of the classes declared by this package can
 be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
@@ -38,7 +38,7 @@ import (
 // Class Declarations
 
 /*
-ModelAnalyzerClassLike defines the set of class constants, constructors and
+ModelAnalyzerClassLike declares the set of class constants, constructors and
 functions that must be supported by all model-analyzer-class-like classes.
 */
 type ModelAnalyzerClassLike interface {
@@ -50,7 +50,7 @@ type ModelAnalyzerClassLike interface {
 }
 
 /*
-SyntaxAnalyzerClassLike defines the set of class constants, constructors and
+SyntaxAnalyzerClassLike declares the set of class constants, constructors and
 functions that must be supported by all syntax-analyzer-class-like classes.
 */
 type SyntaxAnalyzerClassLike interface {
@@ -63,8 +63,8 @@ type SyntaxAnalyzerClassLike interface {
 // Instance Declarations
 
 /*
-ModelAnalyzerLike defines the set of aspects and methods that must be supported by
-all model-analyzer-like instances.
+ModelAnalyzerLike declares the set of aspects and methods that must be
+supported by all model-analyzer-like instances.
 */
 type ModelAnalyzerLike interface {
 	// Primary Methods
@@ -88,8 +88,8 @@ type ModelAnalyzerLike interface {
 }
 
 /*
-SyntaxAnalyzerLike defines the set of aspects and methods that must be supported by
-all syntax-analyzer-like instances.
+SyntaxAnalyzerLike declares the set of aspects and methods that must be
+supported by all syntax-analyzer-like instances.
 */
 type SyntaxAnalyzerLike interface {
 	// Primary Methods

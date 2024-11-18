@@ -336,9 +336,9 @@ import (
 
 	classDeclaration_: `
 /*
-<~ClassName>ClassLike is a class interface that defines the complete set
-of class constructors, constants and functions that must be supported by
-each concrete <~class-name>-like class.
+<~ClassName>ClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete <~class-name>-like class.
 */
 type <~ClassName>ClassLike interface {
 	// Constructor Methods
@@ -355,9 +355,9 @@ type <~ClassName>ClassLike interface {
 		<parameterName_> abs.Sequential[string],`,
 	instanceDeclaration_: `
 /*
-<~ClassName>Like is an instance interface that defines the complete set
-of primary, attribute and aspect methods that must be supported by each
-instance of a concrete <~class-name>-like class.
+<~ClassName>Like is an instance interface that declares the
+complete set of primary, attribute and aspect methods that must be supported
+by each instance of a concrete <~class-name>-like class.
 */
 type <~ClassName>Like interface {<PrimaryMethods><AttributeMethods>}
 `,

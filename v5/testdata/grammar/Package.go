@@ -12,8 +12,8 @@
 
 /*
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│             THIS "Package.go" FILE WAS AUTOMATICALLY GENERATED.              │
-│                    ANY UPDATES TO IT WILL BE OVERWRITTEN.                    │
+│              This "Package.go" file was automatically generated.             │
+│                     Any updates to it may be overwritten.                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 
 Package "grammar" provides the following grammar classes that operate on the
@@ -33,7 +33,7 @@ This package follows the Crater Dog Technologies™ Go Coding Conventions locate
 here:
   - https://github.com/craterdog/go-class-model/wiki
 
-Additional concrete implementations of the classes defined by this package can
+Additional concrete implementations of the classes declared by this package can
 be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
@@ -68,7 +68,7 @@ const (
 // Class Declarations
 
 /*
-FormatterClassLike is a class interface that defines the complete set of
+FormatterClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete formatter-like class.
 */
@@ -78,7 +78,7 @@ type FormatterClassLike interface {
 }
 
 /*
-ParserClassLike is a class interface that defines the complete set of
+ParserClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete parser-like class.
 */
@@ -88,7 +88,7 @@ type ParserClassLike interface {
 }
 
 /*
-ProcessorClassLike is a class interface that defines the complete set of
+ProcessorClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete processor-like class.
 */
@@ -98,7 +98,7 @@ type ProcessorClassLike interface {
 }
 
 /*
-ScannerClassLike is a class interface that defines the complete set of
+ScannerClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete scanner-like class.  The following functions are supported:
 
@@ -129,7 +129,7 @@ type ScannerClassLike interface {
 }
 
 /*
-TokenClassLike is a class interface that defines the complete set of
+TokenClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete token-like class.
 */
@@ -144,7 +144,7 @@ type TokenClassLike interface {
 }
 
 /*
-ValidatorClassLike is a class interface that defines the complete set of
+ValidatorClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete validator-like class.
 */
@@ -154,7 +154,7 @@ type ValidatorClassLike interface {
 }
 
 /*
-VisitorClassLike is a class interface that defines the complete set of
+VisitorClassLike is a class interface that declares the complete set of
 class constants, constructors and functions that must be supported by each
 concrete visitor-like class.
 */
@@ -168,7 +168,7 @@ type VisitorClassLike interface {
 // Instance Declarations
 
 /*
-FormatterLike is an instance interface that defines the complete set of
+FormatterLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete formatter-like class.
 */
@@ -184,7 +184,7 @@ type FormatterLike interface {
 }
 
 /*
-ParserLike is an instance interface that defines the complete set of
+ParserLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete parser-like class.
 */
@@ -197,7 +197,7 @@ type ParserLike interface {
 }
 
 /*
-ProcessorLike is an instance interface that defines the complete set of
+ProcessorLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete processor-like class.
 */
@@ -210,7 +210,7 @@ type ProcessorLike interface {
 }
 
 /*
-ScannerLike is an instance interface that defines the complete set of
+ScannerLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete scanner-like class.
 */
@@ -220,7 +220,7 @@ type ScannerLike interface {
 }
 
 /*
-TokenLike is an instance interface that defines the complete set of
+TokenLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete token-like class.
 */
@@ -236,7 +236,7 @@ type TokenLike interface {
 }
 
 /*
-ValidatorLike is an instance interface that defines the complete set of
+ValidatorLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete validator-like class.
 */
@@ -252,7 +252,7 @@ type ValidatorLike interface {
 }
 
 /*
-VisitorLike is an instance interface that defines the complete set of
+VisitorLike is an instance interface that declares the complete set of
 instance attributes, abstractions and methods that must be supported by each
 instance of a concrete visitor-like class.
 */
@@ -267,8 +267,8 @@ type VisitorLike interface {
 // Aspect Declarations
 
 /*
-Methodical defines the set of method signatures that must be supported
-by all methodical processors.
+Methodical declares the set of method signatures that must be supported by
+all methodical processors.
 */
 type Methodical interface {
 	ProcessComment(

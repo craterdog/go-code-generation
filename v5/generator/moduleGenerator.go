@@ -96,15 +96,14 @@ var moduleGeneratorReference_ = &moduleGeneratorClass_{
 	moduleTemplate_: `<LegalNotice>
 /*
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│              THIS "Module.go" FILE WAS AUTOMATICALLY GENERATED.              │
-│                    ANY UPDATES TO IT WILL BE OVERWRITTEN.                    │
+│              This "Module.go" file was automatically generated.              │
+│  Updates to any section other than the GLOBAL FUNCTIONS may be overwritten.  │
 └──────────────────────────────────────────────────────────────────────────────┘
-
-Package "module" defines type aliases for the commonly used types defined in the
-packages contained in this module.  It also provides a universal constructor for
-each commonly used class that is exported by the module.  Each constructor
+Package "module" declares type aliases for the commonly used types declared in
+the packages contained in this module.  It also provides a universal constructor
+for each commonly used class that is exported by the module.  Each constructor
 delegates the actual construction process to its corresponding concrete class
-defined in the corresponding package contained within this module.
+declared in the corresponding package contained within this module.
 
 For detailed documentation on this entire module refer to the wiki:
   - <WikiPath>

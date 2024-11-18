@@ -16,7 +16,7 @@ Go files that conform to the Crater Dog Technologies™ Go Coding Conventions
 located here:
   - https://github.com/craterdog/go-class-model/wiki
 
-Additional concrete implementations of the classes defined by this package can
+Additional concrete implementations of the classes declared by this package can
 be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
@@ -26,7 +26,7 @@ package generator
 // Class Declarations
 
 /*
-ClassGeneratorClassLike defines the set of class constants, constructors and
+ClassGeneratorClassLike declares the set of class constants, constructors and
 functions that must be supported by all class-generator-class-like classes.
 */
 type ClassGeneratorClassLike interface {
@@ -35,7 +35,7 @@ type ClassGeneratorClassLike interface {
 }
 
 /*
-ModuleGeneratorClassLike defines the set of class constants, constructors and
+ModuleGeneratorClassLike declares the set of class constants, constructors and
 functions that must be supported by all module-generator-class-like classes.
 */
 type ModuleGeneratorClassLike interface {
@@ -44,7 +44,7 @@ type ModuleGeneratorClassLike interface {
 }
 
 /*
-PackageGeneratorClassLike defines the set of class constants, constructors and
+PackageGeneratorClassLike declares the set of class constants, constructors and
 functions that must be supported by all package-generator-class-like classes.
 */
 type PackageGeneratorClassLike interface {
@@ -55,8 +55,8 @@ type PackageGeneratorClassLike interface {
 // Instance Declarations
 
 /*
-ClassGeneratorLike defines the set of aspects and methods that must be supported by
-all class-generator-like instances.
+ClassGeneratorLike declares the set of aspects and methods that must be
+supported by all class-generator-like instances.
 */
 type ClassGeneratorLike interface {
 	// Primary Methods
@@ -71,8 +71,8 @@ type ClassGeneratorLike interface {
 }
 
 /*
-ModuleGeneratorLike defines the set of aspects and methods that must be supported by
-all module-generator-like instances.
+ModuleGeneratorLike declares the set of aspects and methods that must be
+supported by all module-generator-like instances.
 */
 type ModuleGeneratorLike interface {
 	// Primary Methods
@@ -85,8 +85,8 @@ type ModuleGeneratorLike interface {
 }
 
 /*
-PackageGeneratorLike defines the set of aspects and methods that must be supported by
-all package-generator-like instances.
+PackageGeneratorLike declares the set of aspects and methods that must be
+supported by all package-generator-like instances.
 */
 type PackageGeneratorLike interface {
 	// Primary Methods
@@ -102,8 +102,8 @@ type PackageGeneratorLike interface {
 // Aspect Declarations
 
 /*
-ClassTemplateDriven defines the set of method signatures that must be supported by
-all class-template-driven synthesizers.
+ClassTemplateDriven declares the set of method signatures that must be
+supported by all class-template-driven synthesizers.
 */
 type ClassTemplateDriven interface {
 	CreateLegalNotice() string
@@ -124,8 +124,8 @@ type ClassTemplateDriven interface {
 }
 
 /*
-ModuleTemplateDriven defines the set of method signatures that must be supported by
-all module-template-driven synthesizers.
+ModuleTemplateDriven declares the set of method signatures that must be
+supported by all module-template-driven synthesizers.
 */
 type ModuleTemplateDriven interface {
 	CreateLegalNotice() string
@@ -137,8 +137,8 @@ type ModuleTemplateDriven interface {
 }
 
 /*
-PackageTemplateDriven defines the set of method signatures that must be supported by
-all package-template-driven synthesizers.
+PackageTemplateDriven declares the set of method signatures that must be
+supported by all package-template-driven synthesizers.
 */
 type PackageTemplateDriven interface {
 	CreateLegalNotice() string

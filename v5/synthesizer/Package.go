@@ -22,7 +22,7 @@ This package follows the Crater Dog Technologies™ Go Coding Conventions locate
 here:
   - https://github.com/craterdog/go-class-model/wiki
 
-Additional concrete implementations of the classes defined by this package can
+Additional concrete implementations of the classes declared by this package can
 be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
@@ -39,7 +39,7 @@ import (
 // Class Declarations
 
 /*
-AstSynthesizerClassLike defines the set of class constants, constructors and
+AstSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all ast-synthesizer-class-like classes.
 */
 type AstSynthesizerClassLike interface {
@@ -50,7 +50,7 @@ type AstSynthesizerClassLike interface {
 }
 
 /*
-ClassSynthesizerClassLike defines the set of class constants, constructors and
+ClassSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all class-synthesizer-class-like classes.
 */
 type ClassSynthesizerClassLike interface {
@@ -62,7 +62,7 @@ type ClassSynthesizerClassLike interface {
 }
 
 /*
-ExampleSynthesizerClassLike defines the set of class constants, constructors and
+ExampleSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all example-synthesizer-class-like classes.
 */
 type ExampleSynthesizerClassLike interface {
@@ -71,7 +71,7 @@ type ExampleSynthesizerClassLike interface {
 }
 
 /*
-FormatterSynthesizerClassLike defines the set of class constants, constructors and
+FormatterSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all formatter-synthesizer-class-like classes.
 */
 type FormatterSynthesizerClassLike interface {
@@ -82,7 +82,7 @@ type FormatterSynthesizerClassLike interface {
 }
 
 /*
-GrammarSynthesizerClassLike defines the set of class constants, constructors and
+GrammarSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all grammar-synthesizer-class-like classes.
 */
 type GrammarSynthesizerClassLike interface {
@@ -93,7 +93,7 @@ type GrammarSynthesizerClassLike interface {
 }
 
 /*
-ModuleSynthesizerClassLike defines the set of class constants, constructors and
+ModuleSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all module-synthesizer-class-like classes.
 */
 type ModuleSynthesizerClassLike interface {
@@ -104,7 +104,7 @@ type ModuleSynthesizerClassLike interface {
 }
 
 /*
-ParserSynthesizerClassLike defines the set of class constants, constructors and
+ParserSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all parser-synthesizer-class-like classes.
 */
 type ParserSynthesizerClassLike interface {
@@ -115,7 +115,7 @@ type ParserSynthesizerClassLike interface {
 }
 
 /*
-ProcessorSynthesizerClassLike defines the set of class constants, constructors and
+ProcessorSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all processor-synthesizer-class-like classes.
 */
 type ProcessorSynthesizerClassLike interface {
@@ -126,7 +126,7 @@ type ProcessorSynthesizerClassLike interface {
 }
 
 /*
-ScannerSynthesizerClassLike defines the set of class constants, constructors and
+ScannerSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all scanner-synthesizer-class-like classes.
 */
 type ScannerSynthesizerClassLike interface {
@@ -137,7 +137,7 @@ type ScannerSynthesizerClassLike interface {
 }
 
 /*
-TokenSynthesizerClassLike defines the set of class constants, constructors and
+TokenSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all token-synthesizer-class-like classes.
 */
 type TokenSynthesizerClassLike interface {
@@ -148,7 +148,7 @@ type TokenSynthesizerClassLike interface {
 }
 
 /*
-ValidatorSynthesizerClassLike defines the set of class constants, constructors and
+ValidatorSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all validator-synthesizer-class-like classes.
 */
 type ValidatorSynthesizerClassLike interface {
@@ -159,7 +159,7 @@ type ValidatorSynthesizerClassLike interface {
 }
 
 /*
-VisitorSynthesizerClassLike defines the set of class constants, constructors and
+VisitorSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all visitor-synthesizer-class-like classes.
 */
 type VisitorSynthesizerClassLike interface {
@@ -172,7 +172,7 @@ type VisitorSynthesizerClassLike interface {
 // Instance Declarations
 
 /*
-AstSynthesizerLike defines the set of aspects and methods that must be supported
+AstSynthesizerLike declares the set of aspects and methods that must be supported
 by all ast-synthesizer-like instances.
 */
 type AstSynthesizerLike interface {
@@ -184,8 +184,8 @@ type AstSynthesizerLike interface {
 }
 
 /*
-ClassSynthesizerLike defines the set of aspects and methods that must be
-supported by all class-synthesizer-like instances.
+ClassSynthesizerLike declares the set of aspects and methods that must
+be supported by all class-synthesizer-like instances.
 */
 type ClassSynthesizerLike interface {
 	// Primary Methods
@@ -196,8 +196,8 @@ type ClassSynthesizerLike interface {
 }
 
 /*
-ExampleSynthesizerLike defines the set of aspects and methods that must be
-supported by all example-synthesizer-like instances.
+ExampleSynthesizerLike declares the set of aspects and methods that must
+be supported by all example-synthesizer-like instances.
 */
 type ExampleSynthesizerLike interface {
 	// Primary Methods
@@ -208,8 +208,8 @@ type ExampleSynthesizerLike interface {
 }
 
 /*
-FormatterSynthesizerLike defines the set of aspects and methods that must be
-supported by all formatter-synthesizer-like instances.
+FormatterSynthesizerLike declares the set of aspects and methods that must
+be supported by all formatter-synthesizer-like instances.
 */
 type FormatterSynthesizerLike interface {
 	// Primary Methods
@@ -220,8 +220,8 @@ type FormatterSynthesizerLike interface {
 }
 
 /*
-GrammarSynthesizerLike defines the set of aspects and methods that must be
-supported by all grammar-synthesizer-like instances.
+GrammarSynthesizerLike declares the set of aspects and methods that must
+be supported by all grammar-synthesizer-like instances.
 */
 type GrammarSynthesizerLike interface {
 	// Primary Methods
@@ -232,8 +232,8 @@ type GrammarSynthesizerLike interface {
 }
 
 /*
-ModuleSynthesizerLike defines the set of aspects and methods that must be
-supported by all module-synthesizer-like instances.
+ModuleSynthesizerLike declares the set of aspects and methods that must
+be supported by all module-synthesizer-like instances.
 */
 type ModuleSynthesizerLike interface {
 	// Primary Methods
@@ -244,8 +244,8 @@ type ModuleSynthesizerLike interface {
 }
 
 /*
-ParserSynthesizerLike defines the set of aspects and methods that must be
-supported by all parser-synthesizer-like instances.
+ParserSynthesizerLike declares the set of aspects and methods that must
+be supported by all parser-synthesizer-like instances.
 */
 type ParserSynthesizerLike interface {
 	// Primary Methods
@@ -256,8 +256,8 @@ type ParserSynthesizerLike interface {
 }
 
 /*
-ProcessorSynthesizerLike defines the set of aspects and methods that must be
-supported by all processor-synthesizer-like instances.
+ProcessorSynthesizerLike declares the set of aspects and methods that must
+be supported by all processor-synthesizer-like instances.
 */
 type ProcessorSynthesizerLike interface {
 	// Primary Methods
@@ -268,8 +268,8 @@ type ProcessorSynthesizerLike interface {
 }
 
 /*
-ScannerSynthesizerLike defines the set of aspects and methods that must be
-supported by all scanner-synthesizer-like instances.
+ScannerSynthesizerLike declares the set of aspects and methods that must
+be supported by all scanner-synthesizer-like instances.
 */
 type ScannerSynthesizerLike interface {
 	// Primary Methods
@@ -280,8 +280,8 @@ type ScannerSynthesizerLike interface {
 }
 
 /*
-TokenSynthesizerLike defines the set of aspects and methods that must be
-supported by all token-synthesizer-like instances.
+TokenSynthesizerLike declares the set of aspects and methods that must
+be supported by all token-synthesizer-like instances.
 */
 type TokenSynthesizerLike interface {
 	// Primary Methods
@@ -292,8 +292,8 @@ type TokenSynthesizerLike interface {
 }
 
 /*
-ValidatorSynthesizerLike defines the set of aspects and methods that must be
-supported by all validator-synthesizer-like instances.
+ValidatorSynthesizerLike declares the set of aspects and methods that must
+be supported by all validator-synthesizer-like instances.
 */
 type ValidatorSynthesizerLike interface {
 	// Primary Methods
@@ -304,8 +304,8 @@ type ValidatorSynthesizerLike interface {
 }
 
 /*
-VisitorSynthesizerLike defines the set of aspects and methods that must be
-supported by all visitor-synthesizer-like instances.
+VisitorSynthesizerLike declares the set of aspects and methods that must
+be supported by all visitor-synthesizer-like instances.
 */
 type VisitorSynthesizerLike interface {
 	// Primary Methods
