@@ -58,15 +58,6 @@ func (c *angleClass_) Tau() AngleLike {
 
 // Function Methods
 
-func (c *angleClass_) Apply(
-	function TrigonometricFunction,
-	angle AngleLike,
-) float64 {
-	var result_ float64
-	// TBD - Add the function implementation.
-	return result_
-}
-
 func (c *angleClass_) Sine(
 	angle AngleLike,
 ) float64 {

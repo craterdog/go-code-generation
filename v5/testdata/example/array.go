@@ -41,8 +41,8 @@ func (c *arrayClass_[V]) Make(
 	return instance
 }
 
-func (c *arrayClass_[V]) MakeFromSize(
-	size uint,
+func (c *arrayClass_[V]) MakeWithSize(
+	size Size,
 ) ArrayLike[V] {
 	var instance ArrayLike[V]
 	// TBD - Add the constructor implementation.
@@ -92,7 +92,7 @@ func (v array_[V]) SortValuesWithRanker(
 // Accessible[V] Methods
 
 func (v array_[V]) GetValue(
-	index int,
+	index Size,
 ) V {
 	var result_ V
 	// TBD - Add the method implementation.
@@ -100,8 +100,8 @@ func (v array_[V]) GetValue(
 }
 
 func (v array_[V]) GetValues(
-	first int,
-	last int,
+	first Size,
+	last Size,
 ) Sequential[V] {
 	var result_ Sequential[V]
 	// TBD - Add the method implementation.
@@ -116,8 +116,8 @@ func (v array_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v array_[V]) GetSize() int {
-	var result_ int
+func (v array_[V]) GetSize() Size {
+	var result_ Size
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -131,14 +131,14 @@ func (v array_[V]) AsArray() []V {
 // Updatable[V] Methods
 
 func (v array_[V]) SetValue(
-	index int,
+	index Size,
 	value V,
 ) {
 	// TBD - Add the method implementation.
 }
 
 func (v array_[V]) SetValues(
-	index int,
+	index Size,
 	values Sequential[V],
 ) {
 	// TBD - Add the method implementation.

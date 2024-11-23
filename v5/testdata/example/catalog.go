@@ -127,14 +127,6 @@ func (v *catalog_[K, V]) GetValue(
 	return result_
 }
 
-func (v *catalog_[K, V]) RemoveValue(
-	key K,
-) V {
-	var result_ V
-	// TBD - Add the method implementation.
-	return result_
-}
-
 func (v *catalog_[K, V]) SetValue(
 	key K,
 	value V,
@@ -150,8 +142,8 @@ func (v *catalog_[K, V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *catalog_[K, V]) GetSize() int {
-	var result_ int
+func (v *catalog_[K, V]) GetSize() Size {
+	var result_ Size
 	// TBD - Add the method implementation.
 	return result_
 }

@@ -11,10 +11,6 @@
 */
 
 /*
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│              This "Package.go" file was automatically generated.             │
-│                     Any updates to it may be overwritten.                    │
-└──────────────────────────────────────────────────────────────────────────────┘
 Package "example" provides...
 
 For detailed documentation on this package refer to the wiki:
@@ -36,15 +32,9 @@ import ()
 // Type Declarations
 
 /*
-Form is a constrained type representing the possible notational forms for the
-complex number.
+Size is a constrained type representing the size of a collection or index.
 */
-type Form uint8
-
-const (
-	Polar Form = iota
-	Rectangular
-)
+type Size uint
 
 /*
 Rank is a constrained type representing the possible rankings for two values.
@@ -71,14 +61,6 @@ const (
 // Functional Declarations
 
 /*
-NormFunction[V any] is a functional type that declares the signature for any
-mathematical norm function.
-*/
-type NormFunction[V any] func(
-	value V,
-) float64
-
-/*
 RankingFunction[V any] is a functional type that declares the signature for any
 function that can determine the relative ranking of two values.
 */
@@ -86,14 +68,6 @@ type RankingFunction[V any] func(
 	first V,
 	second V,
 ) Rank
-
-/*
-TrigonometricFunction is a functional type that declares the signature for any
-trigonometric function.
-*/
-type TrigonometricFunction func(
-	angle AngleLike,
-) float64
 
 // Class Declarations
 
@@ -116,10 +90,6 @@ type AngleClassLike interface {
 	Tau() AngleLike
 
 	// Function Methods
-	Apply(
-		function TrigonometricFunction,
-		angle AngleLike,
-	) float64
 	Sine(
 		angle AngleLike,
 	) float64
@@ -141,8 +111,8 @@ type ArrayClassLike[V any] interface {
 	Make(
 		intrinsic []V,
 	) ArrayLike[V]
-	MakeFromSize(
-		size uint,
+	MakeWithSize(
+		size Size,
 	) ArrayLike[V]
 	MakeFromSequence(
 		values Sequential[V],
@@ -206,55 +176,6 @@ type CatalogClassLike[K comparable, V any] interface {
 		first CatalogLike[K, V],
 		second CatalogLike[K, V],
 	) CatalogLike[K, V]
-}
-
-/*
-ComplexClassLike is a class interface that declares the set of class constants,
-constructors and functions that must be supported by each complex-like concrete
-class.
-*/
-type ComplexClassLike interface {
-	// Constructor Methods
-	Make(
-		realPart float64,
-		imaginaryPart float64,
-		form Form,
-	) ComplexLike
-	MakeFromValue(
-		value complex128,
-	) ComplexLike
-
-	// Constant Methods
-	Zero() ComplexLike
-	Infinity() ComplexLike
-
-	// Function Methods
-	Inverse(
-		value ComplexLike,
-	) ComplexLike
-	Sum(
-		first ComplexLike,
-		second ComplexLike,
-	) ComplexLike
-	Difference(
-		first ComplexLike,
-		second ComplexLike,
-	) ComplexLike
-	Reciprocal(
-		value ComplexLike,
-	) ComplexLike
-	Product(
-		first ComplexLike,
-		second ComplexLike,
-	) ComplexLike
-	Quotient(
-		first ComplexLike,
-		second ComplexLike,
-	) ComplexLike
-	Norm(
-		function NormFunction[ComplexLike],
-		value ComplexLike,
-	) float64
 }
 
 // Instance Declarations
@@ -334,29 +255,6 @@ type CatalogLike[K comparable, V any] interface {
 	Sequential[AssociationLike[K, V]]
 }
 
-/*
-ComplexLike is an instance interface that declares the complete set of attributes,
-abstractions and methods that must be supported by each instance of a concrete
-complex-like class.
-*/
-type ComplexLike interface {
-	// Primary Methods
-	GetClass() ComplexClassLike
-	IsReal() bool
-	IsImaginary() bool
-
-	// Attribute Methods
-	GetRealPart() float64
-	GetImaginaryPart() float64
-	GetForm() Form
-	SetForm(
-		form Form,
-	)
-
-	// Aspect Interfaces
-	Continuous
-}
-
 // Aspect Declarations
 
 /*
@@ -364,25 +262,21 @@ Accessible[V any] is an aspect interface that declares a set of method signature
 that must be supported by each instance of an accessible concrete class.  The
 values in an accessible class are accessed using indices. The indices of an
 accessible class are ORDINAL rather than ZERO based—which never really made
-sense except for pointer offsets.
-
-This approach allows for positive indices starting at the beginning of the
-sequence, and negative indices starting at the end of the sequence as follows:
+sense except for pointer offsets:
 
 |      1           2           3             N      |
 |  [value 1] . [value 2] . [value 3] ... [value N]  |
-|     -N        -(N-1)      -(N-2)          -1      |
 
-Notice that because the indices are ordinal based, the positive and negative
-indices are symmetrical.
+Because the indices are ordinal the range of allowed indices for a collection is
+[1..N] instead of [0..N-1].
 */
 type Accessible[V any] interface {
 	GetValue(
-		index int,
+		index Size,
 	) V
 	GetValues(
-		first int,
-		last int,
+		first Size,
+		last Size,
 	) Sequential[V]
 }
 
@@ -406,9 +300,6 @@ type Associative[K comparable, V any] interface {
 	GetValue(
 		key K,
 	) V
-	RemoveValue(
-		key K,
-	) V
 	SetValue(
 		key K,
 		value V,
@@ -428,28 +319,25 @@ type Continuous interface {
 /*
 Sequential[V any] is an aspect interface that declares a set of method signatures
 that must be supported by each instance of a sequential concrete class.
-
-NOTE: that sizes should be of type "uint" but the Go language does not allow
-arithmetic and comparison operations between "int" and "uint" so we us "int" for
-the return type to make it easier to use.
 */
 type Sequential[V any] interface {
 	IsEmpty() bool
-	GetSize() int
+	GetSize() Size
 	AsArray() []V
 }
 
 /*
 Updatable[V any] is an aspect interface that declares a set of method signatures
-that must be supported by each instance of an updatable concrete class.
+that must be supported by each instance of an updatable concrete class.  It uses
+the same indexing scheme as the Accessible[V any] interface.
 */
 type Updatable[V any] interface {
 	SetValue(
-		index int,
+		index Size,
 		value V,
 	)
 	SetValues(
-		index int,
+		index Size,
 		values Sequential[V],
 	)
 }
