@@ -39,11 +39,11 @@ import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 )
 
-// Type Declarations
+// TYPE DECLARATIONS
 
-// Functional Declarations
+// FUNCTIONAL DECLARATIONS
 
-// Class Declarations
+// CLASS DECLARATIONS
 
 /*
 AbstractionClassLike is a class interface that declares the
@@ -468,7 +468,7 @@ supported by each concrete instance-methods-like class.
 type InstanceMethodsClassLike interface {
 	// Constructor Methods
 	Make(
-		primarySubsection PrimarySubsectionLike,
+		principalSubsection PrincipalSubsectionLike,
 		optionalAttributeSubsection AttributeSubsectionLike,
 		optionalAspectSubsection AspectSubsectionLike,
 	) InstanceMethodsLike
@@ -641,30 +641,6 @@ type PrefixClassLike interface {
 }
 
 /*
-PrimaryMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete primary-method-like class.
-*/
-type PrimaryMethodClassLike interface {
-	// Constructor Methods
-	Make(
-		method MethodLike,
-	) PrimaryMethodLike
-}
-
-/*
-PrimarySubsectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete primary-subsection-like class.
-*/
-type PrimarySubsectionClassLike interface {
-	// Constructor Methods
-	Make(
-		primaryMethods abs.Sequential[PrimaryMethodLike],
-	) PrimarySubsectionLike
-}
-
-/*
 PrimitiveDeclarationsClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete primitive-declarations-like class.
@@ -675,6 +651,30 @@ type PrimitiveDeclarationsClassLike interface {
 		typeSection TypeSectionLike,
 		functionalSection FunctionalSectionLike,
 	) PrimitiveDeclarationsLike
+}
+
+/*
+PrincipalMethodClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete principal-method-like class.
+*/
+type PrincipalMethodClassLike interface {
+	// Constructor Methods
+	Make(
+		method MethodLike,
+	) PrincipalMethodLike
+}
+
+/*
+PrincipalSubsectionClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete principal-subsection-like class.
+*/
+type PrincipalSubsectionClassLike interface {
+	// Constructor Methods
+	Make(
+		principalMethods abs.Sequential[PrincipalMethodLike],
+	) PrincipalSubsectionLike
 }
 
 /*
@@ -753,15 +753,15 @@ type ValueClassLike interface {
 	) ValueLike
 }
 
-// Instance Declarations
+// INSTANCE DECLARATIONS
 
 /*
 AbstractionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete abstraction-like class.
 */
 type AbstractionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AbstractionClassLike
 
 	// Attribute Methods
@@ -773,11 +773,11 @@ type AbstractionLike interface {
 
 /*
 AdditionalArgumentLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete additional-argument-like class.
 */
 type AdditionalArgumentLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AdditionalArgumentClassLike
 
 	// Attribute Methods
@@ -786,11 +786,11 @@ type AdditionalArgumentLike interface {
 
 /*
 AdditionalConstraintLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete additional-constraint-like class.
 */
 type AdditionalConstraintLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AdditionalConstraintClassLike
 
 	// Attribute Methods
@@ -799,11 +799,11 @@ type AdditionalConstraintLike interface {
 
 /*
 AdditionalValueLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete additional-value-like class.
 */
 type AdditionalValueLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AdditionalValueClassLike
 
 	// Attribute Methods
@@ -812,11 +812,11 @@ type AdditionalValueLike interface {
 
 /*
 ArgumentLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete argument-like class.
 */
 type ArgumentLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ArgumentClassLike
 
 	// Attribute Methods
@@ -825,11 +825,11 @@ type ArgumentLike interface {
 
 /*
 ArgumentsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete arguments-like class.
 */
 type ArgumentsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ArgumentsClassLike
 
 	// Attribute Methods
@@ -839,21 +839,21 @@ type ArgumentsLike interface {
 
 /*
 ArrayLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete array-like class.
 */
 type ArrayLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ArrayClassLike
 }
 
 /*
 AspectDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete aspect-declaration-like class.
 */
 type AspectDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AspectDeclarationClassLike
 
 	// Attribute Methods
@@ -863,11 +863,11 @@ type AspectDeclarationLike interface {
 
 /*
 AspectInterfaceLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete aspect-interface-like class.
 */
 type AspectInterfaceLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AspectInterfaceClassLike
 
 	// Attribute Methods
@@ -876,11 +876,11 @@ type AspectInterfaceLike interface {
 
 /*
 AspectMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete aspect-method-like class.
 */
 type AspectMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AspectMethodClassLike
 
 	// Attribute Methods
@@ -889,11 +889,11 @@ type AspectMethodLike interface {
 
 /*
 AspectSectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete aspect-section-like class.
 */
 type AspectSectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AspectSectionClassLike
 
 	// Attribute Methods
@@ -902,11 +902,11 @@ type AspectSectionLike interface {
 
 /*
 AspectSubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete aspect-subsection-like class.
 */
 type AspectSubsectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AspectSubsectionClassLike
 
 	// Attribute Methods
@@ -915,11 +915,11 @@ type AspectSubsectionLike interface {
 
 /*
 AttributeMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete attribute-method-like class.
 */
 type AttributeMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AttributeMethodClassLike
 
 	// Attribute Methods
@@ -928,11 +928,11 @@ type AttributeMethodLike interface {
 
 /*
 AttributeSubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete attribute-subsection-like class.
 */
 type AttributeSubsectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AttributeSubsectionClassLike
 
 	// Attribute Methods
@@ -941,21 +941,21 @@ type AttributeSubsectionLike interface {
 
 /*
 ChannelLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete channel-like class.
 */
 type ChannelLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ChannelClassLike
 }
 
 /*
 ClassDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete class-declaration-like class.
 */
 type ClassDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ClassDeclarationClassLike
 
 	// Attribute Methods
@@ -965,11 +965,11 @@ type ClassDeclarationLike interface {
 
 /*
 ClassMethodsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete class-methods-like class.
 */
 type ClassMethodsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ClassMethodsClassLike
 
 	// Attribute Methods
@@ -980,11 +980,11 @@ type ClassMethodsLike interface {
 
 /*
 ClassSectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete class-section-like class.
 */
 type ClassSectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ClassSectionClassLike
 
 	// Attribute Methods
@@ -993,11 +993,11 @@ type ClassSectionLike interface {
 
 /*
 ConstantMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constant-method-like class.
 */
 type ConstantMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstantMethodClassLike
 
 	// Attribute Methods
@@ -1007,11 +1007,11 @@ type ConstantMethodLike interface {
 
 /*
 ConstantSubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constant-subsection-like class.
 */
 type ConstantSubsectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstantSubsectionClassLike
 
 	// Attribute Methods
@@ -1020,11 +1020,11 @@ type ConstantSubsectionLike interface {
 
 /*
 ConstraintLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constraint-like class.
 */
 type ConstraintLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
@@ -1034,11 +1034,11 @@ type ConstraintLike interface {
 
 /*
 ConstraintsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constraints-like class.
 */
 type ConstraintsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstraintsClassLike
 
 	// Attribute Methods
@@ -1048,11 +1048,11 @@ type ConstraintsLike interface {
 
 /*
 ConstructorMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constructor-method-like class.
 */
 type ConstructorMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstructorMethodClassLike
 
 	// Attribute Methods
@@ -1063,11 +1063,11 @@ type ConstructorMethodLike interface {
 
 /*
 ConstructorSubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constructor-subsection-like class.
 */
 type ConstructorSubsectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ConstructorSubsectionClassLike
 
 	// Attribute Methods
@@ -1076,11 +1076,11 @@ type ConstructorSubsectionLike interface {
 
 /*
 DeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete declaration-like class.
 */
 type DeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() DeclarationClassLike
 
 	// Attribute Methods
@@ -1091,11 +1091,11 @@ type DeclarationLike interface {
 
 /*
 EnumerationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete enumeration-like class.
 */
 type EnumerationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() EnumerationClassLike
 
 	// Attribute Methods
@@ -1105,11 +1105,11 @@ type EnumerationLike interface {
 
 /*
 FunctionMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete function-method-like class.
 */
 type FunctionMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FunctionMethodClassLike
 
 	// Attribute Methods
@@ -1120,11 +1120,11 @@ type FunctionMethodLike interface {
 
 /*
 FunctionSubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete function-subsection-like class.
 */
 type FunctionSubsectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FunctionSubsectionClassLike
 
 	// Attribute Methods
@@ -1133,11 +1133,11 @@ type FunctionSubsectionLike interface {
 
 /*
 FunctionalDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete functional-declaration-like class.
 */
 type FunctionalDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FunctionalDeclarationClassLike
 
 	// Attribute Methods
@@ -1148,11 +1148,11 @@ type FunctionalDeclarationLike interface {
 
 /*
 FunctionalSectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete functional-section-like class.
 */
 type FunctionalSectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FunctionalSectionClassLike
 
 	// Attribute Methods
@@ -1161,11 +1161,11 @@ type FunctionalSectionLike interface {
 
 /*
 GetterMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete getter-method-like class.
 */
 type GetterMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() GetterMethodClassLike
 
 	// Attribute Methods
@@ -1175,11 +1175,11 @@ type GetterMethodLike interface {
 
 /*
 ImportedPackageLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete imported-package-like class.
 */
 type ImportedPackageLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ImportedPackageClassLike
 
 	// Attribute Methods
@@ -1189,11 +1189,11 @@ type ImportedPackageLike interface {
 
 /*
 InstanceDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete instance-declaration-like class.
 */
 type InstanceDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() InstanceDeclarationClassLike
 
 	// Attribute Methods
@@ -1203,26 +1203,26 @@ type InstanceDeclarationLike interface {
 
 /*
 InstanceMethodsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete instance-methods-like class.
 */
 type InstanceMethodsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() InstanceMethodsClassLike
 
 	// Attribute Methods
-	GetPrimarySubsection() PrimarySubsectionLike
+	GetPrincipalSubsection() PrincipalSubsectionLike
 	GetOptionalAttributeSubsection() AttributeSubsectionLike
 	GetOptionalAspectSubsection() AspectSubsectionLike
 }
 
 /*
 InstanceSectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete instance-section-like class.
 */
 type InstanceSectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() InstanceSectionClassLike
 
 	// Attribute Methods
@@ -1231,11 +1231,11 @@ type InstanceSectionLike interface {
 
 /*
 InterfaceDeclarationsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete interface-declarations-like class.
 */
 type InterfaceDeclarationsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() InterfaceDeclarationsClassLike
 
 	// Attribute Methods
@@ -1246,11 +1246,11 @@ type InterfaceDeclarationsLike interface {
 
 /*
 LegalNoticeLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete legal-notice-like class.
 */
 type LegalNoticeLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() LegalNoticeClassLike
 
 	// Attribute Methods
@@ -1259,11 +1259,11 @@ type LegalNoticeLike interface {
 
 /*
 MapLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete map-like class.
 */
 type MapLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() MapClassLike
 
 	// Attribute Methods
@@ -1272,11 +1272,11 @@ type MapLike interface {
 
 /*
 MethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete method-like class.
 */
 type MethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() MethodClassLike
 
 	// Attribute Methods
@@ -1287,11 +1287,11 @@ type MethodLike interface {
 
 /*
 ModelLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete model-like class.
 */
 type ModelLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ModelClassLike
 
 	// Attribute Methods
@@ -1302,11 +1302,11 @@ type ModelLike interface {
 
 /*
 MultivalueLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete multivalue-like class.
 */
 type MultivalueLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() MultivalueClassLike
 
 	// Attribute Methods
@@ -1315,11 +1315,11 @@ type MultivalueLike interface {
 
 /*
 NoneLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete none-like class.
 */
 type NoneLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() NoneClassLike
 
 	// Attribute Methods
@@ -1328,11 +1328,11 @@ type NoneLike interface {
 
 /*
 PackageDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete package-declaration-like class.
 */
 type PackageDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PackageDeclarationClassLike
 
 	// Attribute Methods
@@ -1343,11 +1343,11 @@ type PackageDeclarationLike interface {
 
 /*
 PackageHeaderLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete package-header-like class.
 */
 type PackageHeaderLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PackageHeaderClassLike
 
 	// Attribute Methods
@@ -1357,11 +1357,11 @@ type PackageHeaderLike interface {
 
 /*
 PackageImportsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete package-imports-like class.
 */
 type PackageImportsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PackageImportsClassLike
 
 	// Attribute Methods
@@ -1370,11 +1370,11 @@ type PackageImportsLike interface {
 
 /*
 ParameterLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete parameter-like class.
 */
 type ParameterLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ParameterClassLike
 
 	// Attribute Methods
@@ -1384,11 +1384,11 @@ type ParameterLike interface {
 
 /*
 PrefixLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete prefix-like class.
 */
 type PrefixLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PrefixClassLike
 
 	// Attribute Methods
@@ -1396,38 +1396,12 @@ type PrefixLike interface {
 }
 
 /*
-PrimaryMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
-by each instance of a concrete primary-method-like class.
-*/
-type PrimaryMethodLike interface {
-	// Primary Methods
-	GetClass() PrimaryMethodClassLike
-
-	// Attribute Methods
-	GetMethod() MethodLike
-}
-
-/*
-PrimarySubsectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
-by each instance of a concrete primary-subsection-like class.
-*/
-type PrimarySubsectionLike interface {
-	// Primary Methods
-	GetClass() PrimarySubsectionClassLike
-
-	// Attribute Methods
-	GetPrimaryMethods() abs.Sequential[PrimaryMethodLike]
-}
-
-/*
 PrimitiveDeclarationsLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete primitive-declarations-like class.
 */
 type PrimitiveDeclarationsLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PrimitiveDeclarationsClassLike
 
 	// Attribute Methods
@@ -1436,12 +1410,38 @@ type PrimitiveDeclarationsLike interface {
 }
 
 /*
+PrincipalMethodLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete principal-method-like class.
+*/
+type PrincipalMethodLike interface {
+	// Principal Methods
+	GetClass() PrincipalMethodClassLike
+
+	// Attribute Methods
+	GetMethod() MethodLike
+}
+
+/*
+PrincipalSubsectionLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete principal-subsection-like class.
+*/
+type PrincipalSubsectionLike interface {
+	// Principal Methods
+	GetClass() PrincipalSubsectionClassLike
+
+	// Attribute Methods
+	GetPrincipalMethods() abs.Sequential[PrincipalMethodLike]
+}
+
+/*
 ResultLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete result-like class.
 */
 type ResultLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ResultClassLike
 
 	// Attribute Methods
@@ -1450,11 +1450,11 @@ type ResultLike interface {
 
 /*
 SetterMethodLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete setter-method-like class.
 */
 type SetterMethodLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() SetterMethodClassLike
 
 	// Attribute Methods
@@ -1464,11 +1464,11 @@ type SetterMethodLike interface {
 
 /*
 SuffixLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete suffix-like class.
 */
 type SuffixLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() SuffixClassLike
 
 	// Attribute Methods
@@ -1477,11 +1477,11 @@ type SuffixLike interface {
 
 /*
 TypeDeclarationLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete type-declaration-like class.
 */
 type TypeDeclarationLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() TypeDeclarationClassLike
 
 	// Attribute Methods
@@ -1492,11 +1492,11 @@ type TypeDeclarationLike interface {
 
 /*
 TypeSectionLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete type-section-like class.
 */
 type TypeSectionLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() TypeSectionClassLike
 
 	// Attribute Methods
@@ -1505,11 +1505,11 @@ type TypeSectionLike interface {
 
 /*
 ValueLike is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete value-like class.
 */
 type ValueLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ValueClassLike
 
 	// Attribute Methods
@@ -1517,4 +1517,4 @@ type ValueLike interface {
 	GetAbstraction() AbstractionLike
 }
 
-// Aspect Declarations
+// ASPECT DECLARATIONS

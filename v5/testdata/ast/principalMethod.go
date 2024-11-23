@@ -20,7 +20,6 @@
 package ast
 
 import (
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 )
 
@@ -28,21 +27,21 @@ import (
 
 // Access Function
 
-func PrimarySubsection() PrimarySubsectionClassLike {
-	return primarySubsectionReference()
+func PrincipalMethod() PrincipalMethodClassLike {
+	return principalMethodReference()
 }
 
 // Constructor Methods
 
-func (c *primarySubsectionClass_) Make(
-	primaryMethods abs.Sequential[PrimaryMethodLike],
-) PrimarySubsectionLike {
-	if uti.IsUndefined(primaryMethods) {
-		panic("The \"primaryMethods\" attribute is required by this class.")
+func (c *principalMethodClass_) Make(
+	method MethodLike,
+) PrincipalMethodLike {
+	if uti.IsUndefined(method) {
+		panic("The \"method\" attribute is required by this class.")
 	}
-	var instance = &primarySubsection_{
+	var instance = &principalMethod_{
 		// Initialize the instance attributes.
-		primaryMethods_: primaryMethods,
+		method_: method,
 	}
 	return instance
 }
@@ -53,16 +52,16 @@ func (c *primarySubsectionClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
-func (v *primarySubsection_) GetClass() PrimarySubsectionClassLike {
-	return primarySubsectionReference()
+func (v *principalMethod_) GetClass() PrincipalMethodClassLike {
+	return principalMethodReference()
 }
 
 // Attribute Methods
 
-func (v *primarySubsection_) GetPrimaryMethods() abs.Sequential[PrimaryMethodLike] {
-	return v.primaryMethods_
+func (v *principalMethod_) GetMethod() MethodLike {
+	return v.method_
 }
 
 // PROTECTED INTERFACE
@@ -71,23 +70,23 @@ func (v *primarySubsection_) GetPrimaryMethods() abs.Sequential[PrimaryMethodLik
 
 // Instance Structure
 
-type primarySubsection_ struct {
+type principalMethod_ struct {
 	// Declare the instance attributes.
-	primaryMethods_ abs.Sequential[PrimaryMethodLike]
+	method_ MethodLike
 }
 
 // Class Structure
 
-type primarySubsectionClass_ struct {
+type principalMethodClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func primarySubsectionReference() *primarySubsectionClass_ {
-	return primarySubsectionReference_
+func principalMethodReference() *principalMethodClass_ {
+	return principalMethodReference_
 }
 
-var primarySubsectionReference_ = &primarySubsectionClass_{
+var principalMethodReference_ = &principalMethodClass_{
 	// Initialize the class constants.
 }

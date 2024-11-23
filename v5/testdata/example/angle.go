@@ -84,7 +84,7 @@ func (c *angleClass_) Tangent(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v angle_) GetClass() AngleClassLike {
 	return angleReference()

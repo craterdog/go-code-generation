@@ -59,7 +59,7 @@ ClassGeneratorLike declares the set of aspects and methods that must be
 supported by all class-generator-like instances.
 */
 type ClassGeneratorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ClassGeneratorClassLike
 	GenerateClass(
 		moduleName string,
@@ -75,7 +75,7 @@ ModuleGeneratorLike declares the set of aspects and methods that must be
 supported by all module-generator-like instances.
 */
 type ModuleGeneratorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ModuleGeneratorClassLike
 	GenerateModule(
 		moduleName string,
@@ -89,7 +89,7 @@ PackageGeneratorLike declares the set of aspects and methods that must be
 supported by all package-generator-like instances.
 */
 type PackageGeneratorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() PackageGeneratorClassLike
 	GeneratePackage(
 		moduleName string,
@@ -111,7 +111,7 @@ type ClassTemplateDriven interface {
 	CreateConstructorMethods() string
 	CreateConstantMethods() string
 	CreateFunctionMethods() string
-	CreatePrimaryMethods() string
+	CreatePrincipalMethods() string
 	CreateAttributeMethods() string
 	CreateAspectMethods() string
 	CreatePrivateMethods() string

@@ -59,7 +59,7 @@ func (c *associationClass_[K, V]) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *association_[K, V]) GetClass() AssociationClassLike[K, V] {
 	return associationReference[K, V]()

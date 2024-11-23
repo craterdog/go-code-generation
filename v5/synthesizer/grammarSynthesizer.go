@@ -40,7 +40,7 @@ func (c *grammarSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *grammarSynthesizer_) GetClass() GrammarSynthesizerClassLike {
 	return grammarSynthesizerReference()
@@ -367,7 +367,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete formatter-like class.
 */
 type FormatterLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FormatterClassLike
 	Format<~SyntaxName>(
 		<syntaxName_> ast.<~SyntaxName>Like,
@@ -383,7 +383,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete parser-like class.
 */
 type ParserLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ParserClassLike
 	ParseSource(
 		source string,
@@ -396,7 +396,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete processor-like class.
 */
 type ProcessorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ProcessorClassLike
 
 	// Aspect Interfaces
@@ -409,7 +409,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete scanner-like class.
 */
 type ScannerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ScannerClassLike
 }
 
@@ -419,7 +419,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete token-like class.
 */
 type TokenLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() TokenClassLike
 
 	// Attribute Methods
@@ -435,7 +435,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete validator-like class.
 */
 type ValidatorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ValidatorClassLike
 	Validate<~SyntaxName>(
 		<syntaxName_> ast.<~SyntaxName>Like,
@@ -451,7 +451,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete visitor-like class.
 */
 type VisitorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() VisitorClassLike
 	Visit<~SyntaxName>(
 		<syntaxName_> ast.<~SyntaxName>Like,

@@ -34,16 +34,16 @@ func InstanceMethods() InstanceMethodsClassLike {
 // Constructor Methods
 
 func (c *instanceMethodsClass_) Make(
-	primarySubsection PrimarySubsectionLike,
+	principalSubsection PrincipalSubsectionLike,
 	optionalAttributeSubsection AttributeSubsectionLike,
 	optionalAspectSubsection AspectSubsectionLike,
 ) InstanceMethodsLike {
-	if uti.IsUndefined(primarySubsection) {
-		panic("The \"primarySubsection\" attribute is required by this class.")
+	if uti.IsUndefined(principalSubsection) {
+		panic("The \"principalSubsection\" attribute is required by this class.")
 	}
 	var instance = &instanceMethods_{
 		// Initialize the instance attributes.
-		primarySubsection_:           primarySubsection,
+		principalSubsection_:         principalSubsection,
 		optionalAttributeSubsection_: optionalAttributeSubsection,
 		optionalAspectSubsection_:    optionalAspectSubsection,
 	}
@@ -56,7 +56,7 @@ func (c *instanceMethodsClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *instanceMethods_) GetClass() InstanceMethodsClassLike {
 	return instanceMethodsReference()
@@ -64,8 +64,8 @@ func (v *instanceMethods_) GetClass() InstanceMethodsClassLike {
 
 // Attribute Methods
 
-func (v *instanceMethods_) GetPrimarySubsection() PrimarySubsectionLike {
-	return v.primarySubsection_
+func (v *instanceMethods_) GetPrincipalSubsection() PrincipalSubsectionLike {
+	return v.principalSubsection_
 }
 
 func (v *instanceMethods_) GetOptionalAttributeSubsection() AttributeSubsectionLike {
@@ -84,7 +84,7 @@ func (v *instanceMethods_) GetOptionalAspectSubsection() AspectSubsectionLike {
 
 type instanceMethods_ struct {
 	// Declare the instance attributes.
-	primarySubsection_           PrimarySubsectionLike
+	principalSubsection_         PrincipalSubsectionLike
 	optionalAttributeSubsection_ AttributeSubsectionLike
 	optionalAspectSubsection_    AspectSubsectionLike
 }

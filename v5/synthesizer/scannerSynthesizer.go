@@ -40,7 +40,7 @@ func (c *scannerSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *scannerSynthesizer_) GetClass() ScannerSynthesizerClassLike {
 	return scannerSynthesizerReference()
@@ -73,9 +73,9 @@ func (v *scannerSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *scannerSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = scannerSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *scannerSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = scannerSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *scannerSynthesizer_) CreateAttributeMethods() string {
@@ -234,7 +234,7 @@ type scannerSynthesizerClass_ struct {
 	accessFunction_      string
 	constructorMethods_  string
 	functionMethods_     string
-	primaryMethods_      string
+	principalMethods_    string
 	methodicalMethods_   string
 	processToken_        string
 	processIndexedToken_ string
@@ -338,8 +338,8 @@ func (c *scannerClass_) MatchesType(
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *scanner_) GetClass() ScannerClassLike {
 	return scannerReference()

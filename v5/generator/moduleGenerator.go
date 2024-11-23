@@ -36,7 +36,7 @@ func (c *moduleGeneratorClass_) Make() ModuleGeneratorLike {
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
 	return moduleGeneratorReference()

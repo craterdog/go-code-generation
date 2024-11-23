@@ -45,7 +45,7 @@ import (
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 )
 
-// Type Declarations
+// TYPE DECLARATIONS
 
 /*
 TokenType is a constrained type representing any token type recognized by a
@@ -63,9 +63,9 @@ const (
 	SpaceToken
 )
 
-// Functional Declarations
+// FUNCTIONAL DECLARATIONS
 
-// Class Declarations
+// CLASS DECLARATIONS
 
 /*
 FormatterClassLike is a class interface that declares the complete set of
@@ -165,7 +165,7 @@ type VisitorClassLike interface {
 	) VisitorLike
 }
 
-// Instance Declarations
+// INSTANCE DECLARATIONS
 
 /*
 FormatterLike is an instance interface that declares the complete set of
@@ -173,7 +173,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete formatter-like class.
 */
 type FormatterLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FormatterClassLike
 	FormatModel(
 		model ast.ModelLike,
@@ -189,7 +189,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete parser-like class.
 */
 type ParserLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ParserClassLike
 	ParseSource(
 		source string,
@@ -202,7 +202,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete processor-like class.
 */
 type ProcessorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ProcessorClassLike
 
 	// Aspect Interfaces
@@ -215,7 +215,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete scanner-like class.
 */
 type ScannerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ScannerClassLike
 }
 
@@ -225,7 +225,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete token-like class.
 */
 type TokenLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() TokenClassLike
 
 	// Attribute Methods
@@ -241,7 +241,7 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete validator-like class.
 */
 type ValidatorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ValidatorClassLike
 	ValidateModel(
 		model ast.ModelLike,
@@ -257,14 +257,14 @@ instance attributes, abstractions and methods that must be supported by each
 instance of a concrete visitor-like class.
 */
 type VisitorLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() VisitorClassLike
 	VisitModel(
 		model ast.ModelLike,
 	)
 }
 
-// Aspect Declarations
+// ASPECT DECLARATIONS
 
 /*
 Methodical declares the set of method signatures that must be supported by
@@ -769,28 +769,6 @@ type Methodical interface {
 	PostprocessPrefix(
 		prefix ast.PrefixLike,
 	)
-	PreprocessPrimaryMethod(
-		primaryMethod ast.PrimaryMethodLike,
-		index uint,
-		size uint,
-	)
-	ProcessPrimaryMethodSlot(
-		slot uint,
-	)
-	PostprocessPrimaryMethod(
-		primaryMethod ast.PrimaryMethodLike,
-		index uint,
-		size uint,
-	)
-	PreprocessPrimarySubsection(
-		primarySubsection ast.PrimarySubsectionLike,
-	)
-	ProcessPrimarySubsectionSlot(
-		slot uint,
-	)
-	PostprocessPrimarySubsection(
-		primarySubsection ast.PrimarySubsectionLike,
-	)
 	PreprocessPrimitiveDeclarations(
 		primitiveDeclarations ast.PrimitiveDeclarationsLike,
 	)
@@ -799,6 +777,28 @@ type Methodical interface {
 	)
 	PostprocessPrimitiveDeclarations(
 		primitiveDeclarations ast.PrimitiveDeclarationsLike,
+	)
+	PreprocessPrincipalMethod(
+		principalMethod ast.PrincipalMethodLike,
+		index uint,
+		size uint,
+	)
+	ProcessPrincipalMethodSlot(
+		slot uint,
+	)
+	PostprocessPrincipalMethod(
+		principalMethod ast.PrincipalMethodLike,
+		index uint,
+		size uint,
+	)
+	PreprocessPrincipalSubsection(
+		principalSubsection ast.PrincipalSubsectionLike,
+	)
+	ProcessPrincipalSubsectionSlot(
+		slot uint,
+	)
+	PostprocessPrincipalSubsection(
+		principalSubsection ast.PrincipalSubsectionLike,
 	)
 	PreprocessResult(
 		result ast.ResultLike,

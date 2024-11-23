@@ -41,7 +41,7 @@ func (c *parserSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *parserSynthesizer_) GetClass() ParserSynthesizerClassLike {
 	return parserSynthesizerReference()
@@ -74,9 +74,9 @@ func (v *parserSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *parserSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = parserSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *parserSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = parserSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *parserSynthesizer_) CreateAttributeMethods() string {
@@ -413,7 +413,7 @@ type parserSynthesizerClass_ struct {
 	parseTokenCase_         string
 	parseRuleCase_          string
 	parseDefaultCase_       string
-	primaryMethods_         string
+	principalMethods_       string
 	privateMethods_         string
 	possibleDelimiter_      string
 	requiredDelimiter_      string
@@ -642,8 +642,8 @@ func (v *parser_) parse<~RuleName>() (
 	return
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *parser_) GetClass() ParserClassLike {
 	return parserReference()

@@ -93,7 +93,7 @@ func (c *catalogClass_[K, V]) Merge(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *catalog_[K, V]) GetClass() CatalogClassLike[K, V] {
 	return catalogReference[K, V]()

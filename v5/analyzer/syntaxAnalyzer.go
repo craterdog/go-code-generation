@@ -49,7 +49,7 @@ func (c *syntaxAnalyzerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
 	return syntaxAnalyzerReference()

@@ -45,7 +45,7 @@ func (c *modelAnalyzerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *modelAnalyzer_) GetClass() ModelAnalyzerClassLike {
 	return modelAnalyzerReference()
@@ -99,8 +99,8 @@ func (v *modelAnalyzer_) GetFunctionMethods() abs.ListLike[ast.FunctionMethodLik
 	return v.functionMethods_
 }
 
-func (v *modelAnalyzer_) GetPrimaryMethods() abs.ListLike[ast.PrimaryMethodLike] {
-	return v.primaryMethods_
+func (v *modelAnalyzer_) GetPrincipalMethods() abs.ListLike[ast.PrincipalMethodLike] {
+	return v.principalMethods_
 }
 
 func (v *modelAnalyzer_) GetAttributeMethods() abs.ListLike[ast.AttributeMethodLike] {
@@ -179,7 +179,7 @@ func (v *modelAnalyzer_) analyzeClass(
 			v.analyzeConstructorMethods(classDeclaration)
 			v.analyzeConstantMethods(classDeclaration)
 			v.analyzeFunctionMethods(classDeclaration)
-			v.analyzePrimaryMethods(instanceDeclaration)
+			v.analyzePrincipalMethods(instanceDeclaration)
 			v.analyzeAttributeMethods(instanceDeclaration)
 			v.analyzeAspectInterfaces(instanceDeclaration)
 			break
@@ -223,10 +223,10 @@ func (v *modelAnalyzer_) analyzeClassStructure(
 	v.isIntrinsic_ = false
 	v.intrinsicType_ = nil
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
-	var primarySubsection = instanceMethods.GetPrimarySubsection()
-	var primaryMethods = primarySubsection.GetPrimaryMethods().GetIterator()
-	for primaryMethods.HasNext() {
-		var method = primaryMethods.GetNext().GetMethod()
+	var principalSubsection = instanceMethods.GetPrincipalSubsection()
+	var principalMethods = principalSubsection.GetPrincipalMethods().GetIterator()
+	for principalMethods.HasNext() {
+		var method = principalMethods.GetNext().GetMethod()
 		var methodName = method.GetName()
 		if methodName == "GetIntrinsic" {
 			v.isIntrinsic_ = true
@@ -285,16 +285,16 @@ func (v *modelAnalyzer_) analyzePackageDeclaration(
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 }
 
-func (v *modelAnalyzer_) analyzePrimaryMethods(
+func (v *modelAnalyzer_) analyzePrincipalMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.primaryMethods_ = col.List[ast.PrimaryMethodLike]()
+	v.principalMethods_ = col.List[ast.PrincipalMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
-	var primarySubsection = instanceMethods.GetPrimarySubsection()
-	var primaryMethods = primarySubsection.GetPrimaryMethods().GetIterator()
-	for primaryMethods.HasNext() {
-		var primaryMethod = primaryMethods.GetNext()
-		v.primaryMethods_.AppendValue(primaryMethod)
+	var principalSubsection = instanceMethods.GetPrincipalSubsection()
+	var principalMethods = principalSubsection.GetPrincipalMethods().GetIterator()
+	for principalMethods.HasNext() {
+		var principalMethod = principalMethods.GetNext()
+		v.principalMethods_.AppendValue(principalMethod)
 	}
 }
 
@@ -483,7 +483,7 @@ type modelAnalyzer_ struct {
 	constructorMethods_ abs.ListLike[ast.ConstructorMethodLike]
 	constantMethods_    abs.ListLike[ast.ConstantMethodLike]
 	functionMethods_    abs.ListLike[ast.FunctionMethodLike]
-	primaryMethods_     abs.ListLike[ast.PrimaryMethodLike]
+	principalMethods_   abs.ListLike[ast.PrincipalMethodLike]
 	attributeMethods_   abs.ListLike[ast.AttributeMethodLike]
 	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
 	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]

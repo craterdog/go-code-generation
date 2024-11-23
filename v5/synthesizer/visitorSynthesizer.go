@@ -42,7 +42,7 @@ func (c *visitorSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *visitorSynthesizer_) GetClass() VisitorSynthesizerClassLike {
 	return visitorSynthesizerReference()
@@ -75,9 +75,9 @@ func (v *visitorSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *visitorSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = visitorSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *visitorSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = visitorSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *visitorSynthesizer_) CreateAttributeMethods() string {
@@ -384,7 +384,7 @@ type visitorSynthesizerClass_ struct {
 	classImports_       string
 	accessFunction_     string
 	constructorMethods_ string
-	primaryMethods_     string
+	principalMethods_   string
 	privateMethods_     string
 	visitMethod_        string
 	multilineCases_     string
@@ -447,8 +447,8 @@ func (c *visitorClass_) Make(
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *visitor_) GetClass() VisitorClassLike {
 	return visitorReference()

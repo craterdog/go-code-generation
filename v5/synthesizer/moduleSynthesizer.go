@@ -44,7 +44,7 @@ func (c *moduleSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *moduleSynthesizer_) GetClass() ModuleSynthesizerClassLike {
 	return moduleSynthesizerReference()

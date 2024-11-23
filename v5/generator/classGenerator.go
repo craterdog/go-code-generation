@@ -36,7 +36,7 @@ func (c *classGeneratorClass_) Make() ClassGeneratorLike {
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
 	return classGeneratorReference()
@@ -72,9 +72,9 @@ func (v *classGenerator_) GenerateClass(
 	var functionMethods = synthesizer.CreateFunctionMethods()
 	source = uti.ReplaceAll(source, "functionMethods", functionMethods)
 
-	// Create the primary methods.
-	var primaryMethods = synthesizer.CreatePrimaryMethods()
-	source = uti.ReplaceAll(source, "primaryMethods", primaryMethods)
+	// Create the principal methods.
+	var principalMethods = synthesizer.CreatePrincipalMethods()
+	source = uti.ReplaceAll(source, "principalMethods", principalMethods)
 
 	// Create the attribute methods.
 	var attributeMethods = synthesizer.CreateAttributeMethods()
@@ -146,7 +146,7 @@ package <PackageName>
 // CLASS INTERFACE
 <AccessFunction><ConstructorMethods><ConstantMethods><FunctionMethods>
 // INSTANCE INTERFACE
-<PrimaryMethods><AttributeMethods><AspectMethods>
+<PrincipalMethods><AttributeMethods><AspectMethods>
 // PROTECTED INTERFACE
 <PrivateMethods><InstanceStructure><ClassStructure><ClassReference>`,
 }

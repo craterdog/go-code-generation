@@ -40,7 +40,7 @@ func (c *formatterSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *formatterSynthesizer_) GetClass() FormatterSynthesizerClassLike {
 	return formatterSynthesizerReference()
@@ -73,9 +73,9 @@ func (v *formatterSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *formatterSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = formatterSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *formatterSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = formatterSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *formatterSynthesizer_) CreateAttributeMethods() string {
@@ -218,7 +218,7 @@ type formatterSynthesizerClass_ struct {
 	classImports_        string
 	accessFunction_      string
 	constructorMethods_  string
-	primaryMethods_      string
+	principalMethods_    string
 	aspectMethods_       string
 	processToken_        string
 	processIndexedToken_ string
@@ -268,8 +268,8 @@ func (c *formatterClass_) Make() FormatterLike {
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *formatter_) GetClass() FormatterClassLike {
 	return formatterReference()

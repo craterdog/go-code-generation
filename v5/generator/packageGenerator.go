@@ -36,7 +36,7 @@ func (c *packageGeneratorClass_) Make() PackageGeneratorLike {
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *packageGenerator_) GetClass() PackageGeneratorClassLike {
 	return packageGeneratorReference()
@@ -133,14 +133,14 @@ on interfaces, not on each other.
 */
 package <PackageName>
 <PackageImports>
-// Type Declarations
+// TYPE DECLARATIONS
 <TypeDeclarations>
-// Functional Declarations
+// FUNCTIONAL DECLARATIONS
 <FunctionalDeclarations>
-// Class Declarations
+// CLASS DECLARATIONS
 <ClassDeclarations>
-// Instance Declarations
+// INSTANCE DECLARATIONS
 <InstanceDeclarations>
-// Aspect Declarations
+// ASPECT DECLARATIONS
 <AspectDeclarations>`,
 }

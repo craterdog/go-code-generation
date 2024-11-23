@@ -40,7 +40,7 @@ func (c *astSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *astSynthesizer_) GetClass() AstSynthesizerClassLike {
 	return astSynthesizerReference()
@@ -199,11 +199,11 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 		getterMethods += "\n\tGetAny() any"
 	}
 	var instanceDeclaration = astSynthesizerReference().instanceDeclaration_
-	var primaryMethods = astSynthesizerReference().primaryMethods_
+	var principalMethods = astSynthesizerReference().principalMethods_
 	instanceDeclaration = uti.ReplaceAll(
 		instanceDeclaration,
-		"primaryMethods",
-		primaryMethods,
+		"principalMethods",
+		principalMethods,
 	)
 	var attributeMethods string
 	if uti.IsDefined(getterMethods) {
@@ -306,7 +306,7 @@ type astSynthesizerClass_ struct {
 	singularTokenParameter_  string
 	pluralTokenParameter_    string
 	instanceDeclaration_     string
-	primaryMethods_          string
+	principalMethods_        string
 	attributeMethods_        string
 	ruleGetterMethod_        string
 	pluralRuleGetterMethod_  string
@@ -356,13 +356,13 @@ type <~ClassName>ClassLike interface {
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
-complete set of primary, attribute and aspect methods that must be supported
+complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete <~class-name>-like class.
 */
-type <~ClassName>Like interface {<PrimaryMethods><AttributeMethods>}
+type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 `,
-	primaryMethods_: `
-	// Primary Methods
+	principalMethods_: `
+	// Principal Methods
 	GetClass() <~ClassName>ClassLike
 `,
 	attributeMethods_: `

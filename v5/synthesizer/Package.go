@@ -176,7 +176,7 @@ AstSynthesizerLike declares the set of aspects and methods that must be supporte
 by all ast-synthesizer-like instances.
 */
 type AstSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() AstSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -188,7 +188,7 @@ ClassSynthesizerLike declares the set of aspects and methods that must
 be supported by all class-synthesizer-like instances.
 */
 type ClassSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ClassSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -200,7 +200,7 @@ ExampleSynthesizerLike declares the set of aspects and methods that must
 be supported by all example-synthesizer-like instances.
 */
 type ExampleSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ExampleSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -212,7 +212,7 @@ FormatterSynthesizerLike declares the set of aspects and methods that must
 be supported by all formatter-synthesizer-like instances.
 */
 type FormatterSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() FormatterSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -224,7 +224,7 @@ GrammarSynthesizerLike declares the set of aspects and methods that must
 be supported by all grammar-synthesizer-like instances.
 */
 type GrammarSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() GrammarSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -236,7 +236,7 @@ ModuleSynthesizerLike declares the set of aspects and methods that must
 be supported by all module-synthesizer-like instances.
 */
 type ModuleSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ModuleSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -248,7 +248,7 @@ ParserSynthesizerLike declares the set of aspects and methods that must
 be supported by all parser-synthesizer-like instances.
 */
 type ParserSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ParserSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -260,7 +260,7 @@ ProcessorSynthesizerLike declares the set of aspects and methods that must
 be supported by all processor-synthesizer-like instances.
 */
 type ProcessorSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ProcessorSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -272,7 +272,7 @@ ScannerSynthesizerLike declares the set of aspects and methods that must
 be supported by all scanner-synthesizer-like instances.
 */
 type ScannerSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ScannerSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -284,7 +284,7 @@ TokenSynthesizerLike declares the set of aspects and methods that must
 be supported by all token-synthesizer-like instances.
 */
 type TokenSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() TokenSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -296,7 +296,7 @@ ValidatorSynthesizerLike declares the set of aspects and methods that must
 be supported by all validator-synthesizer-like instances.
 */
 type ValidatorSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ValidatorSynthesizerClassLike
 
 	// Aspect Interfaces
@@ -308,7 +308,7 @@ VisitorSynthesizerLike declares the set of aspects and methods that must
 be supported by all visitor-synthesizer-like instances.
 */
 type VisitorSynthesizerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() VisitorSynthesizerClassLike
 
 	// Aspect Interfaces

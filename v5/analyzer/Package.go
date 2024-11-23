@@ -67,7 +67,7 @@ ModelAnalyzerLike declares the set of aspects and methods that must be
 supported by all model-analyzer-like instances.
 */
 type ModelAnalyzerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() ModelAnalyzerClassLike
 	GetLegalNotice() string
 	GetPackageImports() mod.PackageImportsLike
@@ -81,7 +81,7 @@ type ModelAnalyzerLike interface {
 	GetConstructorMethods() abs.ListLike[mod.ConstructorMethodLike]
 	GetConstantMethods() abs.ListLike[mod.ConstantMethodLike]
 	GetFunctionMethods() abs.ListLike[mod.FunctionMethodLike]
-	GetPrimaryMethods() abs.ListLike[mod.PrimaryMethodLike]
+	GetPrincipalMethods() abs.ListLike[mod.PrincipalMethodLike]
 	GetAttributeMethods() abs.ListLike[mod.AttributeMethodLike]
 	GetAspectInterfaces() abs.ListLike[mod.AspectInterfaceLike]
 	GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike]
@@ -92,7 +92,7 @@ SyntaxAnalyzerLike declares the set of aspects and methods that must be
 supported by all syntax-analyzer-like instances.
 */
 type SyntaxAnalyzerLike interface {
-	// Primary Methods
+	// Principal Methods
 	GetClass() SyntaxAnalyzerClassLike
 	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
 	GetIdentifiers(

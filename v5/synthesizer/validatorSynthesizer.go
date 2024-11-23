@@ -40,7 +40,7 @@ func (c *validatorSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *validatorSynthesizer_) GetClass() ValidatorSynthesizerClassLike {
 	return validatorSynthesizerReference()
@@ -73,9 +73,9 @@ func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *validatorSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = validatorSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = validatorSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *validatorSynthesizer_) CreateAttributeMethods() string {
@@ -212,7 +212,7 @@ type validatorSynthesizerClass_ struct {
 	classImports_        string
 	accessFunction_      string
 	constructorMethods_  string
-	primaryMethods_      string
+	principalMethods_    string
 	aspectMethods_       string
 	processToken_        string
 	processIndexedToken_ string
@@ -262,8 +262,8 @@ func (c *validatorClass_) Make() ValidatorLike {
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *validator_) GetClass() ValidatorClassLike {
 	return validatorReference()

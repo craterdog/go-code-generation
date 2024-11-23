@@ -47,7 +47,7 @@ func (c *validatorClass_) Make() ValidatorLike {
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *validator_) GetClass() ValidatorClassLike {
 	return validatorReference()
@@ -997,42 +997,42 @@ func (v *validator_) PostprocessPrefix(
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessPrimaryMethod(
-	primaryMethod ast.PrimaryMethodLike,
+func (v *validator_) PreprocessPrincipalMethod(
+	principalMethod ast.PrincipalMethodLike,
 	index uint,
 	size uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) ProcessPrimaryMethodSlot(
+func (v *validator_) ProcessPrincipalMethodSlot(
 	slot uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PostprocessPrimaryMethod(
-	primaryMethod ast.PrimaryMethodLike,
+func (v *validator_) PostprocessPrincipalMethod(
+	principalMethod ast.PrincipalMethodLike,
 	index uint,
 	size uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessPrimarySubsection(
-	primarySubsection ast.PrimarySubsectionLike,
+func (v *validator_) PreprocessPrincipalSubsection(
+	principalSubsection ast.PrincipalSubsectionLike,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) ProcessPrimarySubsectionSlot(
+func (v *validator_) ProcessPrincipalSubsectionSlot(
 	slot uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PostprocessPrimarySubsection(
-	primarySubsection ast.PrimarySubsectionLike,
+func (v *validator_) PostprocessPrincipalSubsection(
+	principalSubsection ast.PrincipalSubsectionLike,
 ) {
 	// TBD - Add any validation checks.
 }

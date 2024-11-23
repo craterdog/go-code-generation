@@ -40,7 +40,7 @@ func (c *processorSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *processorSynthesizer_) GetClass() ProcessorSynthesizerClassLike {
 	return processorSynthesizerReference()
@@ -73,9 +73,9 @@ func (v *processorSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *processorSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = processorSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *processorSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = processorSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *processorSynthesizer_) CreateAttributeMethods() string {
@@ -206,7 +206,7 @@ type processorSynthesizerClass_ struct {
 	classImports_        string
 	accessFunction_      string
 	constructorMethods_  string
-	primaryMethods_      string
+	principalMethods_    string
 	aspectMethods_       string
 	processToken_        string
 	processIndexedToken_ string
@@ -251,8 +251,8 @@ func (c *processorClass_) Make() ProcessorLike {
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *processor_) GetClass() ProcessorClassLike {
 	return processorReference()

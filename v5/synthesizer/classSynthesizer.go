@@ -45,7 +45,7 @@ func (c *classSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *classSynthesizer_) GetClass() ClassSynthesizerClassLike {
 	return classSynthesizerReference()
@@ -81,10 +81,10 @@ func (v *classSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *classSynthesizer_) CreatePrimaryMethods() string {
-	var methods = v.analyzer_.GetPrimaryMethods()
-	var primaryMethods = v.createPrimaryMethods(methods)
-	return primaryMethods
+func (v *classSynthesizer_) CreatePrincipalMethods() string {
+	var methods = v.analyzer_.GetPrincipalMethods()
+	var principalMethods = v.createPrincipalMethods(methods)
+	return principalMethods
 }
 
 func (v *classSynthesizer_) CreateAttributeMethods() string {
@@ -875,38 +875,38 @@ func (v *classSynthesizer_) createParameters(
 	return methodParameters
 }
 
-func (v *classSynthesizer_) createPrimaryMethod(
+func (v *classSynthesizer_) createPrincipalMethod(
 	method mod.MethodLike,
 ) string {
 	var methodName = method.GetName()
 	var parameters = v.createParameters(method.GetParameters())
 	var resultType = v.createResult(method.GetOptionalResult())
-	var primaryMethod = classSynthesizerReference().instanceMethod_
+	var principalMethod = classSynthesizerReference().instanceMethod_
 	if uti.IsDefined(resultType) {
-		primaryMethod = classSynthesizerReference().instanceFunction_
-		primaryMethod = uti.ReplaceAll(
-			primaryMethod,
+		principalMethod = classSynthesizerReference().instanceFunction_
+		principalMethod = uti.ReplaceAll(
+			principalMethod,
 			"resultType",
 			resultType,
 		)
 	}
-	primaryMethod = uti.ReplaceAll(
-		primaryMethod,
+	principalMethod = uti.ReplaceAll(
+		principalMethod,
 		"methodName",
 		methodName,
 	)
-	primaryMethod = uti.ReplaceAll(
-		primaryMethod,
+	principalMethod = uti.ReplaceAll(
+		principalMethod,
 		"parameters",
 		parameters,
 	)
-	return primaryMethod
+	return principalMethod
 }
 
-func (v *classSynthesizer_) createPrimaryMethods(
-	sequence abs.Sequential[mod.PrimaryMethodLike],
+func (v *classSynthesizer_) createPrincipalMethods(
+	sequence abs.Sequential[mod.PrincipalMethodLike],
 ) string {
-	var primaryMethods string
+	var principalMethods string
 	var methods = sequence.GetIterator()
 	for methods.HasNext() {
 		var method = methods.GetNext().GetMethod()
@@ -914,14 +914,14 @@ func (v *classSynthesizer_) createPrimaryMethods(
 			method.GetName() == "GetIntrinsic" {
 			continue
 		}
-		var primaryMethod = v.createPrimaryMethod(method)
-		primaryMethods += primaryMethod
+		var principalMethod = v.createPrincipalMethod(method)
+		principalMethods += principalMethod
 	}
-	var implementation = classSynthesizerReference().primaryMethods_
+	var implementation = classSynthesizerReference().principalMethods_
 	implementation = uti.ReplaceAll(
 		implementation,
-		"primaryMethods",
-		primaryMethods,
+		"principalMethods",
+		principalMethods,
 	)
 	var intrinsicMethod = v.createIntrinsicMethod()
 	implementation = uti.ReplaceAll(
@@ -1206,7 +1206,7 @@ type classSynthesizerClass_ struct {
 	getterMethod_            string
 	setterMethod_            string
 	aspectInterface_         string
-	primaryMethods_          string
+	principalMethods_        string
 	intrinsicMethod_         string
 	instanceMethod_          string
 	instanceFunction_        string
@@ -1318,13 +1318,13 @@ func (v <*><~className>_<Arguments>) <~MethodName>(
 // <AspectType> Methods
 <AspectMethods>`,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments> {
 	return <~className>Reference<Arguments>()
 }
-<IntrinsicMethod><PrimaryMethods>`,
+<IntrinsicMethod><PrincipalMethods>`,
 
 	intrinsicMethod_: `
 func (v <*><~className>_<Arguments>) GetIntrinsic() <IntrinsicType> {

@@ -40,7 +40,7 @@ func (c *tokenSynthesizerClass_) Make(
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v *tokenSynthesizer_) GetClass() TokenSynthesizerClassLike {
 	return tokenSynthesizerReference()
@@ -73,9 +73,9 @@ func (v *tokenSynthesizer_) CreateFunctionMethods() string {
 	return functionMethods
 }
 
-func (v *tokenSynthesizer_) CreatePrimaryMethods() string {
-	var primaryMethods = tokenSynthesizerReference().primaryMethods_
-	return primaryMethods
+func (v *tokenSynthesizer_) CreatePrincipalMethods() string {
+	var principalMethods = tokenSynthesizerReference().principalMethods_
+	return principalMethods
 }
 
 func (v *tokenSynthesizer_) CreateAttributeMethods() string {
@@ -138,7 +138,7 @@ type tokenSynthesizerClass_ struct {
 	classImports_       string
 	accessFunction_     string
 	constructorMethods_ string
-	primaryMethods_     string
+	principalMethods_   string
 	attributeMethods_   string
 	privateMethods_     string
 	instanceStructure_  string
@@ -200,8 +200,8 @@ func (c *tokenClass_) Make(
 }
 `,
 
-	primaryMethods_: `
-// Primary Methods
+	principalMethods_: `
+// Principal Methods
 
 func (v *token_) GetClass() TokenClassLike {
 	return tokenReference()

@@ -67,7 +67,7 @@ func (c *arrayClass_[V]) DefaultRanker() RankingFunction[V] {
 
 // INSTANCE INTERFACE
 
-// Primary Methods
+// Principal Methods
 
 func (v array_[V]) GetClass() ArrayClassLike[V] {
 	return arrayReference[V]()
