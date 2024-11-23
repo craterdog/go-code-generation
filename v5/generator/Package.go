@@ -52,6 +52,15 @@ type PackageGeneratorClassLike interface {
 	Make() PackageGeneratorLike
 }
 
+/*
+TemplateGeneratorClassLike declares the set of class constants, constructors and
+functions that must be supported by all template-generator-class-like classes.
+*/
+type TemplateGeneratorClassLike interface {
+	// Constructor Methods
+	Make() TemplateGeneratorLike
+}
+
 // Instance Declarations
 
 /*
@@ -96,6 +105,22 @@ type PackageGeneratorLike interface {
 		wikiPath string,
 		packageName string,
 		synthesizer PackageTemplateDriven,
+	) string
+}
+
+/*
+TemplateGeneratorLike declares the set of aspects and methods that must be
+supported by all template-generator-like instances.
+*/
+type TemplateGeneratorLike interface {
+	// Principal Methods
+	GetClass() TemplateGeneratorClassLike
+	GenerateClass(
+		moduleName string,
+		wikiPath string,
+		packageName string,
+		className string,
+		synthesizer ClassTemplateDriven,
 	) string
 }
 

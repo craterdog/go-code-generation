@@ -10,13 +10,6 @@
 ................................................................................
 */
 
-/*
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│                 This class file was automatically generated.                 │
-│   Updates to any section other than the Private Methods may be overwritten.  │
-└──────────────────────────────────────────────────────────────────────────────┘
-*/
-
 package example
 
 import ()

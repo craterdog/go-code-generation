@@ -427,7 +427,7 @@ func TestExampleGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the example concrete classes.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.TemplateGenerator().Make()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
