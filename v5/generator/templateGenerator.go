@@ -44,7 +44,6 @@ func (v *templateGenerator_) GetClass() TemplateGeneratorClassLike {
 
 func (v *templateGenerator_) GenerateClass(
 	moduleName string,
-	wikiPath string,
 	packageName string,
 	className string,
 	synthesizer ClassTemplateDriven,
@@ -103,7 +102,6 @@ func (v *templateGenerator_) GenerateClass(
 	// Perform global updates (this must be done last).
 	source = synthesizer.PerformGlobalUpdates(source)
 	source = uti.ReplaceAll(source, "moduleName", moduleName)
-	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
 	source = uti.ReplaceAll(source, "packageName", packageName)
 	source = uti.ReplaceAll(source, "className", className)
 

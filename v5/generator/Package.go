@@ -23,7 +23,13 @@ on interfaces, not on each other.
 */
 package generator
 
-// Class Declarations
+import ()
+
+// TYPE DECLARATIONS
+
+// FUNCTIONAL DECLARATIONS
+
+// CLASS DECLARATIONS
 
 /*
 ClassGeneratorClassLike declares the set of class constants, constructors and
@@ -61,7 +67,7 @@ type TemplateGeneratorClassLike interface {
 	Make() TemplateGeneratorLike
 }
 
-// Instance Declarations
+// INSTANCE DECLARATIONS
 
 /*
 ClassGeneratorLike declares the set of aspects and methods that must be
@@ -72,7 +78,6 @@ type ClassGeneratorLike interface {
 	GetClass() ClassGeneratorClassLike
 	GenerateClass(
 		moduleName string,
-		wikiPath string,
 		packageName string,
 		className string,
 		synthesizer ClassTemplateDriven,
@@ -117,14 +122,13 @@ type TemplateGeneratorLike interface {
 	GetClass() TemplateGeneratorClassLike
 	GenerateClass(
 		moduleName string,
-		wikiPath string,
 		packageName string,
 		className string,
 		synthesizer ClassTemplateDriven,
 	) string
 }
 
-// Aspect Declarations
+// ASPECT DECLARATIONS
 
 /*
 ClassTemplateDriven declares the set of method signatures that must be

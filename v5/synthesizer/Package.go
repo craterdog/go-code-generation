@@ -36,7 +36,11 @@ import (
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
-// Class Declarations
+// TYPE DECLARATIONS
+
+// FUNCTIONAL DECLARATIONS
+
+// CLASS DECLARATIONS
 
 /*
 AstSynthesizerClassLike declares the set of class constants, constructors and
@@ -169,7 +173,7 @@ type VisitorSynthesizerClassLike interface {
 	) VisitorSynthesizerLike
 }
 
-// Instance Declarations
+// INSTANCE DECLARATIONS
 
 /*
 AstSynthesizerLike declares the set of aspects and methods that must be supported
@@ -314,3 +318,5 @@ type VisitorSynthesizerLike interface {
 	// Aspect Interfaces
 	gen.ClassTemplateDriven
 }
+
+// ASPECT DECLARATIONS

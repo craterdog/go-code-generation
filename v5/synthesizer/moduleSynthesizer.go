@@ -693,8 +693,8 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 	}
 	var length = len(argumentTypes)
 	if length > 0 {
-		// Remove the trailing comma.
-		argumentTypes = argumentTypes[:length-1]
+		// Remove the trailing comma and space.
+		argumentTypes = argumentTypes[:length-2]
 	}
 
 	// Call the corresponding constructor.

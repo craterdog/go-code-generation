@@ -35,7 +35,11 @@ import (
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
-// Class Declarations
+// TYPE DECLARATIONS
+
+// FUNCTIONAL DECLARATIONS
+
+// CLASS DECLARATIONS
 
 /*
 ModelAnalyzerClassLike declares the set of class constants, constructors and
@@ -60,7 +64,7 @@ type SyntaxAnalyzerClassLike interface {
 	) SyntaxAnalyzerLike
 }
 
-// Instance Declarations
+// INSTANCE DECLARATIONS
 
 /*
 ModelAnalyzerLike declares the set of aspects and methods that must be
@@ -126,3 +130,5 @@ type SyntaxAnalyzerLike interface {
 	// Aspect Interfaces
 	not.Methodical
 }
+
+// ASPECT DECLARATIONS

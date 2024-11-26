@@ -10,13 +10,12 @@
 ................................................................................
 */
 
-package generator_test
+package module_test
 
 import (
 	byt "bytes"
 	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v5/generator"
-	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
+	gen "github.com/craterdog/go-code-generation/v5"
 	col "github.com/craterdog/go-collection-framework/v4"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
@@ -27,7 +26,7 @@ import (
 	tes "testing"
 )
 
-var directory = "../testdata/"
+var directory = "./testdata/"
 var moduleName = "github.com/craterdog/go-class-model/v5"
 var wikiPath = "github.com/craterdog/go-class-model/wiki"
 
@@ -48,10 +47,10 @@ func TestPackageGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the AST Package.go file.
-	var generator = gen.PackageGenerator().Make()
+	var generator = gen.PackageGenerator()
 	filename = directory + "ast/Package.go"
 	var packageName = "ast"
-	var astSynthesizer = syn.AstSynthesizer().Make(syntax)
+	var astSynthesizer = gen.AstSynthesizer(syntax)
 	source = generator.GeneratePackage(
 		moduleName,
 		wikiPath,
@@ -67,7 +66,7 @@ func TestPackageGeneration(t *tes.T) {
 	// Generate the grammar Package.go file.
 	filename = directory + "grammar/Package.go"
 	packageName = "grammar"
-	var grammarSynthesizer = syn.GrammarSynthesizer().Make(syntax)
+	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
 	source = generator.GeneratePackage(
 		moduleName,
 		wikiPath,
@@ -98,8 +97,8 @@ func TestModuleGeneration(t *tes.T) {
 		var model = parser.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
-	var generator = gen.ModuleGenerator().Make()
-	var moduleSynthesizer = syn.ModuleSynthesizer().Make(models)
+	var generator = gen.ModuleGenerator()
+	var moduleSynthesizer = gen.ModuleSynthesizer(models)
 	var source = generator.GenerateModule(
 		moduleName,
 		wikiPath,
@@ -129,7 +128,7 @@ func TestAstGeneration(t *tes.T) {
 	var formatter = mod.Formatter()
 	var actual = formatter.FormatModel(model)
 	ass.Equal(t, source, actual)
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 
 	// Generate the AST concrete classes.
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
@@ -141,10 +140,9 @@ func TestAstGeneration(t *tes.T) {
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
 		filename = directory + packageName + "/" + className + ".go"
-		var classSynthesizer = syn.ClassSynthesizer().Make(model, className)
+		var classSynthesizer = gen.ClassSynthesizer(model, className)
 		source = generator.GenerateClass(
 			moduleName,
-			wikiPath,
 			packageName,
 			className,
 			classSynthesizer,
@@ -174,14 +172,13 @@ func TestTokenGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the token concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "token"
 	filename = directory + packageName + "/" + className + ".go"
-	var tokenSynthesizer = syn.TokenSynthesizer().Make(syntax)
+	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		tokenSynthesizer,
@@ -210,14 +207,13 @@ func TestScannerGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the scanner concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "scanner"
 	filename = directory + packageName + "/" + className + ".go"
-	var scannerSynthesizer = syn.ScannerSynthesizer().Make(syntax)
+	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		scannerSynthesizer,
@@ -246,14 +242,13 @@ func TestParserGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the parser concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "parser"
 	filename = directory + packageName + "/" + className + ".go"
-	var parserSynthesizer = syn.ParserSynthesizer().Make(syntax)
+	var parserSynthesizer = gen.ParserSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		parserSynthesizer,
@@ -282,14 +277,13 @@ func TestVisitorGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the visitor concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "visitor"
 	filename = directory + packageName + "/" + className + ".go"
-	var visitorSynthesizer = syn.VisitorSynthesizer().Make(syntax)
+	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		visitorSynthesizer,
@@ -318,14 +312,13 @@ func TestFormatterGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
 	filename = directory + packageName + "/" + className + ".go"
-	var formatterSynthesizer = syn.FormatterSynthesizer().Make(syntax)
+	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		formatterSynthesizer,
@@ -354,14 +347,13 @@ func TestProcessorGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the processor concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "processor"
 	filename = directory + packageName + "/" + className + ".go"
-	var processorSynthesizer = syn.ProcessorSynthesizer().Make(syntax)
+	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		processorSynthesizer,
@@ -390,14 +382,13 @@ func TestValidatorGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
-	var generator = gen.ClassGenerator().Make()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "validator"
 	filename = directory + packageName + "/" + className + ".go"
-	var validatorSynthesizer = syn.ValidatorSynthesizer().Make(syntax)
+	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
-		wikiPath,
 		packageName,
 		className,
 		validatorSynthesizer,
@@ -427,7 +418,7 @@ func TestExampleGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the example concrete classes.
-	var generator = gen.TemplateGenerator().Make()
+	var generator = gen.TemplateGenerator()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
@@ -437,10 +428,9 @@ func TestExampleGeneration(t *tes.T) {
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
 		filename = directory + packageName + "/" + className + ".go"
-		var exampleSynthesizer = syn.ClassSynthesizer().Make(model, className)
+		var exampleSynthesizer = gen.ClassSynthesizer(model, className)
 		source = generator.GenerateClass(
 			moduleName,
-			wikiPath,
 			packageName,
 			className,
 			exampleSynthesizer,
