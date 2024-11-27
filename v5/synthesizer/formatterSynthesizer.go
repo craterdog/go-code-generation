@@ -185,6 +185,9 @@ func (v *formatterSynthesizer_) createProcessToken(
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = formatterSynthesizerReference().processIndexedToken_
 	}
+	if tokenName == "newline" {
+		processToken = formatterSynthesizerReference().processNewline_
+	}
 	processToken = uti.ReplaceAll(
 		processToken,
 		"tokenName",
@@ -221,6 +224,7 @@ type formatterSynthesizerClass_ struct {
 	principalMethods_    string
 	aspectMethods_       string
 	processToken_        string
+	processNewline_      string
 	processIndexedToken_ string
 	processRule_         string
 	processIndexedRule_  string
@@ -290,6 +294,14 @@ func (v *formatter_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
 	v.appendString(<tokenName_>)
+}
+`,
+
+	processNewline_: `
+func (v *formatter_) Process<~TokenName>(
+	<tokenName_> string,
+) {
+	v.appendNewline()
 }
 `,
 
