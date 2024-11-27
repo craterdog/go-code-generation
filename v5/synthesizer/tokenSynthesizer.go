@@ -111,11 +111,11 @@ func (v *tokenSynthesizer_) CreateClassReference() string {
 func (v *tokenSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var classImports = tokenSynthesizerReference().classImports_
+	var importedPackages = tokenSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -135,7 +135,7 @@ type tokenSynthesizer_ struct {
 
 type tokenSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_       string
+	importedPackages_   string
 	accessFunction_     string
 	constructorMethods_ string
 	principalMethods_   string
@@ -154,10 +154,8 @@ func tokenSynthesizerReference() *tokenSynthesizerClass_ {
 
 var tokenSynthesizerReference_ = &tokenSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	uti "github.com/craterdog/go-missing-utilities/v2"
-)
 `,
 
 	accessFunction_: `

@@ -55,8 +55,8 @@ func (v *modelAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *modelAnalyzer_) GetPackageImports() ast.PackageImportsLike {
-	return v.packageImports_
+func (v *modelAnalyzer_) GetImportedPackages() abs.CatalogLike[string, string] {
+	return v.importedPackages_
 }
 
 func (v *modelAnalyzer_) IsGeneric() bool {
@@ -283,6 +283,36 @@ func (v *modelAnalyzer_) analyzePackageDeclaration(
 	packageDeclaration ast.PackageDeclarationLike,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
+	v.importedPackages_ = col.Catalog[string, string]()
+	var packageImports = packageDeclaration.GetPackageImports()
+	var packages = packageImports.GetImportedPackages().GetIterator()
+	for packages.HasNext() {
+		var importedPackage = packages.GetNext()
+		var packagePath = importedPackage.GetPath()
+		packagePath = packagePath[1 : len(packagePath)-1]
+		var packageAcronym = importedPackage.GetName()
+		v.importedPackages_.SetValue(packagePath, packageAcronym)
+	}
+	v.importedPackages_.SetValue(
+		"fmt",
+		"fmt",
+	)
+	v.importedPackages_.SetValue(
+		"github.com/craterdog/go-missing-utilities/v2",
+		"uti",
+	)
+	v.importedPackages_.SetValue(
+		"github.com/craterdog/go-collection-framework/v4",
+		"col",
+	)
+	v.importedPackages_.SetValue(
+		"github.com/craterdog/go-collection-framework/v4/collection",
+		"abs",
+	)
+	v.importedPackages_.SetValue(
+		"sync",
+		"syn",
+	)
 }
 
 func (v *modelAnalyzer_) analyzePrincipalMethods(
@@ -474,6 +504,7 @@ type modelAnalyzer_ struct {
 	// Declare the instance attributes.
 	legalNotice_        string
 	isGeneric_          bool
+	importedPackages_   abs.CatalogLike[string, string]
 	typeConstraints_    string
 	typeArguments_      string
 	isIntrinsic_        bool
@@ -487,7 +518,6 @@ type modelAnalyzer_ struct {
 	attributeMethods_   abs.ListLike[ast.AttributeMethodLike]
 	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
 	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]
-	packageImports_     ast.PackageImportsLike
 }
 
 // Class Structure

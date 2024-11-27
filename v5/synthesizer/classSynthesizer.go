@@ -123,8 +123,8 @@ func (v *classSynthesizer_) CreateClassReference() string {
 func (v *classSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var class = v.performGlobalUpdates(source)
-	return class
+	source = v.performGlobalUpdates(source)
+	return source
 }
 
 // PROTECTED INTERFACE
@@ -744,102 +744,29 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 }
 
 func (v *classSynthesizer_) createImportedPackages(
-	packageImports mod.PackageImportsLike,
 	source string,
 ) string {
 	var importedPackages string
-	if uti.IsDefined(packageImports) {
-		var packages = packageImports.GetImportedPackages().GetIterator()
-		for packages.HasNext() {
-			var importedPackage = packages.GetNext()
-			var packageAcronym = importedPackage.GetName()
-			var prefix = packageAcronym + "."
-			var packagePath = importedPackage.GetPath()
-			if sts.Contains(source, prefix) && !sts.Contains(importedPackages, prefix) {
-				var packageAlias = classSynthesizerReference().packageAlias_
-				packageAlias = uti.ReplaceAll(
-					packageAlias,
-					"packageAcronym",
-					packageAcronym,
-				)
-				packageAlias = uti.ReplaceAll(
-					packageAlias,
-					"packagePath",
-					packagePath,
-				)
-				importedPackages += packageAlias
-			}
+	var packages = v.analyzer_.GetImportedPackages().GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packagePath = association.GetKey()
+		var packageAcronym = association.GetValue()
+		var prefix = packageAcronym + "."
+		if sts.Contains(source, prefix) {
+			var packageAlias = classSynthesizerReference().packageAlias_
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packageAcronym",
+				packageAcronym,
+			)
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packagePath",
+				packagePath,
+			)
+			importedPackages += packageAlias
 		}
-	}
-	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
-		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"fmt",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"\"fmt\"",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "uti.") && !sts.Contains(importedPackages, "uti") {
-		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"uti",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"\"github.com/craterdog/go-missing-utilities/v2\"",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "col.") && !sts.Contains(importedPackages, "col") {
-		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"col",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"\"github.com/craterdog/go-collection-framework/v4\"",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
-		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"abs",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"\"github.com/craterdog/go-collection-framework/v4/collection\"",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "syn.") && !sts.Contains(importedPackages, "syn") {
-		var packageAlias = classSynthesizerReference().packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"syn",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"\"sync\"",
-		)
-		importedPackages += packageAlias
 	}
 	if uti.IsDefined(importedPackages) {
 		importedPackages += "\n"
@@ -983,19 +910,11 @@ func (v *classSynthesizer_) performGlobalUpdates(
 	source string,
 ) string {
 	// Update the class imports.
-	var classImports string
-	var packageImports = v.analyzer_.GetPackageImports()
-	var importedPackages = v.createImportedPackages(packageImports, source)
-	classImports = classSynthesizerReference().classImports_
-	classImports = uti.ReplaceAll(
-		classImports,
-		"importedPackages",
-		importedPackages,
-	)
+	var importedPackages = v.createImportedPackages(source)
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 
 	// Update the instance method targets to "by value" if necessary.
@@ -1190,7 +1109,6 @@ type classSynthesizer_ struct {
 
 type classSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_            string
 	packageAlias_            string
 	accessFunction_          string
 	constructorMethods_      string
@@ -1233,12 +1151,8 @@ func classSynthesizerReference() *classSynthesizerClass_ {
 
 var classSynthesizerReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (<ImportedPackages>)
-`,
-
 	packageAlias_: `
-	<~packageAcronym> <packagePath>`,
+	<~packageAcronym> "<packagePath>"`,
 
 	accessFunction_: `
 // Access Function

@@ -110,11 +110,11 @@ func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 func (v *grammarSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var packageImports = grammarSynthesizerReference().packageImports_
+	var importedPackages = grammarSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"packageImports",
-		packageImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -207,7 +207,7 @@ type grammarSynthesizer_ struct {
 type grammarSynthesizerClass_ struct {
 	// Declare the class constants.
 	packageDescription_   string
-	packageImports_       string
+	importedPackages_     string
 	typeDeclarations_     string
 	tokenType_            string
 	classDeclarations_    string
@@ -238,11 +238,9 @@ abstract syntax tree (AST) for this module:
   - Visitor walks the AST and calls processor methods for each node in the tree.
   - Processor provides empty processor methods to be inherited by the processors.`,
 
-	packageImports_: `
-import (
+	importedPackages_: `
 	ast "<ModuleName>/ast"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
-)
 `,
 
 	typeDeclarations_: `

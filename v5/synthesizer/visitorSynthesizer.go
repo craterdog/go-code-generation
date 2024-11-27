@@ -125,11 +125,11 @@ func (v *visitorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var classImports = visitorSynthesizerReference().classImports_
+	var importedPackages = visitorSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -381,7 +381,7 @@ type visitorSynthesizer_ struct {
 
 type visitorSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_       string
+	importedPackages_   string
 	accessFunction_     string
 	constructorMethods_ string
 	principalMethods_   string
@@ -414,12 +414,10 @@ func visitorSynthesizerReference() *visitorSynthesizerClass_ {
 
 var visitorSynthesizerReference_ = &visitorSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-)
 `,
 
 	accessFunction_: `

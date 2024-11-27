@@ -109,7 +109,9 @@ For detailed documentation on this entire module refer to the wiki:
   - <WikiPath>
 */
 package module
-<ModuleImports>
+
+import (<ImportedPackages>)
+
 // TYPE ALIASES
 <TypeAliases>
 // UNIVERSAL CONSTRUCTORS

@@ -140,7 +140,9 @@ var classGeneratorReference_ = &classGeneratorClass_{
 */
 
 package <PackageName>
-<ClassImports>
+
+import (<ImportedPackages>)
+
 // CLASS INTERFACE
 <AccessFunction><ConstructorMethods><ConstantMethods><FunctionMethods>
 // INSTANCE INTERFACE

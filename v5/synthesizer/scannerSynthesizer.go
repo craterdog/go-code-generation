@@ -135,11 +135,11 @@ func (v *scannerSynthesizer_) CreateClassReference() string {
 func (v *scannerSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var classImports = scannerSynthesizerReference().classImports_
+	var importedPackages = scannerSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -230,7 +230,7 @@ type scannerSynthesizer_ struct {
 
 type scannerSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_        string
+	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
 	functionMethods_     string
@@ -258,15 +258,13 @@ func scannerSynthesizerReference() *scannerSynthesizerClass_ {
 
 var scannerSynthesizerReference_ = &scannerSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	fmt "fmt"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
 	uni "unicode"
-)
 `,
 
 	accessFunction_: `

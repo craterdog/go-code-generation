@@ -123,11 +123,11 @@ func (v *processorSynthesizer_) CreateClassReference() string {
 func (v *processorSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var classImports = processorSynthesizerReference().classImports_
+	var importedPackages = processorSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -203,7 +203,7 @@ type processorSynthesizer_ struct {
 
 type processorSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_        string
+	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
 	principalMethods_    string
@@ -226,10 +226,8 @@ func processorSynthesizerReference() *processorSynthesizerClass_ {
 
 var processorSynthesizerReference_ = &processorSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	ast "<ModuleName>/ast"
-)
 `,
 
 	accessFunction_: `

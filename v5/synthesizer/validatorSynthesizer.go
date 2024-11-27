@@ -129,11 +129,11 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var classImports = validatorSynthesizerReference().classImports_
+	var importedPackages = validatorSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -209,7 +209,7 @@ type validatorSynthesizer_ struct {
 
 type validatorSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_        string
+	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
 	principalMethods_    string
@@ -232,11 +232,9 @@ func validatorSynthesizerReference() *validatorSynthesizerClass_ {
 
 var validatorSynthesizerReference_ = &validatorSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-)
 `,
 
 	accessFunction_: `

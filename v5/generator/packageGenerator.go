@@ -132,7 +132,9 @@ other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
 package <PackageName>
-<PackageImports>
+
+import (<ImportedPackages>)
+
 // TYPE DECLARATIONS
 <TypeDeclarations>
 // FUNCTIONAL DECLARATIONS

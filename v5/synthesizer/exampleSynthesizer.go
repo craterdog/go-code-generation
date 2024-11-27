@@ -81,11 +81,11 @@ func (v *exampleSynthesizer_) CreateAspectDeclarations() string {
 func (v *exampleSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var packageImports = exampleSynthesizerReference().packageImports_
+	var importedPackages = exampleSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"packageImports",
-		packageImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -104,7 +104,7 @@ type exampleSynthesizerClass_ struct {
 	// Declare the class constants.
 	legalNotice_            string
 	packageDescription_     string
-	packageImports_         string
+	importedPackages_       string
 	typeDeclarations_       string
 	functionalDeclarations_ string
 	classDeclarations_      string
@@ -137,9 +137,7 @@ var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
 	packageDescription_: `
 Package "example" provides...`,
 
-	packageImports_: `
-import ()
-`,
+	importedPackages_: ``,
 
 	typeDeclarations_: `
 

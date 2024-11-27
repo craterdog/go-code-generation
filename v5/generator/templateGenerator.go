@@ -133,7 +133,9 @@ var templateGeneratorReference_ = &templateGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice>
 package <PackageName>
-<ClassImports>
+
+import (<ImportedPackages>)
+
 // CLASS INTERFACE
 <AccessFunction><ConstructorMethods><ConstantMethods><FunctionMethods>
 // INSTANCE INTERFACE

@@ -135,11 +135,11 @@ func (v *formatterSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var classImports = formatterSynthesizerReference().classImports_
+	var importedPackages = formatterSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -218,7 +218,7 @@ type formatterSynthesizer_ struct {
 
 type formatterSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_        string
+	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
 	principalMethods_    string
@@ -242,11 +242,9 @@ func formatterSynthesizerReference() *formatterSynthesizerClass_ {
 
 var formatterSynthesizerReference_ = &formatterSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	ast "<ModuleName>/ast"
 	sts "strings"
-)
 `,
 
 	accessFunction_: `

@@ -130,11 +130,11 @@ func (v *parserSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var classImports = parserSynthesizerReference().classImports_
+	var importedPackages = parserSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
-		"classImports",
-		classImports,
+		"importedPackages",
+		importedPackages,
 	)
 	return source
 }
@@ -397,7 +397,7 @@ type parserSynthesizer_ struct {
 
 type parserSynthesizerClass_ struct {
 	// Declare the class constants.
-	classImports_           string
+	importedPackages_       string
 	accessFunction_         string
 	constructorMethods_     string
 	parseMethod_            string
@@ -430,8 +430,7 @@ func parserSynthesizerReference() *parserSynthesizerClass_ {
 
 var parserSynthesizerReference_ = &parserSynthesizerClass_{
 	// Initialize the class constants.
-	classImports_: `
-import (
+	importedPackages_: `
 	fmt "fmt"
 	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
@@ -439,7 +438,6 @@ import (
 	ast "<ModuleName>/ast"
 	mat "math"
 	sts "strings"
-)
 `,
 
 	accessFunction_: `
