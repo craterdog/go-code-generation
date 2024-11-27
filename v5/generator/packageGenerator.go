@@ -120,7 +120,7 @@ var packageGeneratorReference_ = &packageGeneratorClass_{
 <PackageDescription>
 
 For detailed documentation on this package refer to the wiki:
-  - https://<WikiPath>
+  - <WikiPath>
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:

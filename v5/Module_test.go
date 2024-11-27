@@ -28,7 +28,7 @@ import (
 
 var directory = "./testdata/"
 var moduleName = "github.com/craterdog/go-class-model/v5"
-var wikiPath = "github.com/craterdog/go-class-model/wiki"
+var wikiPath = "https://github.com/craterdog/go-class-model/wiki"
 
 func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
