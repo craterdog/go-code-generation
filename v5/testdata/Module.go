@@ -2791,23 +2791,3 @@ func Visitor(arguments ...any) VisitorLike {
 }
 
 // GLOBAL FUNCTIONS
-
-func FormatModel(model ModelLike) string {
-	var formatter = Formatter()
-	return formatter.FormatModel(model)
-}
-
-func MatchesType(tokenValue string, tokenType TokenType) bool {
-	var scannerClass = gra.Scanner()
-	return scannerClass.MatchesType(tokenValue, tokenType)
-}
-
-func ParseSource(source string) ModelLike {
-	var parser = Parser()
-	return parser.ParseSource(source)
-}
-
-func ValidateModel(model ModelLike) {
-	var validator = Validator()
-	validator.ValidateModel(model)
-}

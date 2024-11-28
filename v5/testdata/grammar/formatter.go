@@ -72,6 +72,12 @@ func (v *formatter_) ProcessName(
 	v.appendString(name)
 }
 
+func (v *formatter_) ProcessNewline(
+	newline string,
+) {
+	v.appendNewline()
+}
+
 func (v *formatter_) ProcessPath(
 	path string,
 ) {
@@ -84,12 +90,44 @@ func (v *formatter_) ProcessSpace(
 	v.appendString(space)
 }
 
+func (v *formatter_) PreprocessAbstraction(
+	abstraction ast.AbstractionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAbstractionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAbstraction(
+	abstraction ast.AbstractionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
 func (v *formatter_) PreprocessAdditionalArgument(
 	additionalArgument ast.AdditionalArgumentLike,
 	index uint,
 	size uint,
 ) {
-	v.appendString(", ")
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAdditionalArgumentSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAdditionalArgument(
+	additionalArgument ast.AdditionalArgumentLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAdditionalConstraint(
@@ -97,7 +135,21 @@ func (v *formatter_) PreprocessAdditionalConstraint(
 	index uint,
 	size uint,
 ) {
-	v.appendString(", ")
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAdditionalConstraintSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAdditionalConstraint(
+	additionalConstraint ast.AdditionalConstraintLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAdditionalValue(
@@ -105,23 +157,75 @@ func (v *formatter_) PreprocessAdditionalValue(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessArguments(arguments ast.ArgumentsLike) {
-	v.appendString("[")
+func (v *formatter_) ProcessAdditionalValueSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessArguments(arguments ast.ArgumentsLike) {
-	v.appendString("]")
+func (v *formatter_) PostprocessAdditionalValue(
+	additionalValue ast.AdditionalValueLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessArray(array ast.ArrayLike) {
-	v.appendString("[")
+func (v *formatter_) PreprocessArgument(
+	argument ast.ArgumentLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessArray(array ast.ArrayLike) {
-	v.appendString("]")
+func (v *formatter_) ProcessArgumentSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessArgument(
+	argument ast.ArgumentLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessArguments(
+	arguments ast.ArgumentsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessArgumentsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessArguments(
+	arguments ast.ArgumentsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessArray(
+	array ast.ArrayLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessArraySlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessArray(
+	array ast.ArrayLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAspectDeclaration(
@@ -129,15 +233,13 @@ func (v *formatter_) PreprocessAspectDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessAspectDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" interface {")
-		v.depth_++
-	}
+func (v *formatter_) ProcessAspectDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessAspectDeclaration(
@@ -145,10 +247,7 @@ func (v *formatter_) PostprocessAspectDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.depth_--
-	v.appendNewline()
-	v.appendString("}")
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAspectInterface(
@@ -156,7 +255,21 @@ func (v *formatter_) PreprocessAspectInterface(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAspectInterfaceSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAspectInterface(
+	aspectInterface ast.AspectInterfaceLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAspectMethod(
@@ -164,18 +277,57 @@ func (v *formatter_) PreprocessAspectMethod(
 	index uint,
 	size uint,
 ) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessAspectSection(aspectSection ast.AspectSectionLike) {
-	v.appendNewline()
-	v.appendString("// ASPECT DECLARATIONS")
-	v.appendNewline()
+func (v *formatter_) ProcessAspectMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessAspectSubsection(aspectSubsection ast.AspectSubsectionLike) {
-	v.appendString("\n")
-	v.appendNewline()
-	v.appendString("// Aspect Interfaces")
+func (v *formatter_) PostprocessAspectMethod(
+	aspectMethod ast.AspectMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessAspectSection(
+	aspectSection ast.AspectSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAspectSectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAspectSection(
+	aspectSection ast.AspectSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessAspectSubsection(
+	aspectSubsection ast.AspectSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAspectSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAspectSubsection(
+	aspectSubsection ast.AspectSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessAttributeMethod(
@@ -183,17 +335,57 @@ func (v *formatter_) PreprocessAttributeMethod(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessAttributeSubsection(attributeSubsection ast.AttributeSubsectionLike) {
-	v.appendString("\n")
-	v.appendNewline()
-	v.appendString("// Attribute Methods")
+func (v *formatter_) ProcessAttributeMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessChannel(channel ast.ChannelLike) {
-	v.appendString("chan ")
+func (v *formatter_) PostprocessAttributeMethod(
+	attributeMethod ast.AttributeMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessAttributeSubsection(
+	attributeSubsection ast.AttributeSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessAttributeSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessAttributeSubsection(
+	attributeSubsection ast.AttributeSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessChannel(
+	channel ast.ChannelLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessChannelSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessChannel(
+	channel ast.ChannelLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessClassDeclaration(
@@ -201,15 +393,13 @@ func (v *formatter_) PreprocessClassDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessClassDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" interface {")
-		v.depth_++
-	}
+func (v *formatter_) ProcessClassDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessClassDeclaration(
@@ -217,16 +407,43 @@ func (v *formatter_) PostprocessClassDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.depth_--
-	v.appendNewline()
-	v.appendString("}")
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessClassSection(classSection ast.ClassSectionLike) {
-	v.appendNewline()
-	v.appendString("// CLASS DECLARATIONS")
-	v.appendNewline()
+func (v *formatter_) PreprocessClassMethods(
+	classMethods ast.ClassMethodsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessClassMethodsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessClassMethods(
+	classMethods ast.ClassMethodsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessClassSection(
+	classSection ast.ClassSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessClassSectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessClassSection(
+	classSection ast.ClassSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessConstantMethod(
@@ -234,37 +451,75 @@ func (v *formatter_) PreprocessConstantMethod(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessConstantMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("() ")
-	}
+func (v *formatter_) ProcessConstantMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessConstantSubsection(constantSubsection ast.ConstantSubsectionLike) {
-	v.appendString("\n")
-	v.appendNewline()
-	v.appendString("// Constant Methods")
+func (v *formatter_) PostprocessConstantMethod(
+	constantMethod ast.ConstantMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessConstraintSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" ")
-	}
+func (v *formatter_) PreprocessConstantSubsection(
+	constantSubsection ast.ConstantSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessConstraints(constraints ast.ConstraintsLike) {
-	v.appendString("[")
-	v.depth_++
+func (v *formatter_) ProcessConstantSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessConstraints(constraints ast.ConstraintsLike) {
-	v.depth_--
-	v.appendString("]")
+func (v *formatter_) PostprocessConstantSubsection(
+	constantSubsection ast.ConstantSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessConstraint(
+	constraint ast.ConstraintLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessConstraintSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessConstraint(
+	constraint ast.ConstraintLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessConstraints(
+	constraints ast.ConstraintsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessConstraintsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessConstraints(
+	constraints ast.ConstraintsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessConstructorMethod(
@@ -272,41 +527,75 @@ func (v *formatter_) PreprocessConstructorMethod(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessConstructorMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("(")
-	case 2:
-		v.appendString(") ")
-	}
+func (v *formatter_) ProcessConstructorMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessConstructorSubsection(constructorSubsection ast.ConstructorSubsectionLike) {
-	v.appendNewline()
-	v.appendString("// Constructor Methods")
+func (v *formatter_) PostprocessConstructorMethod(
+	constructorMethod ast.ConstructorMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("type ")
-	}
+func (v *formatter_) PreprocessConstructorSubsection(
+	constructorSubsection ast.ConstructorSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessEnumeration(enumeration ast.EnumerationLike) {
-	v.appendNewline()
-	v.appendNewline()
-	v.appendString("const (")
-	v.depth_++
+func (v *formatter_) ProcessConstructorSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessEnumeration(enumeration ast.EnumerationLike) {
-	v.depth_--
-	v.appendNewline()
-	v.appendString(")")
+func (v *formatter_) PostprocessConstructorSubsection(
+	constructorSubsection ast.ConstructorSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessDeclaration(
+	declaration ast.DeclarationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessDeclaration(
+	declaration ast.DeclarationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessEnumeration(
+	enumeration ast.EnumerationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessEnumerationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessEnumeration(
+	enumeration ast.EnumerationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessFunctionMethod(
@@ -314,22 +603,39 @@ func (v *formatter_) PreprocessFunctionMethod(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessFunctionMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("(")
-	case 2:
-		v.appendString(")")
-	}
+func (v *formatter_) ProcessFunctionMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessFunctionSubsection(functionSubsection ast.FunctionSubsectionLike) {
-	v.appendString("\n")
-	v.appendNewline()
-	v.appendString("// Function Methods")
+func (v *formatter_) PostprocessFunctionMethod(
+	functionMethod ast.FunctionMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessFunctionSubsection(
+	functionSubsection ast.FunctionSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessFunctionSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessFunctionSubsection(
+	functionSubsection ast.FunctionSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessFunctionalDeclaration(
@@ -337,16 +643,13 @@ func (v *formatter_) PreprocessFunctionalDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessFunctionalDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" func(")
-	case 2:
-		v.appendString(")")
-	}
+func (v *formatter_) ProcessFunctionalDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessFunctionalDeclaration(
@@ -354,20 +657,43 @@ func (v *formatter_) PostprocessFunctionalDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessFunctionalSection(functionalSection ast.FunctionalSectionLike) {
-	v.appendNewline()
-	v.appendString("// FUNCTIONAL DECLARATIONS")
-	v.appendNewline()
+func (v *formatter_) PreprocessFunctionalSection(
+	functionalSection ast.FunctionalSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessGetterMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("() ")
-	}
+func (v *formatter_) ProcessFunctionalSectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessFunctionalSection(
+	functionalSection ast.FunctionalSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessGetterMethod(
+	getterMethod ast.GetterMethodLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessGetterMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessGetterMethod(
+	getterMethod ast.GetterMethodLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessImportedPackage(
@@ -375,11 +701,21 @@ func (v *formatter_) PreprocessImportedPackage(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessImportedPackageSlot(slot uint) {
-	v.appendString(" ")
+func (v *formatter_) ProcessImportedPackageSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessImportedPackage(
+	importedPackage ast.ImportedPackageLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessInstanceDeclaration(
@@ -387,15 +723,13 @@ func (v *formatter_) PreprocessInstanceDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessInstanceDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" interface {")
-		v.depth_++
-	}
+func (v *formatter_) ProcessInstanceDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessInstanceDeclaration(
@@ -403,74 +737,223 @@ func (v *formatter_) PostprocessInstanceDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.depth_--
-	v.appendNewline()
-	v.appendString("}")
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessInstanceSection(instanceSection ast.InstanceSectionLike) {
-	v.appendNewline()
-	v.appendString("// INSTANCE DECLARATIONS")
-	v.appendNewline()
+func (v *formatter_) PreprocessInstanceMethods(
+	instanceMethods ast.InstanceMethodsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessLegalNotice(legalNotice ast.LegalNoticeLike) {
-	v.appendNewline()
+func (v *formatter_) ProcessInstanceMethodsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessMap(map_ ast.MapLike) {
-	v.appendString("map[")
+func (v *formatter_) PostprocessInstanceMethods(
+	instanceMethods ast.InstanceMethodsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessMap(map_ ast.MapLike) {
-	v.appendString("]")
+func (v *formatter_) PreprocessInstanceSection(
+	instanceSection ast.InstanceSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessInstanceSectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessInstanceSection(
+	instanceSection ast.InstanceSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessInterfaceDeclarations(
+	interfaceDeclarations ast.InterfaceDeclarationsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessInterfaceDeclarationsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessInterfaceDeclarations(
+	interfaceDeclarations ast.InterfaceDeclarationsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessLegalNoticeSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessMap(
+	map_ ast.MapLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessMapSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessMap(
+	map_ ast.MapLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessMethod(
 	method ast.MethodLike,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("(")
-	case 2:
-		v.appendString(")")
-	}
+func (v *formatter_) ProcessMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessPackageDeclaration(packageDeclaration_ ast.PackageDeclarationLike) {
-	v.appendNewline()
+func (v *formatter_) PostprocessMethod(
+	method ast.MethodLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessPackageHeaderSlot(slot uint) {
-	v.appendString("package ")
+func (v *formatter_) PreprocessModel(
+	model ast.ModelLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessPackageImports(packageImports ast.PackageImportsLike) {
-	v.appendNewline()
-	v.appendNewline()
-	v.appendString("import (")
-	v.depth_++
+func (v *formatter_) ProcessModelSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessPackageImports(packageImports ast.PackageImportsLike) {
-	v.depth_--
-	if !packageImports.GetImportedPackages().IsEmpty() {
-		v.appendNewline()
-	}
-	v.appendString(")")
+func (v *formatter_) PostprocessModel(
+	model ast.ModelLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessMultivalue(multivalue ast.MultivalueLike) {
-	v.appendString("(")
+func (v *formatter_) PreprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessMultivalue(multivalue ast.MultivalueLike) {
-	v.appendString(")")
+func (v *formatter_) ProcessMultivalueSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessNone(
+	none ast.NoneLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessNoneSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessNone(
+	none ast.NoneLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessPackageDeclaration(
+	packageDeclaration ast.PackageDeclarationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessPackageDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPackageDeclaration(
+	packageDeclaration ast.PackageDeclarationLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessPackageHeader(
+	packageHeader ast.PackageHeaderLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessPackageHeaderSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPackageHeader(
+	packageHeader ast.PackageHeaderLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessPackageImports(
+	packageImports ast.PackageImportsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessPackageImportsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPackageImports(
+	packageImports ast.PackageImportsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessParameter(
@@ -478,17 +961,13 @@ func (v *formatter_) PreprocessParameter(
 	index uint,
 	size uint,
 ) {
-	if index == 1 {
-		v.depth_++
-	}
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessParameterSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" ")
-	}
+func (v *formatter_) ProcessParameterSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessParameter(
@@ -496,39 +975,137 @@ func (v *formatter_) PostprocessParameter(
 	index uint,
 	size uint,
 ) {
-	v.appendString(",")
-	if index == size {
-		v.depth_--
-		v.appendNewline()
-	}
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessPrincipalSubsection(publicSubsection ast.PrincipalSubsectionLike) {
-	v.appendNewline()
-	v.appendString("// Principal Methods")
+func (v *formatter_) PreprocessPrefix(
+	prefix ast.PrefixLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessResult(result ast.ResultLike) {
-	switch result.GetAny().(type) {
-	case ast.NoneLike:
-	default:
-		v.appendString(" ")
-	}
+func (v *formatter_) ProcessPrefixSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessSetterMethodSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString("(")
-	}
+func (v *formatter_) PostprocessPrefix(
+	prefix ast.PrefixLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessSetterMethod(setterMethod ast.SetterMethodLike) {
-	v.appendString(")")
+func (v *formatter_) PreprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessSuffix(suffix ast.SuffixLike) {
-	v.appendString(".")
+func (v *formatter_) ProcessPrimitiveDeclarationsSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessPrincipalMethod(
+	principalMethod ast.PrincipalMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessPrincipalMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPrincipalMethod(
+	principalMethod ast.PrincipalMethodLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessPrincipalSubsection(
+	principalSubsection ast.PrincipalSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessPrincipalSubsectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessPrincipalSubsection(
+	principalSubsection ast.PrincipalSubsectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessResult(
+	result ast.ResultLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessResultSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessResult(
+	result ast.ResultLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessSetterMethod(
+	setterMethod ast.SetterMethodLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessSetterMethodSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessSetterMethod(
+	setterMethod ast.SetterMethodLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessSuffix(
+	suffix ast.SuffixLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessSuffixSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessSuffix(
+	suffix ast.SuffixLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PreprocessTypeDeclaration(
@@ -536,14 +1113,13 @@ func (v *formatter_) PreprocessTypeDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessTypeDeclarationSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" ")
-	}
+func (v *formatter_) ProcessTypeDeclarationSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 func (v *formatter_) PostprocessTypeDeclaration(
@@ -551,28 +1127,43 @@ func (v *formatter_) PostprocessTypeDeclaration(
 	index uint,
 	size uint,
 ) {
-	v.appendNewline()
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessTypeSection(typeSection ast.TypeSectionLike) {
-	v.appendNewline()
-	v.appendString("// TYPE DECLARATIONS")
-	v.appendNewline()
+func (v *formatter_) PreprocessTypeSection(
+	typeSection ast.TypeSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessValue(value ast.ValueLike) {
-	v.appendNewline()
+func (v *formatter_) ProcessTypeSectionSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) ProcessValueSlot(slot uint) {
-	switch slot {
-	case 1:
-		v.appendString(" ")
-	}
+func (v *formatter_) PostprocessTypeSection(
+	typeSection ast.TypeSectionLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PostprocessValue(value ast.ValueLike) {
-	v.appendString(" = iota")
+func (v *formatter_) PreprocessValue(
+	value ast.ValueLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessValueSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessValue(
+	value ast.ValueLike,
+) {
+	// TBD - Add formatting of the delimited rule.
 }
 
 // PROTECTED INTERFACE

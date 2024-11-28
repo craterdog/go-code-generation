@@ -13,7 +13,6 @@
 package module_test
 
 import (
-	byt "bytes"
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5"
 	col "github.com/craterdog/go-collection-framework/v4"
@@ -21,7 +20,6 @@ import (
 	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
-	reg "regexp"
 	sts "strings"
 	tes "testing"
 )
@@ -33,11 +31,7 @@ var wikiPath = "https://github.com/craterdog/go-class-model/wiki"
 func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -47,9 +41,9 @@ func TestPackageGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the AST Package.go file.
-	var generator = gen.PackageGenerator()
-	filename = directory + "ast/Package.go"
 	var packageName = "ast"
+	remakeDirectory(directory + packageName)
+	var generator = gen.PackageGenerator()
 	var astSynthesizer = gen.AstSynthesizer(syntax)
 	source = generator.GeneratePackage(
 		moduleName,
@@ -57,15 +51,12 @@ func TestPackageGeneration(t *tes.T) {
 		packageName,
 		astSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/Package.go"
+	writeFile(filename, source)
 
 	// Generate the grammar Package.go file.
-	filename = directory + "grammar/Package.go"
 	packageName = "grammar"
+	remakeDirectory(directory + packageName)
 	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
 	source = generator.GeneratePackage(
 		moduleName,
@@ -73,11 +64,8 @@ func TestPackageGeneration(t *tes.T) {
 		packageName,
 		grammarSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/Package.go"
+	writeFile(filename, source)
 }
 
 func TestModuleGeneration(t *tes.T) {
@@ -88,11 +76,7 @@ func TestModuleGeneration(t *tes.T) {
 	}
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/Package.go"
-		var bytes, err = osx.ReadFile(filename)
-		if err != nil {
-			panic(err)
-		}
-		var source = string(bytes)
+		var source = readFile(filename)
 		var parser = mod.Parser()
 		var model = parser.ParseSource(source)
 		models.SetValue(packageName, model)
@@ -105,22 +89,14 @@ func TestModuleGeneration(t *tes.T) {
 		moduleSynthesizer,
 	)
 	var filename = directory + "Module.go"
-	var bytes = replaceGlobalFunctions(filename, source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	writeFile(filename, source)
 }
 
 func TestAstGeneration(t *tes.T) {
 	// Validate the class model.
 	var packageName = "ast"
 	var filename = directory + packageName + "/Package.go"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = mod.Parser()
 	var model = parser.ParseSource(source)
 	var validator = mod.Validator()
@@ -139,7 +115,6 @@ func TestAstGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		filename = directory + packageName + "/" + className + ".go"
 		var classSynthesizer = gen.ClassSynthesizer(model, className)
 		source = generator.GenerateClass(
 			moduleName,
@@ -147,22 +122,15 @@ func TestAstGeneration(t *tes.T) {
 			className,
 			classSynthesizer,
 		)
-		bytes = []byte(source)
-		err = osx.WriteFile(filename, bytes, 0644)
-		if err != nil {
-			panic(err)
-		}
+		filename = directory + packageName + "/" + className + ".go"
+		writeFile(filename, source)
 	}
 }
 
 func TestTokenGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -175,7 +143,6 @@ func TestTokenGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "token"
-	filename = directory + packageName + "/" + className + ".go"
 	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -183,21 +150,14 @@ func TestTokenGeneration(t *tes.T) {
 		className,
 		tokenSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestScannerGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -210,7 +170,6 @@ func TestScannerGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "scanner"
-	filename = directory + packageName + "/" + className + ".go"
 	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -218,21 +177,14 @@ func TestScannerGeneration(t *tes.T) {
 		className,
 		scannerSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestParserGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -245,7 +197,6 @@ func TestParserGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "parser"
-	filename = directory + packageName + "/" + className + ".go"
 	var parserSynthesizer = gen.ParserSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -253,21 +204,14 @@ func TestParserGeneration(t *tes.T) {
 		className,
 		parserSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestVisitorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -280,7 +224,6 @@ func TestVisitorGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "visitor"
-	filename = directory + packageName + "/" + className + ".go"
 	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -288,21 +231,14 @@ func TestVisitorGeneration(t *tes.T) {
 		className,
 		visitorSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestFormatterGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -315,7 +251,6 @@ func TestFormatterGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
-	filename = directory + packageName + "/" + className + ".go"
 	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -323,21 +258,14 @@ func TestFormatterGeneration(t *tes.T) {
 		className,
 		formatterSynthesizer,
 	)
-	bytes = replaceMethodicalMethods(filename, source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestProcessorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -350,7 +278,6 @@ func TestProcessorGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "processor"
-	filename = directory + packageName + "/" + className + ".go"
 	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -358,21 +285,14 @@ func TestProcessorGeneration(t *tes.T) {
 		className,
 		processorSynthesizer,
 	)
-	bytes = []byte(source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestValidatorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
 	var validator = not.Validator()
@@ -385,7 +305,6 @@ func TestValidatorGeneration(t *tes.T) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "validator"
-	filename = directory + packageName + "/" + className + ".go"
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
 	source = generator.GenerateClass(
 		moduleName,
@@ -393,22 +312,15 @@ func TestValidatorGeneration(t *tes.T) {
 		className,
 		validatorSynthesizer,
 	)
-	bytes = replaceMethodicalMethods(filename, source)
-	err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
+	filename = directory + packageName + "/" + className + ".go"
+	writeFile(filename, source)
 }
 
 func TestExampleGeneration(t *tes.T) {
 	// Validate the class model.
 	var packageName = "example"
 	var filename = directory + packageName + "/Package.go"
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
+	var source = readFile(filename)
 	var parser = mod.Parser()
 	var model = parser.ParseSource(source)
 	var validator = mod.Validator()
@@ -427,7 +339,6 @@ func TestExampleGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		filename = directory + packageName + "/" + className + ".go"
 		var exampleSynthesizer = gen.ClassSynthesizer(model, className)
 		source = generator.GenerateClass(
 			moduleName,
@@ -435,46 +346,42 @@ func TestExampleGeneration(t *tes.T) {
 			className,
 			exampleSynthesizer,
 		)
-		bytes = []byte(source)
-		err = osx.WriteFile(filename, bytes, 0644)
-		if err != nil {
-			panic(err)
-		}
+		filename = directory + packageName + "/" + className + ".go"
+		writeFile(filename, source)
 	}
 }
 
-func replaceGlobalFunctions(
+func readFile(
 	filename string,
-	source string,
-) []byte {
+) string {
 	var bytes, err = osx.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
-	var matcher = reg.MustCompile(
-		`// GLOBAL FUNCTIONS(.|\r?\n)*`,
-	)
-	var original = matcher.Find(bytes)
-	bytes = []byte(source)
-	var generated = matcher.Find(bytes)
-	bytes = byt.ReplaceAll(bytes, generated, original)
-	return bytes
+	var source = string(bytes)
+	return source
 }
 
-func replaceMethodicalMethods(
-	filename string,
-	source string,
-) []byte {
-	var bytes, err = osx.ReadFile(filename)
+func remakeDirectory(
+	directory string,
+) {
+	var err = osx.RemoveAll(directory)
 	if err != nil {
 		panic(err)
 	}
-	var matcher = reg.MustCompile(
-		`// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`,
-	)
-	var original = matcher.Find(bytes)
-	bytes = []byte(source)
-	var generated = matcher.Find(bytes)
-	bytes = byt.ReplaceAll(bytes, generated, original)
-	return bytes
+	err = osx.MkdirAll(directory, 0755)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func writeFile(
+	filename string,
+	source string,
+) {
+	var bytes = []byte(source)
+	var err = osx.WriteFile(filename, bytes, 0644)
+	if err != nil {
+		panic(err)
+	}
 }
