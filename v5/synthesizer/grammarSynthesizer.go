@@ -261,7 +261,7 @@ const (
 	classDeclarations_: `
 /*
 FormatterClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete formatter-like class.
 */
 type FormatterClassLike interface {
@@ -271,7 +271,7 @@ type FormatterClassLike interface {
 
 /*
 ParserClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete parser-like class.
 */
 type ParserClassLike interface {
@@ -281,7 +281,7 @@ type ParserClassLike interface {
 
 /*
 ProcessorClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete processor-like class.
 */
 type ProcessorClassLike interface {
@@ -291,7 +291,7 @@ type ProcessorClassLike interface {
 
 /*
 ScannerClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete scanner-like class.  The following functions are supported:
 
 FormatToken() returns a formatted string containing the attributes of the token.
@@ -322,8 +322,8 @@ type ScannerClassLike interface {
 
 /*
 TokenClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
-concrete token-like class.
+class constructors, constants and functions that must be supported by each
+concrete visitor-like class.
 */
 type TokenClassLike interface {
 	// Constructor Methods
@@ -337,7 +337,7 @@ type TokenClassLike interface {
 
 /*
 ValidatorClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete validator-like class.
 */
 type ValidatorClassLike interface {
@@ -347,7 +347,7 @@ type ValidatorClassLike interface {
 
 /*
 VisitorClassLike is a class interface that declares the complete set of
-class constants, constructors and functions that must be supported by each
+class constructors, constants and functions that must be supported by each
 concrete visitor-like class.
 */
 type VisitorClassLike interface {
@@ -361,7 +361,7 @@ type VisitorClassLike interface {
 	instanceDeclarations_: `
 /*
 FormatterLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete formatter-like class.
 */
 type FormatterLike interface {
@@ -377,7 +377,7 @@ type FormatterLike interface {
 
 /*
 ParserLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete parser-like class.
 */
 type ParserLike interface {
@@ -390,7 +390,7 @@ type ParserLike interface {
 
 /*
 ProcessorLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete processor-like class.
 */
 type ProcessorLike interface {
@@ -403,7 +403,7 @@ type ProcessorLike interface {
 
 /*
 ScannerLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete scanner-like class.
 */
 type ScannerLike interface {
@@ -413,7 +413,7 @@ type ScannerLike interface {
 
 /*
 TokenLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete token-like class.
 */
 type TokenLike interface {
@@ -429,7 +429,7 @@ type TokenLike interface {
 
 /*
 ValidatorLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete validator-like class.
 */
 type ValidatorLike interface {
@@ -445,7 +445,7 @@ type ValidatorLike interface {
 
 /*
 VisitorLike is an instance interface that declares the complete set of
-instance attributes, abstractions and methods that must be supported by each
+principal, attribute and aspect methods that must be supported by each
 instance of a concrete visitor-like class.
 */
 type VisitorLike interface {
