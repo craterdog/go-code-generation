@@ -370,8 +370,10 @@ func (v *formatter_) appendNewline() {
 	v.appendString(newline)
 }
 
-func (v *formatter_) appendString(s string) {
-	v.result_.WriteString(s)
+func (v *formatter_) appendString(
+	string_ string,
+) {
+	v.result_.WriteString(string_)
 }
 
 func (v *formatter_) getResult() string {

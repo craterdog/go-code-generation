@@ -466,7 +466,9 @@ func (v *visitor_) Visit<~SyntaxName>(
 <VisitMethods>`,
 
 	visitMethod_: `
-func (v *visitor_) visit<~TargetName>(<targetName_> ast.<~TargetName>Like) {<MethodImplementation>}
+func (v *visitor_) visit<~TargetName>(
+	<targetName_> ast.<~TargetName>Like,
+) {<MethodImplementation>}
 `,
 
 	multilineCases_: `

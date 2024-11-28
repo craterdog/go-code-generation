@@ -413,7 +413,9 @@ func (v *scanner_) Postprocess<~RuleName>(
 	privateMethods_: `
 // Private Methods
 
-func (v *scanner_) emitToken(tokenType TokenType) {
+func (v *scanner_) emitToken(
+	tokenType TokenType,
+) {
 	var value = string(v.runes_[v.first_:v.next_])
 	switch value {
 	case "\x00":
@@ -441,7 +443,9 @@ func (v *scanner_) foundError() {
 	v.emitToken(ErrorToken)
 }
 
-func (v *scanner_) foundToken(tokenType TokenType) bool {
+func (v *scanner_) foundToken(
+	tokenType TokenType,
+) bool {
 	// Attempt to match the specified token type.
 	var text = string(v.runes_[v.next_:])
 	var matcher = scannerReference().matchers_[tokenType]
@@ -476,7 +480,9 @@ func (v *scanner_) foundToken(tokenType TokenType) bool {
 	return true
 }
 
-func (v *scanner_) indexOfLastEol(runes []rune) uint {
+func (v *scanner_) indexOfLastEol(
+	runes []rune,
+) uint {
 	var length = uint(len(runes))
 	for index := length; index > 0; index-- {
 		if runes[index-1] == '\n' {
