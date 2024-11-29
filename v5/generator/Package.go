@@ -58,24 +58,6 @@ type PackageGeneratorClassLike interface {
 	Make() PackageGeneratorLike
 }
 
-/*
-ProcessorGeneratorClassLike declares the set of class constants, constructors and
-functions that must be supported by all processor-generator-class-like classes.
-*/
-type ProcessorGeneratorClassLike interface {
-	// Constructor Methods
-	Make() ProcessorGeneratorLike
-}
-
-/*
-TemplateGeneratorClassLike declares the set of class constants, constructors and
-functions that must be supported by all template-generator-class-like classes.
-*/
-type TemplateGeneratorClassLike interface {
-	// Constructor Methods
-	Make() TemplateGeneratorLike
-}
-
 // INSTANCE DECLARATIONS
 
 /*
@@ -122,36 +104,6 @@ type PackageGeneratorLike interface {
 	) string
 }
 
-/*
-ProcessorGeneratorLike declares the set of aspects and methods that must be
-supported by all processor-generator-like instances.
-*/
-type ProcessorGeneratorLike interface {
-	// Principal Methods
-	GetClass() ProcessorGeneratorClassLike
-	GenerateClass(
-		moduleName string,
-		packageName string,
-		className string,
-		synthesizer ClassTemplateDriven,
-	) string
-}
-
-/*
-TemplateGeneratorLike declares the set of aspects and methods that must be
-supported by all template-generator-like instances.
-*/
-type TemplateGeneratorLike interface {
-	// Principal Methods
-	GetClass() TemplateGeneratorClassLike
-	GenerateClass(
-		moduleName string,
-		packageName string,
-		className string,
-		synthesizer ClassTemplateDriven,
-	) string
-}
-
 // ASPECT DECLARATIONS
 
 /*
@@ -160,6 +112,7 @@ supported by all class-template-driven synthesizers.
 */
 type ClassTemplateDriven interface {
 	CreateLegalNotice() string
+	CreateWarningMessage() string
 	CreateAccessFunction() string
 	CreateConstructorMethods() string
 	CreateConstantMethods() string
@@ -182,6 +135,7 @@ supported by all module-template-driven synthesizers.
 */
 type ModuleTemplateDriven interface {
 	CreateLegalNotice() string
+	CreateWarningMessage() string
 	CreateTypeAliases() string
 	CreateUniversalConstructors() string
 	PerformGlobalUpdates(
@@ -195,6 +149,7 @@ supported by all package-template-driven synthesizers.
 */
 type PackageTemplateDriven interface {
 	CreateLegalNotice() string
+	CreateWarningMessage() string
 	CreatePackageDescription() string
 	CreateTypeDeclarations() string
 	CreateFunctionalDeclarations() string

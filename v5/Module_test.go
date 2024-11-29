@@ -248,7 +248,7 @@ func TestFormatterGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
-	var generator = gen.ProcessorGenerator()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
 	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
@@ -302,7 +302,7 @@ func TestValidatorGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
-	var generator = gen.ProcessorGenerator()
+	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "validator"
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
@@ -317,10 +317,22 @@ func TestValidatorGeneration(t *tes.T) {
 }
 
 func TestExampleGeneration(t *tes.T) {
-	// Validate the class model.
+	// Generate the example class model.
 	var packageName = "example"
+	var wikiPath = "https://github.com/craterdog/go-package-example/wiki"
+	remakeDirectory(directory + packageName)
+	var packageGenerator = gen.PackageGenerator()
+	var exampleSynthesizer = gen.ExampleSynthesizer()
+	var source = packageGenerator.GeneratePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		exampleSynthesizer,
+	)
 	var filename = directory + packageName + "/Package.go"
-	var source = readFile(filename)
+	writeFile(filename, source)
+
+	// Validate the class model.
 	var parser = mod.Parser()
 	var model = parser.ParseSource(source)
 	var validator = mod.Validator()
@@ -330,7 +342,7 @@ func TestExampleGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the example concrete classes.
-	var generator = gen.TemplateGenerator()
+	var classGenerator = gen.ClassGenerator()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
@@ -339,12 +351,12 @@ func TestExampleGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var exampleSynthesizer = gen.ClassSynthesizer(model, className)
-		source = generator.GenerateClass(
+		var templateSynthesizer = gen.TemplateSynthesizer(model, className)
+		source = classGenerator.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			exampleSynthesizer,
+			templateSynthesizer,
 		)
 		filename = directory + packageName + "/" + className + ".go"
 		writeFile(filename, source)

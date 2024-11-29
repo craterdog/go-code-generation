@@ -55,6 +55,13 @@ func (v *classGenerator_) GenerateClass(
 	var legalNotice = synthesizer.CreateLegalNotice()
 	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
+	// Create the warning message.
+	var warningMessage = synthesizer.CreateWarningMessage()
+	if uti.IsDefined(warningMessage) {
+		warningMessage = "\n/*" + warningMessage + "*/\n"
+	}
+	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+
 	// Create the access function.
 	var accessFunction = synthesizer.CreateAccessFunction()
 	source = uti.ReplaceAll(source, "accessFunction", accessFunction)
@@ -131,13 +138,7 @@ func classGeneratorReference() *classGeneratorClass_ {
 
 var classGeneratorReference_ = &classGeneratorClass_{
 	// Initialize the class constants.
-	classTemplate_: `<LegalNotice>
-/*
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│                 This class file was automatically generated.                 │
-│                     Any updates to it may be overwritten.                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-*/
+	classTemplate_: `<LegalNotice><WarningMessage>
 
 package <PackageName>
 

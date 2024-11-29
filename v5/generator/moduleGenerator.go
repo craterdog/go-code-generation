@@ -54,6 +54,10 @@ func (v *moduleGenerator_) GenerateModule(
 	var legalNotice = synthesizer.CreateLegalNotice()
 	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
+	// Create the warning message.
+	var warningMessage = synthesizer.CreateWarningMessage()
+	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+
 	// Create the type aliases.
 	var typeAliases = synthesizer.CreateTypeAliases()
 	source = uti.ReplaceAll(source, "typeAliases", typeAliases)
@@ -94,11 +98,7 @@ func moduleGeneratorReference() *moduleGeneratorClass_ {
 var moduleGeneratorReference_ = &moduleGeneratorClass_{
 	// Initialize the class constants.
 	moduleTemplate_: `<LegalNotice>
-/*
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│              This "Module.go" file was automatically generated.              │
-│  Updates to any section other than the GLOBAL FUNCTIONS may be overwritten.  │
-└──────────────────────────────────────────────────────────────────────────────┘
+/*<WarningMessage>
 Package "module" declares type aliases for the commonly used types declared in
 the packages contained in this module.  It also provides a universal constructor
 for each commonly used class that is exported by the module.  Each constructor

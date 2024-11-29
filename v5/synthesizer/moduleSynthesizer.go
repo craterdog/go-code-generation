@@ -61,6 +61,11 @@ func (v *moduleSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *moduleSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = moduleSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *moduleSynthesizer_) CreateTypeAliases() string {
 	var typeAliases string
 	var models = v.models_.GetIterator()
@@ -616,6 +621,7 @@ type moduleSynthesizer_ struct {
 
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_        string
 	packageAlias_          string
 	importedPackage_       string
 	packageAliases_        string
@@ -638,6 +644,13 @@ func moduleSynthesizerReference() *moduleSynthesizerClass_ {
 
 var moduleSynthesizerReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│              This "Module.go" file was automatically generated.              │
+│  Updates to any section other than the GLOBAL FUNCTIONS may be overwritten.  │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	packageAlias_: `
 	<~packageAcronym> "<packagePath>"`,
 

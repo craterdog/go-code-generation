@@ -53,6 +53,11 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *astSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = astSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *astSynthesizer_) CreatePackageDescription() string {
 	var packageDescription = astSynthesizerReference().packageDescription_
 	return packageDescription
@@ -300,6 +305,7 @@ type astSynthesizer_ struct {
 
 type astSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_          string
 	packageDescription_      string
 	classDeclaration_        string
 	singularRuleParameter_   string
@@ -323,6 +329,13 @@ func astSynthesizerReference() *astSynthesizerClass_ {
 
 var astSynthesizerReference_ = &astSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│              This "Package.go" file was automatically generated.             │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	packageDescription_: `
 Package "ast" provides the abstract syntax tree (AST) classes for this module
 based on the "Syntax.cdsn" grammar for the module.  Each AST class manages the

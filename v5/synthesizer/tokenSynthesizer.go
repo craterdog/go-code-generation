@@ -53,6 +53,11 @@ func (v *tokenSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *tokenSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = tokenSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *tokenSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = tokenSynthesizerReference().accessFunction_
 	return accessFunction
@@ -135,6 +140,7 @@ type tokenSynthesizer_ struct {
 
 type tokenSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_     string
 	importedPackages_   string
 	accessFunction_     string
 	constructorMethods_ string
@@ -154,6 +160,13 @@ func tokenSynthesizerReference() *tokenSynthesizerClass_ {
 
 var tokenSynthesizerReference_ = &tokenSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	uti "github.com/craterdog/go-missing-utilities/v2"
 `,

@@ -55,6 +55,10 @@ func (v *packageGenerator_) GeneratePackage(
 	var legalNotice = synthesizer.CreateLegalNotice()
 	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
 
+	// Create the warning message.
+	var warningMessage = synthesizer.CreateWarningMessage()
+	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+
 	// Create the package description.
 	var packageDescription = synthesizer.CreatePackageDescription()
 	source = uti.ReplaceAll(source, "packageDescription", packageDescription)
@@ -112,12 +116,7 @@ func packageGeneratorReference() *packageGeneratorClass_ {
 var packageGeneratorReference_ = &packageGeneratorClass_{
 	// Initialize the class constants.
 	packageTemplate_: `<LegalNotice>
-/*
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│              This "Package.go" file was automatically generated.             │
-│                     Any updates to it may be overwritten.                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-<PackageDescription>
+/*<WarningMessage><PackageDescription>
 
 For detailed documentation on this package refer to the wiki:
   - <WikiPath>

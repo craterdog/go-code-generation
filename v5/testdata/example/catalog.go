@@ -21,65 +21,65 @@ import (
 
 // Access Function
 
-func Catalog[K comparable, V any]() CatalogClassLike[K, V] {
-	return catalogReference[K, V]()
+func Catalog[V any]() CatalogClassLike[V] {
+	return catalogReference[V]()
 }
 
 // Constructor Methods
 
-func (c *catalogClass_[K, V]) Make() CatalogLike[K, V] {
-	var instance = &catalog_[K, V]{
+func (c *catalogClass_[V]) Make() CatalogLike[V] {
+	var instance = &catalog_[V]{
 		// Initialize the instance attributes.
 	}
 	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromArray(
-	associations []AssociationLike[K, V],
-) CatalogLike[K, V] {
-	var instance CatalogLike[K, V]
+func (c *catalogClass_[V]) MakeFromArray(
+	associations []AssociationLike[Identifier, V],
+) CatalogLike[V] {
+	var instance CatalogLike[V]
 	// TBD - Add the constructor implementation.
 	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromMap(
-	associations map[K]V,
-) CatalogLike[K, V] {
-	var instance CatalogLike[K, V]
+func (c *catalogClass_[V]) MakeFromMap(
+	associations map[Identifier]V,
+) CatalogLike[V] {
+	var instance CatalogLike[V]
 	// TBD - Add the constructor implementation.
 	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromSequence(
-	associations Sequential[AssociationLike[K, V]],
-) CatalogLike[K, V] {
-	var instance CatalogLike[K, V]
+func (c *catalogClass_[V]) MakeFromSequence(
+	associations Sequential[AssociationLike[Identifier, V]],
+) CatalogLike[V] {
+	var instance CatalogLike[V]
 	// TBD - Add the constructor implementation.
 	return instance
 }
 
 // Constant Methods
 
-func (c *catalogClass_[K, V]) DefaultRanker() RankingFunction[AssociationLike[K, V]] {
-	return c.defaultRanker_
+func (c *catalogClass_[V]) Ranker() RankingFunction[AssociationLike[Identifier, V]] {
+	return c.ranker_
 }
 
 // Function Methods
 
-func (c *catalogClass_[K, V]) Extract(
-	catalog CatalogLike[K, V],
-	keys Sequential[K],
-) CatalogLike[K, V] {
-	var result_ CatalogLike[K, V]
+func (c *catalogClass_[V]) Extract(
+	catalog CatalogLike[V],
+	keys Sequential[Identifier],
+) CatalogLike[V] {
+	var result_ CatalogLike[V]
 	// TBD - Add the function implementation.
 	return result_
 }
 
-func (c *catalogClass_[K, V]) Merge(
-	first CatalogLike[K, V],
-	second CatalogLike[K, V],
-) CatalogLike[K, V] {
-	var result_ CatalogLike[K, V]
+func (c *catalogClass_[V]) Merge(
+	first CatalogLike[V],
+	second CatalogLike[V],
+) CatalogLike[V] {
+	var result_ CatalogLike[V]
 	// TBD - Add the function implementation.
 	return result_
 }
@@ -88,61 +88,55 @@ func (c *catalogClass_[K, V]) Merge(
 
 // Principal Methods
 
-func (v *catalog_[K, V]) GetClass() CatalogClassLike[K, V] {
-	return catalogReference[K, V]()
+func (v *catalog_[V]) GetClass() CatalogClassLike[V] {
+	return catalogReference[V]()
 }
 
-func (v *catalog_[K, V]) SortValues() {
-	// TBD - Add the method implementation.
-}
-
-func (v *catalog_[K, V]) SortValuesWithRanker(
-	ranker RankingFunction[AssociationLike[K, V]],
-) {
+func (v *catalog_[V]) SortValues() {
 	// TBD - Add the method implementation.
 }
 
 // Attribute Methods
 
-// Associative[K, V] Methods
+// Associative[Identifier, V] Methods
 
-func (v *catalog_[K, V]) GetKeys() Sequential[K] {
-	var result_ Sequential[K]
+func (v *catalog_[V]) GetKeys() Sequential[Identifier] {
+	var result_ Sequential[Identifier]
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v *catalog_[K, V]) GetValue(
-	key K,
+func (v *catalog_[V]) GetValue(
+	key Identifier,
 ) V {
 	var result_ V
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v *catalog_[K, V]) SetValue(
-	key K,
+func (v *catalog_[V]) SetValue(
+	key Identifier,
 	value V,
 ) {
 	// TBD - Add the method implementation.
 }
 
-// Sequential[AssociationLike[K, V]] Methods
+// Sequential[AssociationLike[Identifier, V]] Methods
 
-func (v *catalog_[K, V]) IsEmpty() bool {
+func (v *catalog_[V]) IsEmpty() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v *catalog_[K, V]) GetSize() Size {
-	var result_ Size
+func (v *catalog_[V]) GetSize() Ordinal {
+	var result_ Ordinal
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v *catalog_[K, V]) AsArray() []AssociationLike[K, V] {
-	var result_ []AssociationLike[K, V]
+func (v *catalog_[V]) AsArray() []AssociationLike[Identifier, V] {
+	var result_ []AssociationLike[Identifier, V]
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -153,15 +147,15 @@ func (v *catalog_[K, V]) AsArray() []AssociationLike[K, V] {
 
 // Instance Structure
 
-type catalog_[K comparable, V any] struct {
+type catalog_[V any] struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type catalogClass_[K comparable, V any] struct {
+type catalogClass_[V any] struct {
 	// Declare the class constants.
-	defaultRanker_ RankingFunction[AssociationLike[K, V]]
+	ranker_ RankingFunction[AssociationLike[Identifier, V]]
 }
 
 // Class Reference
@@ -169,23 +163,23 @@ type catalogClass_[K comparable, V any] struct {
 var catalogMap_ = map[string]any{}
 var catalogMutex_ syn.Mutex
 
-func catalogReference[K comparable, V any]() *catalogClass_[K, V] {
+func catalogReference[V any]() *catalogClass_[V] {
 	// Generate the name of the bound class type.
-	var class *catalogClass_[K, V]
+	var class *catalogClass_[V]
 	var name = fmt.Sprintf("%T", class)
 
 	// Check for an existing bound class type.
 	catalogMutex_.Lock()
 	var value = catalogMap_[name]
 	switch actual := value.(type) {
-	case *catalogClass_[K, V]:
+	case *catalogClass_[V]:
 		// This bound class type already exists.
 		class = actual
 	default:
 		// Add a new bound class type.
-		class = &catalogClass_[K, V]{
+		class = &catalogClass_[V]{
 			// Initialize the class constants.
-			// defaultRanker_: constantValue,
+			// ranker_: constantValue,
 		}
 		catalogMap_[name] = class
 	}

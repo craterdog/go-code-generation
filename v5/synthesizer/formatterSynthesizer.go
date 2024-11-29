@@ -53,6 +53,11 @@ func (v *formatterSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *formatterSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = formatterSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *formatterSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = formatterSynthesizerReference().accessFunction_
 	return accessFunction
@@ -218,6 +223,7 @@ type formatterSynthesizer_ struct {
 
 type formatterSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_      string
 	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
@@ -242,6 +248,13 @@ func formatterSynthesizerReference() *formatterSynthesizerClass_ {
 
 var formatterSynthesizerReference_ = &formatterSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│ Updates to any section other than the Methodical Methods may be overwritten. │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	ast "<ModuleName>/ast"
 	sts "strings"

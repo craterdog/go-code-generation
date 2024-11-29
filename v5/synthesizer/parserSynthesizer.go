@@ -54,6 +54,11 @@ func (v *parserSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *parserSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = parserSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *parserSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = parserSynthesizerReference().accessFunction_
 	return accessFunction
@@ -397,6 +402,7 @@ type parserSynthesizer_ struct {
 
 type parserSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_         string
 	importedPackages_       string
 	accessFunction_         string
 	constructorMethods_     string
@@ -430,6 +436,13 @@ func parserSynthesizerReference() *parserSynthesizerClass_ {
 
 var parserSynthesizerReference_ = &parserSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	fmt "fmt"
 	col "github.com/craterdog/go-collection-framework/v4"

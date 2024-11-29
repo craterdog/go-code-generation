@@ -141,6 +141,18 @@ type ScannerSynthesizerClassLike interface {
 }
 
 /*
+TemplateSynthesizerClassLike declares the set of class constants, constructors and
+functions that must be supported by all template-synthesizer-class-like classes.
+*/
+type TemplateSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		model mod.ModelLike,
+		className string,
+	) TemplateSynthesizerLike
+}
+
+/*
 TokenSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all token-synthesizer-class-like classes.
 */
@@ -278,6 +290,18 @@ be supported by all scanner-synthesizer-like instances.
 type ScannerSynthesizerLike interface {
 	// Principal Methods
 	GetClass() ScannerSynthesizerClassLike
+
+	// Aspect Interfaces
+	gen.ClassTemplateDriven
+}
+
+/*
+TemplateSynthesizerLike declares the set of aspects and methods that must
+be supported by all template-synthesizer-like instances.
+*/
+type TemplateSynthesizerLike interface {
+	// Principal Methods
+	GetClass() TemplateSynthesizerClassLike
 
 	// Aspect Interfaces
 	gen.ClassTemplateDriven

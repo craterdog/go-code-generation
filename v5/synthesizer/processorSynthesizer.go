@@ -53,6 +53,11 @@ func (v *processorSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *processorSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = processorSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *processorSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = processorSynthesizerReference().accessFunction_
 	return accessFunction
@@ -203,6 +208,7 @@ type processorSynthesizer_ struct {
 
 type processorSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_      string
 	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
@@ -226,6 +232,13 @@ func processorSynthesizerReference() *processorSynthesizerClass_ {
 
 var processorSynthesizerReference_ = &processorSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	ast "<ModuleName>/ast"
 `,

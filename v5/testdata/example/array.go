@@ -35,7 +35,7 @@ func (c *arrayClass_[V]) Make(
 }
 
 func (c *arrayClass_[V]) MakeWithSize(
-	size Size,
+	size Ordinal,
 ) ArrayLike[V] {
 	var instance ArrayLike[V]
 	// TBD - Add the constructor implementation.
@@ -52,11 +52,16 @@ func (c *arrayClass_[V]) MakeFromSequence(
 
 // Constant Methods
 
-func (c *arrayClass_[V]) DefaultRanker() RankingFunction[V] {
-	return c.defaultRanker_
-}
-
 // Function Methods
+
+func (c *arrayClass_[V]) Merge(
+	first ArrayLike[V],
+	second ArrayLike[V],
+) ArrayLike[V] {
+	var result_ ArrayLike[V]
+	// TBD - Add the function implementation.
+	return result_
+}
 
 // INSTANCE INTERFACE
 
@@ -70,10 +75,6 @@ func (v array_[V]) GetIntrinsic() []V {
 	return []V(v)
 }
 
-func (v array_[V]) SortValues() {
-	// TBD - Add the method implementation.
-}
-
 func (v array_[V]) SortValuesWithRanker(
 	ranker RankingFunction[V],
 ) {
@@ -85,7 +86,7 @@ func (v array_[V]) SortValuesWithRanker(
 // Accessible[V] Methods
 
 func (v array_[V]) GetValue(
-	index Size,
+	index Ordinal,
 ) V {
 	var result_ V
 	// TBD - Add the method implementation.
@@ -93,8 +94,8 @@ func (v array_[V]) GetValue(
 }
 
 func (v array_[V]) GetValues(
-	first Size,
-	last Size,
+	first Ordinal,
+	last Ordinal,
 ) Sequential[V] {
 	var result_ Sequential[V]
 	// TBD - Add the method implementation.
@@ -109,8 +110,8 @@ func (v array_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v array_[V]) GetSize() Size {
-	var result_ Size
+func (v array_[V]) GetSize() Ordinal {
+	var result_ Ordinal
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -124,14 +125,14 @@ func (v array_[V]) AsArray() []V {
 // Updatable[V] Methods
 
 func (v array_[V]) SetValue(
-	index Size,
+	index Ordinal,
 	value V,
 ) {
 	// TBD - Add the method implementation.
 }
 
 func (v array_[V]) SetValues(
-	index Size,
+	index Ordinal,
 	values Sequential[V],
 ) {
 	// TBD - Add the method implementation.
@@ -149,7 +150,6 @@ type array_[V any] []V
 
 type arrayClass_[V any] struct {
 	// Declare the class constants.
-	defaultRanker_ RankingFunction[V]
 }
 
 // Class Reference
@@ -173,7 +173,6 @@ func arrayReference[V any]() *arrayClass_[V] {
 		// Add a new bound class type.
 		class = &arrayClass_[V]{
 			// Initialize the class constants.
-			// defaultRanker_: constantValue,
 		}
 		arrayMap_[name] = class
 	}

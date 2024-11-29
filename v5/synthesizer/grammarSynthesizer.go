@@ -53,6 +53,11 @@ func (v *grammarSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *grammarSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = grammarSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *grammarSynthesizer_) CreatePackageDescription() string {
 	var packageDescription = grammarSynthesizerReference().packageDescription_
 	return packageDescription
@@ -206,6 +211,7 @@ type grammarSynthesizer_ struct {
 
 type grammarSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_       string
 	packageDescription_   string
 	importedPackages_     string
 	typeDeclarations_     string
@@ -227,6 +233,13 @@ func grammarSynthesizerReference() *grammarSynthesizerClass_ {
 
 var grammarSynthesizerReference_ = &grammarSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│              This "Package.go" file was automatically generated.             │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	packageDescription_: `
 Package "grammar" provides the following grammar classes that operate on the
 abstract syntax tree (AST) for this module:

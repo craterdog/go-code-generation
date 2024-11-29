@@ -53,6 +53,11 @@ func (v *scannerSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *scannerSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = scannerSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *scannerSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = scannerSynthesizerReference().accessFunction_
 	return accessFunction
@@ -230,6 +235,7 @@ type scannerSynthesizer_ struct {
 
 type scannerSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_      string
 	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
@@ -258,6 +264,13 @@ func scannerSynthesizerReference() *scannerSynthesizerClass_ {
 
 var scannerSynthesizerReference_ = &scannerSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	fmt "fmt"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"

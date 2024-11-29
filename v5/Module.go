@@ -48,11 +48,9 @@ type (
 // Generator
 
 type (
-	ClassGeneratorLike     = gen.ClassGeneratorLike
-	ModuleGeneratorLike    = gen.ModuleGeneratorLike
-	PackageGeneratorLike   = gen.PackageGeneratorLike
-	ProcessorGeneratorLike = gen.ProcessorGeneratorLike
-	TemplateGeneratorLike  = gen.TemplateGeneratorLike
+	ClassGeneratorLike   = gen.ClassGeneratorLike
+	ModuleGeneratorLike  = gen.ModuleGeneratorLike
+	PackageGeneratorLike = gen.PackageGeneratorLike
 )
 
 type (
@@ -73,6 +71,7 @@ type (
 	ParserSynthesizerLike    = syn.ParserSynthesizerLike
 	ProcessorSynthesizerLike = syn.ProcessorSynthesizerLike
 	ScannerSynthesizerLike   = syn.ScannerSynthesizerLike
+	TemplateSynthesizerLike  = syn.TemplateSynthesizerLike
 	TokenSynthesizerLike     = syn.TokenSynthesizerLike
 	ValidatorSynthesizerLike = syn.ValidatorSynthesizerLike
 	VisitorSynthesizerLike   = syn.VisitorSynthesizerLike
@@ -266,76 +265,6 @@ func PackageGenerator(arguments ...any) PackageGeneratorLike {
 	default:
 		var message = fmt.Sprintf(
 			"No PackageGenerator constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
-}
-
-func ProcessorGenerator(arguments ...any) ProcessorGeneratorLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ProcessorGenerator constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ ProcessorGeneratorLike
-	switch argumentTypes {
-	case "":
-		instance_ = gen.ProcessorGenerator().Make()
-	default:
-		var message = fmt.Sprintf(
-			"No ProcessorGenerator constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
-}
-
-func TemplateGenerator(arguments ...any) TemplateGeneratorLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the TemplateGenerator constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ TemplateGeneratorLike
-	switch argumentTypes {
-	case "":
-		instance_ = gen.TemplateGenerator().Make()
-	default:
-		var message = fmt.Sprintf(
-			"No TemplateGenerator constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
@@ -697,6 +626,50 @@ func ScannerSynthesizer(arguments ...any) ScannerSynthesizerLike {
 	default:
 		var message = fmt.Sprintf(
 			"No ScannerSynthesizer constructor matching the arguments was found: %v\n",
+			arguments,
+		)
+		panic(message)
+	}
+	return instance_
+}
+
+func TemplateSynthesizer(arguments ...any) TemplateSynthesizerLike {
+	// Analyze the arguments.
+	var argumentTypes string
+	for _, argument := range arguments {
+		switch actual := argument.(type) {
+		case mod.ModelLike:
+			argumentTypes += "mod.ModelLike, "
+		case string:
+			argumentTypes += "string, "
+		default:
+			var message = fmt.Sprintf(
+				"An unexpected argument type was passed into the TemplateSynthesizer constructor: %v of type %T",
+				argument,
+				actual,
+			)
+			panic(message)
+		}
+	}
+	var length = len(argumentTypes)
+	if length > 0 {
+		// Remove the trailing comma and space.
+		argumentTypes = argumentTypes[:length-2]
+	}
+
+	// Call the corresponding constructor.
+	var instance_ TemplateSynthesizerLike
+	switch argumentTypes {
+	case "mod.ModelLike, string":
+		var model = arguments[0].(mod.ModelLike)
+		var className = arguments[1].(string)
+		instance_ = syn.TemplateSynthesizer().Make(
+			model,
+			className,
+		)
+	default:
+		var message = fmt.Sprintf(
+			"No TemplateSynthesizer constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)

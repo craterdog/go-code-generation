@@ -53,6 +53,11 @@ func (v *validatorSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *validatorSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = validatorSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *validatorSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = validatorSynthesizerReference().accessFunction_
 	return accessFunction
@@ -209,6 +214,7 @@ type validatorSynthesizer_ struct {
 
 type validatorSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_      string
 	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
@@ -232,6 +238,13 @@ func validatorSynthesizerReference() *validatorSynthesizerClass_ {
 
 var validatorSynthesizerReference_ = &validatorSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│ Updates to any section other than the Methodical Methods may be overwritten. │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"

@@ -55,6 +55,11 @@ func (v *visitorSynthesizer_) CreateLegalNotice() string {
 	return legalNotice
 }
 
+func (v *visitorSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = visitorSynthesizerReference().warningMessage_
+	return warningMessage
+}
+
 func (v *visitorSynthesizer_) CreateAccessFunction() string {
 	var accessFunction = visitorSynthesizerReference().accessFunction_
 	return accessFunction
@@ -381,6 +386,7 @@ type visitorSynthesizer_ struct {
 
 type visitorSynthesizerClass_ struct {
 	// Declare the class constants.
+	warningMessage_     string
 	importedPackages_   string
 	accessFunction_     string
 	constructorMethods_ string
@@ -414,6 +420,13 @@ func visitorSynthesizerReference() *visitorSynthesizerClass_ {
 
 var visitorSynthesizerReference_ = &visitorSynthesizerClass_{
 	// Initialize the class constants.
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
+
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
