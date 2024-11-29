@@ -248,7 +248,7 @@ func TestFormatterGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
-	var generator = gen.ClassGenerator()
+	var generator = gen.ProcessorGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
 	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
@@ -302,7 +302,7 @@ func TestValidatorGeneration(t *tes.T) {
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
-	var generator = gen.ClassGenerator()
+	var generator = gen.ProcessorGenerator()
 	var packageName = "grammar"
 	var className = "validator"
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)

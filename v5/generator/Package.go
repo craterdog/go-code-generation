@@ -59,6 +59,15 @@ type PackageGeneratorClassLike interface {
 }
 
 /*
+ProcessorGeneratorClassLike declares the set of class constants, constructors and
+functions that must be supported by all processor-generator-class-like classes.
+*/
+type ProcessorGeneratorClassLike interface {
+	// Constructor Methods
+	Make() ProcessorGeneratorLike
+}
+
+/*
 TemplateGeneratorClassLike declares the set of class constants, constructors and
 functions that must be supported by all template-generator-class-like classes.
 */
@@ -110,6 +119,21 @@ type PackageGeneratorLike interface {
 		wikiPath string,
 		packageName string,
 		synthesizer PackageTemplateDriven,
+	) string
+}
+
+/*
+ProcessorGeneratorLike declares the set of aspects and methods that must be
+supported by all processor-generator-like instances.
+*/
+type ProcessorGeneratorLike interface {
+	// Principal Methods
+	GetClass() ProcessorGeneratorClassLike
+	GenerateClass(
+		moduleName string,
+		packageName string,
+		className string,
+		synthesizer ClassTemplateDriven,
 	) string
 }
 

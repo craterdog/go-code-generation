@@ -48,10 +48,11 @@ type (
 // Generator
 
 type (
-	ClassGeneratorLike    = gen.ClassGeneratorLike
-	ModuleGeneratorLike   = gen.ModuleGeneratorLike
-	PackageGeneratorLike  = gen.PackageGeneratorLike
-	TemplateGeneratorLike = gen.TemplateGeneratorLike
+	ClassGeneratorLike     = gen.ClassGeneratorLike
+	ModuleGeneratorLike    = gen.ModuleGeneratorLike
+	PackageGeneratorLike   = gen.PackageGeneratorLike
+	ProcessorGeneratorLike = gen.ProcessorGeneratorLike
+	TemplateGeneratorLike  = gen.TemplateGeneratorLike
 )
 
 type (
@@ -265,6 +266,41 @@ func PackageGenerator(arguments ...any) PackageGeneratorLike {
 	default:
 		var message = fmt.Sprintf(
 			"No PackageGenerator constructor matching the arguments was found: %v\n",
+			arguments,
+		)
+		panic(message)
+	}
+	return instance_
+}
+
+func ProcessorGenerator(arguments ...any) ProcessorGeneratorLike {
+	// Analyze the arguments.
+	var argumentTypes string
+	for _, argument := range arguments {
+		switch actual := argument.(type) {
+		default:
+			var message = fmt.Sprintf(
+				"An unexpected argument type was passed into the ProcessorGenerator constructor: %v of type %T",
+				argument,
+				actual,
+			)
+			panic(message)
+		}
+	}
+	var length = len(argumentTypes)
+	if length > 0 {
+		// Remove the trailing comma and space.
+		argumentTypes = argumentTypes[:length-2]
+	}
+
+	// Call the corresponding constructor.
+	var instance_ ProcessorGeneratorLike
+	switch argumentTypes {
+	case "":
+		instance_ = gen.ProcessorGenerator().Make()
+	default:
+		var message = fmt.Sprintf(
+			"No ProcessorGenerator constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)

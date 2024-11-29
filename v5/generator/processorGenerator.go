@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func ClassGenerator() ClassGeneratorClassLike {
-	return classGeneratorReference()
+func ProcessorGenerator() ProcessorGeneratorClassLike {
+	return processorGeneratorReference()
 }
 
 // Constructor Methods
 
-func (c *classGeneratorClass_) Make() ClassGeneratorLike {
-	var instance = &classGenerator_{
+func (c *processorGeneratorClass_) Make() ProcessorGeneratorLike {
+	var instance = &processorGenerator_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -38,18 +38,18 @@ func (c *classGeneratorClass_) Make() ClassGeneratorLike {
 
 // Principal Methods
 
-func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
-	return classGeneratorReference()
+func (v *processorGenerator_) GetClass() ProcessorGeneratorClassLike {
+	return processorGeneratorReference()
 }
 
-func (v *classGenerator_) GenerateClass(
+func (v *processorGenerator_) GenerateClass(
 	moduleName string,
 	packageName string,
 	className string,
 	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var source = classGeneratorReference().classTemplate_
+	var source = processorGeneratorReference().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -112,30 +112,30 @@ func (v *classGenerator_) GenerateClass(
 
 // Instance Structure
 
-type classGenerator_ struct {
+type processorGenerator_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type classGeneratorClass_ struct {
+type processorGeneratorClass_ struct {
 	// Declare the class constants.
 	classTemplate_ string
 }
 
 // Class Reference
 
-func classGeneratorReference() *classGeneratorClass_ {
-	return classGeneratorReference_
+func processorGeneratorReference() *processorGeneratorClass_ {
+	return processorGeneratorReference_
 }
 
-var classGeneratorReference_ = &classGeneratorClass_{
+var processorGeneratorReference_ = &processorGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice>
 /*
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
 │                 This class file was automatically generated.                 │
-│                     Any updates to it may be overwritten.                    │
+│ Updates to any section other than the Methodical Methods may be overwritten. │
 └──────────────────────────────────────────────────────────────────────────────┘
 */
 
