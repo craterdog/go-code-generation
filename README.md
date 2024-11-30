@@ -19,7 +19,7 @@ For more information on this project click on the following links:
 To include the Go packages for this module use the following import statement:
 ```go
 import (
-	col "github.com/craterdog/go-code-generation/v5"
+	gen "github.com/craterdog/go-code-generation/v5"
 )
 ```
 

@@ -16,7 +16,7 @@ import (
 	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	syn "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v5"
 	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 	stc "strconv"
 	sts "strings"
@@ -33,13 +33,13 @@ func SyntaxAnalyzer() SyntaxAnalyzerClassLike {
 // Constructor Methods
 
 func (c *syntaxAnalyzerClass_) Make(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) SyntaxAnalyzerLike {
 	var instance = &syntaxAnalyzer_{
 		// Initialize the instance attributes.
 
 		// Initialize the inherited aspects.
-		Methodical: syn.Processor(),
+		Methodical: not.Processor(),
 	}
 	instance.visitor_ = gra.Visitor().Make(instance)
 	instance.visitor_.VisitSyntax(syntax)
@@ -61,7 +61,7 @@ func (v *syntaxAnalyzer_) GetExpressions() abs.Sequential[abs.AssociationLike[st
 
 func (v *syntaxAnalyzer_) GetIdentifiers(
 	ruleName string,
-) abs.Sequential[syn.IdentifierLike] {
+) abs.Sequential[not.IdentifierLike] {
 	return v.identifiers_.GetValue(ruleName)
 }
 
@@ -71,7 +71,7 @@ func (v *syntaxAnalyzer_) GetLegalNotice() string {
 
 func (v *syntaxAnalyzer_) GetReferences(
 	ruleName string,
-) abs.Sequential[syn.ReferenceLike] {
+) abs.Sequential[not.ReferenceLike] {
 	return v.references_.GetValue(ruleName)
 }
 
@@ -89,7 +89,7 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 
 func (v *syntaxAnalyzer_) GetTerms(
 	ruleName string,
-) abs.Sequential[syn.TermLike] {
+) abs.Sequential[not.TermLike] {
 	return v.terms_.GetValue(ruleName)
 }
 
@@ -104,7 +104,7 @@ func (v *syntaxAnalyzer_) GetVariables(
 }
 
 func (v *syntaxAnalyzer_) GetVariableType(
-	reference syn.ReferenceLike,
+	reference not.ReferenceLike,
 ) string {
 	var variableType string
 	var identifier = reference.GetIdentifier().GetAny().(string)
@@ -144,7 +144,7 @@ func (v *syntaxAnalyzer_) MakeOptional(
 	return optional
 }
 
-// syn.Methodical Methods
+// not.Methodical Methods
 
 func (v *syntaxAnalyzer_) ProcessExcluded(
 	excluded string,
@@ -215,7 +215,7 @@ func (v *syntaxAnalyzer_) ProcessRepeated(
 }
 
 func (v *syntaxAnalyzer_) PreprocessAlternative(
-	alternative syn.AlternativeLike,
+	alternative not.AlternativeLike,
 	index uint,
 	size uint,
 ) {
@@ -223,7 +223,7 @@ func (v *syntaxAnalyzer_) PreprocessAlternative(
 }
 
 func (v *syntaxAnalyzer_) PostprocessConstrained(
-	constrained syn.ConstrainedLike,
+	constrained not.ConstrainedLike,
 ) {
 	if !v.isGreedy_ {
 		v.regexp_ += "?"
@@ -232,19 +232,19 @@ func (v *syntaxAnalyzer_) PostprocessConstrained(
 }
 
 func (v *syntaxAnalyzer_) PreprocessDefinition(
-	definition syn.DefinitionLike,
+	definition not.DefinitionLike,
 ) {
 	v.inDefinition_ = true
 }
 
 func (v *syntaxAnalyzer_) PostprocessDefinition(
-	definition syn.DefinitionLike,
+	definition not.DefinitionLike,
 ) {
 	v.inDefinition_ = false
 }
 
 func (v *syntaxAnalyzer_) PreprocessExpression(
-	expression syn.ExpressionLike,
+	expression not.ExpressionLike,
 	index uint,
 	size uint,
 ) {
@@ -252,7 +252,7 @@ func (v *syntaxAnalyzer_) PreprocessExpression(
 }
 
 func (v *syntaxAnalyzer_) PostprocessExpression(
-	expression syn.ExpressionLike,
+	expression not.ExpressionLike,
 	index uint,
 	size uint,
 ) {
@@ -262,37 +262,37 @@ func (v *syntaxAnalyzer_) PostprocessExpression(
 }
 
 func (v *syntaxAnalyzer_) PreprocessExtent(
-	extent syn.ExtentLike,
+	extent not.ExtentLike,
 ) {
 	v.regexp_ += "-"
 }
 
 func (v *syntaxAnalyzer_) PreprocessFilter(
-	filter syn.FilterLike,
+	filter not.FilterLike,
 ) {
 	v.regexp_ += "["
 }
 
 func (v *syntaxAnalyzer_) PostprocessFilter(
-	filter syn.FilterLike,
+	filter not.FilterLike,
 ) {
 	v.regexp_ += "]"
 }
 
 func (v *syntaxAnalyzer_) PreprocessGroup(
-	group syn.GroupLike,
+	group not.GroupLike,
 ) {
 	v.regexp_ += "("
 }
 
 func (v *syntaxAnalyzer_) PostprocessGroup(
-	group syn.GroupLike,
+	group not.GroupLike,
 ) {
 	v.regexp_ += ")"
 }
 
 func (v *syntaxAnalyzer_) PreprocessIdentifier(
-	identifier syn.IdentifierLike,
+	identifier not.IdentifierLike,
 ) {
 	var scannerClass = gra.Scanner()
 	var name = identifier.GetAny().(string)
@@ -302,7 +302,7 @@ func (v *syntaxAnalyzer_) PreprocessIdentifier(
 }
 
 func (v *syntaxAnalyzer_) PostprocessInline(
-	inline syn.InlineLike,
+	inline not.InlineLike,
 ) {
 	var note = inline.GetOptionalNote()
 	if uti.IsDefined(note) {
@@ -311,13 +311,13 @@ func (v *syntaxAnalyzer_) PostprocessInline(
 }
 
 func (v *syntaxAnalyzer_) PreprocessLimit(
-	limit syn.LimitLike,
+	limit not.LimitLike,
 ) {
 	v.regexp_ += ","
 }
 
 func (v *syntaxAnalyzer_) PreprocessLine(
-	line syn.LineLike,
+	line not.LineLike,
 	index uint,
 	size uint,
 ) {
@@ -332,25 +332,25 @@ func (v *syntaxAnalyzer_) PreprocessLine(
 }
 
 func (v *syntaxAnalyzer_) PreprocessPattern(
-	definition syn.PatternLike,
+	definition not.PatternLike,
 ) {
 	v.inPattern_ = true
 }
 
 func (v *syntaxAnalyzer_) PostprocessPattern(
-	definition syn.PatternLike,
+	definition not.PatternLike,
 ) {
 	v.inPattern_ = false
 }
 
 func (v *syntaxAnalyzer_) PreprocessQuantified(
-	quantified syn.QuantifiedLike,
+	quantified not.QuantifiedLike,
 ) {
 	v.regexp_ += "{"
 }
 
 func (v *syntaxAnalyzer_) PostprocessQuantified(
-	quantified syn.QuantifiedLike,
+	quantified not.QuantifiedLike,
 ) {
 	v.regexp_ += "}"
 	if !v.isGreedy_ {
@@ -360,7 +360,7 @@ func (v *syntaxAnalyzer_) PostprocessQuantified(
 }
 
 func (v *syntaxAnalyzer_) PreprocessReference(
-	reference syn.ReferenceLike,
+	reference not.ReferenceLike,
 ) {
 	var references = v.references_.GetValue(v.ruleName_)
 	references.AppendValue(reference)
@@ -375,9 +375,9 @@ func (v *syntaxAnalyzer_) PreprocessReference(
 		var name = identifier.GetAny().(string)
 		v.checkPlurality(name, cardinality)
 		switch actual := cardinality.GetAny().(type) {
-		case syn.ConstrainedLike:
+		case not.ConstrainedLike:
 			v.syntaxMap_ += actual.GetAny().(string)
-		case syn.QuantifiedLike:
+		case not.QuantifiedLike:
 			var first = actual.GetNumber()
 			v.syntaxMap_ += "{" + first
 			var limit = actual.GetOptionalLimit()
@@ -393,7 +393,7 @@ func (v *syntaxAnalyzer_) PreprocessReference(
 }
 
 func (v *syntaxAnalyzer_) PreprocessRule(
-	rule syn.RuleLike,
+	rule not.RuleLike,
 	index uint,
 	size uint,
 ) {
@@ -403,20 +403,20 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	v.ruleNames_.AddValue(ruleName)
 	var definition = rule.GetDefinition()
 	switch definition.GetAny().(type) {
-	case syn.InlineLike:
-		var terms = col.List[syn.TermLike]()
+	case not.InlineLike:
+		var terms = col.List[not.TermLike]()
 		v.terms_.SetValue(ruleName, terms)
-		var references = col.List[syn.ReferenceLike]()
+		var references = col.List[not.ReferenceLike]()
 		v.references_.SetValue(ruleName, references)
-	case syn.MultilineLike:
-		var identifiers = col.List[syn.IdentifierLike]()
+	case not.MultilineLike:
+		var identifiers = col.List[not.IdentifierLike]()
 		v.identifiers_.SetValue(ruleName, identifiers)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
 }
 
 func (v *syntaxAnalyzer_) PostprocessRule(
-	rule syn.RuleLike,
+	rule not.RuleLike,
 	index uint,
 	size uint,
 ) {
@@ -429,7 +429,7 @@ func (v *syntaxAnalyzer_) PostprocessRule(
 }
 
 func (v *syntaxAnalyzer_) PreprocessSyntax(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) {
 	v.isGreedy_ = true // The default is "greedy" scanning.
 	v.syntaxName_ = v.extractSyntaxName(syntax)
@@ -444,14 +444,14 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		"space":   `"(?:[ \\t]+)"`,
 	}
 	v.regexps_ = col.Catalog[string, string](implicit)
-	v.terms_ = col.Catalog[string, abs.ListLike[syn.TermLike]]()
+	v.terms_ = col.Catalog[string, abs.ListLike[not.TermLike]]()
 	v.variables_ = col.Catalog[string, abs.ListLike[string]]()
-	v.references_ = col.Catalog[string, abs.ListLike[syn.ReferenceLike]]()
-	v.identifiers_ = col.Catalog[string, abs.ListLike[syn.IdentifierLike]]()
+	v.references_ = col.Catalog[string, abs.ListLike[not.ReferenceLike]]()
+	v.identifiers_ = col.Catalog[string, abs.ListLike[not.IdentifierLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) {
 	var delimiters = `"(?:`
 	if !v.delimiters_.IsEmpty() {
@@ -468,7 +468,7 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 }
 
 func (v *syntaxAnalyzer_) PreprocessTerm(
-	term syn.TermLike,
+	term not.TermLike,
 	index uint,
 	size uint,
 ) {
@@ -489,15 +489,15 @@ func (v *syntaxAnalyzer_) PreprocessTerm(
 
 func (v *syntaxAnalyzer_) checkPlurality(
 	name string,
-	cardinality syn.CardinalityLike,
+	cardinality not.CardinalityLike,
 ) {
 	switch actual := cardinality.GetAny().(type) {
-	case syn.ConstrainedLike:
+	case not.ConstrainedLike:
 		switch actual.GetAny().(string) {
 		case "*", "+":
 			v.pluralNames_.AddValue(name)
 		}
-	case syn.QuantifiedLike:
+	case not.QuantifiedLike:
 		v.pluralNames_.AddValue(name)
 	}
 }
@@ -521,7 +521,7 @@ func (v *syntaxAnalyzer_) escapeText(
 }
 
 func (v *syntaxAnalyzer_) extractLegalNotice(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) string {
 	var comment = syntax.GetNotice().GetComment()
 
@@ -535,7 +535,7 @@ func (v *syntaxAnalyzer_) extractLegalNotice(
 }
 
 func (v *syntaxAnalyzer_) extractSyntaxName(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) string {
 	var rules = syntax.GetRules().GetIterator()
 	// The first rule name is the name of the syntax.
@@ -545,14 +545,14 @@ func (v *syntaxAnalyzer_) extractSyntaxName(
 }
 
 func (v *syntaxAnalyzer_) extractVariableName(
-	reference syn.ReferenceLike,
+	reference not.ReferenceLike,
 ) string {
 	var mixedCase = reference.GetIdentifier().GetAny().(string)
 	var variableName = uti.MakeLowerCase(mixedCase)
 	var cardinality = reference.GetOptionalCardinality()
 	if uti.IsDefined(cardinality) {
 		switch actual := cardinality.GetAny().(type) {
-		case syn.ConstrainedLike:
+		case not.ConstrainedLike:
 			var constrained = actual.GetAny().(string)
 			switch constrained {
 			case "?":
@@ -560,7 +560,7 @@ func (v *syntaxAnalyzer_) extractVariableName(
 			case "*", "+":
 				variableName = uti.MakePlural(variableName)
 			}
-		case syn.QuantifiedLike:
+		case not.QuantifiedLike:
 			variableName = uti.MakePlural(variableName)
 		}
 	}
@@ -615,7 +615,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 
 type syntaxAnalyzer_ struct {
 	// Declare the instance attributes.
-	visitor_      syn.VisitorLike
+	visitor_      not.VisitorLike
 	isGreedy_     bool
 	inDefinition_ bool
 	inPattern_    bool
@@ -631,13 +631,13 @@ type syntaxAnalyzer_ struct {
 	delimited_    abs.SetLike[string]
 	delimiters_   abs.SetLike[string]
 	regexps_      abs.CatalogLike[string, string]
-	terms_        abs.CatalogLike[string, abs.ListLike[syn.TermLike]]
+	terms_        abs.CatalogLike[string, abs.ListLike[not.TermLike]]
 	variables_    abs.CatalogLike[string, abs.ListLike[string]]
-	references_   abs.CatalogLike[string, abs.ListLike[syn.ReferenceLike]]
-	identifiers_  abs.CatalogLike[string, abs.ListLike[syn.IdentifierLike]]
+	references_   abs.CatalogLike[string, abs.ListLike[not.ReferenceLike]]
+	identifiers_  abs.CatalogLike[string, abs.ListLike[not.IdentifierLike]]
 
 	// Declare the inherited aspects.
-	syn.Methodical
+	not.Methodical
 }
 
 // Class Structure
