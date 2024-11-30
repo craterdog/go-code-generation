@@ -17,7 +17,7 @@ import (
 	gen "github.com/craterdog/go-code-generation/v5"
 	col "github.com/craterdog/go-collection-framework/v4"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	syn "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
 	sts "strings"
@@ -32,11 +32,11 @@ func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -131,11 +131,11 @@ func TestTokenGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -158,11 +158,11 @@ func TestScannerGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -185,11 +185,11 @@ func TestParserGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -212,11 +212,11 @@ func TestVisitorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -239,11 +239,11 @@ func TestFormatterGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -266,11 +266,11 @@ func TestProcessorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
@@ -293,11 +293,11 @@ func TestValidatorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = syn.Parser()
+	var parser = not.Parser()
 	var syntax = parser.ParseSource(source)
-	var validator = syn.Validator()
+	var validator = not.Validator()
 	validator.ValidateSyntax(syntax)
-	var formatter = syn.Formatter()
+	var formatter = not.Formatter()
 	var actual = formatter.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
