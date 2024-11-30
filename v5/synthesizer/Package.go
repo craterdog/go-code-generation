@@ -33,7 +33,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 )
 
 // TYPE DECLARATIONS
@@ -49,7 +49,7 @@ functions that must be supported by all ast-synthesizer-class-like classes.
 type AstSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) AstSynthesizerLike
 }
 
@@ -81,7 +81,7 @@ functions that must be supported by all formatter-synthesizer-class-like classes
 type FormatterSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) FormatterSynthesizerLike
 }
 
@@ -92,7 +92,7 @@ functions that must be supported by all grammar-synthesizer-class-like classes.
 type GrammarSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) GrammarSynthesizerLike
 }
 
@@ -114,7 +114,7 @@ functions that must be supported by all parser-synthesizer-class-like classes.
 type ParserSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) ParserSynthesizerLike
 }
 
@@ -125,7 +125,7 @@ functions that must be supported by all processor-synthesizer-class-like classes
 type ProcessorSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) ProcessorSynthesizerLike
 }
 
@@ -136,7 +136,7 @@ functions that must be supported by all scanner-synthesizer-class-like classes.
 type ScannerSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) ScannerSynthesizerLike
 }
 
@@ -159,7 +159,7 @@ functions that must be supported by all token-synthesizer-class-like classes.
 type TokenSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) TokenSynthesizerLike
 }
 
@@ -170,7 +170,7 @@ functions that must be supported by all validator-synthesizer-class-like classes
 type ValidatorSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) ValidatorSynthesizerLike
 }
 
@@ -181,7 +181,7 @@ functions that must be supported by all visitor-synthesizer-class-like classes.
 type VisitorSynthesizerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) VisitorSynthesizerLike
 }
 

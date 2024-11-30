@@ -15,7 +15,7 @@ package synthesizer
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 )
 
 // CLASS INTERFACE
@@ -29,7 +29,7 @@ func ProcessorSynthesizer() ProcessorSynthesizerClassLike {
 // Constructor Methods
 
 func (c *processorSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) ProcessorSynthesizerLike {
 	var instance = &processorSynthesizer_{
 		// Initialize the instance attributes.

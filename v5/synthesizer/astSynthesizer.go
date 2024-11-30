@@ -15,7 +15,7 @@ package synthesizer
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 )
 
 // CLASS INTERFACE
@@ -29,7 +29,7 @@ func AstSynthesizer() AstSynthesizerClassLike {
 // Constructor Methods
 
 func (c *astSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) AstSynthesizerLike {
 	var instance = &astSynthesizer_{
 		// Initialize the instance attributes.
@@ -263,13 +263,13 @@ func (v *astSynthesizer_) createParameter(
 	return parameter
 }
 
-func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
+func (v *astSynthesizer_) isPlural(reference syn.ReferenceLike) bool {
 	var cardinality = reference.GetOptionalCardinality()
 	if uti.IsUndefined(cardinality) {
 		return false
 	}
 	switch actual := cardinality.GetAny().(type) {
-	case not.ConstrainedLike:
+	case syn.ConstrainedLike:
 		if actual.GetAny().(string) == "?" {
 			return false
 		}

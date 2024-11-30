@@ -15,7 +15,7 @@ package synthesizer
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 )
 
 // CLASS INTERFACE
@@ -29,7 +29,7 @@ func ValidatorSynthesizer() ValidatorSynthesizerClassLike {
 // Constructor Methods
 
 func (c *validatorSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) ValidatorSynthesizerLike {
 	var instance = &validatorSynthesizer_{
 		// Initialize the instance attributes.

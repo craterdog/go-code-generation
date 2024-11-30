@@ -15,7 +15,7 @@ package synthesizer
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 	stc "strconv"
 )
@@ -31,7 +31,7 @@ func VisitorSynthesizer() VisitorSynthesizerClassLike {
 // Constructor Methods
 
 func (c *visitorSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) VisitorSynthesizerLike {
 	var instance = &visitorSynthesizer_{
 		// Initialize the instance attributes.
@@ -162,7 +162,7 @@ func (v *visitorSynthesizer_) createInlineImplementation(
 }
 
 func (v *visitorSynthesizer_) createInlineReference(
-	reference not.ReferenceLike,
+	reference syn.ReferenceLike,
 	variableName string,
 ) string {
 	var inlineReference string
@@ -178,7 +178,7 @@ func (v *visitorSynthesizer_) createInlineReference(
 }
 
 func (v *visitorSynthesizer_) createInlineRule(
-	reference not.ReferenceLike,
+	reference syn.ReferenceLike,
 	variableName string,
 ) string {
 	var inlineRule string
@@ -220,7 +220,7 @@ func (v *visitorSynthesizer_) createInlineSlot(
 }
 
 func (v *visitorSynthesizer_) createInlineToken(
-	reference not.ReferenceLike,
+	reference syn.ReferenceLike,
 	variableName string,
 ) string {
 	var inlineToken string
@@ -309,7 +309,7 @@ func (v *visitorSynthesizer_) createMultilineToken(
 }
 
 func (v *visitorSynthesizer_) createPlurality(
-	reference not.ReferenceLike,
+	reference syn.ReferenceLike,
 ) (
 	plurality string,
 ) {
@@ -322,7 +322,7 @@ func (v *visitorSynthesizer_) createPlurality(
 		return plurality
 	}
 	switch actual := cardinality.GetAny().(type) {
-	case not.ConstrainedLike:
+	case syn.ConstrainedLike:
 		var token = actual.GetAny().(string)
 		var scannerClass = gra.Scanner()
 		switch {
@@ -334,7 +334,7 @@ func (v *visitorSynthesizer_) createPlurality(
 		case scannerClass.MatchesType(token, gra.RepeatedToken):
 			plurality = "repeated"
 		}
-	case not.QuantifiedLike:
+	case syn.QuantifiedLike:
 		plurality = "repeated"
 	}
 	return plurality

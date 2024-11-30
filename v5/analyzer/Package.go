@@ -32,7 +32,7 @@ package analyzer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 )
 
 // TYPE DECLARATIONS
@@ -60,7 +60,7 @@ functions that must be supported by all syntax-analyzer-class-like classes.
 type SyntaxAnalyzerClassLike interface {
 	// Constructor Methods
 	Make(
-		syntax not.SyntaxLike,
+		syntax syn.SyntaxLike,
 	) SyntaxAnalyzerLike
 }
 
@@ -101,20 +101,20 @@ type SyntaxAnalyzerLike interface {
 	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
 	GetIdentifiers(
 		ruleName string,
-	) abs.Sequential[not.IdentifierLike]
+	) abs.Sequential[syn.IdentifierLike]
 	GetLegalNotice() string
 	GetReferences(
 		ruleName string,
-	) abs.Sequential[not.ReferenceLike]
+	) abs.Sequential[syn.ReferenceLike]
 	GetRuleNames() abs.Sequential[string]
 	GetSyntaxMap() string
 	GetSyntaxName() string
 	GetTerms(
 		ruleName string,
-	) abs.Sequential[not.TermLike]
+	) abs.Sequential[syn.TermLike]
 	GetTokenNames() abs.Sequential[string]
 	GetVariableType(
-		reference not.ReferenceLike,
+		reference syn.ReferenceLike,
 	) string
 	GetVariables(
 		ruleName string,
@@ -128,7 +128,7 @@ type SyntaxAnalyzerLike interface {
 	) bool
 
 	// Aspect Interfaces
-	not.Methodical
+	syn.Methodical
 }
 
 // ASPECT DECLARATIONS

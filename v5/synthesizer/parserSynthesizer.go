@@ -15,7 +15,7 @@ package synthesizer
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 )
 
@@ -30,7 +30,7 @@ func ParserSynthesizer() ParserSynthesizerClassLike {
 // Constructor Methods
 
 func (c *parserSynthesizerClass_) Make(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) ParserSynthesizerLike {
 	var instance = &parserSynthesizer_{
 		// Initialize the instance attributes.
@@ -189,7 +189,7 @@ func (v *parserSynthesizer_) createArguments(
 }
 
 func (v *parserSynthesizer_) createCardinality(
-	cardinality not.CardinalityLike,
+	cardinality syn.CardinalityLike,
 	optionalCardinality string,
 	requiredCardinality string,
 	repeatedCardinality string,
@@ -202,7 +202,7 @@ func (v *parserSynthesizer_) createCardinality(
 		return actualCardinality
 	}
 	switch actual := cardinality.GetAny().(type) {
-	case not.ConstrainedLike:
+	case syn.ConstrainedLike:
 		actualCardinality = repeatedCardinality
 		switch actual.GetAny().(string) {
 		case "?":
@@ -217,7 +217,7 @@ func (v *parserSynthesizer_) createCardinality(
 			// This is the "{1..}" case.
 			first = "1"
 		}
-	case not.QuantifiedLike:
+	case syn.QuantifiedLike:
 		first = actual.GetNumber()
 		var limit = actual.GetOptionalLimit()
 		if uti.IsUndefined(limit) {
@@ -260,7 +260,7 @@ func (v *parserSynthesizer_) createInlineImplementation(
 		var term = terms.GetNext()
 		var parseStep string
 		switch actual := term.GetAny().(type) {
-		case not.ReferenceLike:
+		case syn.ReferenceLike:
 			var cardinality = actual.GetOptionalCardinality()
 			var variableName = variables.GetNext()
 			var identifier = actual.GetIdentifier().GetAny().(string)
@@ -362,7 +362,7 @@ func (v *parserSynthesizer_) createParseMethods() string {
 }
 
 func (v *parserSynthesizer_) createRuleStep(
-	cardinality not.CardinalityLike,
+	cardinality syn.CardinalityLike,
 ) string {
 	var optionalStep = parserSynthesizerReference().parseOptionalRuleStep_
 	var requiredStep = parserSynthesizerReference().parseRequiredRuleStep_
@@ -377,7 +377,7 @@ func (v *parserSynthesizer_) createRuleStep(
 }
 
 func (v *parserSynthesizer_) createTokenStep(
-	cardinality not.CardinalityLike,
+	cardinality syn.CardinalityLike,
 ) string {
 	var optionalStep = parserSynthesizerReference().parseOptionalTokenStep_
 	var requiredStep = parserSynthesizerReference().parseRequiredTokenStep_
