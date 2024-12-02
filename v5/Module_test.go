@@ -32,12 +32,9 @@ func TestPackageGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the AST Package.go file.
@@ -77,8 +74,7 @@ func TestModuleGeneration(t *tes.T) {
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/Package.go"
 		var source = readFile(filename)
-		var parser = mod.Parser()
-		var model = parser.ParseSource(source)
+		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
 	var generator = gen.ModuleGenerator()
@@ -97,12 +93,9 @@ func TestAstGeneration(t *tes.T) {
 	var packageName = "ast"
 	var filename = directory + packageName + "/Package.go"
 	var source = readFile(filename)
-	var parser = mod.Parser()
-	var model = parser.ParseSource(source)
-	var validator = mod.Validator()
-	validator.ValidateModel(model)
-	var formatter = mod.Formatter()
-	var actual = formatter.FormatModel(model)
+	var model = mod.ParseSource(source)
+	mod.ValidateModel(model)
+	var actual = mod.FormatModel(model)
 	ass.Equal(t, source, actual)
 	var generator = gen.ClassGenerator()
 
@@ -131,12 +124,9 @@ func TestTokenGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the token concrete class.
@@ -158,12 +148,9 @@ func TestScannerGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the scanner concrete class.
@@ -185,12 +172,9 @@ func TestParserGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the parser concrete class.
@@ -212,12 +196,9 @@ func TestVisitorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the visitor concrete class.
@@ -239,12 +220,9 @@ func TestFormatterGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
@@ -266,12 +244,9 @@ func TestProcessorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the processor concrete class.
@@ -293,12 +268,9 @@ func TestValidatorGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "Syntax.cdsn"
 	var source = readFile(filename)
-	var parser = not.Parser()
-	var syntax = parser.ParseSource(source)
-	var validator = not.Validator()
-	validator.ValidateSyntax(syntax)
-	var formatter = not.Formatter()
-	var actual = formatter.FormatSyntax(syntax)
+	var syntax = not.ParseSource(source)
+	not.ValidateSyntax(syntax)
+	var actual = not.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
@@ -333,12 +305,9 @@ func TestExampleGeneration(t *tes.T) {
 	writeFile(filename, source)
 
 	// Validate the class model.
-	var parser = mod.Parser()
-	var model = parser.ParseSource(source)
-	var validator = mod.Validator()
-	validator.ValidateModel(model)
-	var formatter = mod.Formatter()
-	var actual = formatter.FormatModel(model)
+	var model = mod.ParseSource(source)
+	mod.ValidateModel(model)
+	var actual = mod.FormatModel(model)
 	ass.Equal(t, source, actual)
 
 	// Generate the example concrete classes.
