@@ -1157,12 +1157,7 @@ func classSynthesizerReference() *classSynthesizerClass_ {
 
 var classSynthesizerReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
-	warningMessage_: `
-┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│                 This class file was automatically generated.                 │
-│                     Any updates to it may be overwritten.                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-`,
+	warningMessage_: ``,
 
 	packageAlias_: `
 	<~packageAcronym> "<packagePath>"`,

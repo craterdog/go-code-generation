@@ -26,17 +26,17 @@ import (
 
 // Access Function
 
-func TemplateSynthesizer() TemplateSynthesizerClassLike {
-	return templateSynthesizerReference()
+func NodeSynthesizer() NodeSynthesizerClassLike {
+	return nodeSynthesizerReference()
 }
 
 // Constructor Methods
 
-func (c *templateSynthesizerClass_) Make(
+func (c *nodeSynthesizerClass_) Make(
 	model mod.ModelLike,
 	className string,
-) TemplateSynthesizerLike {
-	var instance = &templateSynthesizer_{
+) NodeSynthesizerLike {
+	var instance = &nodeSynthesizer_{
 		// Initialize the instance attributes.
 		analyzer_: ana.ModelAnalyzer().Make(model, className),
 	}
@@ -47,85 +47,85 @@ func (c *templateSynthesizerClass_) Make(
 
 // Principal Methods
 
-func (v *templateSynthesizer_) GetClass() TemplateSynthesizerClassLike {
-	return templateSynthesizerReference()
+func (v *nodeSynthesizer_) GetClass() NodeSynthesizerClassLike {
+	return nodeSynthesizerReference()
 }
 
 // TemplateDriven Methods
 
-func (v *templateSynthesizer_) CreateLegalNotice() string {
+func (v *nodeSynthesizer_) CreateLegalNotice() string {
 	var legalNotice = v.analyzer_.GetLegalNotice()
 	return legalNotice
 }
 
-func (v *templateSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = templateSynthesizerReference().warningMessage_
+func (v *nodeSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = nodeSynthesizerReference().warningMessage_
 	return warningMessage
 }
 
-func (v *templateSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = templateSynthesizerReference().accessFunction_
+func (v *nodeSynthesizer_) CreateAccessFunction() string {
+	var accessFunction = nodeSynthesizerReference().accessFunction_
 	return accessFunction
 }
 
-func (v *templateSynthesizer_) CreateConstantMethods() string {
+func (v *nodeSynthesizer_) CreateConstantMethods() string {
 	var methods = v.analyzer_.GetConstantMethods()
 	var constantMethods = v.createConstantMethods(methods)
 	return constantMethods
 }
 
-func (v *templateSynthesizer_) CreateConstructorMethods() string {
+func (v *nodeSynthesizer_) CreateConstructorMethods() string {
 	var methods = v.analyzer_.GetConstructorMethods()
 	var constructorMethods = v.createConstructorMethods(methods)
 	return constructorMethods
 }
 
-func (v *templateSynthesizer_) CreateFunctionMethods() string {
+func (v *nodeSynthesizer_) CreateFunctionMethods() string {
 	var methods = v.analyzer_.GetFunctionMethods()
 	var functionMethods = v.createFunctionMethods(methods)
 	return functionMethods
 }
 
-func (v *templateSynthesizer_) CreatePrincipalMethods() string {
+func (v *nodeSynthesizer_) CreatePrincipalMethods() string {
 	var methods = v.analyzer_.GetPrincipalMethods()
 	var principalMethods = v.createPrincipalMethods(methods)
 	return principalMethods
 }
 
-func (v *templateSynthesizer_) CreateAttributeMethods() string {
+func (v *nodeSynthesizer_) CreateAttributeMethods() string {
 	var methods = v.analyzer_.GetAttributeMethods()
 	var attributeMethods = v.createAttributeMethods(methods)
 	return attributeMethods
 }
 
-func (v *templateSynthesizer_) CreateAspectMethods() string {
+func (v *nodeSynthesizer_) CreateAspectMethods() string {
 	var declarations = v.analyzer_.GetAspectDeclarations()
 	var interfaces = v.analyzer_.GetAspectInterfaces()
 	var aspectMethods = v.createAspectInterfaces(declarations, interfaces)
 	return aspectMethods
 }
 
-func (v *templateSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = templateSynthesizerReference().privateMethods_
+func (v *nodeSynthesizer_) CreatePrivateMethods() string {
+	var privateMethods = nodeSynthesizerReference().privateMethods_
 	return privateMethods
 }
 
-func (v *templateSynthesizer_) CreateInstanceStructure() string {
+func (v *nodeSynthesizer_) CreateInstanceStructure() string {
 	var instanceStructure = v.createInstanceStructure()
 	return instanceStructure
 }
 
-func (v *templateSynthesizer_) CreateClassStructure() string {
+func (v *nodeSynthesizer_) CreateClassStructure() string {
 	var classStructure = v.createClassStructure()
 	return classStructure
 }
 
-func (v *templateSynthesizer_) CreateClassReference() string {
+func (v *nodeSynthesizer_) CreateClassReference() string {
 	var classReference = v.createClassReference()
 	return classReference
 }
 
-func (v *templateSynthesizer_) PerformGlobalUpdates(
+func (v *nodeSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
 	source = v.performGlobalUpdates(source)
@@ -136,7 +136,7 @@ func (v *templateSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *templateSynthesizer_) extractAttributeName(
+func (v *nodeSynthesizer_) extractAttributeName(
 	accessorName string,
 ) string {
 	var attributeName string
@@ -170,7 +170,7 @@ func (v *templateSynthesizer_) extractAttributeName(
 	return attributeName
 }
 
-func (v *templateSynthesizer_) extractConcreteMappings(
+func (v *nodeSynthesizer_) extractConcreteMappings(
 	constraints mod.ConstraintsLike,
 	arguments mod.ArgumentsLike,
 ) abs.CatalogLike[string, mod.AbstractionLike] {
@@ -201,7 +201,7 @@ func (v *templateSynthesizer_) extractConcreteMappings(
 	return mappings
 }
 
-func (v *templateSynthesizer_) extractType(
+func (v *nodeSynthesizer_) extractType(
 	abstraction mod.AbstractionLike,
 ) string {
 	var abstractType string
@@ -237,7 +237,7 @@ func (v *templateSynthesizer_) extractType(
 	return abstractType
 }
 
-func (v *templateSynthesizer_) createAspectInterface(
+func (v *nodeSynthesizer_) createAspectInterface(
 	sequence abs.Sequential[mod.AspectDeclarationLike],
 	aspectType mod.AbstractionLike,
 ) string {
@@ -260,7 +260,7 @@ func (v *templateSynthesizer_) createAspectInterface(
 			}
 		}
 	}
-	var aspectInterface = templateSynthesizerReference().aspectInterface_
+	var aspectInterface = nodeSynthesizerReference().aspectInterface_
 	aspectInterface = uti.ReplaceAll(
 		aspectInterface,
 		"aspectType",
@@ -274,7 +274,7 @@ func (v *templateSynthesizer_) createAspectInterface(
 	return aspectInterface
 }
 
-func (v *templateSynthesizer_) createAspectInterfaces(
+func (v *nodeSynthesizer_) createAspectInterfaces(
 	declarations abs.Sequential[mod.AspectDeclarationLike],
 	interfaces abs.Sequential[mod.AspectInterfaceLike],
 ) string {
@@ -290,7 +290,7 @@ func (v *templateSynthesizer_) createAspectInterfaces(
 	return aspectInterfaces
 }
 
-func (v *templateSynthesizer_) createAspectMethod(
+func (v *nodeSynthesizer_) createAspectMethod(
 	aspectType mod.AbstractionLike,
 	method mod.MethodLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
@@ -306,9 +306,9 @@ func (v *templateSynthesizer_) createAspectMethod(
 	}
 	var parameters = v.createParameters(methodParameters)
 	var resultType = v.createResult(methodResult)
-	var aspectMethod = templateSynthesizerReference().instanceMethod_
+	var aspectMethod = nodeSynthesizerReference().instanceMethod_
 	if uti.IsDefined(resultType) {
-		aspectMethod = templateSynthesizerReference().instanceFunction_
+		aspectMethod = nodeSynthesizerReference().instanceFunction_
 		aspectMethod = uti.ReplaceAll(
 			aspectMethod,
 			"resultType",
@@ -328,7 +328,7 @@ func (v *templateSynthesizer_) createAspectMethod(
 	return aspectMethod
 }
 
-func (v *templateSynthesizer_) createAspectMethods(
+func (v *nodeSynthesizer_) createAspectMethods(
 	aspectType mod.AbstractionLike,
 	aspectDeclaration mod.AspectDeclarationLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
@@ -347,7 +347,7 @@ func (v *templateSynthesizer_) createAspectMethods(
 	return aspectMethods
 }
 
-func (v *templateSynthesizer_) createAttributeCheck(
+func (v *nodeSynthesizer_) createAttributeCheck(
 	parameter mod.ParameterLike,
 ) string {
 	var attributeCheck string
@@ -355,7 +355,7 @@ func (v *templateSynthesizer_) createAttributeCheck(
 	var attributeName = sts.TrimSuffix(parameterName, "_")
 	// Ignore optional attributes.
 	if !sts.HasPrefix(attributeName, "optional") {
-		attributeCheck = templateSynthesizerReference().attributeCheck_
+		attributeCheck = nodeSynthesizerReference().attributeCheck_
 		attributeCheck = uti.ReplaceAll(
 			attributeCheck,
 			"attributeName",
@@ -365,7 +365,7 @@ func (v *templateSynthesizer_) createAttributeCheck(
 	return attributeCheck
 }
 
-func (v *templateSynthesizer_) createAttributeChecks(
+func (v *nodeSynthesizer_) createAttributeChecks(
 	sequence abs.Sequential[mod.ParameterLike],
 ) string {
 	var attributeChecks string
@@ -378,14 +378,14 @@ func (v *templateSynthesizer_) createAttributeChecks(
 	return attributeChecks
 }
 
-func (v *templateSynthesizer_) createAttributeDeclarations() string {
+func (v *nodeSynthesizer_) createAttributeDeclarations() string {
 	var declarations string
 	var attributes = v.analyzer_.GetAttributes().GetIterator()
 	for attributes.HasNext() {
 		var attribute = attributes.GetNext()
 		var attributeName = attribute.GetKey()
 		var attributeType = attribute.GetValue()
-		var declaration = templateSynthesizerReference().attributeDeclaration_
+		var declaration = nodeSynthesizerReference().attributeDeclaration_
 		declaration = uti.ReplaceAll(
 			declaration,
 			"attributeName",
@@ -401,7 +401,7 @@ func (v *templateSynthesizer_) createAttributeDeclarations() string {
 	return declarations
 }
 
-func (v *templateSynthesizer_) createAttributeInitializations(
+func (v *nodeSynthesizer_) createAttributeInitializations(
 	sequence abs.Sequential[mod.ParameterLike],
 ) string {
 	var initializations string
@@ -411,7 +411,7 @@ func (v *templateSynthesizer_) createAttributeInitializations(
 		var parameterName = parameter.GetName()
 		var attributeName = sts.TrimSuffix(parameterName, "_")
 		if uti.IsDefined(v.analyzer_.GetAttributes().GetValue(attributeName)) {
-			var initialization = templateSynthesizerReference().attributeInitialization_
+			var initialization = nodeSynthesizerReference().attributeInitialization_
 			initialization = uti.ReplaceAll(
 				initialization,
 				"attributeName",
@@ -423,7 +423,7 @@ func (v *templateSynthesizer_) createAttributeInitializations(
 	return initializations
 }
 
-func (v *templateSynthesizer_) createAttributeMethods(
+func (v *nodeSynthesizer_) createAttributeMethods(
 	sequence abs.Sequential[mod.AttributeMethodLike],
 ) string {
 	var methods string
@@ -441,7 +441,7 @@ func (v *templateSynthesizer_) createAttributeMethods(
 			}
 			attributeMethods += attributeMethod
 		}
-		methods = templateSynthesizerReference().attributeMethods_
+		methods = nodeSynthesizerReference().attributeMethods_
 		methods = uti.ReplaceAll(
 			methods,
 			"attributeMethods",
@@ -451,10 +451,10 @@ func (v *templateSynthesizer_) createAttributeMethods(
 	return methods
 }
 
-func (v *templateSynthesizer_) createClassReference() string {
-	var classReference = templateSynthesizerReference().classReference_
+func (v *nodeSynthesizer_) createClassReference() string {
+	var classReference = nodeSynthesizerReference().classReference_
 	if v.analyzer_.IsGeneric() {
-		classReference = templateSynthesizerReference().classMap_
+		classReference = nodeSynthesizerReference().classMap_
 	}
 	var constantInitializations = v.createConstantInitializations()
 	classReference = uti.ReplaceAll(
@@ -465,8 +465,8 @@ func (v *templateSynthesizer_) createClassReference() string {
 	return classReference
 }
 
-func (v *templateSynthesizer_) createClassStructure() string {
-	var classStructure = templateSynthesizerReference().classStructure_
+func (v *nodeSynthesizer_) createClassStructure() string {
+	var classStructure = nodeSynthesizerReference().classStructure_
 	var constantDeclarations = v.createConstantDeclarations()
 	classStructure = uti.ReplaceAll(
 		classStructure,
@@ -476,14 +476,14 @@ func (v *templateSynthesizer_) createClassStructure() string {
 	return classStructure
 }
 
-func (v *templateSynthesizer_) createConstantDeclarations() string {
+func (v *nodeSynthesizer_) createConstantDeclarations() string {
 	var declarations string
 	var constants = v.analyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
 		var constantType = constant.GetValue()
-		var declaration = templateSynthesizerReference().constantDeclaration_
+		var declaration = nodeSynthesizerReference().constantDeclaration_
 		declaration = uti.ReplaceAll(
 			declaration,
 			"constantName",
@@ -499,13 +499,13 @@ func (v *templateSynthesizer_) createConstantDeclarations() string {
 	return declarations
 }
 
-func (v *templateSynthesizer_) createConstantInitializations() string {
+func (v *nodeSynthesizer_) createConstantInitializations() string {
 	var initializations string
 	var constants = v.analyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
-		var initialization = templateSynthesizerReference().constantInitialization_
+		var initialization = nodeSynthesizerReference().constantInitialization_
 		initialization = uti.ReplaceAll(
 			initialization,
 			"constantName",
@@ -516,12 +516,12 @@ func (v *templateSynthesizer_) createConstantInitializations() string {
 	return initializations
 }
 
-func (v *templateSynthesizer_) createConstantMethod(
+func (v *nodeSynthesizer_) createConstantMethod(
 	constantMethod mod.ConstantMethodLike,
 ) string {
 	var methodName = constantMethod.GetName()
 	var resultType = v.extractType(constantMethod.GetAbstraction())
-	var method = templateSynthesizerReference().constantMethod_
+	var method = nodeSynthesizerReference().constantMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -535,7 +535,7 @@ func (v *templateSynthesizer_) createConstantMethod(
 	return method
 }
 
-func (v *templateSynthesizer_) createConstantMethods(
+func (v *nodeSynthesizer_) createConstantMethods(
 	sequence abs.Sequential[mod.ConstantMethodLike],
 ) string {
 	var methods string
@@ -546,7 +546,7 @@ func (v *templateSynthesizer_) createConstantMethods(
 			var constantMethod = constants.GetNext()
 			constantMethods += v.createConstantMethod(constantMethod)
 		}
-		methods = templateSynthesizerReference().constantMethods_
+		methods = nodeSynthesizerReference().constantMethods_
 		methods = uti.ReplaceAll(
 			methods,
 			"constantMethods",
@@ -556,7 +556,7 @@ func (v *templateSynthesizer_) createConstantMethods(
 	return methods
 }
 
-func (v *templateSynthesizer_) createConstructorMethod(
+func (v *nodeSynthesizer_) createConstructorMethod(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
@@ -564,7 +564,7 @@ func (v *templateSynthesizer_) createConstructorMethod(
 	var parameters = v.createParameters(constructorParameters)
 	var resultType = v.extractType(constructorMethod.GetAbstraction())
 	var instanceInstantiation = v.createInstanceInstantiation(constructorMethod)
-	var method = templateSynthesizerReference().constructorMethod_
+	var method = nodeSynthesizerReference().constructorMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -588,7 +588,7 @@ func (v *templateSynthesizer_) createConstructorMethod(
 	return method
 }
 
-func (v *templateSynthesizer_) createConstructorMethods(
+func (v *nodeSynthesizer_) createConstructorMethods(
 	sequence abs.Sequential[mod.ConstructorMethodLike],
 ) string {
 	var methods string
@@ -599,7 +599,7 @@ func (v *templateSynthesizer_) createConstructorMethods(
 			var constructorMethod = constructors.GetNext()
 			constructorMethods += v.createConstructorMethod(constructorMethod)
 		}
-		methods = templateSynthesizerReference().constructorMethods_
+		methods = nodeSynthesizerReference().constructorMethods_
 		methods = uti.ReplaceAll(
 			methods,
 			"constructorMethods",
@@ -609,13 +609,13 @@ func (v *templateSynthesizer_) createConstructorMethods(
 	return methods
 }
 
-func (v *templateSynthesizer_) createFunctionMethod(
+func (v *nodeSynthesizer_) createFunctionMethod(
 	functionMethod mod.FunctionMethodLike,
 ) string {
 	var methodName = functionMethod.GetName()
 	var parameters = v.createParameters(functionMethod.GetParameters())
 	var resultType = v.createResult(functionMethod.GetResult())
-	var method = templateSynthesizerReference().functionMethod_
+	var method = nodeSynthesizerReference().functionMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -634,7 +634,7 @@ func (v *templateSynthesizer_) createFunctionMethod(
 	return method
 }
 
-func (v *templateSynthesizer_) createFunctionMethods(
+func (v *nodeSynthesizer_) createFunctionMethods(
 	sequence abs.Sequential[mod.FunctionMethodLike],
 ) string {
 	var methods string
@@ -645,7 +645,7 @@ func (v *templateSynthesizer_) createFunctionMethods(
 			var functionMethod = functions.GetNext()
 			functionMethods += v.createFunctionMethod(functionMethod)
 		}
-		methods = templateSynthesizerReference().functionMethods_
+		methods = nodeSynthesizerReference().functionMethods_
 		methods = uti.ReplaceAll(
 			methods,
 			"functionMethods",
@@ -655,13 +655,13 @@ func (v *templateSynthesizer_) createFunctionMethods(
 	return methods
 }
 
-func (v *templateSynthesizer_) createGetterMethod(
+func (v *nodeSynthesizer_) createGetterMethod(
 	getterMethod mod.GetterMethodLike,
 ) string {
 	var methodName = getterMethod.GetName()
 	var attributeName = v.extractAttributeName(methodName)
 	var attributeType = v.extractType(getterMethod.GetAbstraction())
-	var method = templateSynthesizerReference().getterMethod_
+	var method = nodeSynthesizerReference().getterMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -680,18 +680,18 @@ func (v *templateSynthesizer_) createGetterMethod(
 	return method
 }
 
-func (v *templateSynthesizer_) createInstanceInstantiation(
+func (v *nodeSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
-	var instantiation = templateSynthesizerReference().instanceInstantiation_
+	var instantiation = nodeSynthesizerReference().instanceInstantiation_
 	if v.analyzer_.IsIntrinsic() {
 		if methodName == "Make" {
-			instantiation = templateSynthesizerReference().intrinsicInstantiation_
+			instantiation = nodeSynthesizerReference().intrinsicInstantiation_
 		}
 	} else {
 		if methodName == "Make" || sts.HasPrefix(methodName, "MakeWith") {
-			instantiation = templateSynthesizerReference().structureInstantiation_
+			instantiation = nodeSynthesizerReference().structureInstantiation_
 			var constructorParameters = constructorMethod.GetParameters()
 			var attributeChecks = v.createAttributeChecks(constructorParameters)
 			var attributeInitializations = v.createAttributeInitializations(
@@ -712,18 +712,18 @@ func (v *templateSynthesizer_) createInstanceInstantiation(
 	return instantiation
 }
 
-func (v *templateSynthesizer_) createInstanceStructure() string {
+func (v *nodeSynthesizer_) createInstanceStructure() string {
 	var structure string
 	if v.analyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
-		structure = templateSynthesizerReference().instanceIntrinsic_
+		structure = nodeSynthesizerReference().instanceIntrinsic_
 		structure = uti.ReplaceAll(
 			structure,
 			"intrinsicType",
 			intrinsicType,
 		)
 	} else {
-		structure = templateSynthesizerReference().instanceStructure_
+		structure = nodeSynthesizerReference().instanceStructure_
 		var attributeDeclarations = v.createAttributeDeclarations()
 		structure = uti.ReplaceAll(
 			structure,
@@ -734,11 +734,11 @@ func (v *templateSynthesizer_) createInstanceStructure() string {
 	return structure
 }
 
-func (v *templateSynthesizer_) createIntrinsicMethod() string {
+func (v *nodeSynthesizer_) createIntrinsicMethod() string {
 	var method string
 	if v.analyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
-		method = templateSynthesizerReference().intrinsicMethod_
+		method = nodeSynthesizerReference().intrinsicMethod_
 		method = uti.ReplaceAll(
 			method,
 			"intrinsicType",
@@ -748,7 +748,7 @@ func (v *templateSynthesizer_) createIntrinsicMethod() string {
 	return method
 }
 
-func (v *templateSynthesizer_) createImportedPackages(
+func (v *nodeSynthesizer_) createImportedPackages(
 	source string,
 ) string {
 	var importedPackages string
@@ -759,7 +759,7 @@ func (v *templateSynthesizer_) createImportedPackages(
 		var packageAcronym = association.GetValue()
 		var prefix = packageAcronym + "."
 		if sts.Contains(source, prefix) {
-			var packageAlias = templateSynthesizerReference().packageAlias_
+			var packageAlias = nodeSynthesizerReference().packageAlias_
 			packageAlias = uti.ReplaceAll(
 				packageAlias,
 				"packageAcronym",
@@ -779,7 +779,7 @@ func (v *templateSynthesizer_) createImportedPackages(
 	return importedPackages
 }
 
-func (v *templateSynthesizer_) createParameters(
+func (v *nodeSynthesizer_) createParameters(
 	sequence abs.Sequential[mod.ParameterLike],
 ) string {
 	var methodParameters string
@@ -788,7 +788,7 @@ func (v *templateSynthesizer_) createParameters(
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var parameterType = v.extractType(parameter.GetAbstraction())
-		var methodParameter = templateSynthesizerReference().methodParameter_
+		var methodParameter = nodeSynthesizerReference().methodParameter_
 		methodParameter = uti.ReplaceAll(
 			methodParameter,
 			"parameterName",
@@ -807,15 +807,15 @@ func (v *templateSynthesizer_) createParameters(
 	return methodParameters
 }
 
-func (v *templateSynthesizer_) createPrincipalMethod(
+func (v *nodeSynthesizer_) createPrincipalMethod(
 	method mod.MethodLike,
 ) string {
 	var methodName = method.GetName()
 	var parameters = v.createParameters(method.GetParameters())
 	var resultType = v.createResult(method.GetOptionalResult())
-	var principalMethod = templateSynthesizerReference().instanceMethod_
+	var principalMethod = nodeSynthesizerReference().instanceMethod_
 	if uti.IsDefined(resultType) {
-		principalMethod = templateSynthesizerReference().instanceFunction_
+		principalMethod = nodeSynthesizerReference().instanceFunction_
 		principalMethod = uti.ReplaceAll(
 			principalMethod,
 			"resultType",
@@ -835,7 +835,7 @@ func (v *templateSynthesizer_) createPrincipalMethod(
 	return principalMethod
 }
 
-func (v *templateSynthesizer_) createPrincipalMethods(
+func (v *nodeSynthesizer_) createPrincipalMethods(
 	sequence abs.Sequential[mod.PrincipalMethodLike],
 ) string {
 	var principalMethods string
@@ -849,7 +849,7 @@ func (v *templateSynthesizer_) createPrincipalMethods(
 		var principalMethod = v.createPrincipalMethod(method)
 		principalMethods += principalMethod
 	}
-	var implementation = templateSynthesizerReference().principalMethods_
+	var implementation = nodeSynthesizerReference().principalMethods_
 	implementation = uti.ReplaceAll(
 		implementation,
 		"principalMethods",
@@ -864,7 +864,7 @@ func (v *templateSynthesizer_) createPrincipalMethods(
 	return implementation
 }
 
-func (v *templateSynthesizer_) createResult(
+func (v *nodeSynthesizer_) createResult(
 	result mod.ResultLike,
 ) string {
 	var results string
@@ -879,7 +879,7 @@ func (v *templateSynthesizer_) createResult(
 	return results
 }
 
-func (v *templateSynthesizer_) createSetterMethod(
+func (v *nodeSynthesizer_) createSetterMethod(
 	setterMethod mod.SetterMethodLike,
 ) string {
 	var methodName = setterMethod.GetName()
@@ -887,7 +887,7 @@ func (v *templateSynthesizer_) createSetterMethod(
 	var parameter = setterMethod.GetParameter()
 	var attributeType = v.extractType(parameter.GetAbstraction())
 	var attributeCheck = v.createAttributeCheck(parameter)
-	var method = templateSynthesizerReference().setterMethod_
+	var method = nodeSynthesizerReference().setterMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -911,7 +911,7 @@ func (v *templateSynthesizer_) createSetterMethod(
 	return method
 }
 
-func (v *templateSynthesizer_) performGlobalUpdates(
+func (v *nodeSynthesizer_) performGlobalUpdates(
 	source string,
 ) string {
 	// Update the class imports.
@@ -950,7 +950,7 @@ func (v *templateSynthesizer_) performGlobalUpdates(
 	return source
 }
 
-func (v *templateSynthesizer_) replaceAbstractionType(
+func (v *nodeSynthesizer_) replaceAbstractionType(
 	abstraction mod.AbstractionLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.AbstractionLike {
@@ -989,7 +989,7 @@ func (v *templateSynthesizer_) replaceAbstractionType(
 	return abstraction
 }
 
-func (v *templateSynthesizer_) replaceArgumentType(
+func (v *nodeSynthesizer_) replaceArgumentType(
 	argument mod.ArgumentLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.ArgumentLike {
@@ -999,7 +999,7 @@ func (v *templateSynthesizer_) replaceArgumentType(
 	return argument
 }
 
-func (v *templateSynthesizer_) replaceArgumentTypes(
+func (v *nodeSynthesizer_) replaceArgumentTypes(
 	arguments mod.ArgumentsLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.ArgumentsLike {
@@ -1023,7 +1023,7 @@ func (v *templateSynthesizer_) replaceArgumentTypes(
 	return arguments
 }
 
-func (v *templateSynthesizer_) replaceMultivalueTypes(
+func (v *nodeSynthesizer_) replaceMultivalueTypes(
 	parameterized mod.MultivalueLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.MultivalueLike {
@@ -1033,7 +1033,7 @@ func (v *templateSynthesizer_) replaceMultivalueTypes(
 	return parameterized
 }
 
-func (v *templateSynthesizer_) replaceParameterType(
+func (v *nodeSynthesizer_) replaceParameterType(
 	parameter mod.ParameterLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.ParameterLike {
@@ -1044,7 +1044,7 @@ func (v *templateSynthesizer_) replaceParameterType(
 	return parameter
 }
 
-func (v *templateSynthesizer_) replaceParameterTypes(
+func (v *nodeSynthesizer_) replaceParameterTypes(
 	sequence abs.Sequential[mod.ParameterLike],
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) abs.Sequential[mod.ParameterLike] {
@@ -1058,7 +1058,7 @@ func (v *templateSynthesizer_) replaceParameterTypes(
 	return replacedParameters
 }
 
-func (v *templateSynthesizer_) replacePrefixType(
+func (v *nodeSynthesizer_) replacePrefixType(
 	prefix mod.PrefixLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.PrefixLike {
@@ -1076,7 +1076,7 @@ func (v *templateSynthesizer_) replacePrefixType(
 	return prefix
 }
 
-func (v *templateSynthesizer_) replaceResultType(
+func (v *nodeSynthesizer_) replaceResultType(
 	result mod.ResultLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.ResultLike {
@@ -1105,14 +1105,14 @@ func (v *templateSynthesizer_) replaceResultType(
 
 // Instance Structure
 
-type templateSynthesizer_ struct {
+type nodeSynthesizer_ struct {
 	// Declare the instance attributes.
 	analyzer_ ana.ModelAnalyzerLike
 }
 
 // Class Structure
 
-type templateSynthesizerClass_ struct {
+type nodeSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_          string
 	packageAlias_            string
@@ -1151,13 +1151,18 @@ type templateSynthesizerClass_ struct {
 
 // Class Reference
 
-func templateSynthesizerReference() *templateSynthesizerClass_ {
-	return templateSynthesizerReference_
+func nodeSynthesizerReference() *nodeSynthesizerClass_ {
+	return nodeSynthesizerReference_
 }
 
-var templateSynthesizerReference_ = &templateSynthesizerClass_{
+var nodeSynthesizerReference_ = &nodeSynthesizerClass_{
 	// Initialize the class constants.
-	warningMessage_: ``,
+	warningMessage_: `
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+`,
 
 	packageAlias_: `
 	<~packageAcronym> "<packagePath>"`,

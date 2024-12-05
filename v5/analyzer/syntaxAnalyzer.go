@@ -55,7 +55,7 @@ func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
 	return syntaxAnalyzerReference()
 }
 
-func (v *syntaxAnalyzer_) GetExpressions() abs.Sequential[abs.AssociationLike[string, string]] {
+func (v *syntaxAnalyzer_) GetExpressions() abs.CatalogLike[string, string] {
 	return v.regexps_
 }
 
@@ -129,9 +129,9 @@ func (v *syntaxAnalyzer_) IsDelimited(
 }
 
 func (v *syntaxAnalyzer_) IsPlural(
-	name string,
+	identifierName string,
 ) bool {
-	return v.pluralNames_.ContainsValue(name)
+	return v.pluralNames_.ContainsValue(identifierName)
 }
 
 func (v *syntaxAnalyzer_) MakeOptional(
@@ -257,8 +257,8 @@ func (v *syntaxAnalyzer_) PostprocessExpression(
 	size uint,
 ) {
 	v.regexp_ += `)"`
-	var name = expression.GetLowercase()
-	v.regexps_.SetValue(name, v.regexp_)
+	var expressionName = expression.GetLowercase()
+	v.regexps_.SetValue(expressionName, v.regexp_)
 }
 
 func (v *syntaxAnalyzer_) PreprocessExtent(
@@ -295,9 +295,9 @@ func (v *syntaxAnalyzer_) PreprocessIdentifier(
 	identifier not.IdentifierLike,
 ) {
 	var scannerClass = gra.Scanner()
-	var name = identifier.GetAny().(string)
-	if scannerClass.MatchesType(name, gra.LowercaseToken) {
-		v.tokenNames_.AddValue(name)
+	var identifierName = identifier.GetAny().(string)
+	if scannerClass.MatchesType(identifierName, gra.LowercaseToken) {
+		v.tokenNames_.AddValue(identifierName)
 	}
 }
 
@@ -372,8 +372,8 @@ func (v *syntaxAnalyzer_) PreprocessReference(
 	// Process the cardinality.
 	var cardinality = reference.GetOptionalCardinality()
 	if uti.IsDefined(cardinality) {
-		var name = identifier.GetAny().(string)
-		v.checkPlurality(name, cardinality)
+		var identifierName = identifier.GetAny().(string)
+		v.checkPlurality(identifierName, cardinality)
 		switch actual := cardinality.GetAny().(type) {
 		case not.ConstrainedLike:
 			v.syntaxMap_ += actual.GetAny().(string)
@@ -488,17 +488,17 @@ func (v *syntaxAnalyzer_) PreprocessTerm(
 // Private Methods
 
 func (v *syntaxAnalyzer_) checkPlurality(
-	name string,
+	identifierName string,
 	cardinality not.CardinalityLike,
 ) {
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
 		switch actual.GetAny().(string) {
 		case "*", "+":
-			v.pluralNames_.AddValue(name)
+			v.pluralNames_.AddValue(identifierName)
 		}
 	case not.QuantifiedLike:
-		v.pluralNames_.AddValue(name)
+		v.pluralNames_.AddValue(identifierName)
 	}
 }
 
@@ -540,8 +540,8 @@ func (v *syntaxAnalyzer_) extractSyntaxName(
 	var rules = syntax.GetRules().GetIterator()
 	// The first rule name is the name of the syntax.
 	var rule = rules.GetNext()
-	var name = rule.GetUppercase()
-	return name
+	var syntaxName = rule.GetUppercase()
+	return syntaxName
 }
 
 func (v *syntaxAnalyzer_) extractVariableName(

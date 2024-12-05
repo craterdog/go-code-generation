@@ -98,34 +98,34 @@ supported by all syntax-analyzer-like instances.
 type SyntaxAnalyzerLike interface {
 	// Principal Methods
 	GetClass() SyntaxAnalyzerClassLike
-	GetExpressions() abs.Sequential[abs.AssociationLike[string, string]]
-	GetIdentifiers(
-		ruleName string,
-	) abs.Sequential[not.IdentifierLike]
 	GetLegalNotice() string
-	GetReferences(
-		ruleName string,
-	) abs.Sequential[not.ReferenceLike]
-	GetRuleNames() abs.Sequential[string]
-	GetSyntaxMap() string
 	GetSyntaxName() string
-	GetTerms(
-		ruleName string,
-	) abs.Sequential[not.TermLike]
-	GetTokenNames() abs.Sequential[string]
-	GetVariableType(
-		reference not.ReferenceLike,
-	) string
-	GetVariables(
-		ruleName string,
-	) abs.Sequential[string]
 	HasPlurals() bool
+	GetRuleNames() abs.Sequential[string]
+	GetTokenNames() abs.Sequential[string]
 	IsDelimited(
 		ruleName string,
 	) bool
+	GetTerms(
+		ruleName string,
+	) abs.Sequential[not.TermLike]
+	GetReferences(
+		ruleName string,
+	) abs.Sequential[not.ReferenceLike]
+	GetVariables(
+		ruleName string,
+	) abs.Sequential[string]
+	GetVariableType(
+		reference not.ReferenceLike,
+	) string
+	GetIdentifiers(
+		ruleName string,
+	) abs.Sequential[not.IdentifierLike]
 	IsPlural(
-		name string,
+		identifierName string,
 	) bool
+	GetExpressions() abs.CatalogLike[string, string]
+	GetSyntaxMap() string
 
 	// Aspect Interfaces
 	not.Methodical

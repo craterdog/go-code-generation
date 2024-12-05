@@ -108,6 +108,18 @@ type ModuleSynthesizerClassLike interface {
 }
 
 /*
+NodeSynthesizerClassLike declares the set of class constants, constructors and
+functions that must be supported by all node-synthesizer-class-like classes.
+*/
+type NodeSynthesizerClassLike interface {
+	// Constructor Methods
+	Make(
+		model mod.ModelLike,
+		className string,
+	) NodeSynthesizerLike
+}
+
+/*
 ParserSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all parser-synthesizer-class-like classes.
 */
@@ -138,18 +150,6 @@ type ScannerSynthesizerClassLike interface {
 	Make(
 		syntax not.SyntaxLike,
 	) ScannerSynthesizerLike
-}
-
-/*
-TemplateSynthesizerClassLike declares the set of class constants, constructors and
-functions that must be supported by all template-synthesizer-class-like classes.
-*/
-type TemplateSynthesizerClassLike interface {
-	// Constructor Methods
-	Make(
-		model mod.ModelLike,
-		className string,
-	) TemplateSynthesizerLike
 }
 
 /*
@@ -260,6 +260,18 @@ type ModuleSynthesizerLike interface {
 }
 
 /*
+NodeSynthesizerLike declares the set of aspects and methods that must
+be supported by all node-synthesizer-like instances.
+*/
+type NodeSynthesizerLike interface {
+	// Principal Methods
+	GetClass() NodeSynthesizerClassLike
+
+	// Aspect Interfaces
+	gen.ClassTemplateDriven
+}
+
+/*
 ParserSynthesizerLike declares the set of aspects and methods that must
 be supported by all parser-synthesizer-like instances.
 */
@@ -290,18 +302,6 @@ be supported by all scanner-synthesizer-like instances.
 type ScannerSynthesizerLike interface {
 	// Principal Methods
 	GetClass() ScannerSynthesizerClassLike
-
-	// Aspect Interfaces
-	gen.ClassTemplateDriven
-}
-
-/*
-TemplateSynthesizerLike declares the set of aspects and methods that must
-be supported by all template-synthesizer-like instances.
-*/
-type TemplateSynthesizerLike interface {
-	// Principal Methods
-	GetClass() TemplateSynthesizerClassLike
 
 	// Aspect Interfaces
 	gen.ClassTemplateDriven

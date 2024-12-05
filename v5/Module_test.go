@@ -108,12 +108,12 @@ func TestAstGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var classSynthesizer = gen.ClassSynthesizer(model, className)
+		var nodeSynthesizer = gen.NodeSynthesizer(model, className)
 		source = generator.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			classSynthesizer,
+			nodeSynthesizer,
 		)
 		filename = directory + packageName + "/" + className + ".go"
 		writeFile(filename, source)
@@ -320,12 +320,12 @@ func TestExampleGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var templateSynthesizer = gen.TemplateSynthesizer(model, className)
+		var classSynthesizer = gen.ClassSynthesizer(model, className)
 		source = classGenerator.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			templateSynthesizer,
+			classSynthesizer,
 		)
 		filename = directory + packageName + "/" + className + ".go"
 		writeFile(filename, source)
