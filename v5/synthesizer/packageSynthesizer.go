@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func ExampleSynthesizer() ExampleSynthesizerClassLike {
-	return exampleSynthesizerReference()
+func PackageSynthesizer() PackageSynthesizerClassLike {
+	return packageSynthesizerReference()
 }
 
 // Constructor Methods
 
-func (c *exampleSynthesizerClass_) Make() ExampleSynthesizerLike {
-	var instance = &exampleSynthesizer_{
+func (c *packageSynthesizerClass_) Make() PackageSynthesizerLike {
+	var instance = &packageSynthesizer_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -37,56 +37,56 @@ func (c *exampleSynthesizerClass_) Make() ExampleSynthesizerLike {
 
 // Principal Methods
 
-func (v *exampleSynthesizer_) GetClass() ExampleSynthesizerClassLike {
-	return exampleSynthesizerReference()
+func (v *packageSynthesizer_) GetClass() PackageSynthesizerClassLike {
+	return packageSynthesizerReference()
 }
 
 // TemplateDriven Methods
 
-func (v *exampleSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = exampleSynthesizerReference().legalNotice_
+func (v *packageSynthesizer_) CreateLegalNotice() string {
+	var legalNotice = packageSynthesizerReference().legalNotice_
 	return legalNotice
 }
 
-func (v *exampleSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = exampleSynthesizerReference().warningMessage_
+func (v *packageSynthesizer_) CreateWarningMessage() string {
+	var warningMessage = packageSynthesizerReference().warningMessage_
 	return warningMessage
 }
 
-func (v *exampleSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = exampleSynthesizerReference().packageDescription_
+func (v *packageSynthesizer_) CreatePackageDescription() string {
+	var packageDescription = packageSynthesizerReference().packageDescription_
 	return packageDescription
 }
 
-func (v *exampleSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = exampleSynthesizerReference().typeDeclarations_
+func (v *packageSynthesizer_) CreateTypeDeclarations() string {
+	var typeDeclarations = packageSynthesizerReference().typeDeclarations_
 	return typeDeclarations
 }
 
-func (v *exampleSynthesizer_) CreateFunctionalDeclarations() string {
-	var functionalDeclarations = exampleSynthesizerReference().functionalDeclarations_
+func (v *packageSynthesizer_) CreateFunctionalDeclarations() string {
+	var functionalDeclarations = packageSynthesizerReference().functionalDeclarations_
 	return functionalDeclarations
 }
 
-func (v *exampleSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = exampleSynthesizerReference().classDeclarations_
+func (v *packageSynthesizer_) CreateClassDeclarations() string {
+	var classDeclarations = packageSynthesizerReference().classDeclarations_
 	return classDeclarations
 }
 
-func (v *exampleSynthesizer_) CreateInstanceDeclarations() string {
-	var instanceDeclarations = exampleSynthesizerReference().instanceDeclarations_
+func (v *packageSynthesizer_) CreateInstanceDeclarations() string {
+	var instanceDeclarations = packageSynthesizerReference().instanceDeclarations_
 	return instanceDeclarations
 }
 
-func (v *exampleSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = exampleSynthesizerReference().aspectDeclarations_
+func (v *packageSynthesizer_) CreateAspectDeclarations() string {
+	var aspectDeclarations = packageSynthesizerReference().aspectDeclarations_
 	return aspectDeclarations
 }
 
-func (v *exampleSynthesizer_) PerformGlobalUpdates(
+func (v *packageSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = exampleSynthesizerReference().importedPackages_
+	var importedPackages = packageSynthesizerReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -99,13 +99,13 @@ func (v *exampleSynthesizer_) PerformGlobalUpdates(
 
 // Instance Structure
 
-type exampleSynthesizer_ struct {
+type packageSynthesizer_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type exampleSynthesizerClass_ struct {
+type packageSynthesizerClass_ struct {
 	// Declare the class constants.
 	legalNotice_            string
 	warningMessage_         string
@@ -120,11 +120,11 @@ type exampleSynthesizerClass_ struct {
 
 // Class Reference
 
-func exampleSynthesizerReference() *exampleSynthesizerClass_ {
-	return exampleSynthesizerReference_
+func packageSynthesizerReference() *packageSynthesizerClass_ {
+	return packageSynthesizerReference_
 }
 
-var exampleSynthesizerReference_ = &exampleSynthesizerClass_{
+var packageSynthesizerReference_ = &packageSynthesizerClass_{
 	// Initialize the class constants.
 	legalNotice_: `/*
 ................................................................................

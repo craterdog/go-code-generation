@@ -294,12 +294,12 @@ func TestExampleGeneration(t *tes.T) {
 	var wikiPath = "https://github.com/craterdog/go-package-example/wiki"
 	remakeDirectory(directory + packageName)
 	var packageGenerator = gen.PackageGenerator()
-	var exampleSynthesizer = gen.ExampleSynthesizer()
+	var packageSynthesizer = gen.PackageSynthesizer()
 	var source = packageGenerator.GeneratePackage(
 		moduleName,
 		wikiPath,
 		packageName,
-		exampleSynthesizer,
+		packageSynthesizer,
 	)
 	var filename = directory + packageName + "/Package.go"
 	writeFile(filename, source)

@@ -66,15 +66,6 @@ type ClassSynthesizerClassLike interface {
 }
 
 /*
-ExampleSynthesizerClassLike declares the set of class constants, constructors and
-functions that must be supported by all example-synthesizer-class-like classes.
-*/
-type ExampleSynthesizerClassLike interface {
-	// Constructor Methods
-	Make() ExampleSynthesizerLike
-}
-
-/*
 FormatterSynthesizerClassLike declares the set of class constants, constructors and
 functions that must be supported by all formatter-synthesizer-class-like classes.
 */
@@ -117,6 +108,15 @@ type NodeSynthesizerClassLike interface {
 		model mod.ModelLike,
 		className string,
 	) NodeSynthesizerLike
+}
+
+/*
+PackageSynthesizerClassLike declares the set of class constants, constructors and
+functions that must be supported by all package-synthesizer-class-like classes.
+*/
+type PackageSynthesizerClassLike interface {
+	// Constructor Methods
+	Make() PackageSynthesizerLike
 }
 
 /*
@@ -212,18 +212,6 @@ type ClassSynthesizerLike interface {
 }
 
 /*
-ExampleSynthesizerLike declares the set of aspects and methods that must
-be supported by all example-synthesizer-like instances.
-*/
-type ExampleSynthesizerLike interface {
-	// Principal Methods
-	GetClass() ExampleSynthesizerClassLike
-
-	// Aspect Interfaces
-	gen.PackageTemplateDriven
-}
-
-/*
 FormatterSynthesizerLike declares the set of aspects and methods that must
 be supported by all formatter-synthesizer-like instances.
 */
@@ -269,6 +257,18 @@ type NodeSynthesizerLike interface {
 
 	// Aspect Interfaces
 	gen.ClassTemplateDriven
+}
+
+/*
+PackageSynthesizerLike declares the set of aspects and methods that must
+be supported by all package-synthesizer-like instances.
+*/
+type PackageSynthesizerLike interface {
+	// Principal Methods
+	GetClass() PackageSynthesizerClassLike
+
+	// Aspect Interfaces
+	gen.PackageTemplateDriven
 }
 
 /*

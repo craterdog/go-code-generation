@@ -64,11 +64,11 @@ type (
 type (
 	AstSynthesizerLike       = syn.AstSynthesizerLike
 	ClassSynthesizerLike     = syn.ClassSynthesizerLike
-	ExampleSynthesizerLike   = syn.ExampleSynthesizerLike
 	FormatterSynthesizerLike = syn.FormatterSynthesizerLike
 	GrammarSynthesizerLike   = syn.GrammarSynthesizerLike
 	ModuleSynthesizerLike    = syn.ModuleSynthesizerLike
 	NodeSynthesizerLike      = syn.NodeSynthesizerLike
+	PackageSynthesizerLike   = syn.PackageSynthesizerLike
 	ParserSynthesizerLike    = syn.ParserSynthesizerLike
 	ProcessorSynthesizerLike = syn.ProcessorSynthesizerLike
 	ScannerSynthesizerLike   = syn.ScannerSynthesizerLike
@@ -358,41 +358,6 @@ func ClassSynthesizer(arguments ...any) ClassSynthesizerLike {
 	return instance_
 }
 
-func ExampleSynthesizer(arguments ...any) ExampleSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ExampleSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ ExampleSynthesizerLike
-	switch argumentTypes {
-	case "":
-		instance_ = syn.ExampleSynthesizer().Make()
-	default:
-		var message = fmt.Sprintf(
-			"No ExampleSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
-}
-
 func FormatterSynthesizer(arguments ...any) FormatterSynthesizerLike {
 	// Analyze the arguments.
 	var argumentTypes string
@@ -550,6 +515,41 @@ func NodeSynthesizer(arguments ...any) NodeSynthesizerLike {
 	default:
 		var message = fmt.Sprintf(
 			"No NodeSynthesizer constructor matching the arguments was found: %v\n",
+			arguments,
+		)
+		panic(message)
+	}
+	return instance_
+}
+
+func PackageSynthesizer(arguments ...any) PackageSynthesizerLike {
+	// Analyze the arguments.
+	var argumentTypes string
+	for _, argument := range arguments {
+		switch actual := argument.(type) {
+		default:
+			var message = fmt.Sprintf(
+				"An unexpected argument type was passed into the PackageSynthesizer constructor: %v of type %T",
+				argument,
+				actual,
+			)
+			panic(message)
+		}
+	}
+	var length = len(argumentTypes)
+	if length > 0 {
+		// Remove the trailing comma and space.
+		argumentTypes = argumentTypes[:length-2]
+	}
+
+	// Call the corresponding constructor.
+	var instance_ PackageSynthesizerLike
+	switch argumentTypes {
+	case "":
+		instance_ = syn.PackageSynthesizer().Make()
+	default:
+		var message = fmt.Sprintf(
+			"No PackageSynthesizer constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)
