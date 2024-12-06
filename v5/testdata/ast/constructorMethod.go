@@ -66,7 +66,7 @@ func (c *constructorMethodClass_) Make(
 // Principal Methods
 
 func (v *constructorMethod_) GetClass() ConstructorMethodClassLike {
-	return constructorMethodReference()
+	return constructorMethodClassReference()
 }
 
 // Attribute Methods
@@ -104,10 +104,10 @@ type constructorMethodClass_ struct {
 
 // Class Reference
 
-func constructorMethodReference() *constructorMethodClass_ {
-	return constructorMethodReference_
+func constructorMethodClassReference() *constructorMethodClass_ {
+	return constructorMethodClassReference_
 }
 
-var constructorMethodReference_ = &constructorMethodClass_{
+var constructorMethodClassReference_ = &constructorMethodClass_{
 	// Initialize the class constants.
 }

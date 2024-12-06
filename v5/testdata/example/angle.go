@@ -80,7 +80,7 @@ func (c *angleClass_) Tangent(
 // Principal Methods
 
 func (v angle_) GetClass() AngleClassLike {
-	return angleReference()
+	return angleClassReference()
 }
 
 func (v angle_) GetIntrinsic() float64 {
@@ -129,11 +129,11 @@ type angleClass_ struct {
 
 // Class Reference
 
-func angleReference() *angleClass_ {
-	return angleReference_
+func angleClassReference() *angleClass_ {
+	return angleClassReference_
 }
 
-var angleReference_ = &angleClass_{
+var angleClassReference_ = &angleClass_{
 	// Initialize the class constants.
 	// pi_: constantValue,
 	// tau_: constantValue,

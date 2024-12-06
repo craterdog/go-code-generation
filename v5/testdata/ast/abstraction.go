@@ -61,7 +61,7 @@ func (c *abstractionClass_) Make(
 // Principal Methods
 
 func (v *abstraction_) GetClass() AbstractionClassLike {
-	return abstractionReference()
+	return abstractionClassReference()
 }
 
 // Attribute Methods
@@ -104,10 +104,10 @@ type abstractionClass_ struct {
 
 // Class Reference
 
-func abstractionReference() *abstractionClass_ {
-	return abstractionReference_
+func abstractionClassReference() *abstractionClass_ {
+	return abstractionClassReference_
 }
 
-var abstractionReference_ = &abstractionClass_{
+var abstractionClassReference_ = &abstractionClass_{
 	// Initialize the class constants.
 }

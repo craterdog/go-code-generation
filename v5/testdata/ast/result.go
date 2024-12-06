@@ -55,7 +55,7 @@ func (c *resultClass_) Make(
 // Principal Methods
 
 func (v *result_) GetClass() ResultClassLike {
-	return resultReference()
+	return resultClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type resultClass_ struct {
 
 // Class Reference
 
-func resultReference() *resultClass_ {
-	return resultReference_
+func resultClassReference() *resultClass_ {
+	return resultClassReference_
 }
 
-var resultReference_ = &resultClass_{
+var resultClassReference_ = &resultClass_{
 	// Initialize the class constants.
 }

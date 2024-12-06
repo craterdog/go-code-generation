@@ -68,7 +68,7 @@ func (c *arrayClass_[V]) Merge(
 // Principal Methods
 
 func (v array_[V]) GetClass() ArrayClassLike[V] {
-	return arrayReference[V]()
+	return arrayClassReference[V]()
 }
 
 func (v array_[V]) GetIntrinsic() []V {
@@ -157,7 +157,7 @@ type arrayClass_[V any] struct {
 var arrayMap_ = map[string]any{}
 var arrayMutex_ syn.Mutex
 
-func arrayReference[V any]() *arrayClass_[V] {
+func arrayClassReference[V any]() *arrayClass_[V] {
 	// Generate the name of the bound class type.
 	var class *arrayClass_[V]
 	var name = fmt.Sprintf("%T", class)

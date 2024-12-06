@@ -89,7 +89,7 @@ func (c *catalogClass_[V]) Merge(
 // Principal Methods
 
 func (v *catalog_[V]) GetClass() CatalogClassLike[V] {
-	return catalogReference[V]()
+	return catalogClassReference[V]()
 }
 
 func (v *catalog_[V]) SortValues() {
@@ -163,7 +163,7 @@ type catalogClass_[V any] struct {
 var catalogMap_ = map[string]any{}
 var catalogMutex_ syn.Mutex
 
-func catalogReference[V any]() *catalogClass_[V] {
+func catalogClassReference[V any]() *catalogClass_[V] {
 	// Generate the name of the bound class type.
 	var class *catalogClass_[V]
 	var name = fmt.Sprintf("%T", class)

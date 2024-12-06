@@ -55,7 +55,7 @@ func (c *legalNoticeClass_) Make(
 // Principal Methods
 
 func (v *legalNotice_) GetClass() LegalNoticeClassLike {
-	return legalNoticeReference()
+	return legalNoticeClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type legalNoticeClass_ struct {
 
 // Class Reference
 
-func legalNoticeReference() *legalNoticeClass_ {
-	return legalNoticeReference_
+func legalNoticeClassReference() *legalNoticeClass_ {
+	return legalNoticeClassReference_
 }
 
-var legalNoticeReference_ = &legalNoticeClass_{
+var legalNoticeClassReference_ = &legalNoticeClass_{
 	// Initialize the class constants.
 }

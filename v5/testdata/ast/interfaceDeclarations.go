@@ -65,7 +65,7 @@ func (c *interfaceDeclarationsClass_) Make(
 // Principal Methods
 
 func (v *interfaceDeclarations_) GetClass() InterfaceDeclarationsClassLike {
-	return interfaceDeclarationsReference()
+	return interfaceDeclarationsClassReference()
 }
 
 // Attribute Methods
@@ -103,10 +103,10 @@ type interfaceDeclarationsClass_ struct {
 
 // Class Reference
 
-func interfaceDeclarationsReference() *interfaceDeclarationsClass_ {
-	return interfaceDeclarationsReference_
+func interfaceDeclarationsClassReference() *interfaceDeclarationsClass_ {
+	return interfaceDeclarationsClassReference_
 }
 
-var interfaceDeclarationsReference_ = &interfaceDeclarationsClass_{
+var interfaceDeclarationsClassReference_ = &interfaceDeclarationsClass_{
 	// Initialize the class constants.
 }

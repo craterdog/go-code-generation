@@ -56,7 +56,7 @@ func (c *packageImportsClass_) Make(
 // Principal Methods
 
 func (v *packageImports_) GetClass() PackageImportsClassLike {
-	return packageImportsReference()
+	return packageImportsClassReference()
 }
 
 // Attribute Methods
@@ -84,10 +84,10 @@ type packageImportsClass_ struct {
 
 // Class Reference
 
-func packageImportsReference() *packageImportsClass_ {
-	return packageImportsReference_
+func packageImportsClassReference() *packageImportsClass_ {
+	return packageImportsClassReference_
 }
 
-var packageImportsReference_ = &packageImportsClass_{
+var packageImportsClassReference_ = &packageImportsClass_{
 	// Initialize the class constants.
 }

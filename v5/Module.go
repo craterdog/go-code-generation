@@ -111,7 +111,7 @@ func ModelAnalyzer(arguments ...any) ModelAnalyzerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = ana.ModelAnalyzer().Make(
+		instance_ = ana.ModelAnalyzerClass().Make(
 			model,
 			className,
 		)
@@ -152,7 +152,7 @@ func SyntaxAnalyzer(arguments ...any) SyntaxAnalyzerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = ana.SyntaxAnalyzer().Make(
+		instance_ = ana.SyntaxAnalyzerClass().Make(
 			syntax,
 		)
 	default:
@@ -191,7 +191,7 @@ func ClassGenerator(arguments ...any) ClassGeneratorLike {
 	var instance_ ClassGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.ClassGenerator().Make()
+		instance_ = gen.ClassGeneratorClass().Make()
 	default:
 		var message = fmt.Sprintf(
 			"No ClassGenerator constructor matching the arguments was found: %v\n",
@@ -226,7 +226,7 @@ func ModuleGenerator(arguments ...any) ModuleGeneratorLike {
 	var instance_ ModuleGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.ModuleGenerator().Make()
+		instance_ = gen.ModuleGeneratorClass().Make()
 	default:
 		var message = fmt.Sprintf(
 			"No ModuleGenerator constructor matching the arguments was found: %v\n",
@@ -261,7 +261,7 @@ func PackageGenerator(arguments ...any) PackageGeneratorLike {
 	var instance_ PackageGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.PackageGenerator().Make()
+		instance_ = gen.PackageGeneratorClass().Make()
 	default:
 		var message = fmt.Sprintf(
 			"No PackageGenerator constructor matching the arguments was found: %v\n",
@@ -301,7 +301,7 @@ func AstSynthesizer(arguments ...any) AstSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.AstSynthesizer().Make(
+		instance_ = syn.AstSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -344,7 +344,7 @@ func ClassSynthesizer(arguments ...any) ClassSynthesizerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = syn.ClassSynthesizer().Make(
+		instance_ = syn.ClassSynthesizerClass().Make(
 			model,
 			className,
 		)
@@ -385,7 +385,7 @@ func FormatterSynthesizer(arguments ...any) FormatterSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.FormatterSynthesizer().Make(
+		instance_ = syn.FormatterSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -425,7 +425,7 @@ func GrammarSynthesizer(arguments ...any) GrammarSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.GrammarSynthesizer().Make(
+		instance_ = syn.GrammarSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -465,7 +465,7 @@ func ModuleSynthesizer(arguments ...any) ModuleSynthesizerLike {
 	switch argumentTypes {
 	case "abs.CatalogLike[string, mod.ModelLike]":
 		var models = arguments[0].(abs.CatalogLike[string, mod.ModelLike])
-		instance_ = syn.ModuleSynthesizer().Make(
+		instance_ = syn.ModuleSynthesizerClass().Make(
 			models,
 		)
 	default:
@@ -508,7 +508,7 @@ func NodeSynthesizer(arguments ...any) NodeSynthesizerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = syn.NodeSynthesizer().Make(
+		instance_ = syn.NodeSynthesizerClass().Make(
 			model,
 			className,
 		)
@@ -546,7 +546,7 @@ func PackageSynthesizer(arguments ...any) PackageSynthesizerLike {
 	var instance_ PackageSynthesizerLike
 	switch argumentTypes {
 	case "":
-		instance_ = syn.PackageSynthesizer().Make()
+		instance_ = syn.PackageSynthesizerClass().Make()
 	default:
 		var message = fmt.Sprintf(
 			"No PackageSynthesizer constructor matching the arguments was found: %v\n",
@@ -584,7 +584,7 @@ func ParserSynthesizer(arguments ...any) ParserSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ParserSynthesizer().Make(
+		instance_ = syn.ParserSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -624,7 +624,7 @@ func ProcessorSynthesizer(arguments ...any) ProcessorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ProcessorSynthesizer().Make(
+		instance_ = syn.ProcessorSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -664,7 +664,7 @@ func ScannerSynthesizer(arguments ...any) ScannerSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ScannerSynthesizer().Make(
+		instance_ = syn.ScannerSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -704,7 +704,7 @@ func TokenSynthesizer(arguments ...any) TokenSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.TokenSynthesizer().Make(
+		instance_ = syn.TokenSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -744,7 +744,7 @@ func ValidatorSynthesizer(arguments ...any) ValidatorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ValidatorSynthesizer().Make(
+		instance_ = syn.ValidatorSynthesizerClass().Make(
 			syntax,
 		)
 	default:
@@ -784,7 +784,7 @@ func VisitorSynthesizer(arguments ...any) VisitorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.VisitorSynthesizer().Make(
+		instance_ = syn.VisitorSynthesizerClass().Make(
 			syntax,
 		)
 	default:

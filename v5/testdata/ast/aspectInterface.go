@@ -55,7 +55,7 @@ func (c *aspectInterfaceClass_) Make(
 // Principal Methods
 
 func (v *aspectInterface_) GetClass() AspectInterfaceClassLike {
-	return aspectInterfaceReference()
+	return aspectInterfaceClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type aspectInterfaceClass_ struct {
 
 // Class Reference
 
-func aspectInterfaceReference() *aspectInterfaceClass_ {
-	return aspectInterfaceReference_
+func aspectInterfaceClassReference() *aspectInterfaceClass_ {
+	return aspectInterfaceClassReference_
 }
 
-var aspectInterfaceReference_ = &aspectInterfaceClass_{
+var aspectInterfaceClassReference_ = &aspectInterfaceClass_{
 	// Initialize the class constants.
 }

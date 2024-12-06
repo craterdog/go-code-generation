@@ -26,8 +26,8 @@ import (
 
 // Access Function
 
-func SyntaxAnalyzer() SyntaxAnalyzerClassLike {
-	return syntaxAnalyzerReference()
+func SyntaxAnalyzerClass() SyntaxAnalyzerClassLike {
+	return syntaxAnalyzerClassReference()
 }
 
 // Constructor Methods
@@ -52,7 +52,7 @@ func (c *syntaxAnalyzerClass_) Make(
 // Principal Methods
 
 func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
-	return syntaxAnalyzerReference()
+	return syntaxAnalyzerClassReference()
 }
 
 func (v *syntaxAnalyzer_) GetExpressions() abs.CatalogLike[string, string] {
@@ -648,10 +648,10 @@ type syntaxAnalyzerClass_ struct {
 
 // Class Reference
 
-func syntaxAnalyzerReference() *syntaxAnalyzerClass_ {
-	return syntaxAnalyzerReference_
+func syntaxAnalyzerClassReference() *syntaxAnalyzerClass_ {
+	return syntaxAnalyzerClassReference_
 }
 
-var syntaxAnalyzerReference_ = &syntaxAnalyzerClass_{
+var syntaxAnalyzerClassReference_ = &syntaxAnalyzerClass_{
 	// Initialize the class constants.
 }

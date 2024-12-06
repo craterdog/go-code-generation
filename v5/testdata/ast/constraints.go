@@ -61,7 +61,7 @@ func (c *constraintsClass_) Make(
 // Principal Methods
 
 func (v *constraints_) GetClass() ConstraintsClassLike {
-	return constraintsReference()
+	return constraintsClassReference()
 }
 
 // Attribute Methods
@@ -94,10 +94,10 @@ type constraintsClass_ struct {
 
 // Class Reference
 
-func constraintsReference() *constraintsClass_ {
-	return constraintsReference_
+func constraintsClassReference() *constraintsClass_ {
+	return constraintsClassReference_
 }
 
-var constraintsReference_ = &constraintsClass_{
+var constraintsClassReference_ = &constraintsClass_{
 	// Initialize the class constants.
 }

@@ -26,7 +26,7 @@ import (
 
 // Access Function
 
-func ModuleSynthesizer() ModuleSynthesizerClassLike {
+func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 	return moduleSynthesizerClassReference()
 }
 
@@ -257,7 +257,7 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 	var constructorFunction = moduleSynthesizerClassReference().constructorFunction_
 	var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
 	className = uti.MakeLowerCase(className)
-	var analyzer = ana.ModelAnalyzer().Make(model, className)
+	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
 	var constructorMethods = analyzer.GetConstructorMethods()
 	var argumentCases = v.createArgumentCases(constructorMethods)
 	constructorFunction = uti.ReplaceAll(
@@ -718,7 +718,7 @@ func <~ClassName>(arguments ...any) <~ClassName>Like {
 
 	constructionCase_: `
 	case "<ArgumentTypes>":<ArgumentAssignments>
-		instance_ = <~packageAcronym>.<~ClassName>().Make(<ArgumentNames>)`,
+		instance_ = <~packageAcronym>.<~ClassName>Class().Make(<ArgumentNames>)`,
 
 	argumentAssignment_: `
 		var <argumentName_> = arguments[<index>].(<ArgumentType>)`,

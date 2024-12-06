@@ -65,7 +65,7 @@ func (c *packageDeclarationClass_) Make(
 // Principal Methods
 
 func (v *packageDeclaration_) GetClass() PackageDeclarationClassLike {
-	return packageDeclarationReference()
+	return packageDeclarationClassReference()
 }
 
 // Attribute Methods
@@ -103,10 +103,10 @@ type packageDeclarationClass_ struct {
 
 // Class Reference
 
-func packageDeclarationReference() *packageDeclarationClass_ {
-	return packageDeclarationReference_
+func packageDeclarationClassReference() *packageDeclarationClass_ {
+	return packageDeclarationClassReference_
 }
 
-var packageDeclarationReference_ = &packageDeclarationClass_{
+var packageDeclarationClassReference_ = &packageDeclarationClass_{
 	// Initialize the class constants.
 }

@@ -60,7 +60,7 @@ func (c *packageHeaderClass_) Make(
 // Principal Methods
 
 func (v *packageHeader_) GetClass() PackageHeaderClassLike {
-	return packageHeaderReference()
+	return packageHeaderClassReference()
 }
 
 // Attribute Methods
@@ -93,10 +93,10 @@ type packageHeaderClass_ struct {
 
 // Class Reference
 
-func packageHeaderReference() *packageHeaderClass_ {
-	return packageHeaderReference_
+func packageHeaderClassReference() *packageHeaderClass_ {
+	return packageHeaderClassReference_
 }
 
-var packageHeaderReference_ = &packageHeaderClass_{
+var packageHeaderClassReference_ = &packageHeaderClass_{
 	// Initialize the class constants.
 }

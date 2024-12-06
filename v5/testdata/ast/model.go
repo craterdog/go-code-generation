@@ -65,7 +65,7 @@ func (c *modelClass_) Make(
 // Principal Methods
 
 func (v *model_) GetClass() ModelClassLike {
-	return modelReference()
+	return modelClassReference()
 }
 
 // Attribute Methods
@@ -103,10 +103,10 @@ type modelClass_ struct {
 
 // Class Reference
 
-func modelReference() *modelClass_ {
-	return modelReference_
+func modelClassReference() *modelClass_ {
+	return modelClassReference_
 }
 
-var modelReference_ = &modelClass_{
+var modelClassReference_ = &modelClass_{
 	// Initialize the class constants.
 }

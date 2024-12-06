@@ -20,7 +20,7 @@ import (
 
 // Access Function
 
-func PackageSynthesizer() PackageSynthesizerClassLike {
+func PackageSynthesizerClass() PackageSynthesizerClassLike {
 	return packageSynthesizerClassReference()
 }
 

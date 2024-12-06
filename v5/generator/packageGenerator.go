@@ -20,8 +20,8 @@ import (
 
 // Access Function
 
-func PackageGenerator() PackageGeneratorClassLike {
-	return packageGeneratorReference()
+func PackageGeneratorClass() PackageGeneratorClassLike {
+	return packageGeneratorClassReference()
 }
 
 // Constructor Methods
@@ -39,7 +39,7 @@ func (c *packageGeneratorClass_) Make() PackageGeneratorLike {
 // Principal Methods
 
 func (v *packageGenerator_) GetClass() PackageGeneratorClassLike {
-	return packageGeneratorReference()
+	return packageGeneratorClassReference()
 }
 
 func (v *packageGenerator_) GeneratePackage(
@@ -49,7 +49,7 @@ func (v *packageGenerator_) GeneratePackage(
 	synthesizer PackageTemplateDriven,
 ) string {
 	// Begin with a package template.
-	var source = packageGeneratorReference().packageTemplate_
+	var source = packageGeneratorClassReference().packageTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -109,11 +109,11 @@ type packageGeneratorClass_ struct {
 
 // Class Reference
 
-func packageGeneratorReference() *packageGeneratorClass_ {
-	return packageGeneratorReference_
+func packageGeneratorClassReference() *packageGeneratorClass_ {
+	return packageGeneratorClassReference_
 }
 
-var packageGeneratorReference_ = &packageGeneratorClass_{
+var packageGeneratorClassReference_ = &packageGeneratorClass_{
 	// Initialize the class constants.
 	packageTemplate_: `<LegalNotice>
 /*<WarningMessage><PackageDescription>

@@ -25,8 +25,8 @@ import (
 
 // Access Function
 
-func ModelAnalyzer() ModelAnalyzerClassLike {
-	return modelAnalyzerReference()
+func ModelAnalyzerClass() ModelAnalyzerClassLike {
+	return modelAnalyzerClassReference()
 }
 
 // Constructor Methods
@@ -48,7 +48,7 @@ func (c *modelAnalyzerClass_) Make(
 // Principal Methods
 
 func (v *modelAnalyzer_) GetClass() ModelAnalyzerClassLike {
-	return modelAnalyzerReference()
+	return modelAnalyzerClassReference()
 }
 
 func (v *modelAnalyzer_) GetLegalNotice() string {
@@ -528,10 +528,10 @@ type modelAnalyzerClass_ struct {
 
 // Class Reference
 
-func modelAnalyzerReference() *modelAnalyzerClass_ {
-	return modelAnalyzerReference_
+func modelAnalyzerClassReference() *modelAnalyzerClass_ {
+	return modelAnalyzerClassReference_
 }
 
-var modelAnalyzerReference_ = &modelAnalyzerClass_{
+var modelAnalyzerClassReference_ = &modelAnalyzerClass_{
 	// Initialize the class constants.
 }

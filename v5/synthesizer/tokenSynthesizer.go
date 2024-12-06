@@ -22,7 +22,7 @@ import (
 
 // Access Function
 
-func TokenSynthesizer() TokenSynthesizerClassLike {
+func TokenSynthesizerClass() TokenSynthesizerClassLike {
 	return tokenSynthesizerClassReference()
 }
 
@@ -33,7 +33,7 @@ func (c *tokenSynthesizerClass_) Make(
 ) TokenSynthesizerLike {
 	var instance = &tokenSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }
@@ -215,7 +215,7 @@ func (c *tokenClass_) Make(
 // Principal Methods
 
 func (v *token_) GetClass() TokenClassLike {
-	return tokenReference()
+	return tokenClassReference()
 }
 `,
 
@@ -266,11 +266,11 @@ type tokenClass_ struct {
 	classReference_: `
 // Class Reference
 
-func tokenReference() *tokenClass_ {
-	return tokenReference_
+func tokenClassReference() *tokenClass_ {
+	return tokenClassReference_
 }
 
-var tokenReference_ = &tokenClass_{
+var tokenClassReference_ = &tokenClass_{
 	// Initialize the class constants.
 }
 `,

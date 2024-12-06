@@ -22,7 +22,7 @@ import (
 
 // Access Function
 
-func ProcessorSynthesizer() ProcessorSynthesizerClassLike {
+func ProcessorSynthesizerClass() ProcessorSynthesizerClassLike {
 	return processorSynthesizerClassReference()
 }
 
@@ -33,7 +33,7 @@ func (c *processorSynthesizerClass_) Make(
 ) ProcessorSynthesizerLike {
 	var instance = &processorSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }
@@ -266,7 +266,7 @@ func (c *processorClass_) Make() ProcessorLike {
 // Principal Methods
 
 func (v *processor_) GetClass() ProcessorClassLike {
-	return processorReference()
+	return processorClassReference()
 }
 `,
 
@@ -351,11 +351,11 @@ type processorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func processorReference() *processorClass_ {
-	return processorReference_
+func processorClassReference() *processorClass_ {
+	return processorClassReference_
 }
 
-var processorReference_ = &processorClass_{
+var processorClassReference_ = &processorClass_{
 	// Initialize the class constants.
 }
 `,

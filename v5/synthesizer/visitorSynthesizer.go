@@ -24,7 +24,7 @@ import (
 
 // Access Function
 
-func VisitorSynthesizer() VisitorSynthesizerClassLike {
+func VisitorSynthesizerClass() VisitorSynthesizerClassLike {
 	return visitorSynthesizerClassReference()
 }
 
@@ -35,7 +35,7 @@ func (c *visitorSynthesizerClass_) Make(
 ) VisitorSynthesizerLike {
 	var instance = &visitorSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }
@@ -462,7 +462,7 @@ func (c *visitorClass_) Make(
 // Principal Methods
 
 func (v *visitor_) GetClass() VisitorClassLike {
-	return visitorReference()
+	return visitorClassReference()
 }
 
 func (v *visitor_) Visit<~SyntaxName>(
@@ -630,11 +630,11 @@ type visitorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func visitorReference() *visitorClass_ {
-	return visitorReference_
+func visitorClassReference() *visitorClass_ {
+	return visitorClassReference_
 }
 
-var visitorReference_ = &visitorClass_{
+var visitorClassReference_ = &visitorClass_{
 	// Initialize the class constants.
 }
 `,

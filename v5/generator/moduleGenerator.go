@@ -20,8 +20,8 @@ import (
 
 // Access Function
 
-func ModuleGenerator() ModuleGeneratorClassLike {
-	return moduleGeneratorReference()
+func ModuleGeneratorClass() ModuleGeneratorClassLike {
+	return moduleGeneratorClassReference()
 }
 
 // Constructor Methods
@@ -39,7 +39,7 @@ func (c *moduleGeneratorClass_) Make() ModuleGeneratorLike {
 // Principal Methods
 
 func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
-	return moduleGeneratorReference()
+	return moduleGeneratorClassReference()
 }
 
 func (v *moduleGenerator_) GenerateModule(
@@ -48,7 +48,7 @@ func (v *moduleGenerator_) GenerateModule(
 	synthesizer ModuleTemplateDriven,
 ) string {
 	// Begin with a module template.
-	var source = moduleGeneratorReference().moduleTemplate_
+	var source = moduleGeneratorClassReference().moduleTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -91,11 +91,11 @@ type moduleGeneratorClass_ struct {
 
 // Class Reference
 
-func moduleGeneratorReference() *moduleGeneratorClass_ {
-	return moduleGeneratorReference_
+func moduleGeneratorClassReference() *moduleGeneratorClass_ {
+	return moduleGeneratorClassReference_
 }
 
-var moduleGeneratorReference_ = &moduleGeneratorClass_{
+var moduleGeneratorClassReference_ = &moduleGeneratorClass_{
 	// Initialize the class constants.
 	moduleTemplate_: `<LegalNotice>
 /*<WarningMessage>

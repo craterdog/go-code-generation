@@ -55,7 +55,7 @@ func (c *mapClass_) Make(
 // Principal Methods
 
 func (v *map_) GetClass() MapClassLike {
-	return mapReference()
+	return mapClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type mapClass_ struct {
 
 // Class Reference
 
-func mapReference() *mapClass_ {
-	return mapReference_
+func mapClassReference() *mapClass_ {
+	return mapClassReference_
 }
 
-var mapReference_ = &mapClass_{
+var mapClassReference_ = &mapClass_{
 	// Initialize the class constants.
 }

@@ -66,7 +66,7 @@ func (c *functionalDeclarationClass_) Make(
 // Principal Methods
 
 func (v *functionalDeclaration_) GetClass() FunctionalDeclarationClassLike {
-	return functionalDeclarationReference()
+	return functionalDeclarationClassReference()
 }
 
 // Attribute Methods
@@ -104,10 +104,10 @@ type functionalDeclarationClass_ struct {
 
 // Class Reference
 
-func functionalDeclarationReference() *functionalDeclarationClass_ {
-	return functionalDeclarationReference_
+func functionalDeclarationClassReference() *functionalDeclarationClass_ {
+	return functionalDeclarationClassReference_
 }
 
-var functionalDeclarationReference_ = &functionalDeclarationClass_{
+var functionalDeclarationClassReference_ = &functionalDeclarationClass_{
 	// Initialize the class constants.
 }

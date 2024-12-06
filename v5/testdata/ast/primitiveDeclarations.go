@@ -60,7 +60,7 @@ func (c *primitiveDeclarationsClass_) Make(
 // Principal Methods
 
 func (v *primitiveDeclarations_) GetClass() PrimitiveDeclarationsClassLike {
-	return primitiveDeclarationsReference()
+	return primitiveDeclarationsClassReference()
 }
 
 // Attribute Methods
@@ -93,10 +93,10 @@ type primitiveDeclarationsClass_ struct {
 
 // Class Reference
 
-func primitiveDeclarationsReference() *primitiveDeclarationsClass_ {
-	return primitiveDeclarationsReference_
+func primitiveDeclarationsClassReference() *primitiveDeclarationsClass_ {
+	return primitiveDeclarationsClassReference_
 }
 
-var primitiveDeclarationsReference_ = &primitiveDeclarationsClass_{
+var primitiveDeclarationsClassReference_ = &primitiveDeclarationsClass_{
 	// Initialize the class constants.
 }

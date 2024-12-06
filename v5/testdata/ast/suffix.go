@@ -55,7 +55,7 @@ func (c *suffixClass_) Make(
 // Principal Methods
 
 func (v *suffix_) GetClass() SuffixClassLike {
-	return suffixReference()
+	return suffixClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type suffixClass_ struct {
 
 // Class Reference
 
-func suffixReference() *suffixClass_ {
-	return suffixReference_
+func suffixClassReference() *suffixClass_ {
+	return suffixClassReference_
 }
 
-var suffixReference_ = &suffixClass_{
+var suffixClassReference_ = &suffixClass_{
 	// Initialize the class constants.
 }

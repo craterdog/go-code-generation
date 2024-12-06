@@ -61,7 +61,7 @@ func (c *argumentsClass_) Make(
 // Principal Methods
 
 func (v *arguments_) GetClass() ArgumentsClassLike {
-	return argumentsReference()
+	return argumentsClassReference()
 }
 
 // Attribute Methods
@@ -94,10 +94,10 @@ type argumentsClass_ struct {
 
 // Class Reference
 
-func argumentsReference() *argumentsClass_ {
-	return argumentsReference_
+func argumentsClassReference() *argumentsClass_ {
+	return argumentsClassReference_
 }
 
-var argumentsReference_ = &argumentsClass_{
+var argumentsClassReference_ = &argumentsClass_{
 	// Initialize the class constants.
 }

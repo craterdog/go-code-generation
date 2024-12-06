@@ -56,7 +56,7 @@ func (c *classSectionClass_) Make(
 // Principal Methods
 
 func (v *classSection_) GetClass() ClassSectionClassLike {
-	return classSectionReference()
+	return classSectionClassReference()
 }
 
 // Attribute Methods
@@ -84,10 +84,10 @@ type classSectionClass_ struct {
 
 // Class Reference
 
-func classSectionReference() *classSectionClass_ {
-	return classSectionReference_
+func classSectionClassReference() *classSectionClass_ {
+	return classSectionClassReference_
 }
 
-var classSectionReference_ = &classSectionClass_{
+var classSectionClassReference_ = &classSectionClass_{
 	// Initialize the class constants.
 }

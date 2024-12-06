@@ -22,7 +22,7 @@ import (
 
 // Access Function
 
-func GrammarSynthesizer() GrammarSynthesizerClassLike {
+func GrammarSynthesizerClass() GrammarSynthesizerClassLike {
 	return grammarSynthesizerClassReference()
 }
 
@@ -33,7 +33,7 @@ func (c *grammarSynthesizerClass_) Make(
 ) GrammarSynthesizerLike {
 	var instance = &grammarSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }

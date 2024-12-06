@@ -60,7 +60,7 @@ func (c *parameterClass_) Make(
 // Principal Methods
 
 func (v *parameter_) GetClass() ParameterClassLike {
-	return parameterReference()
+	return parameterClassReference()
 }
 
 // Attribute Methods
@@ -93,10 +93,10 @@ type parameterClass_ struct {
 
 // Class Reference
 
-func parameterReference() *parameterClass_ {
-	return parameterReference_
+func parameterClassReference() *parameterClass_ {
+	return parameterClassReference_
 }
 
-var parameterReference_ = &parameterClass_{
+var parameterClassReference_ = &parameterClass_{
 	// Initialize the class constants.
 }

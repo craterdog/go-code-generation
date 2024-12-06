@@ -55,7 +55,7 @@ func (c *prefixClass_) Make(
 // Principal Methods
 
 func (v *prefix_) GetClass() PrefixClassLike {
-	return prefixReference()
+	return prefixClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type prefixClass_ struct {
 
 // Class Reference
 
-func prefixReference() *prefixClass_ {
-	return prefixReference_
+func prefixClassReference() *prefixClass_ {
+	return prefixClassReference_
 }
 
-var prefixReference_ = &prefixClass_{
+var prefixClassReference_ = &prefixClass_{
 	// Initialize the class constants.
 }

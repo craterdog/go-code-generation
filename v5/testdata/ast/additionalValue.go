@@ -55,7 +55,7 @@ func (c *additionalValueClass_) Make(
 // Principal Methods
 
 func (v *additionalValue_) GetClass() AdditionalValueClassLike {
-	return additionalValueReference()
+	return additionalValueClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type additionalValueClass_ struct {
 
 // Class Reference
 
-func additionalValueReference() *additionalValueClass_ {
-	return additionalValueReference_
+func additionalValueClassReference() *additionalValueClass_ {
+	return additionalValueClassReference_
 }
 
-var additionalValueReference_ = &additionalValueClass_{
+var additionalValueClassReference_ = &additionalValueClass_{
 	// Initialize the class constants.
 }

@@ -26,7 +26,7 @@ import (
 
 // Access Function
 
-func ClassSynthesizer() ClassSynthesizerClassLike {
+func ClassSynthesizerClass() ClassSynthesizerClassLike {
 	return classSynthesizerClassReference()
 }
 
@@ -38,7 +38,7 @@ func (c *classSynthesizerClass_) Make(
 ) ClassSynthesizerLike {
 	var instance = &classSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.ModelAnalyzer().Make(model, className),
+		analyzer_: ana.ModelAnalyzerClass().Make(model, className),
 	}
 	return instance
 }
@@ -1244,7 +1244,7 @@ func (v <*><~className>_<Arguments>) <~MethodName>(
 // Principal Methods
 
 func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments> {
-	return <~className>Reference<Arguments>()
+	return <~className>ClassReference<Arguments>()
 }
 <IntrinsicMethod><PrincipalMethods>`,
 
@@ -1321,11 +1321,11 @@ type <~className>Class_<Constraints> struct {
 	classReference_: `
 // Class Reference
 
-func <~className>Reference() *<~className>Class_ {
-	return <~className>Reference_
+func <~className>ClassReference() *<~className>Class_ {
+	return <~className>ClassReference_
 }
 
-var <~className>Reference_ = &<~className>Class_{
+var <~className>ClassReference_ = &<~className>Class_{
 	// Initialize the class constants.<ConstantInitializations>
 }
 `,
@@ -1336,7 +1336,7 @@ var <~className>Reference_ = &<~className>Class_{
 var <~className>Map_ = map[string]any{}
 var <~className>Mutex_ syn.Mutex
 
-func <~className>Reference<Constraints>() *<~className>Class_<Arguments> {
+func <~className>ClassReference<Constraints>() *<~className>Class_<Arguments> {
 	// Generate the name of the bound class type.
 	var class *<className>Class_<Arguments>
 	var name = fmt.Sprintf("%T", class)

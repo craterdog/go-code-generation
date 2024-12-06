@@ -60,7 +60,7 @@ func (c *getterMethodClass_) Make(
 // Principal Methods
 
 func (v *getterMethod_) GetClass() GetterMethodClassLike {
-	return getterMethodReference()
+	return getterMethodClassReference()
 }
 
 // Attribute Methods
@@ -93,10 +93,10 @@ type getterMethodClass_ struct {
 
 // Class Reference
 
-func getterMethodReference() *getterMethodClass_ {
-	return getterMethodReference_
+func getterMethodClassReference() *getterMethodClass_ {
+	return getterMethodClassReference_
 }
 
-var getterMethodReference_ = &getterMethodClass_{
+var getterMethodClassReference_ = &getterMethodClass_{
 	// Initialize the class constants.
 }

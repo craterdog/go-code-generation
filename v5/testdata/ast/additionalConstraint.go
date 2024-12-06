@@ -55,7 +55,7 @@ func (c *additionalConstraintClass_) Make(
 // Principal Methods
 
 func (v *additionalConstraint_) GetClass() AdditionalConstraintClassLike {
-	return additionalConstraintReference()
+	return additionalConstraintClassReference()
 }
 
 // Attribute Methods
@@ -83,10 +83,10 @@ type additionalConstraintClass_ struct {
 
 // Class Reference
 
-func additionalConstraintReference() *additionalConstraintClass_ {
-	return additionalConstraintReference_
+func additionalConstraintClassReference() *additionalConstraintClass_ {
+	return additionalConstraintClassReference_
 }
 
-var additionalConstraintReference_ = &additionalConstraintClass_{
+var additionalConstraintClassReference_ = &additionalConstraintClass_{
 	// Initialize the class constants.
 }

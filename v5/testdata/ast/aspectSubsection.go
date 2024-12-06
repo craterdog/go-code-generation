@@ -56,7 +56,7 @@ func (c *aspectSubsectionClass_) Make(
 // Principal Methods
 
 func (v *aspectSubsection_) GetClass() AspectSubsectionClassLike {
-	return aspectSubsectionReference()
+	return aspectSubsectionClassReference()
 }
 
 // Attribute Methods
@@ -84,10 +84,10 @@ type aspectSubsectionClass_ struct {
 
 // Class Reference
 
-func aspectSubsectionReference() *aspectSubsectionClass_ {
-	return aspectSubsectionReference_
+func aspectSubsectionClassReference() *aspectSubsectionClass_ {
+	return aspectSubsectionClassReference_
 }
 
-var aspectSubsectionReference_ = &aspectSubsectionClass_{
+var aspectSubsectionClassReference_ = &aspectSubsectionClass_{
 	// Initialize the class constants.
 }

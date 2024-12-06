@@ -63,7 +63,7 @@ func (c *methodClass_) Make(
 // Principal Methods
 
 func (v *method_) GetClass() MethodClassLike {
-	return methodReference()
+	return methodClassReference()
 }
 
 // Attribute Methods
@@ -101,10 +101,10 @@ type methodClass_ struct {
 
 // Class Reference
 
-func methodReference() *methodClass_ {
-	return methodReference_
+func methodClassReference() *methodClass_ {
+	return methodClassReference_
 }
 
-var methodReference_ = &methodClass_{
+var methodClassReference_ = &methodClass_{
 	// Initialize the class constants.
 }

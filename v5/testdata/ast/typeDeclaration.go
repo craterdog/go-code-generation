@@ -62,7 +62,7 @@ func (c *typeDeclarationClass_) Make(
 // Principal Methods
 
 func (v *typeDeclaration_) GetClass() TypeDeclarationClassLike {
-	return typeDeclarationReference()
+	return typeDeclarationClassReference()
 }
 
 // Attribute Methods
@@ -100,10 +100,10 @@ type typeDeclarationClass_ struct {
 
 // Class Reference
 
-func typeDeclarationReference() *typeDeclarationClass_ {
-	return typeDeclarationReference_
+func typeDeclarationClassReference() *typeDeclarationClass_ {
+	return typeDeclarationClassReference_
 }
 
-var typeDeclarationReference_ = &typeDeclarationClass_{
+var typeDeclarationClassReference_ = &typeDeclarationClass_{
 	// Initialize the class constants.
 }

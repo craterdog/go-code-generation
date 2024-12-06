@@ -22,7 +22,7 @@ import (
 
 // Access Function
 
-func AstSynthesizer() AstSynthesizerClassLike {
+func AstSynthesizerClass() AstSynthesizerClassLike {
 	return astSynthesizerClassReference()
 }
 
@@ -33,7 +33,7 @@ func (c *astSynthesizerClass_) Make(
 ) AstSynthesizerLike {
 	var instance = &astSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }

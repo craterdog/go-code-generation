@@ -39,9 +39,9 @@ func (c *formatterClass_) Make() FormatterLike {
 		// Initialize the instance attributes.
 
 		// Initialize the inherited aspects.
-		Methodical: Processor().Make(),
+		Methodical: ProcessorClass().Make(),
 	}
-	instance.visitor_ = Visitor().Make(instance)
+	instance.visitor_ = VisitorClass().Make(instance)
 	return instance
 }
 
@@ -50,7 +50,7 @@ func (c *formatterClass_) Make() FormatterLike {
 // Principal Methods
 
 func (v *formatter_) GetClass() FormatterClassLike {
-	return formatterReference()
+	return formatterClassReference()
 }
 
 func (v *formatter_) FormatModel(model ast.ModelLike) string {
@@ -1212,10 +1212,10 @@ type formatterClass_ struct {
 
 // Class Reference
 
-func formatterReference() *formatterClass_ {
-	return formatterReference_
+func formatterClassReference() *formatterClass_ {
+	return formatterClassReference_
 }
 
-var formatterReference_ = &formatterClass_{
+var formatterClassReference_ = &formatterClass_{
 	// Initialize the class constants.
 }

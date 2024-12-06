@@ -16,14 +16,13 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
-	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 )
 
 // CLASS INTERFACE
 
 // Access Function
 
-func ParserSynthesizer() ParserSynthesizerClassLike {
+func ParserSynthesizerClass() ParserSynthesizerClassLike {
 	return parserSynthesizerClassReference()
 }
 
@@ -34,7 +33,7 @@ func (c *parserSynthesizerClass_) Make(
 ) ParserSynthesizerLike {
 	var instance = &parserSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzer().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
 	}
 	return instance
 }
@@ -264,11 +263,10 @@ func (v *parserSynthesizer_) createInlineImplementation(
 			var cardinality = actual.GetOptionalCardinality()
 			var variableName = variables.GetNext()
 			var identifier = actual.GetIdentifier().GetAny().(string)
-			var scannerClass = gra.Scanner()
 			switch {
-			case scannerClass.MatchesType(identifier, gra.LowercaseToken):
+			case not.MatchesType(identifier, not.LowercaseToken):
 				parseStep = v.createTokenStep(cardinality)
-			case scannerClass.MatchesType(identifier, gra.UppercaseToken):
+			case not.MatchesType(identifier, not.UppercaseToken):
 				parseStep = v.createRuleStep(cardinality)
 			}
 			parseStep = uti.ReplaceAll(
@@ -310,11 +308,10 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 	for identifiers.HasNext() {
 		var identifier = identifiers.GetNext().GetAny().(string)
 		var parseCase string
-		var scannerClass = gra.Scanner()
 		switch {
-		case scannerClass.MatchesType(identifier, gra.LowercaseToken):
+		case not.MatchesType(identifier, not.LowercaseToken):
 			parseCase = parserSynthesizerClassReference().parseTokenCase_
-		case scannerClass.MatchesType(identifier, gra.UppercaseToken):
+		case not.MatchesType(identifier, not.UppercaseToken):
 			parseCase = parserSynthesizerClassReference().parseRuleCase_
 		}
 		implementation += uti.ReplaceAll(
@@ -622,7 +619,7 @@ func (v *parser_) parse<~RuleName>() (
 	// Found a single <~RuleName> rule.
 	ok = true
 	v.remove(tokens)
-	<ruleName_> = ast.<~RuleName>().Make(<Arguments>)
+	<ruleName_> = ast.<~RuleName>Class().Make(<Arguments>)
 	return
 `,
 
@@ -632,7 +629,7 @@ func (v *parser_) parse<~RuleName>() (
 	<identifier_>, token, ok = v.parseToken(<~Identifier>Token)
 	if ok {
 		// Found a single <~identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>().Make(<identifier_>)
+		<ruleName_> = ast.<~RuleName>Class().Make(<identifier_>)
 		return
 	}
 `,
@@ -643,7 +640,7 @@ func (v *parser_) parse<~RuleName>() (
 	<identifier_>, token, ok = v.parse<~Identifier>()
 	if ok {
 		// Found a single <~Identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>().Make(<identifier_>)
+		<ruleName_> = ast.<~RuleName>Class().Make(<identifier_>)
 		return
 	}
 `,
@@ -657,18 +654,18 @@ func (v *parser_) parse<~RuleName>() (
 // Principal Methods
 
 func (v *parser_) GetClass() ParserClassLike {
-	return parserReference()
+	return parserClassReference()
 }
 
 func (v *parser_) ParseSource(
 	source string,
 ) ast.<~SyntaxName>Like {
 	v.source_ = source
-	v.tokens_ = col.Queue[TokenLike](parserReference().queueSize_)
-	v.next_ = col.Stack[TokenLike](parserReference().stackSize_)
+	v.tokens_ = col.Queue[TokenLike](parserClassReference().queueSize_)
+	v.next_ = col.Stack[TokenLike](parserClassReference().stackSize_)
 
 	// The scanner runs in a separate Go routine.
-	Scanner().Make(v.source_, v.tokens_)
+	ScannerClass().Make(v.source_, v.tokens_)
 
 	// Attempt to parse the <~syntaxName>.
 	var <syntaxName_>, token, ok = v.parse<~SyntaxName>()
@@ -744,7 +741,7 @@ func (v *parser_) formatError(
 	// Format the error message.
 	var message = fmt.Sprintf(
 		"An unexpected token was received by the parser: %v\n",
-		Scanner().FormatToken(token),
+		ScannerClass().FormatToken(token),
 	)
 	var line = token.GetLine()
 	var lines = sts.Split(v.source_, "\n")
@@ -786,7 +783,7 @@ func (v *parser_) formatError(
 func (v *parser_) getDefinition(
 	ruleName string,
 ) string {
-	return parserReference().syntax_.GetValue(ruleName)
+	return parserClassReference().syntax_.GetValue(ruleName)
 }
 
 func (v *parser_) getNextToken() TokenLike {
@@ -871,11 +868,11 @@ type parserClass_ struct {
 	classReference_: `
 // Class Reference
 
-func parserReference() *parserClass_ {
-	return parserReference_
+func parserClassReference() *parserClass_ {
+	return parserClassReference_
 }
 
-var parserReference_ = &parserClass_{
+var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	queueSize_: 16,
 	stackSize_: 16,

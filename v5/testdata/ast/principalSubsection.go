@@ -56,7 +56,7 @@ func (c *principalSubsectionClass_) Make(
 // Principal Methods
 
 func (v *principalSubsection_) GetClass() PrincipalSubsectionClassLike {
-	return principalSubsectionReference()
+	return principalSubsectionClassReference()
 }
 
 // Attribute Methods
@@ -84,10 +84,10 @@ type principalSubsectionClass_ struct {
 
 // Class Reference
 
-func principalSubsectionReference() *principalSubsectionClass_ {
-	return principalSubsectionReference_
+func principalSubsectionClassReference() *principalSubsectionClass_ {
+	return principalSubsectionClassReference_
 }
 
-var principalSubsectionReference_ = &principalSubsectionClass_{
+var principalSubsectionClassReference_ = &principalSubsectionClass_{
 	// Initialize the class constants.
 }

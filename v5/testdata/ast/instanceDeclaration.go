@@ -60,7 +60,7 @@ func (c *instanceDeclarationClass_) Make(
 // Principal Methods
 
 func (v *instanceDeclaration_) GetClass() InstanceDeclarationClassLike {
-	return instanceDeclarationReference()
+	return instanceDeclarationClassReference()
 }
 
 // Attribute Methods
@@ -93,10 +93,10 @@ type instanceDeclarationClass_ struct {
 
 // Class Reference
 
-func instanceDeclarationReference() *instanceDeclarationClass_ {
-	return instanceDeclarationReference_
+func instanceDeclarationClassReference() *instanceDeclarationClass_ {
+	return instanceDeclarationClassReference_
 }
 
-var instanceDeclarationReference_ = &instanceDeclarationClass_{
+var instanceDeclarationClassReference_ = &instanceDeclarationClass_{
 	// Initialize the class constants.
 }

@@ -20,8 +20,8 @@ import (
 
 // Access Function
 
-func ClassGenerator() ClassGeneratorClassLike {
-	return classGeneratorReference()
+func ClassGeneratorClass() ClassGeneratorClassLike {
+	return classGeneratorClassReference()
 }
 
 // Constructor Methods
@@ -39,7 +39,7 @@ func (c *classGeneratorClass_) Make() ClassGeneratorLike {
 // Principal Methods
 
 func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
-	return classGeneratorReference()
+	return classGeneratorClassReference()
 }
 
 func (v *classGenerator_) GenerateClass(
@@ -49,7 +49,7 @@ func (v *classGenerator_) GenerateClass(
 	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var source = classGeneratorReference().classTemplate_
+	var source = classGeneratorClassReference().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -132,11 +132,11 @@ type classGeneratorClass_ struct {
 
 // Class Reference
 
-func classGeneratorReference() *classGeneratorClass_ {
-	return classGeneratorReference_
+func classGeneratorClassReference() *classGeneratorClass_ {
+	return classGeneratorClassReference_
 }
 
-var classGeneratorReference_ = &classGeneratorClass_{
+var classGeneratorClassReference_ = &classGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice><WarningMessage>
 
