@@ -16,7 +16,6 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
-	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
 	stc "strconv"
 )
 
@@ -167,11 +166,10 @@ func (v *visitorSynthesizer_) createInlineReference(
 ) string {
 	var inlineReference string
 	var identifier = reference.GetIdentifier().GetAny().(string)
-	var scannerClass = gra.Scanner()
 	switch {
-	case scannerClass.MatchesType(identifier, gra.LowercaseToken):
+	case not.MatchesType(identifier, not.LowercaseToken):
 		inlineReference = v.createInlineToken(reference, variableName)
-	case scannerClass.MatchesType(identifier, gra.UppercaseToken):
+	case not.MatchesType(identifier, not.UppercaseToken):
 		inlineReference = v.createInlineRule(reference, variableName)
 	}
 	return inlineReference
@@ -253,14 +251,13 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 ) string {
 	var implementation string
 	var tokenCases, ruleCases string
-	var scannerClass = gra.Scanner()
 	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
 	for identifiers.HasNext() {
 		var identifier = identifiers.GetNext().GetAny().(string)
 		switch {
-		case scannerClass.MatchesType(identifier, gra.LowercaseToken):
+		case not.MatchesType(identifier, not.LowercaseToken):
 			tokenCases += v.createMultilineToken(identifier)
-		case scannerClass.MatchesType(identifier, gra.UppercaseToken):
+		case not.MatchesType(identifier, not.UppercaseToken):
 			ruleCases += v.createMultilineRule(identifier)
 		}
 	}
@@ -324,14 +321,13 @@ func (v *visitorSynthesizer_) createPlurality(
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
 		var token = actual.GetAny().(string)
-		var scannerClass = gra.Scanner()
 		switch {
-		case scannerClass.MatchesType(token, gra.OptionalToken):
+		case not.MatchesType(token, not.OptionalToken):
 			plurality = "optional"
 			if v.analyzer_.IsPlural(name) {
 				plurality = "singular"
 			}
-		case scannerClass.MatchesType(token, gra.RepeatedToken):
+		case not.MatchesType(token, not.RepeatedToken):
 			plurality = "repeated"
 		}
 	case not.QuantifiedLike:
@@ -510,11 +506,11 @@ func (v *visitor_) visit<~TargetName>(
 		v.processor_.Postprocess<~RuleName>(actual, 1, 1)`,
 
 	tokenCase_: `
-		case Scanner().MatchesType(actual, <~TokenName>Token):
+		case ScannerClass().MatchesType(actual, <~TokenName>Token):
 			v.processor_.Process<~TokenName>(actual)`,
 
 	singularTokenCase_: `
-	case Scanner().MatchesType(actual, <~TokenName>Token):
+	case ClassScanner().MatchesType(actual, <~TokenName>Token):
 			v.processor_.Process<~TokenName>(actual, 1, 1)`,
 
 	ruleBlock_: `
