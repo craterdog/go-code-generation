@@ -32,8 +32,8 @@ import (
 
 // Access Function
 
-func Scanner() ScannerClassLike {
-	return scannerReference()
+func ScannerClass() ScannerClassLike {
+	return scannerClassReference()
 }
 
 // Constructor Methods

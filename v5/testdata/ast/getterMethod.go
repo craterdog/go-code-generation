@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func GetterMethod() GetterMethodClassLike {
-	return getterMethodReference()
+func GetterMethodClass() GetterMethodClassLike {
+	return getterMethodClassReference()
 }
 
 // Constructor Methods

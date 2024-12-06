@@ -27,7 +27,7 @@ import (
 // Access Function
 
 func ModuleSynthesizer() ModuleSynthesizerClassLike {
-	return moduleSynthesizerReference()
+	return moduleSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -47,7 +47,7 @@ func (c *moduleSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *moduleSynthesizer_) GetClass() ModuleSynthesizerClassLike {
-	return moduleSynthesizerReference()
+	return moduleSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -62,7 +62,7 @@ func (v *moduleSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *moduleSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = moduleSynthesizerReference().warningMessage_
+	var warningMessage = moduleSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
@@ -118,9 +118,9 @@ func (v *moduleSynthesizer_) createArgumentAssignments(
 		var parameter = parameters.GetNext()
 		var argumentName = parameter.GetName()
 		var argumentType = v.extractType(parameter.GetAbstraction())
-		var argumentAssignment = moduleSynthesizerReference().argumentAssignment_
+		var argumentAssignment = moduleSynthesizerClassReference().argumentAssignment_
 		if argumentType == "any" {
-			argumentAssignment = moduleSynthesizerReference().argumentAny_
+			argumentAssignment = moduleSynthesizerClassReference().argumentAny_
 		}
 		argumentAssignment = uti.ReplaceAll(
 			argumentAssignment,
@@ -156,7 +156,7 @@ func (v *moduleSynthesizer_) createArgumentCases(
 			// This type has already been found.
 			continue
 		}
-		var argumentCase = moduleSynthesizerReference().argumentCase_
+		var argumentCase = moduleSynthesizerClassReference().argumentCase_
 		argumentCase = uti.ReplaceAll(
 			argumentCase,
 			"argumentType",
@@ -184,7 +184,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		aspectAliases = moduleSynthesizerReference().typeAliases_
+		aspectAliases = moduleSynthesizerClassReference().typeAliases_
 		aspectAliases = uti.ReplaceAll(
 			aspectAliases,
 			"nameAliases",
@@ -209,7 +209,7 @@ func (v *moduleSynthesizer_) createClassAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		classAliases = moduleSynthesizerReference().typeAliases_
+		classAliases = moduleSynthesizerClassReference().typeAliases_
 		classAliases = uti.ReplaceAll(
 			classAliases,
 			"nameAliases",
@@ -229,7 +229,7 @@ func (v *moduleSynthesizer_) createConstructionCases(
 		var argumentNames = v.extractArgumentNames(method)
 		var argumentTypes = v.extractArgumentTypes(method)
 		var argumentAssignments = v.createArgumentAssignments(method)
-		var constructionCase = moduleSynthesizerReference().constructionCase_
+		var constructionCase = moduleSynthesizerClassReference().constructionCase_
 		constructionCase = uti.ReplaceAll(
 			constructionCase,
 			"argumentNames",
@@ -254,7 +254,7 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 	model mod.ModelLike,
 	class mod.ClassDeclarationLike,
 ) string {
-	var constructorFunction = moduleSynthesizerReference().constructorFunction_
+	var constructorFunction = moduleSynthesizerClassReference().constructorFunction_
 	var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
 	className = uti.MakeLowerCase(className)
 	var analyzer = ana.ModelAnalyzer().Make(model, className)
@@ -292,7 +292,7 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 		var constructorFunction = v.createConstructorFunction(model, class)
 		constructorFunctions += constructorFunction
 	}
-	var universalConstructors = moduleSynthesizerReference().universalConstructors_
+	var universalConstructors = moduleSynthesizerClassReference().universalConstructors_
 	universalConstructors = uti.ReplaceAll(
 		universalConstructors,
 		"constructorFunctions",
@@ -308,7 +308,7 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 func (v *moduleSynthesizer_) createEnumerationAlias(
 	name string,
 ) string {
-	var nameAlias = moduleSynthesizerReference().nameAlias_
+	var nameAlias = moduleSynthesizerClassReference().nameAlias_
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
 		"name",
@@ -336,7 +336,7 @@ func (v *moduleSynthesizer_) createEnumerationAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		constAliases = moduleSynthesizerReference().constAliases_
+		constAliases = moduleSynthesizerClassReference().constAliases_
 		constAliases = uti.ReplaceAll(
 			constAliases,
 			"nameAliases",
@@ -362,7 +362,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		functionalAliases = moduleSynthesizerReference().typeAliases_
+		functionalAliases = moduleSynthesizerClassReference().typeAliases_
 		functionalAliases = uti.ReplaceAll(
 			functionalAliases,
 			"nameAliases",
@@ -379,12 +379,12 @@ func (v *moduleSynthesizer_) createImportedPackages(
 	var packageNames = v.models_.GetKeys().GetIterator()
 	for packageNames.HasNext() {
 		var packageName = packageNames.GetNext()
-		var importedPackage = moduleSynthesizerReference().importedPackage_
+		var importedPackage = moduleSynthesizerClassReference().importedPackage_
 		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
 		importedPackages += importedPackage
 	}
 	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
-		var packageAlias = moduleSynthesizerReference().packageAlias_
+		var packageAlias = moduleSynthesizerClassReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
 			"packageAcronym",
@@ -398,7 +398,7 @@ func (v *moduleSynthesizer_) createImportedPackages(
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
-		var packageAlias = moduleSynthesizerReference().packageAlias_
+		var packageAlias = moduleSynthesizerClassReference().packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
 			"packageAcronym",
@@ -428,7 +428,7 @@ func (v *moduleSynthesizer_) createNameAlias(
 		// Type aliases are not supported for generic types in Go.
 		return
 	}
-	nameAlias = moduleSynthesizerReference().nameAlias_
+	nameAlias = moduleSynthesizerClassReference().nameAlias_
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
 		"name",
@@ -459,7 +459,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 		model,
 		interfaceDeclarations,
 	)
-	var packageAliases = moduleSynthesizerReference().packageAliases_
+	var packageAliases = moduleSynthesizerClassReference().packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
 		"typeAliases",
@@ -491,7 +491,7 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		typeAliases = moduleSynthesizerReference().typeAliases_
+		typeAliases = moduleSynthesizerClassReference().typeAliases_
 		typeAliases = uti.ReplaceAll(
 			typeAliases,
 			"nameAliases",
@@ -638,11 +638,11 @@ type moduleSynthesizerClass_ struct {
 
 // Class Reference
 
-func moduleSynthesizerReference() *moduleSynthesizerClass_ {
-	return moduleSynthesizerReference_
+func moduleSynthesizerClassReference() *moduleSynthesizerClass_ {
+	return moduleSynthesizerClassReference_
 }
 
-var moduleSynthesizerReference_ = &moduleSynthesizerClass_{
+var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐

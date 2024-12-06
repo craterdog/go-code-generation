@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func AspectDeclaration() AspectDeclarationClassLike {
-	return aspectDeclarationReference()
+func AspectDeclarationClass() AspectDeclarationClassLike {
+	return aspectDeclarationClassReference()
 }
 
 // Constructor Methods

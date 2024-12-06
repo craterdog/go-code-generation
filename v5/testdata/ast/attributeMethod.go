@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AttributeMethod() AttributeMethodClassLike {
-	return attributeMethodReference()
+func AttributeMethodClass() AttributeMethodClassLike {
+	return attributeMethodClassReference()
 }
 
 // Constructor Methods

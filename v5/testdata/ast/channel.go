@@ -25,8 +25,8 @@ import ()
 
 // Access Function
 
-func Channel() ChannelClassLike {
-	return channelReference()
+func ChannelClass() ChannelClassLike {
+	return channelClassReference()
 }
 
 // Constructor Methods

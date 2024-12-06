@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func ImportedPackage() ImportedPackageClassLike {
-	return importedPackageReference()
+func ImportedPackageClass() ImportedPackageClassLike {
+	return importedPackageClassReference()
 }
 
 // Constructor Methods

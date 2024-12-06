@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func TypeSection() TypeSectionClassLike {
-	return typeSectionReference()
+func TypeSectionClass() TypeSectionClassLike {
+	return typeSectionClassReference()
 }
 
 // Constructor Methods

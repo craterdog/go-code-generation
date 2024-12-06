@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AdditionalConstraint() AdditionalConstraintClassLike {
-	return additionalConstraintReference()
+func AdditionalConstraintClass() AdditionalConstraintClassLike {
+	return additionalConstraintClassReference()
 }
 
 // Constructor Methods

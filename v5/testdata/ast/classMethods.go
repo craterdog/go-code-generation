@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func ClassMethods() ClassMethodsClassLike {
-	return classMethodsReference()
+func ClassMethodsClass() ClassMethodsClassLike {
+	return classMethodsClassReference()
 }
 
 // Constructor Methods

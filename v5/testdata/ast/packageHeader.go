@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func PackageHeader() PackageHeaderClassLike {
-	return packageHeaderReference()
+func PackageHeaderClass() PackageHeaderClassLike {
+	return packageHeaderClassReference()
 }
 
 // Constructor Methods

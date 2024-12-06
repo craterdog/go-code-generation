@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func LegalNotice() LegalNoticeClassLike {
-	return legalNoticeReference()
+func LegalNoticeClass() LegalNoticeClassLike {
+	return legalNoticeClassReference()
 }
 
 // Constructor Methods

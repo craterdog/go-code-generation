@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AspectMethod() AspectMethodClassLike {
-	return aspectMethodReference()
+func AspectMethodClass() AspectMethodClassLike {
+	return aspectMethodClassReference()
 }
 
 // Constructor Methods

@@ -21,8 +21,8 @@ import (
 
 // Access Function
 
-func Catalog[V any]() CatalogClassLike[V] {
-	return catalogReference[V]()
+func CatalogClass[V any]() CatalogClassLike[V] {
+	return catalogClassReference[V]()
 }
 
 // Constructor Methods

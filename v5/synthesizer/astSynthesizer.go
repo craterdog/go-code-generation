@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func AstSynthesizer() AstSynthesizerClassLike {
-	return astSynthesizerReference()
+	return astSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *astSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *astSynthesizer_) GetClass() AstSynthesizerClassLike {
-	return astSynthesizerReference()
+	return astSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -54,12 +54,12 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *astSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = astSynthesizerReference().warningMessage_
+	var warningMessage = astSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *astSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = astSynthesizerReference().packageDescription_
+	var packageDescription = astSynthesizerClassReference().packageDescription_
 	return packageDescription
 }
 
@@ -136,7 +136,7 @@ func (v *astSynthesizer_) createClassDeclaration(
 		// This class represents a multiline rule.
 		parameters += "\n\t\tany_ any,\n\t"
 	}
-	var classDeclaration = astSynthesizerReference().classDeclaration_
+	var classDeclaration = astSynthesizerClassReference().classDeclaration_
 	classDeclaration = uti.ReplaceAll(
 		classDeclaration,
 		"parameters",
@@ -155,15 +155,15 @@ func (v *astSynthesizer_) createGetterMethod(
 	attributeName string,
 	attributeType string,
 ) string {
-	var getterMethod = astSynthesizerReference().ruleGetterMethod_
+	var getterMethod = astSynthesizerClassReference().ruleGetterMethod_
 	if attributeType == "string" {
-		getterMethod = astSynthesizerReference().tokenGetterMethod_
+		getterMethod = astSynthesizerClassReference().tokenGetterMethod_
 		if isPlural {
-			getterMethod = astSynthesizerReference().pluralTokenGetterMethod_
+			getterMethod = astSynthesizerClassReference().pluralTokenGetterMethod_
 		}
 	} else {
 		if isPlural {
-			getterMethod = astSynthesizerReference().pluralRuleGetterMethod_
+			getterMethod = astSynthesizerClassReference().pluralRuleGetterMethod_
 		}
 	}
 	getterMethod = uti.ReplaceAll(
@@ -203,8 +203,8 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 		// This instance represents a multiline rule.
 		getterMethods += "\n\tGetAny() any"
 	}
-	var instanceDeclaration = astSynthesizerReference().instanceDeclaration_
-	var principalMethods = astSynthesizerReference().principalMethods_
+	var instanceDeclaration = astSynthesizerClassReference().instanceDeclaration_
+	var principalMethods = astSynthesizerClassReference().principalMethods_
 	instanceDeclaration = uti.ReplaceAll(
 		instanceDeclaration,
 		"principalMethods",
@@ -212,7 +212,7 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 	)
 	var attributeMethods string
 	if uti.IsDefined(getterMethods) {
-		attributeMethods = astSynthesizerReference().attributeMethods_
+		attributeMethods = astSynthesizerClassReference().attributeMethods_
 		attributeMethods = uti.ReplaceAll(
 			attributeMethods,
 			"getterMethods",
@@ -239,15 +239,15 @@ func (v *astSynthesizer_) createParameter(
 ) (
 	parameter string,
 ) {
-	parameter = astSynthesizerReference().singularRuleParameter_
+	parameter = astSynthesizerClassReference().singularRuleParameter_
 	if parameterType == "string" {
-		parameter = astSynthesizerReference().singularTokenParameter_
+		parameter = astSynthesizerClassReference().singularTokenParameter_
 		if isPlural {
-			parameter = astSynthesizerReference().pluralTokenParameter_
+			parameter = astSynthesizerClassReference().pluralTokenParameter_
 		}
 	} else {
 		if isPlural {
-			parameter = astSynthesizerReference().pluralRuleParameter_
+			parameter = astSynthesizerClassReference().pluralRuleParameter_
 		}
 	}
 	parameter = uti.ReplaceAll(
@@ -323,11 +323,11 @@ type astSynthesizerClass_ struct {
 
 // Class Reference
 
-func astSynthesizerReference() *astSynthesizerClass_ {
-	return astSynthesizerReference_
+func astSynthesizerClassReference() *astSynthesizerClass_ {
+	return astSynthesizerClassReference_
 }
 
-var astSynthesizerReference_ = &astSynthesizerClass_{
+var astSynthesizerClassReference_ = &astSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐

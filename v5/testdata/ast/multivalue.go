@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Multivalue() MultivalueClassLike {
-	return multivalueReference()
+func MultivalueClass() MultivalueClassLike {
+	return multivalueClassReference()
 }
 
 // Constructor Methods

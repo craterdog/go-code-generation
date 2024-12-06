@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func InstanceSection() InstanceSectionClassLike {
-	return instanceSectionReference()
+func InstanceSectionClass() InstanceSectionClassLike {
+	return instanceSectionClassReference()
 }
 
 // Constructor Methods

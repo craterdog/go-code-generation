@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Enumeration() EnumerationClassLike {
-	return enumerationReference()
+func EnumerationClass() EnumerationClassLike {
+	return enumerationClassReference()
 }
 
 // Constructor Methods

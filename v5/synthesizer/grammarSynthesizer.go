@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func GrammarSynthesizer() GrammarSynthesizerClassLike {
-	return grammarSynthesizerReference()
+	return grammarSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *grammarSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *grammarSynthesizer_) GetClass() GrammarSynthesizerClassLike {
-	return grammarSynthesizerReference()
+	return grammarSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -54,17 +54,17 @@ func (v *grammarSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *grammarSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = grammarSynthesizerReference().warningMessage_
+	var warningMessage = grammarSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *grammarSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = grammarSynthesizerReference().packageDescription_
+	var packageDescription = grammarSynthesizerClassReference().packageDescription_
 	return packageDescription
 }
 
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = grammarSynthesizerReference().typeDeclarations_
+	var typeDeclarations = grammarSynthesizerClassReference().typeDeclarations_
 	var tokenTypes = v.generateTokenTypes()
 	typeDeclarations = uti.ReplaceAll(
 		typeDeclarations,
@@ -80,13 +80,13 @@ func (v *grammarSynthesizer_) CreateFunctionalDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = grammarSynthesizerReference().classDeclarations_
+	var classDeclarations = grammarSynthesizerClassReference().classDeclarations_
 	return classDeclarations
 }
 
 func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	var instanceDeclarations = grammarSynthesizerReference().instanceDeclarations_
+	var instanceDeclarations = grammarSynthesizerClassReference().instanceDeclarations_
 	instanceDeclarations = uti.ReplaceAll(
 		instanceDeclarations,
 		"syntaxName",
@@ -96,7 +96,7 @@ func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = grammarSynthesizerReference().aspectDeclarations_
+	var aspectDeclarations = grammarSynthesizerClassReference().aspectDeclarations_
 	var processTokens = v.generateProcessTokens()
 	aspectDeclarations = uti.ReplaceAll(
 		aspectDeclarations,
@@ -115,7 +115,7 @@ func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 func (v *grammarSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = grammarSynthesizerReference().importedPackages_
+	var importedPackages = grammarSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -131,9 +131,9 @@ func (v *grammarSynthesizer_) PerformGlobalUpdates(
 func (v *grammarSynthesizer_) generateProcessRule(
 	ruleName string,
 ) string {
-	var processRule = grammarSynthesizerReference().processRule_
+	var processRule = grammarSynthesizerClassReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = grammarSynthesizerReference().processIndexedRule_
+		processRule = grammarSynthesizerClassReference().processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -161,9 +161,9 @@ func (v *grammarSynthesizer_) generateProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = grammarSynthesizerReference().processToken_
+	processToken = grammarSynthesizerClassReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = grammarSynthesizerReference().processIndexedToken_
+		processToken = grammarSynthesizerClassReference().processIndexedToken_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,
@@ -189,7 +189,7 @@ func (v *grammarSynthesizer_) generateTokenTypes() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var tokenType = grammarSynthesizerReference().tokenType_
+		var tokenType = grammarSynthesizerClassReference().tokenType_
 		tokenType = uti.ReplaceAll(
 			tokenType,
 			"tokenName",
@@ -227,11 +227,11 @@ type grammarSynthesizerClass_ struct {
 
 // Class Reference
 
-func grammarSynthesizerReference() *grammarSynthesizerClass_ {
-	return grammarSynthesizerReference_
+func grammarSynthesizerClassReference() *grammarSynthesizerClass_ {
+	return grammarSynthesizerClassReference_
 }
 
-var grammarSynthesizerReference_ = &grammarSynthesizerClass_{
+var grammarSynthesizerClassReference_ = &grammarSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐

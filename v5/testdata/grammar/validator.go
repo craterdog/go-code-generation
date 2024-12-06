@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Validator() ValidatorClassLike {
-	return validatorReference()
+func ValidatorClass() ValidatorClassLike {
+	return validatorClassReference()
 }
 
 // Constructor Methods

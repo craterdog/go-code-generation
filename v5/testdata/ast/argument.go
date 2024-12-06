@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Argument() ArgumentClassLike {
-	return argumentReference()
+func ArgumentClass() ArgumentClassLike {
+	return argumentClassReference()
 }
 
 // Constructor Methods

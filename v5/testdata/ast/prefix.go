@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Prefix() PrefixClassLike {
-	return prefixReference()
+func PrefixClass() PrefixClassLike {
+	return prefixClassReference()
 }
 
 // Constructor Methods

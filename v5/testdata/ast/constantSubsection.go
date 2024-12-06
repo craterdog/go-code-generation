@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func ConstantSubsection() ConstantSubsectionClassLike {
-	return constantSubsectionReference()
+func ConstantSubsectionClass() ConstantSubsectionClassLike {
+	return constantSubsectionClassReference()
 }
 
 // Constructor Methods

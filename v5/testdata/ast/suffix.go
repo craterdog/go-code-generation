@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Suffix() SuffixClassLike {
-	return suffixReference()
+func SuffixClass() SuffixClassLike {
+	return suffixClassReference()
 }
 
 // Constructor Methods

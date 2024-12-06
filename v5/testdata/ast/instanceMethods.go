@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func InstanceMethods() InstanceMethodsClassLike {
-	return instanceMethodsReference()
+func InstanceMethodsClass() InstanceMethodsClassLike {
+	return instanceMethodsClassReference()
 }
 
 // Constructor Methods

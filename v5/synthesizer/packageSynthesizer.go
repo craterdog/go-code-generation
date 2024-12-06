@@ -21,7 +21,7 @@ import (
 // Access Function
 
 func PackageSynthesizer() PackageSynthesizerClassLike {
-	return packageSynthesizerReference()
+	return packageSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -38,55 +38,55 @@ func (c *packageSynthesizerClass_) Make() PackageSynthesizerLike {
 // Principal Methods
 
 func (v *packageSynthesizer_) GetClass() PackageSynthesizerClassLike {
-	return packageSynthesizerReference()
+	return packageSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
 
 func (v *packageSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = packageSynthesizerReference().legalNotice_
+	var legalNotice = packageSynthesizerClassReference().legalNotice_
 	return legalNotice
 }
 
 func (v *packageSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = packageSynthesizerReference().warningMessage_
+	var warningMessage = packageSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *packageSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = packageSynthesizerReference().packageDescription_
+	var packageDescription = packageSynthesizerClassReference().packageDescription_
 	return packageDescription
 }
 
 func (v *packageSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = packageSynthesizerReference().typeDeclarations_
+	var typeDeclarations = packageSynthesizerClassReference().typeDeclarations_
 	return typeDeclarations
 }
 
 func (v *packageSynthesizer_) CreateFunctionalDeclarations() string {
-	var functionalDeclarations = packageSynthesizerReference().functionalDeclarations_
+	var functionalDeclarations = packageSynthesizerClassReference().functionalDeclarations_
 	return functionalDeclarations
 }
 
 func (v *packageSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = packageSynthesizerReference().classDeclarations_
+	var classDeclarations = packageSynthesizerClassReference().classDeclarations_
 	return classDeclarations
 }
 
 func (v *packageSynthesizer_) CreateInstanceDeclarations() string {
-	var instanceDeclarations = packageSynthesizerReference().instanceDeclarations_
+	var instanceDeclarations = packageSynthesizerClassReference().instanceDeclarations_
 	return instanceDeclarations
 }
 
 func (v *packageSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = packageSynthesizerReference().aspectDeclarations_
+	var aspectDeclarations = packageSynthesizerClassReference().aspectDeclarations_
 	return aspectDeclarations
 }
 
 func (v *packageSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = packageSynthesizerReference().importedPackages_
+	var importedPackages = packageSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -120,11 +120,11 @@ type packageSynthesizerClass_ struct {
 
 // Class Reference
 
-func packageSynthesizerReference() *packageSynthesizerClass_ {
-	return packageSynthesizerReference_
+func packageSynthesizerClassReference() *packageSynthesizerClass_ {
+	return packageSynthesizerClassReference_
 }
 
-var packageSynthesizerReference_ = &packageSynthesizerClass_{
+var packageSynthesizerClassReference_ = &packageSynthesizerClass_{
 	// Initialize the class constants.
 	legalNotice_: `/*
 ................................................................................

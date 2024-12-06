@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AdditionalValue() AdditionalValueClassLike {
-	return additionalValueReference()
+func AdditionalValueClass() AdditionalValueClassLike {
+	return additionalValueClassReference()
 }
 
 // Constructor Methods

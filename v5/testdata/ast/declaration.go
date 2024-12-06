@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Declaration() DeclarationClassLike {
-	return declarationReference()
+func DeclarationClass() DeclarationClassLike {
+	return declarationClassReference()
 }
 
 // Constructor Methods

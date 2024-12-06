@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func FunctionMethod() FunctionMethodClassLike {
-	return functionMethodReference()
+func FunctionMethodClass() FunctionMethodClassLike {
+	return functionMethodClassReference()
 }
 
 // Constructor Methods

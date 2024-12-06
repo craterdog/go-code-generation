@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AdditionalArgument() AdditionalArgumentClassLike {
-	return additionalArgumentReference()
+func AdditionalArgumentClass() AdditionalArgumentClassLike {
+	return additionalArgumentClassReference()
 }
 
 // Constructor Methods

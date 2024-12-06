@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Constraints() ConstraintsClassLike {
-	return constraintsReference()
+func ConstraintsClass() ConstraintsClassLike {
+	return constraintsClassReference()
 }
 
 // Constructor Methods

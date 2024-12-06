@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Processor() ProcessorClassLike {
-	return processorReference()
+func ProcessorClass() ProcessorClassLike {
+	return processorClassReference()
 }
 
 // Constructor Methods

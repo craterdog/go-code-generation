@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func InstanceDeclaration() InstanceDeclarationClassLike {
-	return instanceDeclarationReference()
+func InstanceDeclarationClass() InstanceDeclarationClassLike {
+	return instanceDeclarationClassReference()
 }
 
 // Constructor Methods

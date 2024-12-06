@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func ProcessorSynthesizer() ProcessorSynthesizerClassLike {
-	return processorSynthesizerReference()
+	return processorSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *processorSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *processorSynthesizer_) GetClass() ProcessorSynthesizerClassLike {
-	return processorSynthesizerReference()
+	return processorSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -54,17 +54,17 @@ func (v *processorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *processorSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = processorSynthesizerReference().warningMessage_
+	var warningMessage = processorSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *processorSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = processorSynthesizerReference().accessFunction_
+	var accessFunction = processorSynthesizerClassReference().accessFunction_
 	return accessFunction
 }
 
 func (v *processorSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = processorSynthesizerReference().constructorMethods_
+	var constructorMethods = processorSynthesizerClassReference().constructorMethods_
 	return constructorMethods
 }
 
@@ -79,7 +79,7 @@ func (v *processorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *processorSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = processorSynthesizerReference().principalMethods_
+	var principalMethods = processorSynthesizerClassReference().principalMethods_
 	return principalMethods
 }
 
@@ -89,7 +89,7 @@ func (v *processorSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *processorSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods = processorSynthesizerReference().aspectMethods_
+	var aspectMethods = processorSynthesizerClassReference().aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
 		aspectMethods,
@@ -106,29 +106,29 @@ func (v *processorSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *processorSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = processorSynthesizerReference().privateMethods_
+	var privateMethods = processorSynthesizerClassReference().privateMethods_
 	return privateMethods
 }
 
 func (v *processorSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = processorSynthesizerReference().instanceStructure_
+	var instanceStructure = processorSynthesizerClassReference().instanceStructure_
 	return instanceStructure
 }
 
 func (v *processorSynthesizer_) CreateClassStructure() string {
-	var classStructure = processorSynthesizerReference().classStructure_
+	var classStructure = processorSynthesizerClassReference().classStructure_
 	return classStructure
 }
 
 func (v *processorSynthesizer_) CreateClassReference() string {
-	var classReference = processorSynthesizerReference().classReference_
+	var classReference = processorSynthesizerClassReference().classReference_
 	return classReference
 }
 
 func (v *processorSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = processorSynthesizerReference().importedPackages_
+	var importedPackages = processorSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -144,9 +144,9 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 func (v *processorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var processRule = processorSynthesizerReference().processRule_
+	var processRule = processorSynthesizerClassReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = processorSynthesizerReference().processIndexedRule_
+		processRule = processorSynthesizerClassReference().processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -174,9 +174,9 @@ func (v *processorSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = processorSynthesizerReference().processToken_
+	processToken = processorSynthesizerClassReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = processorSynthesizerReference().processIndexedToken_
+		processToken = processorSynthesizerClassReference().processIndexedToken_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,
@@ -226,11 +226,11 @@ type processorSynthesizerClass_ struct {
 
 // Class Reference
 
-func processorSynthesizerReference() *processorSynthesizerClass_ {
-	return processorSynthesizerReference_
+func processorSynthesizerClassReference() *processorSynthesizerClass_ {
+	return processorSynthesizerClassReference_
 }
 
-var processorSynthesizerReference_ = &processorSynthesizerClass_{
+var processorSynthesizerClassReference_ = &processorSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
@@ -246,8 +246,8 @@ var processorSynthesizerReference_ = &processorSynthesizerClass_{
 	accessFunction_: `
 // Access Function
 
-func Processor() ProcessorClassLike {
-	return processorReference()
+func ProcessorClass() ProcessorClassLike {
+	return processorClassReference()
 }
 `,
 

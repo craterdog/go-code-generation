@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func FunctionalDeclaration() FunctionalDeclarationClassLike {
-	return functionalDeclarationReference()
+func FunctionalDeclarationClass() FunctionalDeclarationClassLike {
+	return functionalDeclarationClassReference()
 }
 
 // Constructor Methods

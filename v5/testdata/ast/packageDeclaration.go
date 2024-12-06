@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func PackageDeclaration() PackageDeclarationClassLike {
-	return packageDeclarationReference()
+func PackageDeclarationClass() PackageDeclarationClassLike {
+	return packageDeclarationClassReference()
 }
 
 // Constructor Methods

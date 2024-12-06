@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Parameter() ParameterClassLike {
-	return parameterReference()
+func ParameterClass() ParameterClassLike {
+	return parameterClassReference()
 }
 
 // Constructor Methods

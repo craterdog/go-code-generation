@@ -33,8 +33,8 @@ import (
 
 // Access Function
 
-func Parser() ParserClassLike {
-	return parserReference()
+func ParserClass() ParserClassLike {
+	return parserClassReference()
 }
 
 // Constructor Methods

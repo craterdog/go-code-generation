@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Model() ModelClassLike {
-	return modelReference()
+func ModelClass() ModelClassLike {
+	return modelClassReference()
 }
 
 // Constructor Methods

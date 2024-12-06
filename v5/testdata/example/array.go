@@ -21,8 +21,8 @@ import (
 
 // Access Function
 
-func Array[V any]() ArrayClassLike[V] {
-	return arrayReference[V]()
+func ArrayClass[V any]() ArrayClassLike[V] {
+	return arrayClassReference[V]()
 }
 
 // Constructor Methods

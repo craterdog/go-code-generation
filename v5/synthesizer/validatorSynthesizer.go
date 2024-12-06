@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func ValidatorSynthesizer() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerReference()
+	return validatorSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *validatorSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *validatorSynthesizer_) GetClass() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerReference()
+	return validatorSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -54,17 +54,17 @@ func (v *validatorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *validatorSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = validatorSynthesizerReference().warningMessage_
+	var warningMessage = validatorSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *validatorSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = validatorSynthesizerReference().accessFunction_
+	var accessFunction = validatorSynthesizerClassReference().accessFunction_
 	return accessFunction
 }
 
 func (v *validatorSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = validatorSynthesizerReference().constructorMethods_
+	var constructorMethods = validatorSynthesizerClassReference().constructorMethods_
 	return constructorMethods
 }
 
@@ -79,7 +79,7 @@ func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = validatorSynthesizerReference().principalMethods_
+	var principalMethods = validatorSynthesizerClassReference().principalMethods_
 	return principalMethods
 }
 
@@ -89,7 +89,7 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods = validatorSynthesizerReference().aspectMethods_
+	var aspectMethods = validatorSynthesizerClassReference().aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
 		aspectMethods,
@@ -106,22 +106,22 @@ func (v *validatorSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = validatorSynthesizerReference().privateMethods_
+	var privateMethods = validatorSynthesizerClassReference().privateMethods_
 	return privateMethods
 }
 
 func (v *validatorSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = validatorSynthesizerReference().instanceStructure_
+	var instanceStructure = validatorSynthesizerClassReference().instanceStructure_
 	return instanceStructure
 }
 
 func (v *validatorSynthesizer_) CreateClassStructure() string {
-	var classStructure = validatorSynthesizerReference().classStructure_
+	var classStructure = validatorSynthesizerClassReference().classStructure_
 	return classStructure
 }
 
 func (v *validatorSynthesizer_) CreateClassReference() string {
-	var classReference = validatorSynthesizerReference().classReference_
+	var classReference = validatorSynthesizerClassReference().classReference_
 	return classReference
 }
 
@@ -134,7 +134,7 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var importedPackages = validatorSynthesizerReference().importedPackages_
+	var importedPackages = validatorSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -150,9 +150,9 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var processRule = validatorSynthesizerReference().processRule_
+	var processRule = validatorSynthesizerClassReference().processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = validatorSynthesizerReference().processIndexedRule_
+		processRule = validatorSynthesizerClassReference().processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -180,9 +180,9 @@ func (v *validatorSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = validatorSynthesizerReference().processToken_
+	processToken = validatorSynthesizerClassReference().processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = validatorSynthesizerReference().processIndexedToken_
+		processToken = validatorSynthesizerClassReference().processIndexedToken_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,
@@ -232,11 +232,11 @@ type validatorSynthesizerClass_ struct {
 
 // Class Reference
 
-func validatorSynthesizerReference() *validatorSynthesizerClass_ {
-	return validatorSynthesizerReference_
+func validatorSynthesizerClassReference() *validatorSynthesizerClass_ {
+	return validatorSynthesizerClassReference_
 }
 
-var validatorSynthesizerReference_ = &validatorSynthesizerClass_{
+var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
@@ -253,8 +253,8 @@ var validatorSynthesizerReference_ = &validatorSynthesizerClass_{
 	accessFunction_: `
 // Access Function
 
-func Validator() ValidatorClassLike {
-	return validatorReference()
+func ValidatorClass() ValidatorClassLike {
+	return validatorClassReference()
 }
 `,
 

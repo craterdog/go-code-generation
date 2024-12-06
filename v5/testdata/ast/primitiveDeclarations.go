@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func PrimitiveDeclarations() PrimitiveDeclarationsClassLike {
-	return primitiveDeclarationsReference()
+func PrimitiveDeclarationsClass() PrimitiveDeclarationsClassLike {
+	return primitiveDeclarationsClassReference()
 }
 
 // Constructor Methods

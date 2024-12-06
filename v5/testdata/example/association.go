@@ -22,8 +22,8 @@ import (
 
 // Access Function
 
-func Association[K comparable, V any]() AssociationClassLike[K, V] {
-	return associationReference[K, V]()
+func AssociationClass[K comparable, V any]() AssociationClassLike[K, V] {
+	return associationClassReference[K, V]()
 }
 
 // Constructor Methods

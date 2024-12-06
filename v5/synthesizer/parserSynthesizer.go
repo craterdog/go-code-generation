@@ -24,7 +24,7 @@ import (
 // Access Function
 
 func ParserSynthesizer() ParserSynthesizerClassLike {
-	return parserSynthesizerReference()
+	return parserSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -44,7 +44,7 @@ func (c *parserSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *parserSynthesizer_) GetClass() ParserSynthesizerClassLike {
-	return parserSynthesizerReference()
+	return parserSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -55,12 +55,12 @@ func (v *parserSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *parserSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = parserSynthesizerReference().warningMessage_
+	var warningMessage = parserSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *parserSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = parserSynthesizerReference().accessFunction_
+	var accessFunction = parserSynthesizerClassReference().accessFunction_
 	return accessFunction
 }
 
@@ -70,7 +70,7 @@ func (v *parserSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *parserSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = parserSynthesizerReference().constructorMethods_
+	var constructorMethods = parserSynthesizerClassReference().constructorMethods_
 	return constructorMethods
 }
 
@@ -80,7 +80,7 @@ func (v *parserSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *parserSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = parserSynthesizerReference().principalMethods_
+	var principalMethods = parserSynthesizerClassReference().principalMethods_
 	return principalMethods
 }
 
@@ -96,7 +96,7 @@ func (v *parserSynthesizer_) CreateAspectMethods() string {
 
 func (v *parserSynthesizer_) CreatePrivateMethods() string {
 	var parseMethods = v.createParseMethods()
-	var privateMethods = parserSynthesizerReference().privateMethods_
+	var privateMethods = parserSynthesizerClassReference().privateMethods_
 	privateMethods = uti.ReplaceAll(
 		privateMethods,
 		"parseMethods",
@@ -106,17 +106,17 @@ func (v *parserSynthesizer_) CreatePrivateMethods() string {
 }
 
 func (v *parserSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = parserSynthesizerReference().instanceStructure_
+	var instanceStructure = parserSynthesizerClassReference().instanceStructure_
 	return instanceStructure
 }
 
 func (v *parserSynthesizer_) CreateClassStructure() string {
-	var classStructure = parserSynthesizerReference().classStructure_
+	var classStructure = parserSynthesizerClassReference().classStructure_
 	return classStructure
 }
 
 func (v *parserSynthesizer_) CreateClassReference() string {
-	var classReference = parserSynthesizerReference().classReference_
+	var classReference = parserSynthesizerClassReference().classReference_
 	return classReference
 }
 
@@ -135,7 +135,7 @@ func (v *parserSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var importedPackages = parserSynthesizerReference().importedPackages_
+	var importedPackages = parserSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -246,14 +246,14 @@ func (v *parserSynthesizer_) createCardinality(
 }
 
 func (v *parserSynthesizer_) createDelimiterStep() string {
-	var delimiterStep = parserSynthesizerReference().parseDelimiterStep_
+	var delimiterStep = parserSynthesizerClassReference().parseDelimiterStep_
 	return delimiterStep
 }
 
 func (v *parserSynthesizer_) createInlineImplementation(
 	ruleName string,
 ) string {
-	var implementation = parserSynthesizerReference().declarationStep_
+	var implementation = parserSynthesizerClassReference().declarationStep_
 	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() {
@@ -292,7 +292,7 @@ func (v *parserSynthesizer_) createInlineImplementation(
 		}
 		implementation += parseStep
 	}
-	var foundStep = parserSynthesizerReference().parseFoundStep_
+	var foundStep = parserSynthesizerClassReference().parseFoundStep_
 	var arguments = v.createArguments(ruleName)
 	implementation += uti.ReplaceAll(
 		foundStep,
@@ -313,9 +313,9 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 		var scannerClass = gra.Scanner()
 		switch {
 		case scannerClass.MatchesType(identifier, gra.LowercaseToken):
-			parseCase = parserSynthesizerReference().parseTokenCase_
+			parseCase = parserSynthesizerClassReference().parseTokenCase_
 		case scannerClass.MatchesType(identifier, gra.UppercaseToken):
-			parseCase = parserSynthesizerReference().parseRuleCase_
+			parseCase = parserSynthesizerClassReference().parseRuleCase_
 		}
 		implementation += uti.ReplaceAll(
 			parseCase,
@@ -323,7 +323,7 @@ func (v *parserSynthesizer_) createMultilineImplementation(
 			identifier,
 		)
 	}
-	implementation += parserSynthesizerReference().parseDefaultCase_
+	implementation += parserSynthesizerClassReference().parseDefaultCase_
 	return implementation
 }
 
@@ -337,7 +337,7 @@ func (v *parserSynthesizer_) createParseMethod(
 	} else {
 		methodImplementation = v.createMultilineImplementation(ruleName)
 	}
-	var parseMethod = parserSynthesizerReference().parseMethod_
+	var parseMethod = parserSynthesizerClassReference().parseMethod_
 	parseMethod = uti.ReplaceAll(
 		parseMethod,
 		"methodImplementation",
@@ -364,9 +364,9 @@ func (v *parserSynthesizer_) createParseMethods() string {
 func (v *parserSynthesizer_) createRuleStep(
 	cardinality not.CardinalityLike,
 ) string {
-	var optionalStep = parserSynthesizerReference().parseOptionalRuleStep_
-	var requiredStep = parserSynthesizerReference().parseRequiredRuleStep_
-	var repeatedStep = parserSynthesizerReference().parseRepeatedRuleStep_
+	var optionalStep = parserSynthesizerClassReference().parseOptionalRuleStep_
+	var requiredStep = parserSynthesizerClassReference().parseRequiredRuleStep_
+	var repeatedStep = parserSynthesizerClassReference().parseRepeatedRuleStep_
 	var ruleStep = v.createCardinality(
 		cardinality,
 		optionalStep,
@@ -379,9 +379,9 @@ func (v *parserSynthesizer_) createRuleStep(
 func (v *parserSynthesizer_) createTokenStep(
 	cardinality not.CardinalityLike,
 ) string {
-	var optionalStep = parserSynthesizerReference().parseOptionalTokenStep_
-	var requiredStep = parserSynthesizerReference().parseRequiredTokenStep_
-	var repeatedStep = parserSynthesizerReference().parseRepeatedTokenStep_
+	var optionalStep = parserSynthesizerClassReference().parseOptionalTokenStep_
+	var requiredStep = parserSynthesizerClassReference().parseRequiredTokenStep_
+	var repeatedStep = parserSynthesizerClassReference().parseRepeatedTokenStep_
 	var tokenStep = v.createCardinality(
 		cardinality,
 		optionalStep,
@@ -430,11 +430,11 @@ type parserSynthesizerClass_ struct {
 
 // Class Reference
 
-func parserSynthesizerReference() *parserSynthesizerClass_ {
-	return parserSynthesizerReference_
+func parserSynthesizerClassReference() *parserSynthesizerClass_ {
+	return parserSynthesizerClassReference_
 }
 
-var parserSynthesizerReference_ = &parserSynthesizerClass_{
+var parserSynthesizerClassReference_ = &parserSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
@@ -456,8 +456,8 @@ var parserSynthesizerReference_ = &parserSynthesizerClass_{
 	accessFunction_: `
 // Access Function
 
-func Parser() ParserClassLike {
-	return parserReference()
+func ParserClass() ParserClassLike {
+	return parserClassReference()
 }
 `,
 

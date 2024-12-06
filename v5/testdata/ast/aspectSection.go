@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func AspectSection() AspectSectionClassLike {
-	return aspectSectionReference()
+func AspectSectionClass() AspectSectionClassLike {
+	return aspectSectionClassReference()
 }
 
 // Constructor Methods

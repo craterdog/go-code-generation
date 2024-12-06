@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func FunctionSubsection() FunctionSubsectionClassLike {
-	return functionSubsectionReference()
+func FunctionSubsectionClass() FunctionSubsectionClassLike {
+	return functionSubsectionClassReference()
 }
 
 // Constructor Methods

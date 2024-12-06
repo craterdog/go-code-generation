@@ -18,8 +18,8 @@ import ()
 
 // Access Function
 
-func Angle() AngleClassLike {
-	return angleReference()
+func AngleClass() AngleClassLike {
+	return angleClassReference()
 }
 
 // Constructor Methods

@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func SetterMethod() SetterMethodClassLike {
-	return setterMethodReference()
+func SetterMethodClass() SetterMethodClassLike {
+	return setterMethodClassReference()
 }
 
 // Constructor Methods

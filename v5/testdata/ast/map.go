@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Map() MapClassLike {
-	return mapReference()
+func MapClass() MapClassLike {
+	return mapClassReference()
 }
 
 // Constructor Methods

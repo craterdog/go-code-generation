@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Arguments() ArgumentsClassLike {
-	return argumentsReference()
+func ArgumentsClass() ArgumentsClassLike {
+	return argumentsClassReference()
 }
 
 // Constructor Methods

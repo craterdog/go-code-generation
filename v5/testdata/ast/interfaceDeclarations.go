@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func InterfaceDeclarations() InterfaceDeclarationsClassLike {
-	return interfaceDeclarationsReference()
+func InterfaceDeclarationsClass() InterfaceDeclarationsClassLike {
+	return interfaceDeclarationsClassReference()
 }
 
 // Constructor Methods

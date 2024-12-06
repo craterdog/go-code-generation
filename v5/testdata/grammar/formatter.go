@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func Formatter() FormatterClassLike {
-	return formatterReference()
+func FormatterClass() FormatterClassLike {
+	return formatterClassReference()
 }
 
 // Constructor Methods

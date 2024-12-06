@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func AspectInterface() AspectInterfaceClassLike {
-	return aspectInterfaceReference()
+func AspectInterfaceClass() AspectInterfaceClassLike {
+	return aspectInterfaceClassReference()
 }
 
 // Constructor Methods

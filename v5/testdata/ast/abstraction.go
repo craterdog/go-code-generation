@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Abstraction() AbstractionClassLike {
-	return abstractionReference()
+func AbstractionClass() AbstractionClassLike {
+	return abstractionClassReference()
 }
 
 // Constructor Methods

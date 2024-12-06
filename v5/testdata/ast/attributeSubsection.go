@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func AttributeSubsection() AttributeSubsectionClassLike {
-	return attributeSubsectionReference()
+func AttributeSubsectionClass() AttributeSubsectionClassLike {
+	return attributeSubsectionClassReference()
 }
 
 // Constructor Methods

@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Result() ResultClassLike {
-	return resultReference()
+func ResultClass() ResultClassLike {
+	return resultClassReference()
 }
 
 // Constructor Methods

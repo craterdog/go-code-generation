@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func ConstantMethod() ConstantMethodClassLike {
-	return constantMethodReference()
+func ConstantMethodClass() ConstantMethodClassLike {
+	return constantMethodClassReference()
 }
 
 // Constructor Methods

@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func None() NoneClassLike {
-	return noneReference()
+func NoneClass() NoneClassLike {
+	return noneClassReference()
 }
 
 // Constructor Methods

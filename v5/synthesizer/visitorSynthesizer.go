@@ -25,7 +25,7 @@ import (
 // Access Function
 
 func VisitorSynthesizer() VisitorSynthesizerClassLike {
-	return visitorSynthesizerReference()
+	return visitorSynthesizerClassReference()
 }
 
 // Constructor Methods
@@ -45,7 +45,7 @@ func (c *visitorSynthesizerClass_) Make(
 // Principal Methods
 
 func (v *visitorSynthesizer_) GetClass() VisitorSynthesizerClassLike {
-	return visitorSynthesizerReference()
+	return visitorSynthesizerClassReference()
 }
 
 // TemplateDriven Methods
@@ -56,17 +56,17 @@ func (v *visitorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *visitorSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = visitorSynthesizerReference().warningMessage_
+	var warningMessage = visitorSynthesizerClassReference().warningMessage_
 	return warningMessage
 }
 
 func (v *visitorSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = visitorSynthesizerReference().accessFunction_
+	var accessFunction = visitorSynthesizerClassReference().accessFunction_
 	return accessFunction
 }
 
 func (v *visitorSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = visitorSynthesizerReference().constructorMethods_
+	var constructorMethods = visitorSynthesizerClassReference().constructorMethods_
 	return constructorMethods
 }
 
@@ -81,7 +81,7 @@ func (v *visitorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *visitorSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = visitorSynthesizerReference().principalMethods_
+	var principalMethods = visitorSynthesizerClassReference().principalMethods_
 	return principalMethods
 }
 
@@ -97,7 +97,7 @@ func (v *visitorSynthesizer_) CreateAspectMethods() string {
 
 func (v *visitorSynthesizer_) CreatePrivateMethods() string {
 	var visitMethods = v.createVisitMethods()
-	var privateMethods = visitorSynthesizerReference().privateMethods_
+	var privateMethods = visitorSynthesizerClassReference().privateMethods_
 	privateMethods = uti.ReplaceAll(
 		privateMethods,
 		"visitMethods",
@@ -107,17 +107,17 @@ func (v *visitorSynthesizer_) CreatePrivateMethods() string {
 }
 
 func (v *visitorSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = visitorSynthesizerReference().instanceStructure_
+	var instanceStructure = visitorSynthesizerClassReference().instanceStructure_
 	return instanceStructure
 }
 
 func (v *visitorSynthesizer_) CreateClassStructure() string {
-	var classStructure = visitorSynthesizerReference().classStructure_
+	var classStructure = visitorSynthesizerClassReference().classStructure_
 	return classStructure
 }
 
 func (v *visitorSynthesizer_) CreateClassReference() string {
-	var classReference = visitorSynthesizerReference().classReference_
+	var classReference = visitorSynthesizerClassReference().classReference_
 	return classReference
 }
 
@@ -130,7 +130,7 @@ func (v *visitorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var importedPackages = visitorSynthesizerReference().importedPackages_
+	var importedPackages = visitorSynthesizerClassReference().importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -184,13 +184,13 @@ func (v *visitorSynthesizer_) createInlineRule(
 	var inlineRule string
 	switch v.createPlurality(reference) {
 	case "singular":
-		inlineRule = visitorSynthesizerReference().singularRuleBlock_
+		inlineRule = visitorSynthesizerClassReference().singularRuleBlock_
 	case "optional":
-		inlineRule = visitorSynthesizerReference().optionalRuleBlock_
+		inlineRule = visitorSynthesizerClassReference().optionalRuleBlock_
 	case "repeated":
-		inlineRule = visitorSynthesizerReference().repeatedRuleBlock_
+		inlineRule = visitorSynthesizerClassReference().repeatedRuleBlock_
 	default:
-		inlineRule = visitorSynthesizerReference().ruleBlock_
+		inlineRule = visitorSynthesizerClassReference().ruleBlock_
 	}
 	var ruleName = reference.GetIdentifier().GetAny().(string)
 	inlineRule = uti.ReplaceAll(
@@ -210,7 +210,7 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	ruleName string,
 	slot uint,
 ) string {
-	var inlineSlot = visitorSynthesizerReference().slotBlock_
+	var inlineSlot = visitorSynthesizerClassReference().slotBlock_
 	inlineSlot = uti.ReplaceAll(
 		inlineSlot,
 		"slot",
@@ -226,13 +226,13 @@ func (v *visitorSynthesizer_) createInlineToken(
 	var inlineToken string
 	switch v.createPlurality(reference) {
 	case "singular":
-		inlineToken = visitorSynthesizerReference().singularTokenBlock_
+		inlineToken = visitorSynthesizerClassReference().singularTokenBlock_
 	case "optional":
-		inlineToken = visitorSynthesizerReference().optionalTokenBlock_
+		inlineToken = visitorSynthesizerClassReference().optionalTokenBlock_
 	case "repeated":
-		inlineToken = visitorSynthesizerReference().repeatedTokenBlock_
+		inlineToken = visitorSynthesizerClassReference().repeatedTokenBlock_
 	default:
-		inlineToken = visitorSynthesizerReference().tokenBlock_
+		inlineToken = visitorSynthesizerClassReference().tokenBlock_
 	}
 	var tokenName = reference.GetIdentifier().GetAny().(string)
 	inlineToken = uti.ReplaceAll(
@@ -264,7 +264,7 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 			ruleCases += v.createMultilineRule(identifier)
 		}
 	}
-	implementation = visitorSynthesizerReference().multilineCases_
+	implementation = visitorSynthesizerClassReference().multilineCases_
 	implementation = uti.ReplaceAll(
 		implementation,
 		"ruleCases",
@@ -281,9 +281,9 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 func (v *visitorSynthesizer_) createMultilineRule(
 	ruleName string,
 ) string {
-	var multilineRule = visitorSynthesizerReference().ruleCase_
+	var multilineRule = visitorSynthesizerClassReference().ruleCase_
 	if v.analyzer_.IsPlural(ruleName) {
-		multilineRule = visitorSynthesizerReference().singularRuleCase_
+		multilineRule = visitorSynthesizerClassReference().singularRuleCase_
 	}
 	multilineRule = uti.ReplaceAll(
 		multilineRule,
@@ -296,9 +296,9 @@ func (v *visitorSynthesizer_) createMultilineRule(
 func (v *visitorSynthesizer_) createMultilineToken(
 	tokenName string,
 ) string {
-	var multilineToken = visitorSynthesizerReference().tokenCase_
+	var multilineToken = visitorSynthesizerClassReference().tokenCase_
 	if v.analyzer_.IsPlural(tokenName) {
-		multilineToken = visitorSynthesizerReference().singularTokenCase_
+		multilineToken = visitorSynthesizerClassReference().singularTokenCase_
 	}
 	multilineToken = uti.ReplaceAll(
 		multilineToken,
@@ -361,7 +361,7 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	case uti.IsDefined(v.analyzer_.GetReferences(ruleName)):
 		methodImplementation = v.createInlineImplementation(ruleName)
 	}
-	var visitMethod = visitorSynthesizerReference().visitMethod_
+	var visitMethod = visitorSynthesizerClassReference().visitMethod_
 	visitMethod = uti.ReplaceAll(
 		visitMethod,
 		"methodImplementation",
@@ -414,11 +414,11 @@ type visitorSynthesizerClass_ struct {
 
 // Class Reference
 
-func visitorSynthesizerReference() *visitorSynthesizerClass_ {
-	return visitorSynthesizerReference_
+func visitorSynthesizerClassReference() *visitorSynthesizerClass_ {
+	return visitorSynthesizerClassReference_
 }
 
-var visitorSynthesizerReference_ = &visitorSynthesizerClass_{
+var visitorSynthesizerClassReference_ = &visitorSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
@@ -436,8 +436,8 @@ var visitorSynthesizerReference_ = &visitorSynthesizerClass_{
 	accessFunction_: `
 // Access Function
 
-func Visitor() VisitorClassLike {
-	return visitorReference()
+func VisitorClass() VisitorClassLike {
+	return visitorClassReference()
 }
 `,
 

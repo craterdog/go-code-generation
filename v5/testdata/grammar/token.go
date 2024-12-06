@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func Token() TokenClassLike {
-	return tokenReference()
+func TokenClass() TokenClassLike {
+	return tokenClassReference()
 }
 
 // Constructor Methods

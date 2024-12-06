@@ -27,8 +27,8 @@ import (
 
 // Access Function
 
-func PrincipalMethod() PrincipalMethodClassLike {
-	return principalMethodReference()
+func PrincipalMethodClass() PrincipalMethodClassLike {
+	return principalMethodClassReference()
 }
 
 // Constructor Methods

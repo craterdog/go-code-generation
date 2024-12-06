@@ -25,8 +25,8 @@ import ()
 
 // Access Function
 
-func Array() ArrayClassLike {
-	return arrayReference()
+func ArrayClass() ArrayClassLike {
+	return arrayClassReference()
 }
 
 // Constructor Methods

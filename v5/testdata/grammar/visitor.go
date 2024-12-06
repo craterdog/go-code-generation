@@ -29,8 +29,8 @@ import (
 
 // Access Function
 
-func Visitor() VisitorClassLike {
-	return visitorReference()
+func VisitorClass() VisitorClassLike {
+	return visitorClassReference()
 }
 
 // Constructor Methods

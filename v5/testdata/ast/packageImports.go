@@ -28,8 +28,8 @@ import (
 
 // Access Function
 
-func PackageImports() PackageImportsClassLike {
-	return packageImportsReference()
+func PackageImportsClass() PackageImportsClassLike {
+	return packageImportsClassReference()
 }
 
 // Constructor Methods
