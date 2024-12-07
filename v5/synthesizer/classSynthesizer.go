@@ -979,7 +979,7 @@ func (v *classSynthesizer_) replaceAbstractionType(
 	}
 
 	// Recreate the abstraction using its updated types.
-	abstraction = mod.Abstraction().Make(
+	abstraction = mod.AbstractionClass().Make(
 		prefix,
 		typeName,
 		suffix,
@@ -995,7 +995,7 @@ func (v *classSynthesizer_) replaceArgumentType(
 ) mod.ArgumentLike {
 	var abstraction = argument.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
-	argument = mod.Argument().Make(abstraction)
+	argument = mod.ArgumentClass().Make(abstraction)
 	return argument
 }
 
@@ -1014,12 +1014,12 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 		var additionalArgument = iterator.GetNext()
 		var argument = additionalArgument.GetArgument()
 		argument = v.replaceArgumentType(argument, mappings)
-		additionalArgument = mod.AdditionalArgument().Make(argument)
+		additionalArgument = mod.AdditionalArgumentClass().Make(argument)
 		additionalArguments.AppendValue(additionalArgument)
 	}
 
 	// Construct the updated sequence of arguments.
-	arguments = mod.Arguments().Make(argument, additionalArguments)
+	arguments = mod.ArgumentsClass().Make(argument, additionalArguments)
 	return arguments
 }
 
@@ -1029,7 +1029,7 @@ func (v *classSynthesizer_) replaceMultivalueTypes(
 ) mod.MultivalueLike {
 	var parameters = parameterized.GetParameters()
 	var replacedParameters = v.replaceParameterTypes(parameters, mappings)
-	parameterized = mod.Multivalue().Make(replacedParameters)
+	parameterized = mod.MultivalueClass().Make(replacedParameters)
 	return parameterized
 }
 
@@ -1040,7 +1040,7 @@ func (v *classSynthesizer_) replaceParameterType(
 	var parameterName = parameter.GetName()
 	var abstraction = parameter.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
-	parameter = mod.Parameter().Make(parameterName, abstraction)
+	parameter = mod.ParameterClass().Make(parameterName, abstraction)
 	return parameter
 }
 
@@ -1068,8 +1068,8 @@ func (v *classSynthesizer_) replacePrefixType(
 		var typeName = actual.GetName()
 		var concreteType = mappings.GetValue(typeName)
 		typeName = concreteType.GetName()
-		var map_ = mod.Map().Make(typeName)
-		prefix = mod.Prefix().Make(map_)
+		var map_ = mod.MapClass().Make(typeName)
+		prefix = mod.PrefixClass().Make(map_)
 	default:
 		// Ignore the rest since they don't contain any generic types.
 	}
@@ -1088,11 +1088,11 @@ func (v *classSynthesizer_) replaceResultType(
 	case mod.AbstractionLike:
 		var abstraction = actual
 		abstraction = v.replaceAbstractionType(abstraction, mappings)
-		result = mod.Result().Make(abstraction)
+		result = mod.ResultClass().Make(abstraction)
 	case mod.MultivalueLike:
 		var parameterized = actual
 		parameterized = v.replaceMultivalueTypes(parameterized, mappings)
-		result = mod.Result().Make(parameterized)
+		result = mod.ResultClass().Make(parameterized)
 	default:
 		var message = fmt.Sprintf(
 			"An unknown result type was found: %T",

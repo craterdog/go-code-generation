@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5/ast"
+	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
@@ -979,7 +979,7 @@ func (v *nodeSynthesizer_) replaceAbstractionType(
 	}
 
 	// Recreate the abstraction using its updated types.
-	abstraction = mod.Abstraction().Make(
+	abstraction = mod.Abstraction(
 		prefix,
 		typeName,
 		suffix,
@@ -995,7 +995,7 @@ func (v *nodeSynthesizer_) replaceArgumentType(
 ) mod.ArgumentLike {
 	var abstraction = argument.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
-	argument = mod.Argument().Make(abstraction)
+	argument = mod.Argument(abstraction)
 	return argument
 }
 
@@ -1014,12 +1014,12 @@ func (v *nodeSynthesizer_) replaceArgumentTypes(
 		var additionalArgument = iterator.GetNext()
 		var argument = additionalArgument.GetArgument()
 		argument = v.replaceArgumentType(argument, mappings)
-		additionalArgument = mod.AdditionalArgument().Make(argument)
+		additionalArgument = mod.AdditionalArgument(argument)
 		additionalArguments.AppendValue(additionalArgument)
 	}
 
 	// Construct the updated sequence of arguments.
-	arguments = mod.Arguments().Make(argument, additionalArguments)
+	arguments = mod.Arguments(argument, additionalArguments)
 	return arguments
 }
 
@@ -1029,7 +1029,7 @@ func (v *nodeSynthesizer_) replaceMultivalueTypes(
 ) mod.MultivalueLike {
 	var parameters = parameterized.GetParameters()
 	var replacedParameters = v.replaceParameterTypes(parameters, mappings)
-	parameterized = mod.Multivalue().Make(replacedParameters)
+	parameterized = mod.Multivalue(replacedParameters)
 	return parameterized
 }
 
@@ -1040,7 +1040,7 @@ func (v *nodeSynthesizer_) replaceParameterType(
 	var parameterName = parameter.GetName()
 	var abstraction = parameter.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
-	parameter = mod.Parameter().Make(parameterName, abstraction)
+	parameter = mod.Parameter(parameterName, abstraction)
 	return parameter
 }
 
@@ -1068,8 +1068,8 @@ func (v *nodeSynthesizer_) replacePrefixType(
 		var typeName = actual.GetName()
 		var concreteType = mappings.GetValue(typeName)
 		typeName = concreteType.GetName()
-		var map_ = mod.Map().Make(typeName)
-		prefix = mod.Prefix().Make(map_)
+		var map_ = mod.Map(typeName)
+		prefix = mod.Prefix(map_)
 	default:
 		// Ignore the rest since they don't contain any generic types.
 	}
@@ -1088,11 +1088,11 @@ func (v *nodeSynthesizer_) replaceResultType(
 	case mod.AbstractionLike:
 		var abstraction = actual
 		abstraction = v.replaceAbstractionType(abstraction, mappings)
-		result = mod.Result().Make(abstraction)
+		result = mod.Result(abstraction)
 	case mod.MultivalueLike:
 		var parameterized = actual
 		parameterized = v.replaceMultivalueTypes(parameterized, mappings)
-		result = mod.Result().Make(parameterized)
+		result = mod.Result(parameterized)
 	default:
 		var message = fmt.Sprintf(
 			"An unknown result type was found: %T",

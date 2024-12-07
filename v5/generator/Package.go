@@ -137,7 +137,7 @@ type ModuleTemplateDriven interface {
 	CreateLegalNotice() string
 	CreateWarningMessage() string
 	CreateTypeAliases() string
-	CreateUniversalConstructors() string
+	CreateDefaultConstructors() string
 	PerformGlobalUpdates(
 		source string,
 	) string

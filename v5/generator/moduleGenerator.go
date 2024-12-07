@@ -62,9 +62,9 @@ func (v *moduleGenerator_) GenerateModule(
 	var typeAliases = synthesizer.CreateTypeAliases()
 	source = uti.ReplaceAll(source, "typeAliases", typeAliases)
 
-	// Create the universal constructors.
-	var universalConstructors = synthesizer.CreateUniversalConstructors()
-	source = uti.ReplaceAll(source, "universalConstructors", universalConstructors)
+	// Create the default constructors.
+	var defaultConstructors = synthesizer.CreateDefaultConstructors()
+	source = uti.ReplaceAll(source, "defaultConstructors", defaultConstructors)
 
 	// Perform global updates (this must be done last).
 	source = synthesizer.PerformGlobalUpdates(source)
@@ -100,7 +100,7 @@ var moduleGeneratorClassReference_ = &moduleGeneratorClass_{
 	moduleTemplate_: `<LegalNotice>
 /*<WarningMessage>
 Package "module" declares type aliases for the commonly used types declared in
-the packages contained in this module.  It also provides a universal constructor
+the packages contained in this module.  It also provides a default constructor
 for each commonly used class that is exported by the module.  Each constructor
 delegates the actual construction process to its corresponding concrete class
 declared in the corresponding package contained within this module.
@@ -114,7 +114,8 @@ import (<ImportedPackages>)
 
 // TYPE ALIASES
 <TypeAliases>
-// UNIVERSAL CONSTRUCTORS
-<UniversalConstructors>
-// GLOBAL FUNCTIONS`,
+// DEFAULT CONSTRUCTORS
+<DefaultConstructors>
+// GLOBAL FUNCTIONS
+`,
 }

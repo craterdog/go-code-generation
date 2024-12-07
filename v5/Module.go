@@ -16,7 +16,7 @@
 │  Updates to any section other than the GLOBAL FUNCTIONS may be overwritten.  │
 └──────────────────────────────────────────────────────────────────────────────┘
 Package "module" declares type aliases for the commonly used types declared in
-the packages contained in this module.  It also provides a universal constructor
+the packages contained in this module.  It also provides a default constructor
 for each commonly used class that is exported by the module.  Each constructor
 delegates the actual construction process to its corresponding concrete class
 declared in the corresponding package contained within this module.
@@ -77,7 +77,7 @@ type (
 	VisitorSynthesizerLike   = syn.VisitorSynthesizerLike
 )
 
-// UNIVERSAL CONSTRUCTORS
+// DEFAULT CONSTRUCTORS
 
 // Analyzer
 

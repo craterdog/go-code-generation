@@ -15,10 +15,8 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5/ast"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	col "github.com/craterdog/go-collection-framework/v4"
 	abs "github.com/craterdog/go-collection-framework/v4/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	stc "strconv"
 	sts "strings"
 )
 
@@ -79,17 +77,17 @@ func (v *moduleSynthesizer_) CreateTypeAliases() string {
 	return typeAliases
 }
 
-func (v *moduleSynthesizer_) CreateUniversalConstructors() string {
-	var universalConstructors string
+func (v *moduleSynthesizer_) CreateDefaultConstructors() string {
+	var defaultConstructors string
 	var models = v.models_.GetIterator()
 	for models.HasNext() {
 		var association = models.GetNext()
 		var packageName = association.GetKey()
 		var model = association.GetValue()
 		var constructorFunctions = v.createConstructorFunctions(packageName, model)
-		universalConstructors += constructorFunctions
+		defaultConstructors += constructorFunctions
 	}
-	return universalConstructors
+	return defaultConstructors
 }
 
 func (v *moduleSynthesizer_) PerformGlobalUpdates(
@@ -107,66 +105,6 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // PROTECTED INTERFACE
 
 // Private Methods
-
-func (v *moduleSynthesizer_) createArgumentAssignments(
-	constructorMethod mod.ConstructorMethodLike,
-) string {
-	var argumentAssignments string
-	var index int
-	var parameters = constructorMethod.GetParameters().GetIterator()
-	for parameters.HasNext() {
-		var parameter = parameters.GetNext()
-		var argumentName = parameter.GetName()
-		var argumentType = v.extractType(parameter.GetAbstraction())
-		var argumentAssignment = moduleSynthesizerClassReference().argumentAssignment_
-		if argumentType == "any" {
-			argumentAssignment = moduleSynthesizerClassReference().argumentAny_
-		}
-		argumentAssignment = uti.ReplaceAll(
-			argumentAssignment,
-			"argumentName",
-			argumentName,
-		)
-		argumentAssignment = uti.ReplaceAll(
-			argumentAssignment,
-			"argumentType",
-			argumentType,
-		)
-		argumentAssignment = uti.ReplaceAll(
-			argumentAssignment,
-			"index",
-			stc.Itoa(index),
-		)
-		argumentAssignments += argumentAssignment
-		index++
-	}
-	return argumentAssignments
-}
-
-func (v *moduleSynthesizer_) createArgumentCases(
-	constructorMethods abs.ListLike[mod.ConstructorMethodLike],
-) string {
-	var argumentCases string
-	var argumentTypes = col.Set[string]()
-	var arguments = v.extractArguments(constructorMethods).GetIterator()
-	for arguments.HasNext() {
-		var argument = arguments.GetNext()
-		var argumentType = v.extractType(argument.GetValue())
-		if argumentTypes.ContainsValue(argumentType) {
-			// This type has already been found.
-			continue
-		}
-		var argumentCase = moduleSynthesizerClassReference().argumentCase_
-		argumentCase = uti.ReplaceAll(
-			argumentCase,
-			"argumentType",
-			argumentType,
-		)
-		argumentTypes.AddValue(argumentType)
-		argumentCases += argumentCase
-	}
-	return argumentCases
-}
 
 func (v *moduleSynthesizer_) createAspectAliases(
 	model mod.ModelLike,
@@ -219,37 +157,6 @@ func (v *moduleSynthesizer_) createClassAliases(
 	return
 }
 
-func (v *moduleSynthesizer_) createConstructionCases(
-	constructorMethods abs.ListLike[mod.ConstructorMethodLike],
-) string {
-	var constructionCases string
-	var methods = constructorMethods.GetIterator()
-	for methods.HasNext() {
-		var method = methods.GetNext()
-		var argumentNames = v.extractArgumentNames(method)
-		var argumentTypes = v.extractArgumentTypes(method)
-		var argumentAssignments = v.createArgumentAssignments(method)
-		var constructionCase = moduleSynthesizerClassReference().constructionCase_
-		constructionCase = uti.ReplaceAll(
-			constructionCase,
-			"argumentNames",
-			argumentNames,
-		)
-		constructionCase = uti.ReplaceAll(
-			constructionCase,
-			"argumentTypes",
-			argumentTypes,
-		)
-		constructionCase = uti.ReplaceAll(
-			constructionCase,
-			"argumentAssignments",
-			argumentAssignments,
-		)
-		constructionCases += constructionCase
-	}
-	return constructionCases
-}
-
 func (v *moduleSynthesizer_) createConstructorFunction(
 	model mod.ModelLike,
 	class mod.ClassDeclarationLike,
@@ -258,18 +165,25 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 	var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
 	className = uti.MakeLowerCase(className)
 	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
-	var constructorMethods = analyzer.GetConstructorMethods()
-	var argumentCases = v.createArgumentCases(constructorMethods)
+	var constructorMethod mod.ConstructorMethodLike
+	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
+	for constructorMethods.HasNext() {
+		constructorMethod = constructorMethods.GetNext()
+		if constructorMethod.GetName() == "Make" {
+			break
+		}
+	}
+	var parameters = v.extractParameters(constructorMethod)
 	constructorFunction = uti.ReplaceAll(
 		constructorFunction,
-		"argumentCases",
-		argumentCases,
+		"parameters",
+		parameters,
 	)
-	var constructionCases = v.createConstructionCases(constructorMethods)
+	var parameterNames = v.extractParameterNames(constructorMethod)
 	constructorFunction = uti.ReplaceAll(
 		constructorFunction,
-		"constructionCases",
-		constructionCases,
+		"parameterNames",
+		parameterNames,
 	)
 	constructorFunction = uti.ReplaceAll(
 		constructorFunction,
@@ -292,17 +206,17 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 		var constructorFunction = v.createConstructorFunction(model, class)
 		constructorFunctions += constructorFunction
 	}
-	var universalConstructors = moduleSynthesizerClassReference().universalConstructors_
-	universalConstructors = uti.ReplaceAll(
-		universalConstructors,
+	var defaultConstructors = moduleSynthesizerClassReference().defaultConstructors_
+	defaultConstructors = uti.ReplaceAll(
+		defaultConstructors,
 		"constructorFunctions",
 		constructorFunctions,
 	)
-	universalConstructors = v.replacePackageAttributes(
-		universalConstructors,
+	defaultConstructors = v.replacePackageAttributes(
+		defaultConstructors,
 		packageName,
 	)
-	return universalConstructors
+	return defaultConstructors
 }
 
 func (v *moduleSynthesizer_) createEnumerationAlias(
@@ -502,58 +416,49 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	return
 }
 
-func (v *moduleSynthesizer_) extractArgumentNames(
+func (v *moduleSynthesizer_) extractParameterNames(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
-	var argumentNames string
+	var parameterNames string
 	var parameters = constructorMethod.GetParameters().GetIterator()
 	if parameters.IsEmpty() {
-		return argumentNames
+		return parameterNames
 	}
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
-		var argumentName = parameter.GetName()
-		argumentNames += "\n\t\t\t" + argumentName + ","
+		var parameterName = parameter.GetName()
+		parameterNames += "\n\t\t" + parameterName + ","
 	}
-	argumentNames += "\n\t\t"
-	return argumentNames
+	parameterNames += "\n\t"
+	return parameterNames
 }
 
-func (v *moduleSynthesizer_) extractArguments(
-	constructorMethods abs.ListLike[mod.ConstructorMethodLike],
-) abs.CatalogLike[string, mod.AbstractionLike] {
-	var arguments = col.Catalog[string, mod.AbstractionLike]()
-	var methods = constructorMethods.GetIterator()
-	for methods.HasNext() {
-		var method = methods.GetNext()
-		var parameters = method.GetParameters().GetIterator()
-		for parameters.HasNext() {
-			var parameter = parameters.GetNext()
-			var argumentName = parameter.GetName()
-			var argumentType = parameter.GetAbstraction()
-			arguments.SetValue(argumentName, argumentType)
-		}
-	}
-	return arguments
-}
-
-func (v *moduleSynthesizer_) extractArgumentTypes(
+func (v *moduleSynthesizer_) extractParameters(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
-	var argumentTypes string
+	var methodParameters string
 	var parameters = constructorMethod.GetParameters().GetIterator()
-	if parameters.IsEmpty() {
-		return argumentTypes
-	}
-	var parameter = parameters.GetNext()
-	var argumentType = v.extractType(parameter.GetAbstraction())
-	argumentTypes += argumentType
 	for parameters.HasNext() {
-		parameter = parameters.GetNext()
-		argumentType = v.extractType(parameter.GetAbstraction())
-		argumentTypes += ", " + argumentType
+		var parameter = parameters.GetNext()
+		var parameterName = parameter.GetName()
+		var parameterType = v.extractType(parameter.GetAbstraction())
+		var methodParameter = moduleSynthesizerClassReference().methodParameter_
+		methodParameter = uti.ReplaceAll(
+			methodParameter,
+			"parameterName",
+			parameterName,
+		)
+		methodParameter = uti.ReplaceAll(
+			methodParameter,
+			"parameterType",
+			parameterType,
+		)
+		methodParameters += methodParameter
 	}
-	return argumentTypes
+	if uti.IsDefined(methodParameters) {
+		methodParameters += "\n"
+	}
+	return methodParameters
 }
 
 func (v *moduleSynthesizer_) extractType(
@@ -621,19 +526,16 @@ type moduleSynthesizer_ struct {
 
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_        string
-	packageAlias_          string
-	importedPackage_       string
-	packageAliases_        string
-	typeAliases_           string
-	constAliases_          string
-	nameAlias_             string
-	universalConstructors_ string
-	constructorFunction_   string
-	argumentCase_          string
-	constructionCase_      string
-	argumentAssignment_    string
-	argumentAny_           string
+	warningMessage_      string
+	packageAlias_        string
+	importedPackage_     string
+	packageAliases_      string
+	typeAliases_         string
+	constAliases_        string
+	nameAlias_           string
+	defaultConstructors_ string
+	constructorFunction_ string
+	methodParameter_     string
 }
 
 // Class Reference
@@ -673,56 +575,18 @@ const (<NameAliases>)`,
 	nameAlias_: `
 	<Name> = <~packageAcronym>.<Name>`,
 
-	universalConstructors_: `
+	defaultConstructors_: `
 // <~PackageName><ConstructorFunctions>
 `,
 
 	constructorFunction_: `
 
-func <~ClassName>(arguments ...any) <~ClassName>Like {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {<ArgumentCases>
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the <~ClassName> constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
+func <~ClassName>(<Parameters>) <~ClassName>Like {
 	var instance_ <~ClassName>Like
-	switch argumentTypes {<ConstructionCases>
-	default:
-		var message = fmt.Sprintf(
-			"No <~ClassName> constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
+	instance_ = <~packageAcronym>.<~ClassName>Class().Make(<ParameterNames>)
 	return instance_
 }`,
 
-	argumentCase_: `
-		case <ArgumentType>:
-			argumentTypes += "<ArgumentType>, "`,
-
-	constructionCase_: `
-	case "<ArgumentTypes>":<ArgumentAssignments>
-		instance_ = <~packageAcronym>.<~ClassName>Class().Make(<ArgumentNames>)`,
-
-	argumentAssignment_: `
-		var <argumentName_> = arguments[<index>].(<ArgumentType>)`,
-
-	argumentAny_: `
-		var <argumentName_> = arguments[<index>]`,
+	methodParameter_: `
+	<parameterName_> <ParameterType>,`,
 }
