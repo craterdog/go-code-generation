@@ -582,9 +582,7 @@ const (<NameAliases>)`,
 	constructorFunction_: `
 
 func <~ClassName>(<Parameters>) <~ClassName>Like {
-	var instance_ <~ClassName>Like
-	instance_ = <~packageAcronym>.<~ClassName>Class().Make(<ParameterNames>)
-	return instance_
+	return <~packageAcronym>.<~ClassName>Class().Make(<ParameterNames>)
 }`,
 
 	methodParameter_: `
