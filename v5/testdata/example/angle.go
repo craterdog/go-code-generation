@@ -111,6 +111,15 @@ func (v angle_) InUnits(
 	return result_
 }
 
+func (v angle_) GetParts() (
+	x float64,
+	y float64,
+
+) {
+	// TBD - Add the method implementation.
+	return
+}
+
 // PROTECTED INTERFACE
 
 // Private Methods

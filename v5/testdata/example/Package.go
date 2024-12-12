@@ -297,6 +297,10 @@ type Angular interface {
 	InUnits(
 		units Units,
 	) float64
+	GetParts() (
+		x float64,
+		y float64,
+	)
 }
 
 /*

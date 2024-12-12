@@ -311,6 +311,9 @@ func (v *classSynthesizer_) createAspectMethod(
 	var aspectMethod = class.instanceMethod_
 	if uti.IsDefined(resultType) {
 		aspectMethod = class.instanceFunction_
+		if sts.HasPrefix(resultType, "(") {
+			aspectMethod = class.instanceMultiFunction_
+		}
 		aspectMethod = uti.ReplaceAll(
 			aspectMethod,
 			"resultType",
