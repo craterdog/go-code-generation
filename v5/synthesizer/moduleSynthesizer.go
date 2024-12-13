@@ -161,25 +161,11 @@ func (v *moduleSynthesizer_) createClassAliases(
 }
 
 func (v *moduleSynthesizer_) createConstructorFunction(
-	model mod.ModelLike,
-	classDeclaration mod.ClassDeclarationLike,
+	constructorMethod mod.ConstructorMethodLike,
+	className string,
 ) string {
 	var class = moduleSynthesizerClassReference()
 	var constructorFunction = class.constructorFunction_
-	var className = sts.TrimSuffix(
-		classDeclaration.GetDeclaration().GetName(),
-		"ClassLike",
-	)
-	className = uti.MakeLowerCase(className)
-	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
-	var constructorMethod mod.ConstructorMethodLike
-	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
-	for constructorMethods.HasNext() {
-		constructorMethod = constructorMethods.GetNext()
-		if constructorMethod.GetName() == "Make" {
-			break
-		}
-	}
 	var parameters = v.extractParameters(constructorMethod)
 	constructorFunction = uti.ReplaceAll(
 		constructorFunction,
@@ -192,12 +178,33 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 		"parameterNames",
 		parameterNames,
 	)
-	constructorFunction = uti.ReplaceAll(
-		constructorFunction,
+	return constructorFunction
+}
+
+func (v *moduleSynthesizer_) createClassConstructors(
+	model mod.ModelLike,
+	classDeclaration mod.ClassDeclarationLike,
+) string {
+	var classConstructors string
+	var className = sts.TrimSuffix(
+		classDeclaration.GetDeclaration().GetName(),
+		"ClassLike",
+	)
+	className = uti.MakeLowerCase(className)
+	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
+	var constructorMethod mod.ConstructorMethodLike
+	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
+	for constructorMethods.HasNext() {
+		constructorMethod = constructorMethods.GetNext()
+		var constructorFunction = v.createConstructorFunction(constructorMethod, className)
+		classConstructors += constructorFunction
+	}
+	classConstructors = uti.ReplaceAll(
+		classConstructors,
 		"className",
 		className,
 	)
-	return constructorFunction
+	return classConstructors
 }
 
 func (v *moduleSynthesizer_) createConstructorFunctions(
@@ -210,8 +217,8 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 	var classes = classSection.GetClassDeclarations().GetIterator()
 	for classes.HasNext() {
 		var class = classes.GetNext()
-		var constructorFunction = v.createConstructorFunction(model, class)
-		constructorFunctions += constructorFunction
+		var classConstructors = v.createClassConstructors(model, class)
+		constructorFunctions += classConstructors
 	}
 	var class = moduleSynthesizerClassReference()
 	var defaultConstructors = class.defaultConstructors_
@@ -598,7 +605,7 @@ const (<NameAliases>)`,
 	constructorFunction_: `
 
 func <~ClassName>(<Parameters>) <~ClassName>Like {
-	return <~packageAcronym>.<~ClassName>Class().Make(<ParameterNames>)
+	return <~packageAcronym>.<~ClassName>Class().<~ClassName>(<ParameterNames>)
 }`,
 
 	methodParameter_: `

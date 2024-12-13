@@ -34,7 +34,7 @@ func ConstraintsClass() ConstraintsClassLike {
 
 // Constructor Methods
 
-func (c *constraintsClass_) Make(
+func (c *constraintsClass_) Constraints(
 	constraint ConstraintLike,
 	additionalConstraints abs.Sequential[AdditionalConstraintLike],
 ) ConstraintsLike {

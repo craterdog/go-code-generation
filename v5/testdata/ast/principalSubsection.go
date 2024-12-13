@@ -34,7 +34,7 @@ func PrincipalSubsectionClass() PrincipalSubsectionClassLike {
 
 // Constructor Methods
 
-func (c *principalSubsectionClass_) Make(
+func (c *principalSubsectionClass_) PrincipalSubsection(
 	principalMethods abs.Sequential[PrincipalMethodLike],
 ) PrincipalSubsectionLike {
 	if uti.IsUndefined(principalMethods) {

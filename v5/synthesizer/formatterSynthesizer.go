@@ -283,14 +283,14 @@ func FormatterClass() FormatterClassLike {
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *formatterClass_) Make() FormatterLike {
+func (c *formatterClass_) Formatter() FormatterLike {
 	var instance = &formatter_{
 		// Initialize the instance attributes.
 
 		// Initialize the inherited aspects.
-		Methodical: ProcessorClass().Make(),
+		Methodical: ProcessorClass().Processor(),
 	}
-	instance.visitor_ = VisitorClass().Make(instance)
+	instance.visitor_ = VisitorClass().Visitor(instance)
 	return instance
 }
 `,

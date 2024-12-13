@@ -33,7 +33,7 @@ func InterfaceDeclarationsClass() InterfaceDeclarationsClassLike {
 
 // Constructor Methods
 
-func (c *interfaceDeclarationsClass_) Make(
+func (c *interfaceDeclarationsClass_) InterfaceDeclarations(
 	classSection ClassSectionLike,
 	instanceSection InstanceSectionLike,
 	aspectSection AspectSectionLike,

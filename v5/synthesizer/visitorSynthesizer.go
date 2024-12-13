@@ -456,7 +456,7 @@ func VisitorClass() VisitorClassLike {
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *visitorClass_) Make(
+func (c *visitorClass_) Visitor(
 	processor Methodical,
 ) VisitorLike {
 	if uti.IsUndefined(processor) {

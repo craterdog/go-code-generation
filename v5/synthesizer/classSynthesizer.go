@@ -704,14 +704,16 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
+	var className = constructorMethod.GetAbstraction().GetName()
+	className = sts.TrimSuffix(className, "Like")
 	var class = classSynthesizerClassReference()
 	var instantiation = class.instanceInstantiation_
 	if v.analyzer_.IsIntrinsic() {
-		if methodName == "Make" {
+		if methodName == className {
 			instantiation = class.intrinsicInstantiation_
 		}
 	} else {
-		if methodName == "Make" || sts.HasPrefix(methodName, "MakeWith") {
+		if methodName == className || sts.HasPrefix(methodName, className+"With") {
 			instantiation = class.structureInstantiation_
 			var constructorParameters = constructorMethod.GetParameters()
 			var attributeChecks = v.createAttributeChecks(constructorParameters)

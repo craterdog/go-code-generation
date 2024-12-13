@@ -33,7 +33,7 @@ func InstanceDeclarationClass() InstanceDeclarationClassLike {
 
 // Constructor Methods
 
-func (c *instanceDeclarationClass_) Make(
+func (c *instanceDeclarationClass_) InstanceDeclaration(
 	declaration DeclarationLike,
 	instanceMethods InstanceMethodsLike,
 ) InstanceDeclarationLike {

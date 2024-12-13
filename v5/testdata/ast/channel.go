@@ -31,7 +31,7 @@ func ChannelClass() ChannelClassLike {
 
 // Constructor Methods
 
-func (c *channelClass_) Make() ChannelLike {
+func (c *channelClass_) Channel() ChannelLike {
 	var instance = &channel_{
 		// Initialize the instance attributes.
 	}

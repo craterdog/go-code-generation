@@ -33,7 +33,7 @@ func TypeDeclarationClass() TypeDeclarationClassLike {
 
 // Constructor Methods
 
-func (c *typeDeclarationClass_) Make(
+func (c *typeDeclarationClass_) TypeDeclaration(
 	declaration DeclarationLike,
 	abstraction AbstractionLike,
 	optionalEnumeration EnumerationLike,

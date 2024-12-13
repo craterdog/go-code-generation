@@ -356,7 +356,7 @@ supported by each concrete <~class-name>-like class.
 */
 type <~ClassName>ClassLike interface {
 	// Constructor Methods
-	Make(<Parameters>) <~ClassName>Like
+	<~ClassName>(<Parameters>) <~ClassName>Like
 }
 `,
 	singularRuleParameter_: `

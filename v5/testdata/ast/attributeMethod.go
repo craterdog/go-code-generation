@@ -33,7 +33,7 @@ func AttributeMethodClass() AttributeMethodClassLike {
 
 // Constructor Methods
 
-func (c *attributeMethodClass_) Make(
+func (c *attributeMethodClass_) AttributeMethod(
 	any_ any,
 ) AttributeMethodLike {
 	if uti.IsUndefined(any_) {

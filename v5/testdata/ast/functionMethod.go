@@ -34,7 +34,7 @@ func FunctionMethodClass() FunctionMethodClassLike {
 
 // Constructor Methods
 
-func (c *functionMethodClass_) Make(
+func (c *functionMethodClass_) FunctionMethod(
 	name string,
 	parameters abs.Sequential[ParameterLike],
 	result ResultLike,

@@ -33,7 +33,7 @@ func ParameterClass() ParameterClassLike {
 
 // Constructor Methods
 
-func (c *parameterClass_) Make(
+func (c *parameterClass_) Parameter(
 	name string,
 	abstraction AbstractionLike,
 ) ParameterLike {

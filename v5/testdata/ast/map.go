@@ -33,7 +33,7 @@ func MapClass() MapClassLike {
 
 // Constructor Methods
 
-func (c *mapClass_) Make(
+func (c *mapClass_) Map(
 	name string,
 ) MapLike {
 	if uti.IsUndefined(name) {

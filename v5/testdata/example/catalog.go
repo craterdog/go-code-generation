@@ -27,14 +27,14 @@ func CatalogClass[V any]() CatalogClassLike[V] {
 
 // Constructor Methods
 
-func (c *catalogClass_[V]) Make() CatalogLike[V] {
+func (c *catalogClass_[V]) Catalog() CatalogLike[V] {
 	var instance = &catalog_[V]{
 		// Initialize the instance attributes.
 	}
 	return instance
 }
 
-func (c *catalogClass_[V]) MakeFromArray(
+func (c *catalogClass_[V]) CatalogFromArray(
 	associations []AssociationLike[Identifier, V],
 ) CatalogLike[V] {
 	var instance CatalogLike[V]
@@ -42,7 +42,7 @@ func (c *catalogClass_[V]) MakeFromArray(
 	return instance
 }
 
-func (c *catalogClass_[V]) MakeFromMap(
+func (c *catalogClass_[V]) CatalogFromMap(
 	associations map[Identifier]V,
 ) CatalogLike[V] {
 	var instance CatalogLike[V]
@@ -50,7 +50,7 @@ func (c *catalogClass_[V]) MakeFromMap(
 	return instance
 }
 
-func (c *catalogClass_[V]) MakeFromSequence(
+func (c *catalogClass_[V]) CatalogFromSequence(
 	associations Sequential[AssociationLike[Identifier, V]],
 ) CatalogLike[V] {
 	var instance CatalogLike[V]

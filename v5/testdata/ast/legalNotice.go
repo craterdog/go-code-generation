@@ -33,7 +33,7 @@ func LegalNoticeClass() LegalNoticeClassLike {
 
 // Constructor Methods
 
-func (c *legalNoticeClass_) Make(
+func (c *legalNoticeClass_) LegalNotice(
 	comment string,
 ) LegalNoticeLike {
 	if uti.IsUndefined(comment) {

@@ -24,14 +24,14 @@ func AngleClass() AngleClassLike {
 
 // Constructor Methods
 
-func (c *angleClass_) Make(
+func (c *angleClass_) Angle(
 	intrinsic float64,
 ) AngleLike {
 	var instance = angle_(intrinsic)
 	return instance
 }
 
-func (c *angleClass_) MakeFromString(
+func (c *angleClass_) AngleFromString(
 	value string,
 ) AngleLike {
 	var instance AngleLike

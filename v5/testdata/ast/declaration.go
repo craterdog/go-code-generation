@@ -33,7 +33,7 @@ func DeclarationClass() DeclarationClassLike {
 
 // Constructor Methods
 
-func (c *declarationClass_) Make(
+func (c *declarationClass_) Declaration(
 	comment string,
 	name string,
 	optionalConstraints ConstraintsLike,

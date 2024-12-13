@@ -34,7 +34,7 @@ func AttributeSubsectionClass() AttributeSubsectionClassLike {
 
 // Constructor Methods
 
-func (c *attributeSubsectionClass_) Make(
+func (c *attributeSubsectionClass_) AttributeSubsection(
 	attributeMethods abs.Sequential[AttributeMethodLike],
 ) AttributeSubsectionLike {
 	if uti.IsUndefined(attributeMethods) {

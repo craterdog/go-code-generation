@@ -266,7 +266,7 @@ func ProcessorClass() ProcessorClassLike {
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *processorClass_) Make() ProcessorLike {
+func (c *processorClass_) Processor() ProcessorLike {
 	var instance = &processor_{
 		// Initialize the instance attributes.
 	}

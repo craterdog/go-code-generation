@@ -476,7 +476,7 @@ func ParserClass() ParserClassLike {
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *parserClass_) Make() ParserLike {
+func (c *parserClass_) Parser() ParserLike {
 	var instance = &parser_{
 		// Initialize the instance attributes.
 	}
@@ -634,7 +634,7 @@ func (v *parser_) parse<~RuleName>() (
 	// Found a single <~RuleName> rule.
 	ok = true
 	v.remove(tokens)
-	<ruleName_> = ast.<~RuleName>Class().Make(<Arguments>)
+	<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<Arguments>)
 	return
 `,
 
@@ -644,7 +644,7 @@ func (v *parser_) parse<~RuleName>() (
 	<identifier_>, token, ok = v.parseToken(<~Identifier>Token)
 	if ok {
 		// Found a single <~identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>Class().Make(<identifier_>)
+		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<identifier_>)
 		return
 	}
 `,
@@ -655,7 +655,7 @@ func (v *parser_) parse<~RuleName>() (
 	<identifier_>, token, ok = v.parse<~Identifier>()
 	if ok {
 		// Found a single <~Identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>Class().Make(<identifier_>)
+		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<identifier_>)
 		return
 	}
 `,
@@ -680,7 +680,7 @@ func (v *parser_) ParseSource(
 	v.next_ = col.Stack[TokenLike]()
 
 	// The scanner runs in a separate Go routine.
-	ScannerClass().Make(v.source_, v.tokens_)
+	ScannerClass().Scanner(v.source_, v.tokens_)
 
 	// Attempt to parse the <~syntaxName>.
 	var <syntaxName_>, token, ok = v.parse<~SyntaxName>()

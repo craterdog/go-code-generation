@@ -27,14 +27,14 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 
 // Constructor Methods
 
-func (c *arrayClass_[V]) Make(
+func (c *arrayClass_[V]) Array(
 	intrinsic []V,
 ) ArrayLike[V] {
 	var instance = array_[V](intrinsic)
 	return instance
 }
 
-func (c *arrayClass_[V]) MakeWithSize(
+func (c *arrayClass_[V]) ArrayWithSize(
 	size Ordinal,
 ) ArrayLike[V] {
 	var instance ArrayLike[V]
@@ -42,7 +42,7 @@ func (c *arrayClass_[V]) MakeWithSize(
 	return instance
 }
 
-func (c *arrayClass_[V]) MakeFromSequence(
+func (c *arrayClass_[V]) ArrayFromSequence(
 	values Sequential[V],
 ) ArrayLike[V] {
 	var instance ArrayLike[V]
