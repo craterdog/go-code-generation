@@ -46,10 +46,6 @@ func (c *additionalConstraintClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -65,8 +61,6 @@ func (v *additionalConstraint_) GetConstraint() ConstraintLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

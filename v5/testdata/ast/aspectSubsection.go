@@ -20,7 +20,7 @@
 package ast
 
 import (
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 )
 
@@ -47,10 +47,6 @@ func (c *aspectSubsectionClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -66,8 +62,6 @@ func (v *aspectSubsection_) GetAspectInterfaces() abs.Sequential[AspectInterface
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

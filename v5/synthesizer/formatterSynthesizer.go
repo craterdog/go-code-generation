@@ -54,17 +54,20 @@ func (v *formatterSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *formatterSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = formatterSynthesizerClassReference().warningMessage_
+	var class = formatterSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *formatterSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = formatterSynthesizerClassReference().accessFunction_
+	var class = formatterSynthesizerClassReference()
+	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *formatterSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = formatterSynthesizerClassReference().constructorMethods_
+	var class = formatterSynthesizerClassReference()
+	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
@@ -79,7 +82,8 @@ func (v *formatterSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = formatterSynthesizerClassReference().principalMethods_
+	var class = formatterSynthesizerClassReference()
+	var principalMethods = class.principalMethods_
 	return principalMethods
 }
 
@@ -89,7 +93,8 @@ func (v *formatterSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods = formatterSynthesizerClassReference().aspectMethods_
+	var class = formatterSynthesizerClassReference()
+	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
 		aspectMethods,
@@ -106,22 +111,26 @@ func (v *formatterSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = formatterSynthesizerClassReference().privateMethods_
+	var class = formatterSynthesizerClassReference()
+	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *formatterSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = formatterSynthesizerClassReference().instanceStructure_
+	var class = formatterSynthesizerClassReference()
+	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *formatterSynthesizer_) CreateClassStructure() string {
-	var classStructure = formatterSynthesizerClassReference().classStructure_
+	var class = formatterSynthesizerClassReference()
+	var classStructure = class.classStructure_
 	return classStructure
 }
 
 func (v *formatterSynthesizer_) CreateClassReference() string {
-	var classReference = formatterSynthesizerClassReference().classReference_
+	var class = formatterSynthesizerClassReference()
+	var classReference = class.classReference_
 	return classReference
 }
 
@@ -140,7 +149,8 @@ func (v *formatterSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var importedPackages = formatterSynthesizerClassReference().importedPackages_
+	var class = formatterSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -156,9 +166,10 @@ func (v *formatterSynthesizer_) PerformGlobalUpdates(
 func (v *formatterSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var processRule = formatterSynthesizerClassReference().processRule_
+	var class = formatterSynthesizerClassReference()
+	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = formatterSynthesizerClassReference().processIndexedRule_
+		processRule = class.processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -186,12 +197,13 @@ func (v *formatterSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = formatterSynthesizerClassReference().processToken_
+	var class = formatterSynthesizerClassReference()
+	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = formatterSynthesizerClassReference().processIndexedToken_
+		processToken = class.processIndexedToken_
 	}
 	if tokenName == "newline" {
-		processToken = formatterSynthesizerClassReference().processNewline_
+		processToken = class.processNewline_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,

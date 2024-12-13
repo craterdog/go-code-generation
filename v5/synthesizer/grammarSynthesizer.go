@@ -54,17 +54,20 @@ func (v *grammarSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *grammarSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = grammarSynthesizerClassReference().warningMessage_
+	var class = grammarSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *grammarSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = grammarSynthesizerClassReference().packageDescription_
+	var class = grammarSynthesizerClassReference()
+	var packageDescription = class.packageDescription_
 	return packageDescription
 }
 
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = grammarSynthesizerClassReference().typeDeclarations_
+	var class = grammarSynthesizerClassReference()
+	var typeDeclarations = class.typeDeclarations_
 	var tokenTypes = v.generateTokenTypes()
 	typeDeclarations = uti.ReplaceAll(
 		typeDeclarations,
@@ -80,13 +83,15 @@ func (v *grammarSynthesizer_) CreateFunctionalDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = grammarSynthesizerClassReference().classDeclarations_
+	var class = grammarSynthesizerClassReference()
+	var classDeclarations = class.classDeclarations_
 	return classDeclarations
 }
 
 func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	var instanceDeclarations = grammarSynthesizerClassReference().instanceDeclarations_
+	var class = grammarSynthesizerClassReference()
+	var instanceDeclarations = class.instanceDeclarations_
 	instanceDeclarations = uti.ReplaceAll(
 		instanceDeclarations,
 		"syntaxName",
@@ -96,7 +101,8 @@ func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = grammarSynthesizerClassReference().aspectDeclarations_
+	var class = grammarSynthesizerClassReference()
+	var aspectDeclarations = class.aspectDeclarations_
 	var processTokens = v.generateProcessTokens()
 	aspectDeclarations = uti.ReplaceAll(
 		aspectDeclarations,
@@ -115,7 +121,8 @@ func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 func (v *grammarSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = grammarSynthesizerClassReference().importedPackages_
+	var class = grammarSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -131,9 +138,10 @@ func (v *grammarSynthesizer_) PerformGlobalUpdates(
 func (v *grammarSynthesizer_) generateProcessRule(
 	ruleName string,
 ) string {
-	var processRule = grammarSynthesizerClassReference().processRule_
+	var class = grammarSynthesizerClassReference()
+	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = grammarSynthesizerClassReference().processIndexedRule_
+		processRule = class.processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -161,9 +169,10 @@ func (v *grammarSynthesizer_) generateProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = grammarSynthesizerClassReference().processToken_
+	var class = grammarSynthesizerClassReference()
+	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = grammarSynthesizerClassReference().processIndexedToken_
+		processToken = class.processIndexedToken_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,
@@ -189,7 +198,8 @@ func (v *grammarSynthesizer_) generateTokenTypes() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var tokenType = grammarSynthesizerClassReference().tokenType_
+		var class = grammarSynthesizerClassReference()
+		var tokenType = class.tokenType_
 		tokenType = uti.ReplaceAll(
 			tokenType,
 			"tokenName",
@@ -253,7 +263,7 @@ abstract syntax tree (AST) for this module:
 
 	importedPackages_: `
 	ast "<ModuleName>/ast"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 `,
 
 	typeDeclarations_: `

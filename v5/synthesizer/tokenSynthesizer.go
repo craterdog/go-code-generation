@@ -54,12 +54,14 @@ func (v *tokenSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *tokenSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = tokenSynthesizerClassReference().warningMessage_
+	var class = tokenSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *tokenSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = tokenSynthesizerClassReference().accessFunction_
+	var class = tokenSynthesizerClassReference()
+	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
@@ -69,7 +71,8 @@ func (v *tokenSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = tokenSynthesizerClassReference().constructorMethods_
+	var class = tokenSynthesizerClassReference()
+	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
@@ -79,12 +82,14 @@ func (v *tokenSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = tokenSynthesizerClassReference().principalMethods_
+	var class = tokenSynthesizerClassReference()
+	var principalMethods = class.principalMethods_
 	return principalMethods
 }
 
 func (v *tokenSynthesizer_) CreateAttributeMethods() string {
-	var attributeMethods = tokenSynthesizerClassReference().attributeMethods_
+	var class = tokenSynthesizerClassReference()
+	var attributeMethods = class.attributeMethods_
 	return attributeMethods
 }
 
@@ -94,29 +99,34 @@ func (v *tokenSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = tokenSynthesizerClassReference().privateMethods_
+	var class = tokenSynthesizerClassReference()
+	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *tokenSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = tokenSynthesizerClassReference().instanceStructure_
+	var class = tokenSynthesizerClassReference()
+	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *tokenSynthesizer_) CreateClassStructure() string {
-	var classStructure = tokenSynthesizerClassReference().classStructure_
+	var class = tokenSynthesizerClassReference()
+	var classStructure = class.classStructure_
 	return classStructure
 }
 
 func (v *tokenSynthesizer_) CreateClassReference() string {
-	var classReference = tokenSynthesizerClassReference().classReference_
+	var class = tokenSynthesizerClassReference()
+	var classReference = class.classReference_
 	return classReference
 }
 
 func (v *tokenSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = tokenSynthesizerClassReference().importedPackages_
+	var class = tokenSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",

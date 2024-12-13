@@ -51,10 +51,6 @@ func (c *importedPackageClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -74,8 +70,6 @@ func (v *importedPackage_) GetPath() string {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

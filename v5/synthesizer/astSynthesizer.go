@@ -54,12 +54,14 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *astSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = astSynthesizerClassReference().warningMessage_
+	var class = astSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *astSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = astSynthesizerClassReference().packageDescription_
+	var class = astSynthesizerClassReference()
+	var packageDescription = class.packageDescription_
 	return packageDescription
 }
 
@@ -136,7 +138,8 @@ func (v *astSynthesizer_) createClassDeclaration(
 		// This class represents a multiline rule.
 		parameters += "\n\t\tany_ any,\n\t"
 	}
-	var classDeclaration = astSynthesizerClassReference().classDeclaration_
+	var class = astSynthesizerClassReference()
+	var classDeclaration = class.classDeclaration_
 	classDeclaration = uti.ReplaceAll(
 		classDeclaration,
 		"parameters",
@@ -155,15 +158,16 @@ func (v *astSynthesizer_) createGetterMethod(
 	attributeName string,
 	attributeType string,
 ) string {
-	var getterMethod = astSynthesizerClassReference().ruleGetterMethod_
+	var class = astSynthesizerClassReference()
+	var getterMethod = class.ruleGetterMethod_
 	if attributeType == "string" {
-		getterMethod = astSynthesizerClassReference().tokenGetterMethod_
+		getterMethod = class.tokenGetterMethod_
 		if isPlural {
-			getterMethod = astSynthesizerClassReference().pluralTokenGetterMethod_
+			getterMethod = class.pluralTokenGetterMethod_
 		}
 	} else {
 		if isPlural {
-			getterMethod = astSynthesizerClassReference().pluralRuleGetterMethod_
+			getterMethod = class.pluralRuleGetterMethod_
 		}
 	}
 	getterMethod = uti.ReplaceAll(
@@ -203,8 +207,9 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 		// This instance represents a multiline rule.
 		getterMethods += "\n\tGetAny() any"
 	}
-	var instanceDeclaration = astSynthesizerClassReference().instanceDeclaration_
-	var principalMethods = astSynthesizerClassReference().principalMethods_
+	var class = astSynthesizerClassReference()
+	var instanceDeclaration = class.instanceDeclaration_
+	var principalMethods = class.principalMethods_
 	instanceDeclaration = uti.ReplaceAll(
 		instanceDeclaration,
 		"principalMethods",
@@ -212,7 +217,7 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 	)
 	var attributeMethods string
 	if uti.IsDefined(getterMethods) {
-		attributeMethods = astSynthesizerClassReference().attributeMethods_
+		attributeMethods = class.attributeMethods_
 		attributeMethods = uti.ReplaceAll(
 			attributeMethods,
 			"getterMethods",
@@ -239,15 +244,16 @@ func (v *astSynthesizer_) createParameter(
 ) (
 	parameter string,
 ) {
-	parameter = astSynthesizerClassReference().singularRuleParameter_
+	var class = astSynthesizerClassReference()
+	parameter = class.singularRuleParameter_
 	if parameterType == "string" {
-		parameter = astSynthesizerClassReference().singularTokenParameter_
+		parameter = class.singularTokenParameter_
 		if isPlural {
-			parameter = astSynthesizerClassReference().pluralTokenParameter_
+			parameter = class.pluralTokenParameter_
 		}
 	} else {
 		if isPlural {
-			parameter = astSynthesizerClassReference().pluralRuleParameter_
+			parameter = class.pluralRuleParameter_
 		}
 	}
 	parameter = uti.ReplaceAll(
@@ -283,7 +289,7 @@ func (v *astSynthesizer_) performGlobalUpdates(
 	var importedPackages string
 	if v.analyzer_.HasPlurals() {
 		importedPackages = `
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 `
 	}
 	source = uti.ReplaceAll(

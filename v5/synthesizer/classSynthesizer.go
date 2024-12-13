@@ -16,8 +16,8 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5/ast"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	col "github.com/craterdog/go-collection-framework/v4"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
 )
@@ -302,7 +302,7 @@ func (v *classSynthesizer_) createAspectMethod(
 	if mappings.GetSize() > 0 {
 		methodParameters = v.replaceParameterTypes(method.GetParameters(), mappings)
 		if uti.IsDefined(methodResult) {
-			methodResult = v.replaceResultType(method.GetOptionalResult(), mappings)
+			methodResult = v.replaceResultType(methodResult, mappings)
 		}
 	}
 	var parameters = v.createParameters(methodParameters)
@@ -903,7 +903,7 @@ func (v *classSynthesizer_) createResult(
 		case mod.AbstractionLike:
 			results = v.extractType(actual)
 		case mod.MultivalueLike:
-			results = "(" + v.createParameters(actual.GetParameters()) + "\n)"
+			results = "(" + v.createParameters(actual.GetParameters()) + ")"
 		}
 	}
 	return results

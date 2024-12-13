@@ -15,8 +15,8 @@ package analyzer
 import (
 	fmt "fmt"
 	ast "github.com/craterdog/go-class-model/v5/ast"
-	col "github.com/craterdog/go-collection-framework/v4"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
 )
@@ -124,7 +124,7 @@ func (v *modelAnalyzer_) analyzeAspectDeclarations(
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
 	var aspectDeclarations = aspectSection.GetAspectDeclarations()
-	v.aspectDeclarations_ = col.List[ast.AspectDeclarationLike](aspectDeclarations)
+	v.aspectDeclarations_ = col.AnyList[ast.AspectDeclarationLike](aspectDeclarations)
 }
 
 func (v *modelAnalyzer_) analyzeAspectInterfaces(
@@ -134,7 +134,7 @@ func (v *modelAnalyzer_) analyzeAspectInterfaces(
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
 	if uti.IsDefined(aspectSubsection) {
 		var aspectInterfaces = aspectSubsection.GetAspectInterfaces()
-		v.aspectInterfaces_ = col.List[ast.AspectInterfaceLike](
+		v.aspectInterfaces_ = col.AnyList[ast.AspectInterfaceLike](
 			aspectInterfaces,
 		)
 	}
@@ -302,11 +302,11 @@ func (v *modelAnalyzer_) analyzePackageDeclaration(
 		"uti",
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v4",
+		"github.com/craterdog/go-collection-framework/v5",
 		"col",
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v4/collection",
+		"github.com/craterdog/go-collection-framework/v5/collection",
 		"abs",
 	)
 	v.importedPackages_.SetValue(

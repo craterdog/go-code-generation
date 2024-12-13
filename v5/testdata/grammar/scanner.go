@@ -21,7 +21,7 @@ package grammar
 
 import (
 	fmt "fmt"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
@@ -139,8 +139,9 @@ func (v *scanner_) foundToken(
 	tokenType TokenType,
 ) bool {
 	// Attempt to match the specified token type.
+	var class = scannerClassReference()
+	var matcher = class.matchers_[tokenType]
 	var text = string(v.runes_[v.next_:])
-	var matcher = scannerClassReference().matchers_[tokenType]
 	var match = matcher.FindString(text)
 	if uti.IsUndefined(match) {
 		return false
@@ -200,7 +201,7 @@ loop:
 			break loop
 		}
 	}
-	v.tokens_.CloseQueue()
+	v.tokens_.CloseChannel()
 }
 
 // Instance Structure

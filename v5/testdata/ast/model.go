@@ -56,10 +56,6 @@ func (c *modelClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -83,8 +79,6 @@ func (v *model_) GetInterfaceDeclarations() InterfaceDeclarationsLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

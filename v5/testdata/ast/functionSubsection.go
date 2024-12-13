@@ -20,7 +20,7 @@
 package ast
 
 import (
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 )
 
@@ -47,10 +47,6 @@ func (c *functionSubsectionClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -66,8 +62,6 @@ func (v *functionSubsection_) GetFunctionMethods() abs.Sequential[FunctionMethod
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

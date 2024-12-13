@@ -32,7 +32,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 

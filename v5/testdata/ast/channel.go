@@ -38,10 +38,6 @@ func (c *channelClass_) Make() ChannelLike {
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -53,8 +49,6 @@ func (v *channel_) GetClass() ChannelClassLike {
 // Attribute Methods
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

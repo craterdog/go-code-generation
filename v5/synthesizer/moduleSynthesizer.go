@@ -15,7 +15,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5/ast"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
 )
@@ -60,7 +60,8 @@ func (v *moduleSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *moduleSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = moduleSynthesizerClassReference().warningMessage_
+	var class = moduleSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
@@ -122,7 +123,8 @@ func (v *moduleSynthesizer_) createAspectAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		aspectAliases = moduleSynthesizerClassReference().typeAliases_
+		var class = moduleSynthesizerClassReference()
+		aspectAliases = class.typeAliases_
 		aspectAliases = uti.ReplaceAll(
 			aspectAliases,
 			"nameAliases",
@@ -147,7 +149,8 @@ func (v *moduleSynthesizer_) createClassAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		classAliases = moduleSynthesizerClassReference().typeAliases_
+		var class = moduleSynthesizerClassReference()
+		classAliases = class.typeAliases_
 		classAliases = uti.ReplaceAll(
 			classAliases,
 			"nameAliases",
@@ -159,10 +162,14 @@ func (v *moduleSynthesizer_) createClassAliases(
 
 func (v *moduleSynthesizer_) createConstructorFunction(
 	model mod.ModelLike,
-	class mod.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) string {
-	var constructorFunction = moduleSynthesizerClassReference().constructorFunction_
-	var className = sts.TrimSuffix(class.GetDeclaration().GetName(), "ClassLike")
+	var class = moduleSynthesizerClassReference()
+	var constructorFunction = class.constructorFunction_
+	var className = sts.TrimSuffix(
+		classDeclaration.GetDeclaration().GetName(),
+		"ClassLike",
+	)
 	className = uti.MakeLowerCase(className)
 	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
 	var constructorMethod mod.ConstructorMethodLike
@@ -206,7 +213,8 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 		var constructorFunction = v.createConstructorFunction(model, class)
 		constructorFunctions += constructorFunction
 	}
-	var defaultConstructors = moduleSynthesizerClassReference().defaultConstructors_
+	var class = moduleSynthesizerClassReference()
+	var defaultConstructors = class.defaultConstructors_
 	defaultConstructors = uti.ReplaceAll(
 		defaultConstructors,
 		"constructorFunctions",
@@ -222,7 +230,8 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 func (v *moduleSynthesizer_) createEnumerationAlias(
 	name string,
 ) string {
-	var nameAlias = moduleSynthesizerClassReference().nameAlias_
+	var class = moduleSynthesizerClassReference()
+	var nameAlias = class.nameAlias_
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
 		"name",
@@ -250,7 +259,8 @@ func (v *moduleSynthesizer_) createEnumerationAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		constAliases = moduleSynthesizerClassReference().constAliases_
+		var class = moduleSynthesizerClassReference()
+		constAliases = class.constAliases_
 		constAliases = uti.ReplaceAll(
 			constAliases,
 			"nameAliases",
@@ -276,7 +286,8 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		functionalAliases = moduleSynthesizerClassReference().typeAliases_
+		var class = moduleSynthesizerClassReference()
+		functionalAliases = class.typeAliases_
 		functionalAliases = uti.ReplaceAll(
 			functionalAliases,
 			"nameAliases",
@@ -290,15 +301,16 @@ func (v *moduleSynthesizer_) createImportedPackages(
 	source string,
 ) string {
 	var importedPackages string
+	var class = moduleSynthesizerClassReference()
 	var packageNames = v.models_.GetKeys().GetIterator()
 	for packageNames.HasNext() {
 		var packageName = packageNames.GetNext()
-		var importedPackage = moduleSynthesizerClassReference().importedPackage_
+		var importedPackage = class.importedPackage_
 		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
 		importedPackages += importedPackage
 	}
 	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
-		var packageAlias = moduleSynthesizerClassReference().packageAlias_
+		var packageAlias = class.packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
 			"packageAcronym",
@@ -312,7 +324,7 @@ func (v *moduleSynthesizer_) createImportedPackages(
 		importedPackages += packageAlias
 	}
 	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
-		var packageAlias = moduleSynthesizerClassReference().packageAlias_
+		var packageAlias = class.packageAlias_
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
 			"packageAcronym",
@@ -321,7 +333,7 @@ func (v *moduleSynthesizer_) createImportedPackages(
 		packageAlias = uti.ReplaceAll(
 			packageAlias,
 			"packagePath",
-			"github.com/craterdog/go-collection-framework/v4/collection",
+			"github.com/craterdog/go-collection-framework/v5/collection",
 		)
 		importedPackages += packageAlias
 	}
@@ -342,7 +354,8 @@ func (v *moduleSynthesizer_) createNameAlias(
 		// Type aliases are not supported for generic types in Go.
 		return
 	}
-	nameAlias = moduleSynthesizerClassReference().nameAlias_
+	var class = moduleSynthesizerClassReference()
+	nameAlias = class.nameAlias_
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
 		"name",
@@ -373,7 +386,8 @@ func (v *moduleSynthesizer_) createPackageAliases(
 		model,
 		interfaceDeclarations,
 	)
-	var packageAliases = moduleSynthesizerClassReference().packageAliases_
+	var class = moduleSynthesizerClassReference()
+	var packageAliases = class.packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
 		"typeAliases",
@@ -405,7 +419,8 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		typeAliases = moduleSynthesizerClassReference().typeAliases_
+		var class = moduleSynthesizerClassReference()
+		typeAliases = class.typeAliases_
 		typeAliases = uti.ReplaceAll(
 			typeAliases,
 			"nameAliases",
@@ -442,7 +457,8 @@ func (v *moduleSynthesizer_) extractParameters(
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var parameterType = v.extractType(parameter.GetAbstraction())
-		var methodParameter = moduleSynthesizerClassReference().methodParameter_
+		var class = moduleSynthesizerClassReference()
+		var methodParameter = class.methodParameter_
 		methodParameter = uti.ReplaceAll(
 			methodParameter,
 			"parameterName",

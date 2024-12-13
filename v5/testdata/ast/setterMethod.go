@@ -51,10 +51,6 @@ func (c *setterMethodClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -74,8 +70,6 @@ func (v *setterMethod_) GetParameter() ParameterLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

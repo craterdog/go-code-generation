@@ -13,8 +13,8 @@
 package analyzer
 
 import (
-	col "github.com/craterdog/go-collection-framework/v4"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	stc "strconv"
@@ -432,7 +432,7 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
 	v.ruleNames_ = col.Set[string]()
-	v.tokenNames_ = col.Set[string]([]string{"delimiter", "newline", "space"})
+	v.tokenNames_ = col.AnySet[string]([]string{"delimiter", "newline", "space"})
 	v.pluralNames_ = col.Set[string]()
 	v.delimited_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()
@@ -440,7 +440,7 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		"newline": `"(?:" + eol_ + ")"`,
 		"space":   `"(?:[ \\t]+)"`,
 	}
-	v.regexps_ = col.Catalog[string, string](implicit)
+	v.regexps_ = col.AnyCatalog[string, string](implicit)
 	v.terms_ = col.Catalog[string, abs.ListLike[not.TermLike]]()
 	v.variables_ = col.Catalog[string, abs.ListLike[string]]()
 	v.references_ = col.Catalog[string, abs.ListLike[not.ReferenceLike]]()
@@ -595,12 +595,12 @@ func (v *syntaxAnalyzer_) extractVariables(
 			if leftName == rightName {
 				if count == 1 {
 					var uniqueName = leftName + stc.Itoa(count)
-					var index = left.GetSlot()
+					var index = col.Index(left.GetSlot())
 					variables.SetValue(index, uniqueName)
 				}
 				count++
 				rightName = rightName + stc.Itoa(count)
-				var index = right.GetSlot()
+				var index = col.Index(right.GetSlot())
 				variables.SetValue(index, rightName)
 			}
 		}

@@ -46,10 +46,6 @@ func (c *aspectMethodClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -65,8 +61,6 @@ func (v *aspectMethod_) GetMethod() MethodLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

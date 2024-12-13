@@ -53,10 +53,6 @@ func (c *declarationClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -80,8 +76,6 @@ func (v *declaration_) GetOptionalConstraints() ConstraintsLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

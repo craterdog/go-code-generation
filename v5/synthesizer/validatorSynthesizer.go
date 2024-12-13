@@ -54,17 +54,20 @@ func (v *validatorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *validatorSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = validatorSynthesizerClassReference().warningMessage_
+	var class = validatorSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *validatorSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = validatorSynthesizerClassReference().accessFunction_
+	var class = validatorSynthesizerClassReference()
+	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *validatorSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = validatorSynthesizerClassReference().constructorMethods_
+	var class = validatorSynthesizerClassReference()
+	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
@@ -79,7 +82,8 @@ func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = validatorSynthesizerClassReference().principalMethods_
+	var class = validatorSynthesizerClassReference()
+	var principalMethods = class.principalMethods_
 	return principalMethods
 }
 
@@ -89,7 +93,8 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods = validatorSynthesizerClassReference().aspectMethods_
+	var class = validatorSynthesizerClassReference()
+	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
 		aspectMethods,
@@ -106,22 +111,26 @@ func (v *validatorSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = validatorSynthesizerClassReference().privateMethods_
+	var class = validatorSynthesizerClassReference()
+	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *validatorSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = validatorSynthesizerClassReference().instanceStructure_
+	var class = validatorSynthesizerClassReference()
+	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *validatorSynthesizer_) CreateClassStructure() string {
-	var classStructure = validatorSynthesizerClassReference().classStructure_
+	var class = validatorSynthesizerClassReference()
+	var classStructure = class.classStructure_
 	return classStructure
 }
 
 func (v *validatorSynthesizer_) CreateClassReference() string {
-	var classReference = validatorSynthesizerClassReference().classReference_
+	var class = validatorSynthesizerClassReference()
+	var classReference = class.classReference_
 	return classReference
 }
 
@@ -134,7 +143,8 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	var importedPackages = validatorSynthesizerClassReference().importedPackages_
+	var class = validatorSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -150,9 +160,10 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var processRule = validatorSynthesizerClassReference().processRule_
+	var class = validatorSynthesizerClassReference()
+	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
-		processRule = validatorSynthesizerClassReference().processIndexedRule_
+		processRule = class.processIndexedRule_
 	}
 	processRule = uti.ReplaceAll(
 		processRule,
@@ -180,9 +191,10 @@ func (v *validatorSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	processToken = validatorSynthesizerClassReference().processToken_
+	var class = validatorSynthesizerClassReference()
+	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
-		processToken = validatorSynthesizerClassReference().processIndexedToken_
+		processToken = class.processIndexedToken_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,

@@ -54,12 +54,14 @@ func (v *scannerSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *scannerSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = scannerSynthesizerClassReference().warningMessage_
+	var class = scannerSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *scannerSynthesizer_) CreateAccessFunction() string {
-	var accessFunction = scannerSynthesizerClassReference().accessFunction_
+	var class = scannerSynthesizerClassReference()
+	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
@@ -69,17 +71,20 @@ func (v *scannerSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreateConstructorMethods() string {
-	var constructorMethods = scannerSynthesizerClassReference().constructorMethods_
+	var class = scannerSynthesizerClassReference()
+	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
 func (v *scannerSynthesizer_) CreateFunctionMethods() string {
-	var functionMethods = scannerSynthesizerClassReference().functionMethods_
+	var class = scannerSynthesizerClassReference()
+	var functionMethods = class.functionMethods_
 	return functionMethods
 }
 
 func (v *scannerSynthesizer_) CreatePrincipalMethods() string {
-	var principalMethods = scannerSynthesizerClassReference().principalMethods_
+	var class = scannerSynthesizerClassReference()
+	var principalMethods = class.principalMethods_
 	return principalMethods
 }
 
@@ -94,7 +99,8 @@ func (v *scannerSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreatePrivateMethods() string {
-	var privateMethods = scannerSynthesizerClassReference().privateMethods_
+	var class = scannerSynthesizerClassReference()
+	var privateMethods = class.privateMethods_
 	var foundCases = v.createFoundCases()
 	privateMethods = uti.ReplaceAll(
 		privateMethods,
@@ -105,17 +111,20 @@ func (v *scannerSynthesizer_) CreatePrivateMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreateInstanceStructure() string {
-	var instanceStructure = scannerSynthesizerClassReference().instanceStructure_
+	var class = scannerSynthesizerClassReference()
+	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *scannerSynthesizer_) CreateClassStructure() string {
-	var classStructure = scannerSynthesizerClassReference().classStructure_
+	var class = scannerSynthesizerClassReference()
+	var classStructure = class.classStructure_
 	return classStructure
 }
 
 func (v *scannerSynthesizer_) CreateClassReference() string {
-	var classReference = scannerSynthesizerClassReference().classReference_
+	var class = scannerSynthesizerClassReference()
+	var classReference = class.classReference_
 	var tokenIdentifiers = v.createTokenIdentifiers()
 	classReference = uti.ReplaceAll(
 		classReference,
@@ -140,7 +149,8 @@ func (v *scannerSynthesizer_) CreateClassReference() string {
 func (v *scannerSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = scannerSynthesizerClassReference().importedPackages_
+	var class = scannerSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -160,7 +170,8 @@ func (v *scannerSynthesizer_) createRegularExpressions() string {
 		var association = expressions.GetNext()
 		var expressionName = association.GetKey()
 		var expressionValue = association.GetValue()
-		var regularExpression = scannerSynthesizerClassReference().regularExpression_
+		var class = scannerSynthesizerClassReference()
+		var regularExpression = class.regularExpression_
 		regularExpression = uti.ReplaceAll(
 			regularExpression,
 			"expressionName",
@@ -181,7 +192,8 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var foundCase = scannerSynthesizerClassReference().foundCase_
+		var class = scannerSynthesizerClassReference()
+		var foundCase = class.foundCase_
 		foundCase = uti.ReplaceAll(
 			foundCase,
 			"tokenName",
@@ -197,7 +209,8 @@ func (v *scannerSynthesizer_) createTokenIdentifiers() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var tokenIdentifier = scannerSynthesizerClassReference().tokenIdentifier_
+		var class = scannerSynthesizerClassReference()
+		var tokenIdentifier = class.tokenIdentifier_
 		tokenIdentifier = uti.ReplaceAll(
 			tokenIdentifier,
 			"tokenName",
@@ -213,7 +226,8 @@ func (v *scannerSynthesizer_) createTokenMatchers() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var tokenMatcher = scannerSynthesizerClassReference().tokenMatcher_
+		var class = scannerSynthesizerClassReference()
+		var tokenMatcher = class.tokenMatcher_
 		tokenMatcher = uti.ReplaceAll(
 			tokenMatcher,
 			"tokenName",
@@ -273,7 +287,7 @@ var scannerSynthesizerClassReference_ = &scannerSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	abs "github.com/craterdog/go-collection-framework/v4/collection"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
@@ -460,8 +474,9 @@ func (v *scanner_) foundToken(
 	tokenType TokenType,
 ) bool {
 	// Attempt to match the specified token type.
+	var class = scannerClassReference()
+	var matcher = class.matchers_[tokenType]
 	var text = string(v.runes_[v.next_:])
-	var matcher = scannerClassReference().matchers_[tokenType]
 	var match = matcher.FindString(text)
 	if uti.IsUndefined(match) {
 		return false
@@ -515,7 +530,7 @@ loop:
 			break loop
 		}
 	}
-	v.tokens_.CloseQueue()
+	v.tokens_.CloseChannel()
 }
 `,
 

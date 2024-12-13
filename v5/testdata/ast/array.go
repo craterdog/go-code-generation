@@ -38,10 +38,6 @@ func (c *arrayClass_) Make() ArrayLike {
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -53,8 +49,6 @@ func (v *array_) GetClass() ArrayClassLike {
 // Attribute Methods
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

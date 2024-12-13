@@ -52,10 +52,6 @@ func (c *abstractionClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -83,8 +79,6 @@ func (v *abstraction_) GetOptionalArguments() ArgumentsLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

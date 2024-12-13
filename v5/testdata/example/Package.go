@@ -39,8 +39,8 @@ match the following regular expression: [a-zA-Z][a-zA-Z0-9]*
 type Identifier string
 
 /*
-Ordinal is a constrained type representing an ordinal number in the range [1..∞).
-The value 0 is used to represent infinity.
+Ordinal is a constrained type representing an ordinal number in the range
+[1..∞).  The value 0 is used to represent infinity.
 */
 type Ordinal uint64
 
@@ -135,8 +135,8 @@ type ArrayClassLike[V any] interface {
 }
 
 /*
-AssociationClassLike[K comparable, V any] is a class interface that declares
-the complete set of class constructors, constants and functions that must be
+AssociationClassLike[K comparable, V any] is a class interface that declares the
+complete set of class constructors, constants and functions that must be
 supported by each concrete association-like class.
 */
 type AssociationClassLike[K comparable, V any] interface {
@@ -154,8 +154,8 @@ concrete catalog-like class.
 
 The following functions are supported:
 
-Extract() returns a new catalog containing only the associations that are in
-the specified catalog that have the specified keys.  The associations in the
+Extract() returns a new catalog containing only the associations that are in the
+specified catalog that have the specified keys.  The associations in the
 resulting catalog will be in the same order as the specified keys.
 
 Merge() returns a new catalog containing all of the associations that are in
@@ -193,9 +193,9 @@ type CatalogClassLike[V any] interface {
 // INSTANCE DECLARATIONS
 
 /*
-AngleLike is an instance interface that declares the complete set of
-principal, attribute and aspect methods that must be supported by each
-instance of a concrete angle-like class.
+AngleLike is an instance interface that declares the complete set of principal,
+attribute and aspect methods that must be supported by each instance of a
+concrete angle-like class.
 */
 type AngleLike interface {
 	// Principal Methods

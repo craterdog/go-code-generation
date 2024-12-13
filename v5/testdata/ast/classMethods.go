@@ -50,10 +50,6 @@ func (c *classMethodsClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -77,8 +73,6 @@ func (v *classMethods_) GetOptionalFunctionSubsection() FunctionSubsectionLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

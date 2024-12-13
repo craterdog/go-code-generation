@@ -44,49 +44,58 @@ func (v *packageSynthesizer_) GetClass() PackageSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *packageSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = packageSynthesizerClassReference().legalNotice_
+	var class = packageSynthesizerClassReference()
+	var legalNotice = class.legalNotice_
 	return legalNotice
 }
 
 func (v *packageSynthesizer_) CreateWarningMessage() string {
-	var warningMessage = packageSynthesizerClassReference().warningMessage_
+	var class = packageSynthesizerClassReference()
+	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *packageSynthesizer_) CreatePackageDescription() string {
-	var packageDescription = packageSynthesizerClassReference().packageDescription_
+	var class = packageSynthesizerClassReference()
+	var packageDescription = class.packageDescription_
 	return packageDescription
 }
 
 func (v *packageSynthesizer_) CreateTypeDeclarations() string {
-	var typeDeclarations = packageSynthesizerClassReference().typeDeclarations_
+	var class = packageSynthesizerClassReference()
+	var typeDeclarations = class.typeDeclarations_
 	return typeDeclarations
 }
 
 func (v *packageSynthesizer_) CreateFunctionalDeclarations() string {
-	var functionalDeclarations = packageSynthesizerClassReference().functionalDeclarations_
+	var class = packageSynthesizerClassReference()
+	var functionalDeclarations = class.functionalDeclarations_
 	return functionalDeclarations
 }
 
 func (v *packageSynthesizer_) CreateClassDeclarations() string {
-	var classDeclarations = packageSynthesizerClassReference().classDeclarations_
+	var class = packageSynthesizerClassReference()
+	var classDeclarations = class.classDeclarations_
 	return classDeclarations
 }
 
 func (v *packageSynthesizer_) CreateInstanceDeclarations() string {
-	var instanceDeclarations = packageSynthesizerClassReference().instanceDeclarations_
+	var class = packageSynthesizerClassReference()
+	var instanceDeclarations = class.instanceDeclarations_
 	return instanceDeclarations
 }
 
 func (v *packageSynthesizer_) CreateAspectDeclarations() string {
-	var aspectDeclarations = packageSynthesizerClassReference().aspectDeclarations_
+	var class = packageSynthesizerClassReference()
+	var aspectDeclarations = class.aspectDeclarations_
 	return aspectDeclarations
 }
 
 func (v *packageSynthesizer_) PerformGlobalUpdates(
 	source string,
 ) string {
-	var importedPackages = packageSynthesizerClassReference().importedPackages_
+	var class = packageSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
 	source = uti.ReplaceAll(
 		source,
 		"importedPackages",
@@ -155,8 +164,8 @@ match the following regular expression: [a-zA-Z][a-zA-Z0-9]*
 type Identifier string
 
 /*
-Ordinal is a constrained type representing an ordinal number in the range [1..∞).
-The value 0 is used to represent infinity.
+Ordinal is a constrained type representing an ordinal number in the range
+[1..∞).  The value 0 is used to represent infinity.
 */
 type Ordinal uint64
 
@@ -251,8 +260,8 @@ type ArrayClassLike[V any] interface {
 }
 
 /*
-AssociationClassLike[K comparable, V any] is a class interface that declares
-the complete set of class constructors, constants and functions that must be
+AssociationClassLike[K comparable, V any] is a class interface that declares the
+complete set of class constructors, constants and functions that must be
 supported by each concrete association-like class.
 */
 type AssociationClassLike[K comparable, V any] interface {
@@ -270,8 +279,8 @@ concrete catalog-like class.
 
 The following functions are supported:
 
-Extract() returns a new catalog containing only the associations that are in
-the specified catalog that have the specified keys.  The associations in the
+Extract() returns a new catalog containing only the associations that are in the
+specified catalog that have the specified keys.  The associations in the
 resulting catalog will be in the same order as the specified keys.
 
 Merge() returns a new catalog containing all of the associations that are in
@@ -309,9 +318,9 @@ type CatalogClassLike[V any] interface {
 
 	instanceDeclarations_: `
 /*
-AngleLike is an instance interface that declares the complete set of
-principal, attribute and aspect methods that must be supported by each
-instance of a concrete angle-like class.
+AngleLike is an instance interface that declares the complete set of principal,
+attribute and aspect methods that must be supported by each instance of a
+concrete angle-like class.
 */
 type AngleLike interface {
 	// Principal Methods

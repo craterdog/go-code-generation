@@ -56,10 +56,6 @@ func (c *packageDeclarationClass_) Make(
 	return instance
 }
 
-// Constant Methods
-
-// Function Methods
-
 // INSTANCE INTERFACE
 
 // Principal Methods
@@ -83,8 +79,6 @@ func (v *packageDeclaration_) GetPackageImports() PackageImportsLike {
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 
