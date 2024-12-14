@@ -18,10 +18,10 @@
 └──────────────────────────────────────────────────────────────────────────────┘
 
 Package "module" declares type aliases for the commonly used types declared in
-the packages contained in this module.  It also provides a default constructor
-for each commonly used class that is exported by the module.  Each constructor
-delegates the actual construction process to its corresponding concrete class
-declared in the corresponding package contained within this module.
+the packages contained in this module.  It also provides constructors for each
+commonly used class that is exported by the module.  Each constructor delegates
+the actual construction process to its corresponding concrete class declared in
+the corresponding package contained within this module.
 
 For detailed documentation on this entire module refer to the wiki:
   - https://github.com/craterdog/go-class-model/wiki
@@ -127,9 +127,9 @@ type (
 	Methodical = gra.Methodical
 )
 
-// DEFAULT CONSTRUCTORS
+// CLASS CONSTRUCTORS
 
-// Ast
+// ast/Abstraction
 
 func Abstraction(
 	optionalPrefix PrefixLike,
@@ -145,6 +145,8 @@ func Abstraction(
 	)
 }
 
+// ast/AdditionalArgument
+
 func AdditionalArgument(
 	argument ArgumentLike,
 ) AdditionalArgumentLike {
@@ -152,6 +154,8 @@ func AdditionalArgument(
 		argument,
 	)
 }
+
+// ast/AdditionalConstraint
 
 func AdditionalConstraint(
 	constraint ConstraintLike,
@@ -161,6 +165,8 @@ func AdditionalConstraint(
 	)
 }
 
+// ast/AdditionalValue
+
 func AdditionalValue(
 	name string,
 ) AdditionalValueLike {
@@ -169,6 +175,8 @@ func AdditionalValue(
 	)
 }
 
+// ast/Argument
+
 func Argument(
 	abstraction AbstractionLike,
 ) ArgumentLike {
@@ -176,6 +184,8 @@ func Argument(
 		abstraction,
 	)
 }
+
+// ast/Arguments
 
 func Arguments(
 	argument ArgumentLike,
@@ -187,9 +197,13 @@ func Arguments(
 	)
 }
 
+// ast/Array
+
 func Array() ArrayLike {
 	return ast.ArrayClass().Array()
 }
+
+// ast/AspectDeclaration
 
 func AspectDeclaration(
 	declaration DeclarationLike,
@@ -201,6 +215,8 @@ func AspectDeclaration(
 	)
 }
 
+// ast/AspectInterface
+
 func AspectInterface(
 	abstraction AbstractionLike,
 ) AspectInterfaceLike {
@@ -208,6 +224,8 @@ func AspectInterface(
 		abstraction,
 	)
 }
+
+// ast/AspectMethod
 
 func AspectMethod(
 	method MethodLike,
@@ -217,6 +235,8 @@ func AspectMethod(
 	)
 }
 
+// ast/AspectSection
+
 func AspectSection(
 	aspectDeclarations abs.Sequential[AspectDeclarationLike],
 ) AspectSectionLike {
@@ -224,6 +244,8 @@ func AspectSection(
 		aspectDeclarations,
 	)
 }
+
+// ast/AspectSubsection
 
 func AspectSubsection(
 	aspectInterfaces abs.Sequential[AspectInterfaceLike],
@@ -233,6 +255,8 @@ func AspectSubsection(
 	)
 }
 
+// ast/AttributeMethod
+
 func AttributeMethod(
 	any_ any,
 ) AttributeMethodLike {
@@ -240,6 +264,8 @@ func AttributeMethod(
 		any_,
 	)
 }
+
+// ast/AttributeSubsection
 
 func AttributeSubsection(
 	attributeMethods abs.Sequential[AttributeMethodLike],
@@ -249,9 +275,13 @@ func AttributeSubsection(
 	)
 }
 
+// ast/Channel
+
 func Channel() ChannelLike {
 	return ast.ChannelClass().Channel()
 }
+
+// ast/ClassDeclaration
 
 func ClassDeclaration(
 	declaration DeclarationLike,
@@ -262,6 +292,8 @@ func ClassDeclaration(
 		classMethods,
 	)
 }
+
+// ast/ClassMethods
 
 func ClassMethods(
 	constructorSubsection ConstructorSubsectionLike,
@@ -275,6 +307,8 @@ func ClassMethods(
 	)
 }
 
+// ast/ClassSection
+
 func ClassSection(
 	classDeclarations abs.Sequential[ClassDeclarationLike],
 ) ClassSectionLike {
@@ -282,6 +316,8 @@ func ClassSection(
 		classDeclarations,
 	)
 }
+
+// ast/ConstantMethod
 
 func ConstantMethod(
 	name string,
@@ -293,6 +329,8 @@ func ConstantMethod(
 	)
 }
 
+// ast/ConstantSubsection
+
 func ConstantSubsection(
 	constantMethods abs.Sequential[ConstantMethodLike],
 ) ConstantSubsectionLike {
@@ -300,6 +338,8 @@ func ConstantSubsection(
 		constantMethods,
 	)
 }
+
+// ast/Constraint
 
 func Constraint(
 	name string,
@@ -311,6 +351,8 @@ func Constraint(
 	)
 }
 
+// ast/Constraints
+
 func Constraints(
 	constraint ConstraintLike,
 	additionalConstraints abs.Sequential[AdditionalConstraintLike],
@@ -320,6 +362,8 @@ func Constraints(
 		additionalConstraints,
 	)
 }
+
+// ast/ConstructorMethod
 
 func ConstructorMethod(
 	name string,
@@ -333,6 +377,8 @@ func ConstructorMethod(
 	)
 }
 
+// ast/ConstructorSubsection
+
 func ConstructorSubsection(
 	constructorMethods abs.Sequential[ConstructorMethodLike],
 ) ConstructorSubsectionLike {
@@ -340,6 +386,8 @@ func ConstructorSubsection(
 		constructorMethods,
 	)
 }
+
+// ast/Declaration
 
 func Declaration(
 	comment string,
@@ -353,6 +401,8 @@ func Declaration(
 	)
 }
 
+// ast/Enumeration
+
 func Enumeration(
 	value ValueLike,
 	additionalValues abs.Sequential[AdditionalValueLike],
@@ -362,6 +412,8 @@ func Enumeration(
 		additionalValues,
 	)
 }
+
+// ast/FunctionMethod
 
 func FunctionMethod(
 	name string,
@@ -375,6 +427,8 @@ func FunctionMethod(
 	)
 }
 
+// ast/FunctionSubsection
+
 func FunctionSubsection(
 	functionMethods abs.Sequential[FunctionMethodLike],
 ) FunctionSubsectionLike {
@@ -382,6 +436,8 @@ func FunctionSubsection(
 		functionMethods,
 	)
 }
+
+// ast/FunctionalDeclaration
 
 func FunctionalDeclaration(
 	declaration DeclarationLike,
@@ -395,6 +451,8 @@ func FunctionalDeclaration(
 	)
 }
 
+// ast/FunctionalSection
+
 func FunctionalSection(
 	functionalDeclarations abs.Sequential[FunctionalDeclarationLike],
 ) FunctionalSectionLike {
@@ -402,6 +460,8 @@ func FunctionalSection(
 		functionalDeclarations,
 	)
 }
+
+// ast/GetterMethod
 
 func GetterMethod(
 	name string,
@@ -413,6 +473,8 @@ func GetterMethod(
 	)
 }
 
+// ast/ImportedPackage
+
 func ImportedPackage(
 	name string,
 	path string,
@@ -423,6 +485,8 @@ func ImportedPackage(
 	)
 }
 
+// ast/InstanceDeclaration
+
 func InstanceDeclaration(
 	declaration DeclarationLike,
 	instanceMethods InstanceMethodsLike,
@@ -432,6 +496,8 @@ func InstanceDeclaration(
 		instanceMethods,
 	)
 }
+
+// ast/InstanceMethods
 
 func InstanceMethods(
 	principalSubsection PrincipalSubsectionLike,
@@ -445,6 +511,8 @@ func InstanceMethods(
 	)
 }
 
+// ast/InstanceSection
+
 func InstanceSection(
 	instanceDeclarations abs.Sequential[InstanceDeclarationLike],
 ) InstanceSectionLike {
@@ -452,6 +520,8 @@ func InstanceSection(
 		instanceDeclarations,
 	)
 }
+
+// ast/InterfaceDeclarations
 
 func InterfaceDeclarations(
 	classSection ClassSectionLike,
@@ -465,6 +535,8 @@ func InterfaceDeclarations(
 	)
 }
 
+// ast/LegalNotice
+
 func LegalNotice(
 	comment string,
 ) LegalNoticeLike {
@@ -473,6 +545,8 @@ func LegalNotice(
 	)
 }
 
+// ast/Map
+
 func Map(
 	name string,
 ) MapLike {
@@ -480,6 +554,8 @@ func Map(
 		name,
 	)
 }
+
+// ast/Method
 
 func Method(
 	name string,
@@ -493,6 +569,8 @@ func Method(
 	)
 }
 
+// ast/Model
+
 func Model(
 	packageDeclaration PackageDeclarationLike,
 	primitiveDeclarations PrimitiveDeclarationsLike,
@@ -505,6 +583,8 @@ func Model(
 	)
 }
 
+// ast/Multivalue
+
 func Multivalue(
 	parameters abs.Sequential[ParameterLike],
 ) MultivalueLike {
@@ -513,6 +593,8 @@ func Multivalue(
 	)
 }
 
+// ast/None
+
 func None(
 	newline string,
 ) NoneLike {
@@ -520,6 +602,8 @@ func None(
 		newline,
 	)
 }
+
+// ast/PackageDeclaration
 
 func PackageDeclaration(
 	legalNotice LegalNoticeLike,
@@ -533,6 +617,8 @@ func PackageDeclaration(
 	)
 }
 
+// ast/PackageHeader
+
 func PackageHeader(
 	comment string,
 	name string,
@@ -543,6 +629,8 @@ func PackageHeader(
 	)
 }
 
+// ast/PackageImports
+
 func PackageImports(
 	importedPackages abs.Sequential[ImportedPackageLike],
 ) PackageImportsLike {
@@ -550,6 +638,8 @@ func PackageImports(
 		importedPackages,
 	)
 }
+
+// ast/Parameter
 
 func Parameter(
 	name string,
@@ -561,6 +651,8 @@ func Parameter(
 	)
 }
 
+// ast/Prefix
+
 func Prefix(
 	any_ any,
 ) PrefixLike {
@@ -568,6 +660,8 @@ func Prefix(
 		any_,
 	)
 }
+
+// ast/PrimitiveDeclarations
 
 func PrimitiveDeclarations(
 	typeSection TypeSectionLike,
@@ -579,6 +673,8 @@ func PrimitiveDeclarations(
 	)
 }
 
+// ast/PrincipalMethod
+
 func PrincipalMethod(
 	method MethodLike,
 ) PrincipalMethodLike {
@@ -586,6 +682,8 @@ func PrincipalMethod(
 		method,
 	)
 }
+
+// ast/PrincipalSubsection
 
 func PrincipalSubsection(
 	principalMethods abs.Sequential[PrincipalMethodLike],
@@ -595,6 +693,8 @@ func PrincipalSubsection(
 	)
 }
 
+// ast/Result
+
 func Result(
 	any_ any,
 ) ResultLike {
@@ -602,6 +702,8 @@ func Result(
 		any_,
 	)
 }
+
+// ast/SetterMethod
 
 func SetterMethod(
 	name string,
@@ -613,6 +715,8 @@ func SetterMethod(
 	)
 }
 
+// ast/Suffix
+
 func Suffix(
 	name string,
 ) SuffixLike {
@@ -620,6 +724,8 @@ func Suffix(
 		name,
 	)
 }
+
+// ast/TypeDeclaration
 
 func TypeDeclaration(
 	declaration DeclarationLike,
@@ -633,6 +739,8 @@ func TypeDeclaration(
 	)
 }
 
+// ast/TypeSection
+
 func TypeSection(
 	typeDeclarations abs.Sequential[TypeDeclarationLike],
 ) TypeSectionLike {
@@ -640,6 +748,8 @@ func TypeSection(
 		typeDeclarations,
 	)
 }
+
+// ast/Value
 
 func Value(
 	name string,
@@ -651,19 +761,25 @@ func Value(
 	)
 }
 
-// Grammar
+// grammar/Formatter
 
 func Formatter() FormatterLike {
 	return gra.FormatterClass().Formatter()
 }
 
+// grammar/Parser
+
 func Parser() ParserLike {
 	return gra.ParserClass().Parser()
 }
 
+// grammar/Processor
+
 func Processor() ProcessorLike {
 	return gra.ProcessorClass().Processor()
 }
+
+// grammar/Scanner
 
 func Scanner(
 	source string,
@@ -674,6 +790,8 @@ func Scanner(
 		tokens,
 	)
 }
+
+// grammar/Token
 
 func Token(
 	line uint,
@@ -689,9 +807,13 @@ func Token(
 	)
 }
 
+// grammar/Validator
+
 func Validator() ValidatorLike {
 	return gra.ValidatorClass().Validator()
 }
+
+// grammar/Visitor
 
 func Visitor(
 	processor Methodical,
