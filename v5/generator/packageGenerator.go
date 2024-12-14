@@ -26,7 +26,7 @@ func PackageGeneratorClass() PackageGeneratorClassLike {
 
 // Constructor Methods
 
-func (c *packageGeneratorClass_) Make() PackageGeneratorLike {
+func (c *packageGeneratorClass_) PackageGenerator() PackageGeneratorLike {
 	var instance = &packageGenerator_{
 		// Initialize the instance attributes.
 	}

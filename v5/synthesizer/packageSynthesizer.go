@@ -26,7 +26,7 @@ func PackageSynthesizerClass() PackageSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *packageSynthesizerClass_) Make() PackageSynthesizerLike {
+func (c *packageSynthesizerClass_) PackageSynthesizer() PackageSynthesizerLike {
 	var instance = &packageSynthesizer_{
 		// Initialize the instance attributes.
 	}

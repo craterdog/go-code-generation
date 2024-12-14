@@ -37,7 +37,7 @@ functions that must be supported by all class-generator-class-like classes.
 */
 type ClassGeneratorClassLike interface {
 	// Constructor Methods
-	Make() ClassGeneratorLike
+	ClassGenerator() ClassGeneratorLike
 }
 
 /*
@@ -46,7 +46,7 @@ functions that must be supported by all module-generator-class-like classes.
 */
 type ModuleGeneratorClassLike interface {
 	// Constructor Methods
-	Make() ModuleGeneratorLike
+	ModuleGenerator() ModuleGeneratorLike
 }
 
 /*
@@ -55,7 +55,7 @@ functions that must be supported by all package-generator-class-like classes.
 */
 type PackageGeneratorClassLike interface {
 	// Constructor Methods
-	Make() PackageGeneratorLike
+	PackageGenerator() PackageGeneratorLike
 }
 
 // INSTANCE DECLARATIONS

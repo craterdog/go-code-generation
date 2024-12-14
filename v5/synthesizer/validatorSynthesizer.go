@@ -28,12 +28,12 @@ func ValidatorSynthesizerClass() ValidatorSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *validatorSynthesizerClass_) Make(
+func (c *validatorSynthesizerClass_) ValidatorSynthesizer(
 	syntax not.SyntaxLike,
 ) ValidatorSynthesizerLike {
 	var instance = &validatorSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

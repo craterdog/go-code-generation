@@ -28,12 +28,12 @@ func ParserSynthesizerClass() ParserSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *parserSynthesizerClass_) Make(
+func (c *parserSynthesizerClass_) ParserSynthesizer(
 	syntax not.SyntaxLike,
 ) ParserSynthesizerLike {
 	var instance = &parserSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

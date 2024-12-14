@@ -31,7 +31,7 @@ func ModelAnalyzerClass() ModelAnalyzerClassLike {
 
 // Constructor Methods
 
-func (c *modelAnalyzerClass_) Make(
+func (c *modelAnalyzerClass_) ModelAnalyzer(
 	model ast.ModelLike,
 	className string,
 ) ModelAnalyzerLike {
@@ -332,6 +332,7 @@ func (v *modelAnalyzer_) analyzePrivateAttributes(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
 	var classMethods = classDeclaration.GetClassMethods()
+	var className = v.extractClassName(classDeclaration)
 	var constructorSubsection = classMethods.GetConstructorSubsection()
 	var constructorMethods = constructorSubsection.GetConstructorMethods().GetIterator()
 	for constructorMethods.HasNext() {
@@ -339,7 +340,7 @@ func (v *modelAnalyzer_) analyzePrivateAttributes(
 		var name = constructorMethod.GetName()
 		// Focus only on constructors that are passed attributes as arguments.
 		if !v.isIntrinsic_ &&
-			(name == "Make" || sts.HasPrefix(name, "MakeWith")) {
+			(name == className || sts.HasPrefix(name, className+"With")) {
 			var parameters = constructorMethod.GetParameters().GetIterator()
 			for parameters.HasNext() {
 				var parameter = parameters.GetNext()

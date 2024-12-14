@@ -31,13 +31,13 @@ func NodeSynthesizerClass() NodeSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *nodeSynthesizerClass_) Make(
+func (c *nodeSynthesizerClass_) NodeSynthesizer(
 	model mod.ModelLike,
 	className string,
 ) NodeSynthesizerLike {
 	var instance = &nodeSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.ModelAnalyzerClass().Make(model, className),
+		analyzer_: ana.ModelAnalyzerClass().ModelAnalyzer(model, className),
 	}
 	return instance
 }

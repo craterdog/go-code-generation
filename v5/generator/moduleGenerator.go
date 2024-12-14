@@ -26,7 +26,7 @@ func ModuleGeneratorClass() ModuleGeneratorClassLike {
 
 // Constructor Methods
 
-func (c *moduleGeneratorClass_) Make() ModuleGeneratorLike {
+func (c *moduleGeneratorClass_) ModuleGenerator() ModuleGeneratorLike {
 	var instance = &moduleGenerator_{
 		// Initialize the instance attributes.
 	}

@@ -28,12 +28,12 @@ func ScannerSynthesizerClass() ScannerSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *scannerSynthesizerClass_) Make(
+func (c *scannerSynthesizerClass_) ScannerSynthesizer(
 	syntax not.SyntaxLike,
 ) ScannerSynthesizerLike {
 	var instance = &scannerSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

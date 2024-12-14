@@ -111,7 +111,7 @@ func ModelAnalyzer(arguments ...any) ModelAnalyzerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = ana.ModelAnalyzerClass().Make(
+		instance_ = ana.ModelAnalyzerClass().ModelAnalyzer(
 			model,
 			className,
 		)
@@ -152,7 +152,7 @@ func SyntaxAnalyzer(arguments ...any) SyntaxAnalyzerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = ana.SyntaxAnalyzerClass().Make(
+		instance_ = ana.SyntaxAnalyzerClass().SyntaxAnalyzer(
 			syntax,
 		)
 	default:
@@ -191,7 +191,7 @@ func ClassGenerator(arguments ...any) ClassGeneratorLike {
 	var instance_ ClassGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.ClassGeneratorClass().Make()
+		instance_ = gen.ClassGeneratorClass().ClassGenerator()
 	default:
 		var message = fmt.Sprintf(
 			"No ClassGenerator constructor matching the arguments was found: %v\n",
@@ -226,7 +226,7 @@ func ModuleGenerator(arguments ...any) ModuleGeneratorLike {
 	var instance_ ModuleGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.ModuleGeneratorClass().Make()
+		instance_ = gen.ModuleGeneratorClass().ModuleGenerator()
 	default:
 		var message = fmt.Sprintf(
 			"No ModuleGenerator constructor matching the arguments was found: %v\n",
@@ -261,7 +261,7 @@ func PackageGenerator(arguments ...any) PackageGeneratorLike {
 	var instance_ PackageGeneratorLike
 	switch argumentTypes {
 	case "":
-		instance_ = gen.PackageGeneratorClass().Make()
+		instance_ = gen.PackageGeneratorClass().PackageGenerator()
 	default:
 		var message = fmt.Sprintf(
 			"No PackageGenerator constructor matching the arguments was found: %v\n",
@@ -301,7 +301,7 @@ func AstSynthesizer(arguments ...any) AstSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.AstSynthesizerClass().Make(
+		instance_ = syn.AstSynthesizerClass().AstSynthesizer(
 			syntax,
 		)
 	default:
@@ -344,7 +344,7 @@ func ClassSynthesizer(arguments ...any) ClassSynthesizerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = syn.ClassSynthesizerClass().Make(
+		instance_ = syn.ClassSynthesizerClass().ClassSynthesizer(
 			model,
 			className,
 		)
@@ -385,7 +385,7 @@ func FormatterSynthesizer(arguments ...any) FormatterSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.FormatterSynthesizerClass().Make(
+		instance_ = syn.FormatterSynthesizerClass().FormatterSynthesizer(
 			syntax,
 		)
 	default:
@@ -425,7 +425,7 @@ func GrammarSynthesizer(arguments ...any) GrammarSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.GrammarSynthesizerClass().Make(
+		instance_ = syn.GrammarSynthesizerClass().GrammarSynthesizer(
 			syntax,
 		)
 	default:
@@ -465,7 +465,7 @@ func ModuleSynthesizer(arguments ...any) ModuleSynthesizerLike {
 	switch argumentTypes {
 	case "abs.CatalogLike[string, mod.ModelLike]":
 		var models = arguments[0].(abs.CatalogLike[string, mod.ModelLike])
-		instance_ = syn.ModuleSynthesizerClass().Make(
+		instance_ = syn.ModuleSynthesizerClass().ModuleSynthesizer(
 			models,
 		)
 	default:
@@ -508,7 +508,7 @@ func NodeSynthesizer(arguments ...any) NodeSynthesizerLike {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = syn.NodeSynthesizerClass().Make(
+		instance_ = syn.NodeSynthesizerClass().NodeSynthesizer(
 			model,
 			className,
 		)
@@ -546,7 +546,7 @@ func PackageSynthesizer(arguments ...any) PackageSynthesizerLike {
 	var instance_ PackageSynthesizerLike
 	switch argumentTypes {
 	case "":
-		instance_ = syn.PackageSynthesizerClass().Make()
+		instance_ = syn.PackageSynthesizerClass().PackageSynthesizer()
 	default:
 		var message = fmt.Sprintf(
 			"No PackageSynthesizer constructor matching the arguments was found: %v\n",
@@ -584,7 +584,7 @@ func ParserSynthesizer(arguments ...any) ParserSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ParserSynthesizerClass().Make(
+		instance_ = syn.ParserSynthesizerClass().ParserSynthesizer(
 			syntax,
 		)
 	default:
@@ -624,7 +624,7 @@ func ProcessorSynthesizer(arguments ...any) ProcessorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ProcessorSynthesizerClass().Make(
+		instance_ = syn.ProcessorSynthesizerClass().ProcessorSynthesizer(
 			syntax,
 		)
 	default:
@@ -664,7 +664,7 @@ func ScannerSynthesizer(arguments ...any) ScannerSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ScannerSynthesizerClass().Make(
+		instance_ = syn.ScannerSynthesizerClass().ScannerSynthesizer(
 			syntax,
 		)
 	default:
@@ -704,7 +704,7 @@ func TokenSynthesizer(arguments ...any) TokenSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.TokenSynthesizerClass().Make(
+		instance_ = syn.TokenSynthesizerClass().TokenSynthesizer(
 			syntax,
 		)
 	default:
@@ -744,7 +744,7 @@ func ValidatorSynthesizer(arguments ...any) ValidatorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ValidatorSynthesizerClass().Make(
+		instance_ = syn.ValidatorSynthesizerClass().ValidatorSynthesizer(
 			syntax,
 		)
 	default:
@@ -784,7 +784,7 @@ func VisitorSynthesizer(arguments ...any) VisitorSynthesizerLike {
 	switch argumentTypes {
 	case "not.SyntaxLike":
 		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.VisitorSynthesizerClass().Make(
+		instance_ = syn.VisitorSynthesizerClass().VisitorSynthesizer(
 			syntax,
 		)
 	default:

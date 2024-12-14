@@ -29,12 +29,12 @@ func VisitorSynthesizerClass() VisitorSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *visitorSynthesizerClass_) Make(
+func (c *visitorSynthesizerClass_) VisitorSynthesizer(
 	syntax not.SyntaxLike,
 ) VisitorSynthesizerLike {
 	var instance = &visitorSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

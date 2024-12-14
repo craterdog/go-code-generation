@@ -28,12 +28,12 @@ func AstSynthesizerClass() AstSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *astSynthesizerClass_) Make(
+func (c *astSynthesizerClass_) AstSynthesizer(
 	syntax not.SyntaxLike,
 ) AstSynthesizerLike {
 	var instance = &astSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

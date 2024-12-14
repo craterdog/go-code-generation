@@ -31,7 +31,7 @@ func SyntaxAnalyzerClass() SyntaxAnalyzerClassLike {
 
 // Constructor Methods
 
-func (c *syntaxAnalyzerClass_) Make(
+func (c *syntaxAnalyzerClass_) SyntaxAnalyzer(
 	syntax not.SyntaxLike,
 ) SyntaxAnalyzerLike {
 	var instance = &syntaxAnalyzer_{

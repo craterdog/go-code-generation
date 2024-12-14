@@ -28,12 +28,12 @@ func FormatterSynthesizerClass() FormatterSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *formatterSynthesizerClass_) Make(
+func (c *formatterSynthesizerClass_) FormatterSynthesizer(
 	syntax not.SyntaxLike,
 ) FormatterSynthesizerLike {
 	var instance = &formatterSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

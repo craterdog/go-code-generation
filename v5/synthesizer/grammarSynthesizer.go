@@ -28,12 +28,12 @@ func GrammarSynthesizerClass() GrammarSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *grammarSynthesizerClass_) Make(
+func (c *grammarSynthesizerClass_) GrammarSynthesizer(
 	syntax not.SyntaxLike,
 ) GrammarSynthesizerLike {
 	var instance = &grammarSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

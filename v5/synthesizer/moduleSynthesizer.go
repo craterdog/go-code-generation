@@ -30,7 +30,7 @@ func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *moduleSynthesizerClass_) Make(
+func (c *moduleSynthesizerClass_) ModuleSynthesizer(
 	models abs.CatalogLike[string, mod.ModelLike],
 ) ModuleSynthesizerLike {
 	var instance = &moduleSynthesizer_{
@@ -197,7 +197,7 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		"ClassLike",
 	)
 	className = uti.MakeLowerCase(className)
-	var analyzer = ana.ModelAnalyzerClass().Make(model, className)
+	var analyzer = ana.ModelAnalyzerClass().ModelAnalyzer(model, className)
 	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
 	for constructorMethods.HasNext() {
 		var constructorMethod = constructorMethods.GetNext()

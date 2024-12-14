@@ -48,7 +48,7 @@ functions that must be supported by all ast-synthesizer-class-like classes.
 */
 type AstSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	AstSynthesizer(
 		syntax not.SyntaxLike,
 	) AstSynthesizerLike
 }
@@ -59,7 +59,7 @@ functions that must be supported by all class-synthesizer-class-like classes.
 */
 type ClassSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ClassSynthesizer(
 		model mod.ModelLike,
 		className string,
 	) ClassSynthesizerLike
@@ -71,7 +71,7 @@ functions that must be supported by all formatter-synthesizer-class-like classes
 */
 type FormatterSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	FormatterSynthesizer(
 		syntax not.SyntaxLike,
 	) FormatterSynthesizerLike
 }
@@ -82,7 +82,7 @@ functions that must be supported by all grammar-synthesizer-class-like classes.
 */
 type GrammarSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	GrammarSynthesizer(
 		syntax not.SyntaxLike,
 	) GrammarSynthesizerLike
 }
@@ -93,7 +93,7 @@ functions that must be supported by all module-synthesizer-class-like classes.
 */
 type ModuleSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ModuleSynthesizer(
 		models abs.CatalogLike[string, mod.ModelLike],
 	) ModuleSynthesizerLike
 }
@@ -104,7 +104,7 @@ functions that must be supported by all node-synthesizer-class-like classes.
 */
 type NodeSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	NodeSynthesizer(
 		model mod.ModelLike,
 		className string,
 	) NodeSynthesizerLike
@@ -116,7 +116,7 @@ functions that must be supported by all package-synthesizer-class-like classes.
 */
 type PackageSynthesizerClassLike interface {
 	// Constructor Methods
-	Make() PackageSynthesizerLike
+	PackageSynthesizer() PackageSynthesizerLike
 }
 
 /*
@@ -125,7 +125,7 @@ functions that must be supported by all parser-synthesizer-class-like classes.
 */
 type ParserSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ParserSynthesizer(
 		syntax not.SyntaxLike,
 	) ParserSynthesizerLike
 }
@@ -136,7 +136,7 @@ functions that must be supported by all processor-synthesizer-class-like classes
 */
 type ProcessorSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ProcessorSynthesizer(
 		syntax not.SyntaxLike,
 	) ProcessorSynthesizerLike
 }
@@ -147,7 +147,7 @@ functions that must be supported by all scanner-synthesizer-class-like classes.
 */
 type ScannerSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ScannerSynthesizer(
 		syntax not.SyntaxLike,
 	) ScannerSynthesizerLike
 }
@@ -158,7 +158,7 @@ functions that must be supported by all token-synthesizer-class-like classes.
 */
 type TokenSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	TokenSynthesizer(
 		syntax not.SyntaxLike,
 	) TokenSynthesizerLike
 }
@@ -169,7 +169,7 @@ functions that must be supported by all validator-synthesizer-class-like classes
 */
 type ValidatorSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	ValidatorSynthesizer(
 		syntax not.SyntaxLike,
 	) ValidatorSynthesizerLike
 }
@@ -180,7 +180,7 @@ functions that must be supported by all visitor-synthesizer-class-like classes.
 */
 type VisitorSynthesizerClassLike interface {
 	// Constructor Methods
-	Make(
+	VisitorSynthesizer(
 		syntax not.SyntaxLike,
 	) VisitorSynthesizerLike
 }

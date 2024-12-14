@@ -28,12 +28,12 @@ func ProcessorSynthesizerClass() ProcessorSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *processorSynthesizerClass_) Make(
+func (c *processorSynthesizerClass_) ProcessorSynthesizer(
 	syntax not.SyntaxLike,
 ) ProcessorSynthesizerLike {
 	var instance = &processorSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

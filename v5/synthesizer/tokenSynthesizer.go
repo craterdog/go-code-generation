@@ -28,12 +28,12 @@ func TokenSynthesizerClass() TokenSynthesizerClassLike {
 
 // Constructor Methods
 
-func (c *tokenSynthesizerClass_) Make(
+func (c *tokenSynthesizerClass_) TokenSynthesizer(
 	syntax not.SyntaxLike,
 ) TokenSynthesizerLike {
 	var instance = &tokenSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.SyntaxAnalyzerClass().Make(syntax),
+		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
 	return instance
 }

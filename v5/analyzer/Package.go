@@ -47,7 +47,7 @@ functions that must be supported by all model-analyzer-class-like classes.
 */
 type ModelAnalyzerClassLike interface {
 	// Constructor Methods
-	Make(
+	ModelAnalyzer(
 		model mod.ModelLike,
 		className string,
 	) ModelAnalyzerLike
@@ -59,7 +59,7 @@ functions that must be supported by all syntax-analyzer-class-like classes.
 */
 type SyntaxAnalyzerClassLike interface {
 	// Constructor Methods
-	Make(
+	SyntaxAnalyzer(
 		syntax not.SyntaxLike,
 	) SyntaxAnalyzerLike
 }
