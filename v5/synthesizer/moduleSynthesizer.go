@@ -219,6 +219,19 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		"className",
 		className,
 	)
+	var constraints = analyzer.GetTypeConstraints()
+	var arguments = analyzer.GetTypeArguments()
+	classConstructors = uti.ReplaceAll(
+		classConstructors,
+		"constraints",
+		constraints,
+	)
+	classConstructors = uti.ReplaceAll(
+		classConstructors,
+		"arguments",
+		arguments,
+	)
+
 	return classConstructors
 }
 
@@ -612,8 +625,8 @@ const (<NameAliases>)`,
 
 	constructorFunction_: `
 
-func <~MethodName>(<Parameters>) <~ClassName>Like {
-	return <~packageAcronym>.<~ClassName>Class().<~MethodName>(<ParameterNames>)
+func <MethodName><Constraints>(<Parameters>) <~packageAcronym>.<~ClassName>Like<Arguments> {
+	return <~packageAcronym>.<~ClassName>Class<Arguments>().<MethodName>(<ParameterNames>)
 }`,
 
 	methodParameter_: `
