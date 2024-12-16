@@ -209,6 +209,18 @@ type RankingFunction[V any] func(
 AngleClassLike is a class interface that declares the complete set of class
 constructors, constants and functions that must be supported by each concrete
 angle-like class.
+
+An angle-like class provides the functionality required by the concept of a
+mathematical angle.
+
+The following functions are supported:
+
+Sine() returns the mathematical ratio of y/r for the angle.
+
+Cosine() returns the mathematical ratio of x/r for the angle.
+
+Tangent() returns the mathematical ratio of y/x for the angle.
+
 */
 type AngleClassLike interface {
 	// Constructor Methods
@@ -239,6 +251,16 @@ type AngleClassLike interface {
 ArrayClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete array-like class.
+
+An array-like class maintains a fixed length indexed sequence of values.  Each
+value is associated with an implicit positive integer index. An array-like class
+uses ORDINAL based indexing rather than the more common—and nonsensical—ZERO
+based indexing scheme.
+
+The following functions are supported:
+
+Merge() returns a new array containing all of the values that are in the
+specified arrays in the order that they appear in each array.
 */
 type ArrayClassLike[V any] interface {
 	// Constructor Methods
@@ -283,10 +305,10 @@ Extract() returns a new catalog containing only the associations that are in the
 specified catalog that have the specified keys.  The associations in the
 resulting catalog will be in the same order as the specified keys.
 
-Merge() returns a new catalog containing all of the associations that are in
-the specified catalogs in the order that they appear in each catalog.  If a
-key is present in both catalogs, the value of the key from the second
-catalog takes precedence.
+Merge() returns a new catalog containing all of the associations that are in the
+specified catalogs in the order that they appear in each catalog.  If a key is
+present in both catalogs, the value of the key from the second catalog takes
+precedence.
 */
 type CatalogClassLike[V any] interface {
 	// Constructor Methods
@@ -336,11 +358,6 @@ type AngleLike interface {
 ArrayLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete array-like class.
-
-An array-like class maintains a fixed length indexed sequence of values.  Each
-value is associated with an implicit positive integer index. An array-like class
-uses ORDINAL based indexing rather than the more common—and nonsensical—ZERO
-based indexing scheme.
 */
 type ArrayLike[V any] interface {
 	// Principal Methods
