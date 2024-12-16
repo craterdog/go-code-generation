@@ -88,7 +88,7 @@ angle-like class.
 An angle-like class provides the functionality required by the concept of a
 mathematical angle.
 
-The following functions are supported:
+The following class functions are supported:
 
 Sine() returns the mathematical ratio of y/r for the angle.
 
@@ -131,7 +131,7 @@ value is associated with an implicit positive integer index. An array-like class
 uses ORDINAL based indexing rather than the more common—and nonsensical—ZERO
 based indexing scheme.
 
-The following functions are supported:
+The following class functions are supported:
 
 Merge() returns a new array containing all of the values that are in the
 specified arrays in the order that they appear in each array.
@@ -173,7 +173,7 @@ CatalogClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete catalog-like class.
 
-The following functions are supported:
+The following class functions are supported:
 
 Extract() returns a new catalog containing only the associations that are in the
 specified catalog that have the specified keys.  The associations in the
