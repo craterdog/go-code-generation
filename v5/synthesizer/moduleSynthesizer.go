@@ -620,7 +620,7 @@ const (<NameAliases>)`,
 	<Name> = <~packageAcronym>.<Name>`,
 
 	classConstructors_: `
-// <~packageName>/<~ClassName><Constructors>
+// <~PackageName>/<~ClassName><Constructors>
 `,
 
 	constructorFunction_: `
