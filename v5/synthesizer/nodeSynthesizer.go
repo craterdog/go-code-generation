@@ -171,9 +171,9 @@ func (v *nodeSynthesizer_) extractType(
 	abstraction mod.AbstractionLike,
 ) string {
 	var abstractType string
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		switch actual := prefix.GetAny().(type) {
+	var wrapper = abstraction.GetOptionalWrapper()
+	if uti.IsDefined(wrapper) {
+		switch actual := wrapper.GetAny().(type) {
 		case mod.ArrayLike:
 			abstractType = "[]"
 		case mod.MapLike:
@@ -182,12 +182,12 @@ func (v *nodeSynthesizer_) extractType(
 			abstractType = "chan "
 		}
 	}
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsDefined(prefix) {
+		abstractType += prefix
+	}
 	var name = abstraction.GetName()
 	abstractType += name
-	var suffix = abstraction.GetOptionalSuffix()
-	if uti.IsDefined(suffix) {
-		abstractType += "." + suffix.GetName()
-	}
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {
 		var argument = v.extractType(arguments.GetArgument().GetAbstraction())

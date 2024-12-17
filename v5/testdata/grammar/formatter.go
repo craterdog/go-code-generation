@@ -84,6 +84,12 @@ func (v *formatter_) ProcessPath(
 	v.appendString(path)
 }
 
+func (v *formatter_) ProcessPrefix(
+	prefix string,
+) {
+	v.appendString(prefix)
+}
+
 func (v *formatter_) ProcessSpace(
 	space string,
 ) {
@@ -978,24 +984,6 @@ func (v *formatter_) PostprocessParameter(
 	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessPrefix(
-	prefix ast.PrefixLike,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
-func (v *formatter_) ProcessPrefixSlot(
-	slot uint,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
-func (v *formatter_) PostprocessPrefix(
-	prefix ast.PrefixLike,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
 func (v *formatter_) PreprocessPrimitiveDeclarations(
 	primitiveDeclarations ast.PrimitiveDeclarationsLike,
 ) {
@@ -1090,24 +1078,6 @@ func (v *formatter_) PostprocessSetterMethod(
 	// TBD - Add formatting of the delimited rule.
 }
 
-func (v *formatter_) PreprocessSuffix(
-	suffix ast.SuffixLike,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
-func (v *formatter_) ProcessSuffixSlot(
-	slot uint,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
-func (v *formatter_) PostprocessSuffix(
-	suffix ast.SuffixLike,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
 func (v *formatter_) PreprocessTypeDeclaration(
 	typeDeclaration ast.TypeDeclarationLike,
 	index uint,
@@ -1162,6 +1132,24 @@ func (v *formatter_) ProcessValueSlot(
 
 func (v *formatter_) PostprocessValue(
 	value ast.ValueLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PreprocessWrapper(
+	wrapper ast.WrapperLike,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) ProcessWrapperSlot(
+	slot uint,
+) {
+	// TBD - Add formatting of the delimited rule.
+}
+
+func (v *formatter_) PostprocessWrapper(
+	wrapper ast.WrapperLike,
 ) {
 	// TBD - Add formatting of the delimited rule.
 }

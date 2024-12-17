@@ -437,8 +437,9 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.delimited_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()
 	var implicit = map[string]string{
-		"newline": `"(?:" + eol_ + ")"`,
-		"space":   `"(?:[ \\t]+)"`,
+		"delimiter": `"(?:" + eol_ + ")"`,
+		"newline":   `"(?:" + eol_ + ")"`,
+		"space":     `"(?:[ \\t]+)"`,
 	}
 	v.regexps_ = col.AnyCatalog[string, string](implicit)
 	v.terms_ = col.Catalog[string, abs.ListLike[not.TermLike]]()
@@ -461,7 +462,6 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 	}
 	delimiters += `)"`
 	v.regexps_.SetValue("delimiter", delimiters)
-	v.regexps_.SortValues()
 }
 
 func (v *syntaxAnalyzer_) PreprocessTerm(

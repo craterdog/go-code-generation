@@ -14,6 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	col "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
@@ -188,18 +189,28 @@ func (v *scannerSynthesizer_) createRegularExpressions() string {
 }
 
 func (v *scannerSynthesizer_) createFoundCases() string {
+	// NOTE: The found cases must be in the same order as the expressions
+	// declared in the syntax file.  But the expressions include patterns
+	// that are only used in other expressions and not visible as tokens.
+	// And the token names have been sorted so we must pull out the token
+	// names from the catalog of expressions in their proper order.
 	var foundCases string
-	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var class = scannerSynthesizerClassReference()
-		var foundCase = class.foundCase_
-		foundCase = uti.ReplaceAll(
-			foundCase,
-			"tokenName",
-			tokenName,
-		)
-		foundCases += foundCase
+	var synthesizerClass = scannerSynthesizerClassReference()
+	var tokenNames = col.AnySet[string](v.analyzer_.GetTokenNames())
+	var expressionNames = col.AnyCatalog[string, string](
+		v.analyzer_.GetExpressions(),
+	).GetKeys().GetIterator()
+	for expressionNames.HasNext() {
+		var tokenName = expressionNames.GetNext()
+		if tokenNames.ContainsValue(tokenName) {
+			var foundCase = synthesizerClass.foundCase_
+			foundCase = uti.ReplaceAll(
+				foundCase,
+				"tokenName",
+				tokenName,
+			)
+			foundCases += foundCase
+		}
 	}
 	return foundCases
 }

@@ -190,12 +190,13 @@ loop:
 	for v.next_ < uint(len(v.runes_)) {
 		switch {
 		// Find the next token type.
-		case v.foundToken(CommentToken):
 		case v.foundToken(DelimiterToken):
-		case v.foundToken(NameToken):
 		case v.foundToken(NewlineToken):
-		case v.foundToken(PathToken):
 		case v.foundToken(SpaceToken):
+		case v.foundToken(CommentToken):
+		case v.foundToken(PrefixToken):
+		case v.foundToken(NameToken):
+		case v.foundToken(PathToken):
 		default:
 			v.foundError()
 			break loop
@@ -240,6 +241,7 @@ var scannerClassReference_ = &scannerClass_{
 		NameToken:      "name",
 		NewlineToken:   "newline",
 		PathToken:      "path",
+		PrefixToken:    "prefix",
 		SpaceToken:     "space",
 	},
 	matchers_: map[TokenType]*reg.Regexp{
@@ -249,6 +251,7 @@ var scannerClassReference_ = &scannerClass_{
 		NameToken:      reg.MustCompile("^" + name_),
 		NewlineToken:   reg.MustCompile("^" + newline_),
 		PathToken:      reg.MustCompile("^" + path_),
+		PrefixToken:    reg.MustCompile("^" + prefix_),
 		SpaceToken:     reg.MustCompile("^" + space_),
 	},
 }
@@ -273,10 +276,13 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expression patterns for each token type.
-	comment_   = "(?:/\\*" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "\\*/" + eol_ + ")"
-	delimiter_ = "(?:type|package|map|iota|interface|import|func|const|chan|\\}|\\{|\\]|\\[|\\.|\\)|\\(|=|// TYPE DECLARATIONS|// Principal Methods|// INSTANCE DECLARATIONS|// Function Methods|// FUNCTIONAL DECLARATIONS|// Constructor Methods|// Constant Methods|// CLASS DECLARATIONS|// Attribute Methods|// Aspect Interfaces|// ASPECT DECLARATIONS|,)"
-	name_      = "(?:(" + lower_ + "|" + upper_ + ")(" + lower_ + "|" + upper_ + "|" + digit_ + ")*_?)"
-	newline_   = "(?:" + eol_ + ")"
-	path_      = "(?:\"" + any_ + "*?\")"
-	space_     = "(?:[ \\t]+)"
+	delimiter_    = "(?:type|package|map|iota|interface|import|func|const|chan|\\}|\\{|\\]|\\[|\\)|\\(|=|// TYPE DECLARATIONS|// Principal Methods|// INSTANCE DECLARATIONS|// Function Methods|// FUNCTIONAL DECLARATIONS|// Constructor Methods|// Constant Methods|// CLASS DECLARATIONS|// Attribute Methods|// Aspect Interfaces|// ASPECT DECLARATIONS|,)"
+	newline_      = "(?:" + eol_ + ")"
+	space_        = "(?:[ \\t]+)"
+	alphanumeric_ = "(?:" + lower_ + "|" + upper_ + "|" + digit_ + ")"
+	character_    = "(?:" + lower_ + "|" + upper_ + ")"
+	comment_      = "(?:/\\*" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "\\*/" + eol_ + ")"
+	prefix_       = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + "){2}\\.)"
+	name_         = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + ")*_?)"
+	path_         = "(?:\"" + any_ + "*?\")"
 )

@@ -205,9 +205,9 @@ func (v *classSynthesizer_) extractType(
 	abstraction mod.AbstractionLike,
 ) string {
 	var abstractType string
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		switch actual := prefix.GetAny().(type) {
+	var wrapper = abstraction.GetOptionalWrapper()
+	if uti.IsDefined(wrapper) {
+		switch actual := wrapper.GetAny().(type) {
 		case mod.ArrayLike:
 			abstractType = "[]"
 		case mod.MapLike:
@@ -216,12 +216,12 @@ func (v *classSynthesizer_) extractType(
 			abstractType = "chan "
 		}
 	}
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsDefined(prefix) {
+		abstractType += prefix
+	}
 	var name = abstraction.GetName()
 	abstractType += name
-	var suffix = abstraction.GetOptionalSuffix()
-	if uti.IsDefined(suffix) {
-		abstractType += "." + suffix.GetName()
-	}
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {
 		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
@@ -249,7 +249,7 @@ func (v *classSynthesizer_) createAspectInterface(
 			var declaration = aspectDeclaration.GetDeclaration()
 			var constraints = declaration.GetOptionalConstraints()
 			var arguments = aspectType.GetOptionalArguments()
-			if uti.IsUndefined(aspectType.GetOptionalSuffix()) &&
+			if uti.IsUndefined(aspectType.GetOptionalPrefix()) &&
 				declaration.GetName() == aspectType.GetName() {
 				var mappings = v.extractConcreteMappings(constraints, arguments)
 				methods = v.createAspectMethods(
@@ -986,10 +986,10 @@ func (v *classSynthesizer_) replaceAbstractionType(
 	abstraction mod.AbstractionLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
 ) mod.AbstractionLike {
-	// Replace the generic type in a prefix with the concrete type.
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		prefix = v.replacePrefixType(prefix, mappings)
+	// Replace the generic type in a wrapper with the concrete type.
+	var wrapper = abstraction.GetOptionalWrapper()
+	if uti.IsDefined(wrapper) {
+		wrapper = v.replaceWrapperType(wrapper, mappings)
 	}
 
 	// Replace the generic types in a sequence of arguments with concrete types.
@@ -998,23 +998,23 @@ func (v *classSynthesizer_) replaceAbstractionType(
 		arguments = v.replaceArgumentTypes(arguments, mappings)
 	}
 
-	// Replace a non-suffixed generic type with its concrete type.
-	var typeName = abstraction.GetName()
-	var suffix = abstraction.GetOptionalSuffix()
-	if uti.IsUndefined(suffix) {
-		var concreteType = mappings.GetValue(typeName)
+	// Replace a non-prefixed generic type with its concrete type.
+	var name = abstraction.GetName()
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsUndefined(prefix) {
+		var concreteType = mappings.GetValue(name)
 		if uti.IsDefined(concreteType) {
-			suffix = concreteType.GetOptionalSuffix()
-			typeName = concreteType.GetName()
+			prefix = concreteType.GetOptionalPrefix()
+			name = concreteType.GetName()
 			arguments = concreteType.GetOptionalArguments()
 		}
 	}
 
 	// Recreate the abstraction using its updated types.
 	abstraction = mod.AbstractionClass().Abstraction(
+		wrapper,
 		prefix,
-		typeName,
-		suffix,
+		name,
 		arguments,
 	)
 
@@ -1090,22 +1090,22 @@ func (v *classSynthesizer_) replaceParameterTypes(
 	return replacedParameters
 }
 
-func (v *classSynthesizer_) replacePrefixType(
-	prefix mod.PrefixLike,
+func (v *classSynthesizer_) replaceWrapperType(
+	wrapper mod.WrapperLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
-) mod.PrefixLike {
-	switch actual := prefix.GetAny().(type) {
+) mod.WrapperLike {
+	switch actual := wrapper.GetAny().(type) {
 	case mod.MapLike:
 		// eg. map[K]V -> map[string]int
 		var typeName = actual.GetName()
 		var concreteType = mappings.GetValue(typeName)
 		typeName = concreteType.GetName()
 		var map_ = mod.MapClass().Map(typeName)
-		prefix = mod.PrefixClass().Prefix(map_)
+		wrapper = mod.WrapperClass().Wrapper(map_)
 	default:
 		// Ignore the rest since they don't contain any generic types.
 	}
-	return prefix
+	return wrapper
 }
 
 func (v *classSynthesizer_) replaceResultType(

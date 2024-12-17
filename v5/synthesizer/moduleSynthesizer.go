@@ -197,7 +197,8 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		"ClassLike",
 	)
 	className = uti.MakeLowerCase(className)
-	var analyzer = ana.ModelAnalyzerClass().ModelAnalyzer(model, className)
+	var analyzerClass = ana.ModelAnalyzerClass()
+	var analyzer = analyzerClass.ModelAnalyzer(model, className)
 	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
 	for constructorMethods.HasNext() {
 		var constructorMethod = constructorMethods.GetNext()
@@ -509,9 +510,9 @@ func (v *moduleSynthesizer_) extractType(
 	abstraction mod.AbstractionLike,
 ) string {
 	var abstractType string
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		switch actual := prefix.GetAny().(type) {
+	var wrapper = abstraction.GetOptionalWrapper()
+	if uti.IsDefined(wrapper) {
+		switch actual := wrapper.GetAny().(type) {
 		case mod.ArrayLike:
 			abstractType = "[]"
 		case mod.MapLike:
@@ -520,12 +521,12 @@ func (v *moduleSynthesizer_) extractType(
 			abstractType = "chan "
 		}
 	}
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsDefined(prefix) {
+		abstractType += prefix
+	}
 	var name = abstraction.GetName()
 	abstractType += name
-	var suffix = abstraction.GetOptionalSuffix()
-	if uti.IsDefined(suffix) {
-		abstractType += "." + suffix.GetName()
-	}
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {
 		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
