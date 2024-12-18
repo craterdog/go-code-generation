@@ -13,7 +13,7 @@
 package synthesizer
 
 import (
-	mod "github.com/craterdog/go-class-model/v5/ast"
+	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -51,10 +51,9 @@ func (v *moduleSynthesizer_) GetClass() ModuleSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *moduleSynthesizer_) CreateLegalNotice() string {
-	var packageNames = v.models_.GetKeys().AsArray()
-	var firstPackage = packageNames[0]
-	var firstModel = v.models_.GetValue(firstPackage)
-	var packageDeclaration = firstModel.GetPackageDeclaration()
+	var models = v.models_.GetIterator()
+	var model = models.GetNext().GetValue()
+	var packageDeclaration = model.GetPackageDeclaration()
 	var legalNotice = packageDeclaration.GetLegalNotice().GetComment()
 	return legalNotice
 }
@@ -111,13 +110,12 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *moduleSynthesizer_) createAspectAliases(
-	interfaceDeclarations mod.InterfaceDeclarationsLike,
+	aspectDeclarations abs.ListLike[mod.AspectDeclarationLike],
 ) (
 	aspectAliases string,
 ) {
 	var nameAliases string
-	var aspectSection = interfaceDeclarations.GetAspectSection()
-	var aspects = aspectSection.GetAspectDeclarations().GetIterator()
+	var aspects = aspectDeclarations.GetIterator()
 	for aspects.HasNext() {
 		var declaration = aspects.GetNext().GetDeclaration()
 		var nameAlias = v.createNameAlias(declaration)
@@ -137,15 +135,14 @@ func (v *moduleSynthesizer_) createAspectAliases(
 }
 
 func (v *moduleSynthesizer_) createClassAliases(
-	interfaceDeclarations mod.InterfaceDeclarationsLike,
+	classDeclarations abs.ListLike[mod.ClassDeclarationLike],
 ) (
 	classAliases string,
 ) {
 	var nameAliases string
-	var instanceSection = interfaceDeclarations.GetInstanceSection()
-	var instances = instanceSection.GetInstanceDeclarations().GetIterator()
-	for instances.HasNext() {
-		var declaration = instances.GetNext().GetDeclaration()
+	var classes = classDeclarations.GetIterator()
+	for classes.HasNext() {
+		var declaration = classes.GetNext().GetDeclaration()
 		nameAliases += v.createNameAlias(declaration)
 	}
 	if uti.IsDefined(nameAliases) {
@@ -154,6 +151,30 @@ func (v *moduleSynthesizer_) createClassAliases(
 		classAliases = class.typeAliases_
 		classAliases = uti.ReplaceAll(
 			classAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
+func (v *moduleSynthesizer_) createInstanceAliases(
+	instanceDeclarations abs.ListLike[mod.InstanceDeclarationLike],
+) (
+	instanceAliases string,
+) {
+	var nameAliases string
+	var instances = instanceDeclarations.GetIterator()
+	for instances.HasNext() {
+		var declaration = instances.GetNext().GetDeclaration()
+		nameAliases += v.createNameAlias(declaration)
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		var class = moduleSynthesizerClassReference()
+		instanceAliases = class.typeAliases_
+		instanceAliases = uti.ReplaceAll(
+			instanceAliases,
 			"nameAliases",
 			nameAliases,
 		)
@@ -259,41 +280,29 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 	return constructorFunctions
 }
 
-func (v *moduleSynthesizer_) createEnumerationAlias(
-	name string,
-) string {
-	var class = moduleSynthesizerClassReference()
-	var nameAlias = class.nameAlias_
-	nameAlias = uti.ReplaceAll(
-		nameAlias,
-		"name",
-		name,
-	)
-	return nameAlias
-}
-
-func (v *moduleSynthesizer_) createEnumerationAliases(
-	enumeration mod.EnumerationLike,
+func (v *moduleSynthesizer_) createEnumeratedAliases(
+	enumeratedValues abs.ListLike[string],
 ) (
-	constAliases string,
+	enumeratedAliases string,
 ) {
-	if uti.IsUndefined(enumeration) {
-		return
-	}
-	var value = enumeration.GetValue()
-	var name = value.GetName()
-	var nameAliases = v.createEnumerationAlias(name)
-	var values = enumeration.GetAdditionalValues().GetIterator()
-	for values.HasNext() {
-		name = values.GetNext().GetName()
-		nameAliases += v.createEnumerationAlias(name)
+	var nameAliases string
+	var class = moduleSynthesizerClassReference()
+	var names = enumeratedValues.GetIterator()
+	for names.HasNext() {
+		var name = names.GetNext()
+		var nameAlias = class.nameAlias_
+		nameAlias = uti.ReplaceAll(
+			nameAlias,
+			"name",
+			name,
+		)
+		nameAliases += nameAlias
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
-		constAliases = class.constAliases_
-		constAliases = uti.ReplaceAll(
-			constAliases,
+		enumeratedAliases = class.enumeratedAliases_
+		enumeratedAliases = uti.ReplaceAll(
+			enumeratedAliases,
 			"nameAliases",
 			nameAliases,
 		)
@@ -302,13 +311,12 @@ func (v *moduleSynthesizer_) createEnumerationAliases(
 }
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
-	primitiveDeclarations mod.PrimitiveDeclarationsLike,
+	functionalDeclarations abs.ListLike[mod.FunctionalDeclarationLike],
 ) (
 	functionalAliases string,
 ) {
 	var nameAliases string
-	var functionalSection = primitiveDeclarations.GetFunctionalSection()
-	var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
+	var functionals = functionalDeclarations.GetIterator()
 	for functionals.HasNext() {
 		var declaration = functionals.GetNext().GetDeclaration()
 		var nameAlias = v.createNameAlias(declaration)
@@ -397,20 +405,13 @@ func (v *moduleSynthesizer_) createPackageAliases(
 	packageName string,
 	model mod.ModelLike,
 ) string {
-	var primitiveDeclarations = model.GetPrimitiveDeclarations()
-	var typeAliases = v.createTypeAliases(
-		primitiveDeclarations,
-	)
-	typeAliases += v.createFunctionalAliases(
-		primitiveDeclarations,
-	)
-	var interfaceDeclarations = model.GetInterfaceDeclarations()
-	typeAliases += v.createClassAliases(
-		interfaceDeclarations,
-	)
-	typeAliases += v.createAspectAliases(
-		interfaceDeclarations,
-	)
+	var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
+	var typeAliases = v.createTypeAliases(analyzer.GetTypeDeclarations())
+	typeAliases += v.createEnumeratedAliases(analyzer.GetEnumeratedValues())
+	typeAliases += v.createFunctionalAliases(analyzer.GetFunctionalDeclarations())
+	typeAliases += v.createClassAliases(analyzer.GetClassDeclarations())
+	typeAliases += v.createInstanceAliases(analyzer.GetInstanceDeclarations())
+	typeAliases += v.createAspectAliases(analyzer.GetAspectDeclarations())
 	var class = moduleSynthesizerClassReference()
 	var packageAliases = class.packageAliases_
 	packageAliases = uti.ReplaceAll(
@@ -426,20 +427,15 @@ func (v *moduleSynthesizer_) createPackageAliases(
 }
 
 func (v *moduleSynthesizer_) createTypeAliases(
-	primitiveDeclarations mod.PrimitiveDeclarationsLike,
+	typeDeclarations abs.ListLike[mod.TypeDeclarationLike],
 ) (
 	typeAliases string,
 ) {
 	var nameAliases string
-	var constAliases string
-	var typeSection = primitiveDeclarations.GetTypeSection()
-	var types = typeSection.GetTypeDeclarations().GetIterator()
+	var types = typeDeclarations.GetIterator()
 	for types.HasNext() {
-		var typeDeclaration = types.GetNext()
-		var declaration = typeDeclaration.GetDeclaration()
-		nameAliases += v.createNameAlias(declaration)
-		var enumeration = typeDeclaration.GetOptionalEnumeration()
-		constAliases += v.createEnumerationAliases(enumeration)
+		var typeDeclaration = types.GetNext().GetDeclaration()
+		nameAliases += v.createNameAlias(typeDeclaration)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
@@ -451,7 +447,6 @@ func (v *moduleSynthesizer_) createTypeAliases(
 			nameAliases,
 		)
 	}
-	typeAliases += constAliases
 	return
 }
 
@@ -582,7 +577,7 @@ type moduleSynthesizerClass_ struct {
 	importedPackage_     string
 	packageAliases_      string
 	typeAliases_         string
-	constAliases_        string
+	enumeratedAliases_   string
 	nameAlias_           string
 	classConstructors_   string
 	constructorFunction_ string
@@ -619,7 +614,7 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 
 type (<NameAliases>)`,
 
-	constAliases_: `
+	enumeratedAliases_: `
 
 const (<NameAliases>)`,
 

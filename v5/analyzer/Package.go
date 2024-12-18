@@ -129,26 +129,26 @@ type SyntaxAnalyzerLike interface {
 	GetLegalNotice() string
 	GetSyntaxName() string
 	HasPlurals() bool
-	GetRuleNames() abs.Sequential[string]
-	GetTokenNames() abs.Sequential[string]
+	GetRuleNames() abs.SetLike[string]
+	GetTokenNames() abs.SetLike[string]
 	IsDelimited(
 		ruleName string,
 	) bool
 	GetTerms(
 		ruleName string,
-	) abs.Sequential[not.TermLike]
+	) abs.ListLike[not.TermLike]
 	GetReferences(
 		ruleName string,
-	) abs.Sequential[not.ReferenceLike]
+	) abs.ListLike[not.ReferenceLike]
 	GetVariables(
 		ruleName string,
-	) abs.Sequential[string]
+	) abs.ListLike[string]
 	GetVariableType(
 		reference not.ReferenceLike,
 	) string
 	GetIdentifiers(
 		ruleName string,
-	) abs.Sequential[not.IdentifierLike]
+	) abs.ListLike[not.IdentifierLike]
 	IsPlural(
 		identifierName string,
 	) bool

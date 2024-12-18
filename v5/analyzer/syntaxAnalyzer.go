@@ -60,7 +60,7 @@ func (v *syntaxAnalyzer_) GetExpressions() abs.CatalogLike[string, string] {
 
 func (v *syntaxAnalyzer_) GetIdentifiers(
 	ruleName string,
-) abs.Sequential[not.IdentifierLike] {
+) abs.ListLike[not.IdentifierLike] {
 	return v.identifiers_.GetValue(ruleName)
 }
 
@@ -70,11 +70,11 @@ func (v *syntaxAnalyzer_) GetLegalNotice() string {
 
 func (v *syntaxAnalyzer_) GetReferences(
 	ruleName string,
-) abs.Sequential[not.ReferenceLike] {
+) abs.ListLike[not.ReferenceLike] {
 	return v.references_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetRuleNames() abs.Sequential[string] {
+func (v *syntaxAnalyzer_) GetRuleNames() abs.SetLike[string] {
 	return v.ruleNames_
 }
 
@@ -88,17 +88,17 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 
 func (v *syntaxAnalyzer_) GetTerms(
 	ruleName string,
-) abs.Sequential[not.TermLike] {
+) abs.ListLike[not.TermLike] {
 	return v.terms_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetTokenNames() abs.Sequential[string] {
+func (v *syntaxAnalyzer_) GetTokenNames() abs.SetLike[string] {
 	return v.tokenNames_
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
 	ruleName string,
-) abs.Sequential[string] {
+) abs.ListLike[string] {
 	return v.variables_.GetValue(ruleName)
 }
 

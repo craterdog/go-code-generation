@@ -39,6 +39,64 @@ import (
 // Ast
 
 type (
+	AbstractionClassLike           = ast.AbstractionClassLike
+	AdditionalArgumentClassLike    = ast.AdditionalArgumentClassLike
+	AdditionalConstraintClassLike  = ast.AdditionalConstraintClassLike
+	AdditionalValueClassLike       = ast.AdditionalValueClassLike
+	ArgumentClassLike              = ast.ArgumentClassLike
+	ArgumentsClassLike             = ast.ArgumentsClassLike
+	ArrayClassLike                 = ast.ArrayClassLike
+	AspectDeclarationClassLike     = ast.AspectDeclarationClassLike
+	AspectInterfaceClassLike       = ast.AspectInterfaceClassLike
+	AspectMethodClassLike          = ast.AspectMethodClassLike
+	AspectSectionClassLike         = ast.AspectSectionClassLike
+	AspectSubsectionClassLike      = ast.AspectSubsectionClassLike
+	AttributeMethodClassLike       = ast.AttributeMethodClassLike
+	AttributeSubsectionClassLike   = ast.AttributeSubsectionClassLike
+	ChannelClassLike               = ast.ChannelClassLike
+	ClassDeclarationClassLike      = ast.ClassDeclarationClassLike
+	ClassMethodsClassLike          = ast.ClassMethodsClassLike
+	ClassSectionClassLike          = ast.ClassSectionClassLike
+	ConstantMethodClassLike        = ast.ConstantMethodClassLike
+	ConstantSubsectionClassLike    = ast.ConstantSubsectionClassLike
+	ConstraintClassLike            = ast.ConstraintClassLike
+	ConstraintsClassLike           = ast.ConstraintsClassLike
+	ConstructorMethodClassLike     = ast.ConstructorMethodClassLike
+	ConstructorSubsectionClassLike = ast.ConstructorSubsectionClassLike
+	DeclarationClassLike           = ast.DeclarationClassLike
+	EnumerationClassLike           = ast.EnumerationClassLike
+	FunctionMethodClassLike        = ast.FunctionMethodClassLike
+	FunctionSubsectionClassLike    = ast.FunctionSubsectionClassLike
+	FunctionalDeclarationClassLike = ast.FunctionalDeclarationClassLike
+	FunctionalSectionClassLike     = ast.FunctionalSectionClassLike
+	GetterMethodClassLike          = ast.GetterMethodClassLike
+	ImportedPackageClassLike       = ast.ImportedPackageClassLike
+	InstanceDeclarationClassLike   = ast.InstanceDeclarationClassLike
+	InstanceMethodsClassLike       = ast.InstanceMethodsClassLike
+	InstanceSectionClassLike       = ast.InstanceSectionClassLike
+	InterfaceDeclarationsClassLike = ast.InterfaceDeclarationsClassLike
+	LegalNoticeClassLike           = ast.LegalNoticeClassLike
+	MapClassLike                   = ast.MapClassLike
+	MethodClassLike                = ast.MethodClassLike
+	ModelClassLike                 = ast.ModelClassLike
+	MultivalueClassLike            = ast.MultivalueClassLike
+	NoneClassLike                  = ast.NoneClassLike
+	PackageDeclarationClassLike    = ast.PackageDeclarationClassLike
+	PackageHeaderClassLike         = ast.PackageHeaderClassLike
+	PackageImportsClassLike        = ast.PackageImportsClassLike
+	ParameterClassLike             = ast.ParameterClassLike
+	PrimitiveDeclarationsClassLike = ast.PrimitiveDeclarationsClassLike
+	PrincipalMethodClassLike       = ast.PrincipalMethodClassLike
+	PrincipalSubsectionClassLike   = ast.PrincipalSubsectionClassLike
+	ResultClassLike                = ast.ResultClassLike
+	SetterMethodClassLike          = ast.SetterMethodClassLike
+	TypeDeclarationClassLike       = ast.TypeDeclarationClassLike
+	TypeSectionClassLike           = ast.TypeSectionClassLike
+	ValueClassLike                 = ast.ValueClassLike
+	WrapperClassLike               = ast.WrapperClassLike
+)
+
+type (
 	AbstractionLike           = ast.AbstractionLike
 	AdditionalArgumentLike    = ast.AdditionalArgumentLike
 	AdditionalConstraintLike  = ast.AdditionalConstraintLike
@@ -111,6 +169,16 @@ const (
 	PathToken      = gra.PathToken
 	PrefixToken    = gra.PrefixToken
 	SpaceToken     = gra.SpaceToken
+)
+
+type (
+	FormatterClassLike = gra.FormatterClassLike
+	ParserClassLike    = gra.ParserClassLike
+	ProcessorClassLike = gra.ProcessorClassLike
+	ScannerClassLike   = gra.ScannerClassLike
+	TokenClassLike     = gra.TokenClassLike
+	ValidatorClassLike = gra.ValidatorClassLike
+	VisitorClassLike   = gra.VisitorClassLike
 )
 
 type (
