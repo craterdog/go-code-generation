@@ -85,7 +85,10 @@ func (v *moduleSynthesizer_) CreateClassConstructors() string {
 		var association = models.GetNext()
 		var packageName = association.GetKey()
 		var model = association.GetValue()
-		var constructorFunctions = v.createConstructorFunctions(packageName, model)
+		var constructorFunctions = v.createConstructorFunctions(
+			packageName,
+			model,
+		)
 		classConstructors += constructorFunctions
 	}
 	return classConstructors
@@ -161,11 +164,12 @@ func (v *moduleSynthesizer_) createClassAliases(
 func (v *moduleSynthesizer_) createConstructorFunction(
 	constructorMethod mod.ConstructorMethodLike,
 	className string,
+	model mod.ModelLike,
 ) string {
 	var class = moduleSynthesizerClassReference()
 	var constructorFunction = class.constructorFunction_
 	var methodName = constructorMethod.GetName()
-	var parameters = v.extractParameters(constructorMethod)
+	var parameters = v.extractParameters(constructorMethod, model)
 	constructorFunction = uti.ReplaceAll(
 		constructorFunction,
 		"methodName",
@@ -195,14 +199,15 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		"ClassLike",
 	)
 	className = uti.MakeLowerCase(className)
-	var analyzerClass = ana.ModelAnalyzerClass()
-	var analyzer = analyzerClass.ModelAnalyzer(model, className)
+	var analyzerClass = ana.ClassAnalyzerClass()
+	var analyzer = analyzerClass.ClassAnalyzer(model, className)
 	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
 	for constructorMethods.HasNext() {
 		var constructorMethod = constructorMethods.GetNext()
 		var constructorFunction = v.createConstructorFunction(
 			constructorMethod,
 			className,
+			model,
 		)
 		constructors += constructorFunction
 	}
@@ -469,13 +474,17 @@ func (v *moduleSynthesizer_) extractParameterNames(
 
 func (v *moduleSynthesizer_) extractParameters(
 	constructorMethod mod.ConstructorMethodLike,
+	model mod.ModelLike,
 ) string {
 	var methodParameters string
 	var parameters = constructorMethod.GetParameters().GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
-		var parameterType = v.extractType(parameter.GetAbstraction())
+		var parameterType = v.extractType(
+			parameter.GetAbstraction(),
+			model,
+		)
 		var class = moduleSynthesizerClassReference()
 		var methodParameter = class.methodParameter_
 		methodParameter = uti.ReplaceAll(
@@ -498,6 +507,7 @@ func (v *moduleSynthesizer_) extractParameters(
 
 func (v *moduleSynthesizer_) extractType(
 	abstraction mod.AbstractionLike,
+	model mod.ModelLike,
 ) string {
 	var abstractType string
 	var wrapper = abstraction.GetOptionalWrapper()
@@ -519,12 +529,18 @@ func (v *moduleSynthesizer_) extractType(
 	abstractType += name
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {
-		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
+		var argument = v.extractType(
+			arguments.GetArgument().GetAbstraction(),
+			model,
+		)
 		abstractType += "[" + argument
 		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
 		for additionalArguments.HasNext() {
 			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(additionalArgument.GetAbstraction())
+			argument = v.extractType(
+				additionalArgument.GetAbstraction(),
+				model,
+			)
 			abstractType += ", " + argument
 		}
 		abstractType += "]"

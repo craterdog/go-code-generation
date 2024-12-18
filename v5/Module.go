@@ -41,8 +41,9 @@ import (
 // Analyzer
 
 type (
-	ModelAnalyzerLike  = ana.ModelAnalyzerLike
-	SyntaxAnalyzerLike = ana.SyntaxAnalyzerLike
+	ClassAnalyzerLike   = ana.ClassAnalyzerLike
+	PackageAnalyzerLike = ana.PackageAnalyzerLike
+	SyntaxAnalyzerLike  = ana.SyntaxAnalyzerLike
 )
 
 // Generator
@@ -81,7 +82,7 @@ type (
 
 // Analyzer
 
-func ModelAnalyzer(arguments ...any) ModelAnalyzerLike {
+func ClassAnalyzer(arguments ...any) ClassAnalyzerLike {
 	// Analyze the arguments.
 	var argumentTypes string
 	for _, argument := range arguments {
@@ -92,7 +93,7 @@ func ModelAnalyzer(arguments ...any) ModelAnalyzerLike {
 			argumentTypes += "string, "
 		default:
 			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ModelAnalyzer constructor: %v of type %T",
+				"An unexpected argument type was passed into the ClassAnalyzer constructor: %v of type %T",
 				argument,
 				actual,
 			)
@@ -106,18 +107,58 @@ func ModelAnalyzer(arguments ...any) ModelAnalyzerLike {
 	}
 
 	// Call the corresponding constructor.
-	var instance_ ModelAnalyzerLike
+	var instance_ ClassAnalyzerLike
 	switch argumentTypes {
 	case "mod.ModelLike, string":
 		var model = arguments[0].(mod.ModelLike)
 		var className = arguments[1].(string)
-		instance_ = ana.ModelAnalyzerClass().ModelAnalyzer(
+		instance_ = ana.ClassAnalyzerClass().ClassAnalyzer(
 			model,
 			className,
 		)
 	default:
 		var message = fmt.Sprintf(
-			"No ModelAnalyzer constructor matching the arguments was found: %v\n",
+			"No ClassAnalyzer constructor matching the arguments was found: %v\n",
+			arguments,
+		)
+		panic(message)
+	}
+	return instance_
+}
+
+func PackageAnalyzer(arguments ...any) PackageAnalyzerLike {
+	// Analyze the arguments.
+	var argumentTypes string
+	for _, argument := range arguments {
+		switch actual := argument.(type) {
+		case mod.ModelLike:
+			argumentTypes += "mod.ModelLike, "
+		default:
+			var message = fmt.Sprintf(
+				"An unexpected argument type was passed into the PackageAnalyzer constructor: %v of type %T",
+				argument,
+				actual,
+			)
+			panic(message)
+		}
+	}
+	var length = len(argumentTypes)
+	if length > 0 {
+		// Remove the trailing comma and space.
+		argumentTypes = argumentTypes[:length-2]
+	}
+
+	// Call the corresponding constructor.
+	var instance_ PackageAnalyzerLike
+	switch argumentTypes {
+	case "mod.ModelLike":
+		var model = arguments[0].(mod.ModelLike)
+		instance_ = ana.PackageAnalyzerClass().PackageAnalyzer(
+			model,
+		)
+	default:
+		var message = fmt.Sprintf(
+			"No PackageAnalyzer constructor matching the arguments was found: %v\n",
 			arguments,
 		)
 		panic(message)

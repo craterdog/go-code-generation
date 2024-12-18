@@ -42,15 +42,26 @@ import (
 // CLASS DECLARATIONS
 
 /*
-ModelAnalyzerClassLike declares the set of class constants, constructors and
-functions that must be supported by all model-analyzer-class-like classes.
+ClassAnalyzerClassLike declares the set of class constants, constructors and
+functions that must be supported by all class-analyzer-class-like classes.
 */
-type ModelAnalyzerClassLike interface {
+type ClassAnalyzerClassLike interface {
 	// Constructor Methods
-	ModelAnalyzer(
+	ClassAnalyzer(
 		model mod.ModelLike,
 		className string,
-	) ModelAnalyzerLike
+	) ClassAnalyzerLike
+}
+
+/*
+PackageAnalyzerClassLike declares the set of class constants, constructors and
+functions that must be supported by all package-analyzer-class-like classes.
+*/
+type PackageAnalyzerClassLike interface {
+	// Constructor Methods
+	PackageAnalyzer(
+		model mod.ModelLike,
+	) PackageAnalyzerLike
 }
 
 /*
@@ -67,14 +78,12 @@ type SyntaxAnalyzerClassLike interface {
 // INSTANCE DECLARATIONS
 
 /*
-ModelAnalyzerLike declares the set of aspects and methods that must be
-supported by all model-analyzer-like instances.
+ClassAnalyzerLike declares the set of aspects and methods that must be
+supported by all class-analyzer-like instances.
 */
-type ModelAnalyzerLike interface {
+type ClassAnalyzerLike interface {
 	// Principal Methods
-	GetClass() ModelAnalyzerClassLike
-	GetLegalNotice() string
-	GetImportedPackages() abs.CatalogLike[string, string]
+	GetClass() ClassAnalyzerClassLike
 	IsGeneric() bool
 	GetTypeConstraints() string
 	GetTypeArguments() string
@@ -88,7 +97,26 @@ type ModelAnalyzerLike interface {
 	GetPrincipalMethods() abs.ListLike[mod.PrincipalMethodLike]
 	GetAttributeMethods() abs.ListLike[mod.AttributeMethodLike]
 	GetAspectInterfaces() abs.ListLike[mod.AspectInterfaceLike]
+}
+
+/*
+PackageAnalyzerLike declares the set of aspects and methods that must be
+supported by all package-analyzer-like instances.
+*/
+type PackageAnalyzerLike interface {
+	// Principal Methods
+	GetClass() PackageAnalyzerClassLike
+	GetLegalNotice() string
+	GetImportedPackages() abs.CatalogLike[string, string]
+	GetTypeDeclarations() abs.ListLike[mod.TypeDeclarationLike]
+	GetEnumeratedValues() abs.ListLike[string]
+	GetFunctionalDeclarations() abs.ListLike[mod.FunctionalDeclarationLike]
+	GetClassDeclarations() abs.ListLike[mod.ClassDeclarationLike]
+	GetInstanceDeclarations() abs.ListLike[mod.InstanceDeclarationLike]
 	GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike]
+
+	// Aspect Interfaces
+	mod.Methodical
 }
 
 /*

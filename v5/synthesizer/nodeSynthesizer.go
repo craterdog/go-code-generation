@@ -37,7 +37,8 @@ func (c *nodeSynthesizerClass_) NodeSynthesizer(
 ) NodeSynthesizerLike {
 	var instance = &nodeSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.ModelAnalyzerClass().ModelAnalyzer(model, className),
+		packageAnalyzer_: ana.PackageAnalyzerClass().PackageAnalyzer(model),
+		classAnalyzer_:   ana.ClassAnalyzerClass().ClassAnalyzer(model, className),
 	}
 	return instance
 }
@@ -53,7 +54,7 @@ func (v *nodeSynthesizer_) GetClass() NodeSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *nodeSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = v.analyzer_.GetLegalNotice()
+	var legalNotice = v.packageAnalyzer_.GetLegalNotice()
 	return legalNotice
 }
 
@@ -75,7 +76,7 @@ func (v *nodeSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *nodeSynthesizer_) CreateConstructorMethods() string {
-	var methods = v.analyzer_.GetConstructorMethods()
+	var methods = v.classAnalyzer_.GetConstructorMethods()
 	var constructorMethods = v.createConstructorMethods(methods)
 	return constructorMethods
 }
@@ -86,13 +87,13 @@ func (v *nodeSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *nodeSynthesizer_) CreatePrincipalMethods() string {
-	var methods = v.analyzer_.GetPrincipalMethods()
+	var methods = v.classAnalyzer_.GetPrincipalMethods()
 	var principalMethods = v.createPrincipalMethods(methods)
 	return principalMethods
 }
 
 func (v *nodeSynthesizer_) CreateAttributeMethods() string {
-	var methods = v.analyzer_.GetAttributeMethods()
+	var methods = v.classAnalyzer_.GetAttributeMethods()
 	var attributeMethods = v.createAttributeMethods(methods)
 	return attributeMethods
 }
@@ -237,7 +238,7 @@ func (v *nodeSynthesizer_) createAttributeChecks(
 
 func (v *nodeSynthesizer_) createAttributeDeclarations() string {
 	var declarations string
-	var attributes = v.analyzer_.GetAttributes().GetIterator()
+	var attributes = v.classAnalyzer_.GetAttributes().GetIterator()
 	for attributes.HasNext() {
 		var attribute = attributes.GetNext()
 		var attributeName = attribute.GetKey()
@@ -268,7 +269,7 @@ func (v *nodeSynthesizer_) createAttributeInitializations(
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var attributeName = sts.TrimSuffix(parameterName, "_")
-		if uti.IsDefined(v.analyzer_.GetAttributes().GetValue(attributeName)) {
+		if uti.IsDefined(v.classAnalyzer_.GetAttributes().GetValue(attributeName)) {
 			var class = nodeSynthesizerClassReference()
 			var initialization = class.attributeInitialization_
 			initialization = uti.ReplaceAll(
@@ -443,7 +444,7 @@ func (v *nodeSynthesizer_) createImportedPackages(
 	source string,
 ) string {
 	var importedPackages string
-	var packages = v.analyzer_.GetImportedPackages().GetIterator()
+	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
 		var association = packages.GetNext()
 		var packagePath = association.GetKey()
@@ -559,7 +560,8 @@ func (v *nodeSynthesizer_) performGlobalUpdates(
 
 type nodeSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ ana.ModelAnalyzerLike
+	packageAnalyzer_ ana.PackageAnalyzerLike
+	classAnalyzer_   ana.ClassAnalyzerLike
 }
 
 // Class Structure

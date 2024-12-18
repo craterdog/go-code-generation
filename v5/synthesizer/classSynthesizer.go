@@ -38,7 +38,8 @@ func (c *classSynthesizerClass_) ClassSynthesizer(
 ) ClassSynthesizerLike {
 	var instance = &classSynthesizer_{
 		// Initialize the instance attributes.
-		analyzer_: ana.ModelAnalyzerClass().ModelAnalyzer(model, className),
+		packageAnalyzer_: ana.PackageAnalyzerClass().PackageAnalyzer(model),
+		classAnalyzer_:   ana.ClassAnalyzerClass().ClassAnalyzer(model, className),
 	}
 	return instance
 }
@@ -54,7 +55,7 @@ func (v *classSynthesizer_) GetClass() ClassSynthesizerClassLike {
 // TemplateDriven Methods
 
 func (v *classSynthesizer_) CreateLegalNotice() string {
-	var legalNotice = v.analyzer_.GetLegalNotice()
+	var legalNotice = v.packageAnalyzer_.GetLegalNotice()
 	return legalNotice
 }
 
@@ -69,38 +70,38 @@ func (v *classSynthesizer_) CreateAccessFunction() string {
 }
 
 func (v *classSynthesizer_) CreateConstantMethods() string {
-	var methods = v.analyzer_.GetConstantMethods()
+	var methods = v.classAnalyzer_.GetConstantMethods()
 	var constantMethods = v.createConstantMethods(methods)
 	return constantMethods
 }
 
 func (v *classSynthesizer_) CreateConstructorMethods() string {
-	var methods = v.analyzer_.GetConstructorMethods()
+	var methods = v.classAnalyzer_.GetConstructorMethods()
 	var constructorMethods = v.createConstructorMethods(methods)
 	return constructorMethods
 }
 
 func (v *classSynthesizer_) CreateFunctionMethods() string {
-	var methods = v.analyzer_.GetFunctionMethods()
+	var methods = v.classAnalyzer_.GetFunctionMethods()
 	var functionMethods = v.createFunctionMethods(methods)
 	return functionMethods
 }
 
 func (v *classSynthesizer_) CreatePrincipalMethods() string {
-	var methods = v.analyzer_.GetPrincipalMethods()
+	var methods = v.classAnalyzer_.GetPrincipalMethods()
 	var principalMethods = v.createPrincipalMethods(methods)
 	return principalMethods
 }
 
 func (v *classSynthesizer_) CreateAttributeMethods() string {
-	var methods = v.analyzer_.GetAttributeMethods()
+	var methods = v.classAnalyzer_.GetAttributeMethods()
 	var attributeMethods = v.createAttributeMethods(methods)
 	return attributeMethods
 }
 
 func (v *classSynthesizer_) CreateAspectMethods() string {
-	var declarations = v.analyzer_.GetAspectDeclarations()
-	var interfaces = v.analyzer_.GetAspectInterfaces()
+	var declarations = v.packageAnalyzer_.GetAspectDeclarations()
+	var interfaces = v.classAnalyzer_.GetAspectInterfaces()
 	var aspectMethods = v.createAspectInterfaces(declarations, interfaces)
 	return aspectMethods
 }
@@ -386,7 +387,7 @@ func (v *classSynthesizer_) createAttributeChecks(
 
 func (v *classSynthesizer_) createAttributeDeclarations() string {
 	var declarations string
-	var attributes = v.analyzer_.GetAttributes().GetIterator()
+	var attributes = v.classAnalyzer_.GetAttributes().GetIterator()
 	for attributes.HasNext() {
 		var attribute = attributes.GetNext()
 		var attributeName = attribute.GetKey()
@@ -417,7 +418,7 @@ func (v *classSynthesizer_) createAttributeInitializations(
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var attributeName = sts.TrimSuffix(parameterName, "_")
-		if uti.IsDefined(v.analyzer_.GetAttributes().GetValue(attributeName)) {
+		if uti.IsDefined(v.classAnalyzer_.GetAttributes().GetValue(attributeName)) {
 			var class = classSynthesizerClassReference()
 			var initialization = class.attributeInitialization_
 			initialization = uti.ReplaceAll(
@@ -463,7 +464,7 @@ func (v *classSynthesizer_) createAttributeMethods(
 func (v *classSynthesizer_) createClassReference() string {
 	var class = classSynthesizerClassReference()
 	var classReference = class.classReference_
-	if v.analyzer_.IsGeneric() {
+	if v.classAnalyzer_.IsGeneric() {
 		classReference = class.classMap_
 	}
 	var constantInitializations = v.createConstantInitializations()
@@ -489,7 +490,7 @@ func (v *classSynthesizer_) createClassStructure() string {
 
 func (v *classSynthesizer_) createConstantDeclarations() string {
 	var declarations string
-	var constants = v.analyzer_.GetConstants().GetIterator()
+	var constants = v.classAnalyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
@@ -513,7 +514,7 @@ func (v *classSynthesizer_) createConstantDeclarations() string {
 
 func (v *classSynthesizer_) createConstantInitializations() string {
 	var initializations string
-	var constants = v.analyzer_.GetConstants().GetIterator()
+	var constants = v.classAnalyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
@@ -708,7 +709,7 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	className = sts.TrimSuffix(className, "Like")
 	var class = classSynthesizerClassReference()
 	var instantiation = class.instanceInstantiation_
-	if v.analyzer_.IsIntrinsic() {
+	if v.classAnalyzer_.IsIntrinsic() {
 		if methodName == className {
 			instantiation = class.intrinsicInstantiation_
 		}
@@ -738,8 +739,8 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 func (v *classSynthesizer_) createInstanceStructure() string {
 	var structure string
 	var class = classSynthesizerClassReference()
-	if v.analyzer_.IsIntrinsic() {
-		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
+	if v.classAnalyzer_.IsIntrinsic() {
+		var intrinsicType = v.extractType(v.classAnalyzer_.GetIntrinsicType())
 		structure = class.instanceIntrinsic_
 		structure = uti.ReplaceAll(
 			structure,
@@ -760,8 +761,8 @@ func (v *classSynthesizer_) createInstanceStructure() string {
 
 func (v *classSynthesizer_) createIntrinsicMethod() string {
 	var method string
-	if v.analyzer_.IsIntrinsic() {
-		var intrinsicType = v.extractType(v.analyzer_.GetIntrinsicType())
+	if v.classAnalyzer_.IsIntrinsic() {
+		var intrinsicType = v.extractType(v.classAnalyzer_.GetIntrinsicType())
 		var class = classSynthesizerClassReference()
 		method = class.intrinsicMethod_
 		method = uti.ReplaceAll(
@@ -777,7 +778,7 @@ func (v *classSynthesizer_) createImportedPackages(
 	source string,
 ) string {
 	var importedPackages string
-	var packages = v.analyzer_.GetImportedPackages().GetIterator()
+	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
 		var association = packages.GetNext()
 		var packagePath = association.GetKey()
@@ -956,7 +957,7 @@ func (v *classSynthesizer_) performGlobalUpdates(
 
 	// Update the instance method targets to "by value" if necessary.
 	var star = "*"
-	if v.analyzer_.IsIntrinsic() {
+	if v.classAnalyzer_.IsIntrinsic() {
 		star = ""
 	}
 	source = uti.ReplaceAll(
@@ -966,8 +967,8 @@ func (v *classSynthesizer_) performGlobalUpdates(
 	)
 
 	// Insert any generics.
-	var constraints = v.analyzer_.GetTypeConstraints()
-	var arguments = v.analyzer_.GetTypeArguments()
+	var constraints = v.classAnalyzer_.GetTypeConstraints()
+	var arguments = v.classAnalyzer_.GetTypeArguments()
 	source = uti.ReplaceAll(
 		source,
 		"constraints",
@@ -1139,7 +1140,8 @@ func (v *classSynthesizer_) replaceResultType(
 
 type classSynthesizer_ struct {
 	// Declare the instance attributes.
-	analyzer_ ana.ModelAnalyzerLike
+	packageAnalyzer_ ana.PackageAnalyzerLike
+	classAnalyzer_   ana.ClassAnalyzerLike
 }
 
 // Class Structure
