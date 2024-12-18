@@ -516,11 +516,67 @@ func (v *moduleSynthesizer_) extractType(
 			abstractType = "chan "
 		}
 	}
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		abstractType += prefix
-	}
+	var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
+	var packageAcronym = analyzer.GetPackageName()[0:3] + "."
 	var name = abstraction.GetName()
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsUndefined(prefix) {
+		var typeDeclarations = analyzer.GetTypeDeclarations()
+		var types = typeDeclarations.GetIterator()
+		for types.HasNext() {
+			var typeName = types.GetNext().GetDeclaration().GetName()
+			if typeName == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+		var enumeratedValues = analyzer.GetEnumeratedValues()
+		var enumerations = enumeratedValues.GetIterator()
+		for enumerations.HasNext() {
+			var enumerationName = enumerations.GetNext()
+			if enumerationName == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+		var functionalDeclarations = analyzer.GetFunctionalDeclarations()
+		var functionals = functionalDeclarations.GetIterator()
+		for functionals.HasNext() {
+			var functionalName = functionals.GetNext().GetDeclaration().GetName()
+			if functionalName == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+		var classDeclarations = analyzer.GetClassDeclarations()
+		var classes = classDeclarations.GetIterator()
+		for classes.HasNext() {
+			var className = classes.GetNext().GetDeclaration().GetName()
+			if className == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+		var instanceDeclarations = analyzer.GetInstanceDeclarations()
+		var instances = instanceDeclarations.GetIterator()
+		for instances.HasNext() {
+			var instanceName = instances.GetNext().GetDeclaration().GetName()
+			if instanceName == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+		var aspectDeclarations = analyzer.GetAspectDeclarations()
+		var aspects = aspectDeclarations.GetIterator()
+		for aspects.HasNext() {
+			var aspectName = aspects.GetNext().GetDeclaration().GetName()
+			if aspectName == name {
+				prefix = packageAcronym
+				break
+			}
+		}
+	}
+	abstractType += prefix
 	abstractType += name
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {

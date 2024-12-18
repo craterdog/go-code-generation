@@ -107,6 +107,7 @@ type PackageAnalyzerLike interface {
 	// Principal Methods
 	GetClass() PackageAnalyzerClassLike
 	GetLegalNotice() string
+	GetPackageName() string
 	GetImportedPackages() abs.CatalogLike[string, string]
 	GetTypeDeclarations() abs.ListLike[mod.TypeDeclarationLike]
 	GetEnumeratedValues() abs.ListLike[string]

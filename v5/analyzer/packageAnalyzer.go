@@ -55,6 +55,10 @@ func (v *packageAnalyzer_) GetClass() PackageAnalyzerClassLike {
 	return packageAnalyzerClassReference()
 }
 
+func (v *packageAnalyzer_) GetPackageName() string {
+	return v.packageName_
+}
+
 func (v *packageAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
@@ -854,6 +858,7 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 func (v *packageAnalyzer_) PreprocessPackageHeader(
 	packageHeader mod.PackageHeaderLike,
 ) {
+	v.packageName_ = packageHeader.GetName()
 }
 
 func (v *packageAnalyzer_) ProcessPackageHeaderSlot(
@@ -1056,6 +1061,7 @@ type packageAnalyzer_ struct {
 	// Declare the instance attributes.
 	visitor_                mod.VisitorLike
 	legalNotice_            string
+	packageName_            string
 	importedPackages_       abs.CatalogLike[string, string]
 	typeDeclarations_       abs.ListLike[mod.TypeDeclarationLike]
 	enumeratedValues_       abs.ListLike[string]
