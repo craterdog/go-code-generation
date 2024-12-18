@@ -21,6 +21,7 @@ package grammar
 
 import (
 	fmt "fmt"
+	col "github.com/craterdog/go-collection-framework/v5"
 	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
@@ -71,7 +72,7 @@ func (c *scannerClass_) FormatToken(
 	}
 	return fmt.Sprintf(
 		"Token [type: %s, line: %d, position: %d]: %s",
-		c.tokens_[token.GetType()],
+		c.tokens_.GetValue(token.GetType()),
 		token.GetLine(),
 		token.GetPosition(),
 		value,
@@ -81,14 +82,14 @@ func (c *scannerClass_) FormatToken(
 func (c *scannerClass_) FormatType(
 	tokenType TokenType,
 ) string {
-	return c.tokens_[tokenType]
+	return c.tokens_.GetValue(tokenType)
 }
 
 func (c *scannerClass_) MatchesType(
 	tokenValue string,
 	tokenType TokenType,
 ) bool {
-	var matcher = c.matchers_[tokenType]
+	var matcher = c.matchers_.GetValue(tokenType)
 	var match = matcher.FindString(tokenValue)
 	return uti.IsDefined(match)
 }
@@ -140,7 +141,7 @@ func (v *scanner_) foundToken(
 ) bool {
 	// Attempt to match the specified token type.
 	var class = scannerClassReference()
-	var matcher = class.matchers_[tokenType]
+	var matcher = class.matchers_.GetValue(tokenType)
 	var text = string(v.runes_[v.next_:])
 	var match = matcher.FindString(text)
 	if uti.IsUndefined(match) {
@@ -221,8 +222,8 @@ type scanner_ struct {
 
 type scannerClass_ struct {
 	// Declare the class constants.
-	tokens_   map[TokenType]string
-	matchers_ map[TokenType]*reg.Regexp
+	tokens_   abs.CatalogLike[TokenType, string]
+	matchers_ abs.CatalogLike[TokenType, *reg.Regexp]
 }
 
 // Class Reference
@@ -233,7 +234,7 @@ func scannerClassReference() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: map[TokenType]string{
+	tokens_: col.AnyCatalog[TokenType, string](map[TokenType]string{
 		// Define identifiers for each type of token.
 		ErrorToken:     "error",
 		CommentToken:   "comment",
@@ -243,8 +244,8 @@ var scannerClassReference_ = &scannerClass_{
 		PathToken:      "path",
 		PrefixToken:    "prefix",
 		SpaceToken:     "space",
-	},
-	matchers_: map[TokenType]*reg.Regexp{
+	}),
+	matchers_: col.AnyCatalog[TokenType, *reg.Regexp](map[TokenType]*reg.Regexp{
 		// Define pattern matchers for each type of token.
 		CommentToken:   reg.MustCompile("^" + comment_),
 		DelimiterToken: reg.MustCompile("^" + delimiter_),
@@ -253,7 +254,7 @@ var scannerClassReference_ = &scannerClass_{
 		PathToken:      reg.MustCompile("^" + path_),
 		PrefixToken:    reg.MustCompile("^" + prefix_),
 		SpaceToken:     reg.MustCompile("^" + space_),
-	},
+	}),
 }
 
 // Private Constants
