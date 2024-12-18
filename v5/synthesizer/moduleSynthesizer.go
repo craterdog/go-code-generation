@@ -108,7 +108,6 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *moduleSynthesizer_) createAspectAliases(
-	model mod.ModelLike,
 	interfaceDeclarations mod.InterfaceDeclarationsLike,
 ) (
 	aspectAliases string,
@@ -118,7 +117,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 	var aspects = aspectSection.GetAspectDeclarations().GetIterator()
 	for aspects.HasNext() {
 		var declaration = aspects.GetNext().GetDeclaration()
-		var nameAlias = v.createNameAlias(model, declaration)
+		var nameAlias = v.createNameAlias(declaration)
 		nameAliases += nameAlias
 	}
 	if uti.IsDefined(nameAliases) {
@@ -135,7 +134,6 @@ func (v *moduleSynthesizer_) createAspectAliases(
 }
 
 func (v *moduleSynthesizer_) createClassAliases(
-	model mod.ModelLike,
 	interfaceDeclarations mod.InterfaceDeclarationsLike,
 ) (
 	classAliases string,
@@ -145,7 +143,7 @@ func (v *moduleSynthesizer_) createClassAliases(
 	var instances = instanceSection.GetInstanceDeclarations().GetIterator()
 	for instances.HasNext() {
 		var declaration = instances.GetNext().GetDeclaration()
-		nameAliases += v.createNameAlias(model, declaration)
+		nameAliases += v.createNameAlias(declaration)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
@@ -270,7 +268,6 @@ func (v *moduleSynthesizer_) createEnumerationAlias(
 }
 
 func (v *moduleSynthesizer_) createEnumerationAliases(
-	model mod.ModelLike,
 	enumeration mod.EnumerationLike,
 ) (
 	constAliases string,
@@ -300,7 +297,6 @@ func (v *moduleSynthesizer_) createEnumerationAliases(
 }
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
-	model mod.ModelLike,
 	primitiveDeclarations mod.PrimitiveDeclarationsLike,
 ) (
 	functionalAliases string,
@@ -310,7 +306,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	var functionals = functionalSection.GetFunctionalDeclarations().GetIterator()
 	for functionals.HasNext() {
 		var declaration = functionals.GetNext().GetDeclaration()
-		var nameAlias = v.createNameAlias(model, declaration)
+		var nameAlias = v.createNameAlias(declaration)
 		nameAliases += nameAlias
 	}
 	if uti.IsDefined(nameAliases) {
@@ -373,7 +369,6 @@ func (v *moduleSynthesizer_) createImportedPackages(
 }
 
 func (v *moduleSynthesizer_) createNameAlias(
-	model mod.ModelLike,
 	declaration mod.DeclarationLike,
 ) (
 	nameAlias string,
@@ -399,20 +394,16 @@ func (v *moduleSynthesizer_) createPackageAliases(
 ) string {
 	var primitiveDeclarations = model.GetPrimitiveDeclarations()
 	var typeAliases = v.createTypeAliases(
-		model,
 		primitiveDeclarations,
 	)
 	typeAliases += v.createFunctionalAliases(
-		model,
 		primitiveDeclarations,
 	)
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	typeAliases += v.createClassAliases(
-		model,
 		interfaceDeclarations,
 	)
 	typeAliases += v.createAspectAliases(
-		model,
 		interfaceDeclarations,
 	)
 	var class = moduleSynthesizerClassReference()
@@ -430,7 +421,6 @@ func (v *moduleSynthesizer_) createPackageAliases(
 }
 
 func (v *moduleSynthesizer_) createTypeAliases(
-	model mod.ModelLike,
 	primitiveDeclarations mod.PrimitiveDeclarationsLike,
 ) (
 	typeAliases string,
@@ -442,9 +432,9 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	for types.HasNext() {
 		var typeDeclaration = types.GetNext()
 		var declaration = typeDeclaration.GetDeclaration()
-		nameAliases += v.createNameAlias(model, declaration)
+		nameAliases += v.createNameAlias(declaration)
 		var enumeration = typeDeclaration.GetOptionalEnumeration()
-		constAliases += v.createEnumerationAliases(model, enumeration)
+		constAliases += v.createEnumerationAliases(enumeration)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"

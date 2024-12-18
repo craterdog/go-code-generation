@@ -55,7 +55,7 @@ func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
 }
 
 func (v *syntaxAnalyzer_) GetExpressions() abs.CatalogLike[string, string] {
-	return v.regexps_
+	return v.expressions_
 }
 
 func (v *syntaxAnalyzer_) GetIdentifiers(
@@ -147,7 +147,7 @@ func (v *syntaxAnalyzer_) MakeOptional(
 func (v *syntaxAnalyzer_) ProcessExcluded(
 	excluded string,
 ) {
-	v.regexp_ += "^"
+	v.expression_ += "^"
 }
 
 func (v *syntaxAnalyzer_) ProcessGlyph(
@@ -155,7 +155,7 @@ func (v *syntaxAnalyzer_) ProcessGlyph(
 ) {
 	var character = glyph[1:2] //Remove the single quotes.
 	character = v.escapeText(character)
-	v.regexp_ += character
+	v.expression_ += character
 }
 
 func (v *syntaxAnalyzer_) ProcessIntrinsic(
@@ -165,7 +165,7 @@ func (v *syntaxAnalyzer_) ProcessIntrinsic(
 	if intrinsic == "any" {
 		v.isGreedy_ = false // Turn off "greedy" for expressions containing ANY.
 	}
-	v.regexp_ += `" + ` + intrinsic + `_ + "`
+	v.expression_ += `" + ` + intrinsic + `_ + "`
 }
 
 func (v *syntaxAnalyzer_) ProcessLiteral(
@@ -180,7 +180,7 @@ func (v *syntaxAnalyzer_) ProcessLiteral(
 	if v.inDefinition_ {
 		v.delimiters_.AddValue(delimiter)
 	}
-	v.regexp_ += delimiter
+	v.expression_ += delimiter
 }
 
 func (v *syntaxAnalyzer_) ProcessLowercase(
@@ -190,26 +190,26 @@ func (v *syntaxAnalyzer_) ProcessLowercase(
 		v.tokenNames_.AddValue(lowercase)
 	}
 	if v.inPattern_ {
-		v.regexp_ += `(?:" + ` + lowercase + `_ + ")`
+		v.expression_ += `(?:" + ` + lowercase + `_ + ")`
 	}
 }
 
 func (v *syntaxAnalyzer_) ProcessNumber(
 	number string,
 ) {
-	v.regexp_ += number
+	v.expression_ += number
 }
 
 func (v *syntaxAnalyzer_) ProcessOptional(
 	optional string,
 ) {
-	v.regexp_ += optional
+	v.expression_ += optional
 }
 
 func (v *syntaxAnalyzer_) ProcessRepeated(
 	repeated string,
 ) {
-	v.regexp_ += repeated
+	v.expression_ += repeated
 }
 
 func (v *syntaxAnalyzer_) PreprocessAlternative(
@@ -217,14 +217,14 @@ func (v *syntaxAnalyzer_) PreprocessAlternative(
 	index uint,
 	size uint,
 ) {
-	v.regexp_ += "|"
+	v.expression_ += "|"
 }
 
 func (v *syntaxAnalyzer_) PostprocessConstrained(
 	constrained not.ConstrainedLike,
 ) {
 	if !v.isGreedy_ {
-		v.regexp_ += "?"
+		v.expression_ += "?"
 		v.isGreedy_ = true // Reset scanning back to "greedy".
 	}
 }
@@ -246,7 +246,7 @@ func (v *syntaxAnalyzer_) PreprocessExpression(
 	index uint,
 	size uint,
 ) {
-	v.regexp_ = `"(?:`
+	v.expression_ = `"(?:`
 }
 
 func (v *syntaxAnalyzer_) PostprocessExpression(
@@ -254,39 +254,39 @@ func (v *syntaxAnalyzer_) PostprocessExpression(
 	index uint,
 	size uint,
 ) {
-	v.regexp_ += `)"`
+	v.expression_ += `)"`
 	var expressionName = expression.GetLowercase()
-	v.regexps_.SetValue(expressionName, v.regexp_)
+	v.expressions_.SetValue(expressionName, v.expression_)
 }
 
 func (v *syntaxAnalyzer_) PreprocessExtent(
 	extent not.ExtentLike,
 ) {
-	v.regexp_ += "-"
+	v.expression_ += "-"
 }
 
 func (v *syntaxAnalyzer_) PreprocessFilter(
 	filter not.FilterLike,
 ) {
-	v.regexp_ += "["
+	v.expression_ += "["
 }
 
 func (v *syntaxAnalyzer_) PostprocessFilter(
 	filter not.FilterLike,
 ) {
-	v.regexp_ += "]"
+	v.expression_ += "]"
 }
 
 func (v *syntaxAnalyzer_) PreprocessGroup(
 	group not.GroupLike,
 ) {
-	v.regexp_ += "("
+	v.expression_ += "("
 }
 
 func (v *syntaxAnalyzer_) PostprocessGroup(
 	group not.GroupLike,
 ) {
-	v.regexp_ += ")"
+	v.expression_ += ")"
 }
 
 func (v *syntaxAnalyzer_) PreprocessIdentifier(
@@ -310,7 +310,7 @@ func (v *syntaxAnalyzer_) PostprocessInline(
 func (v *syntaxAnalyzer_) PreprocessLimit(
 	limit not.LimitLike,
 ) {
-	v.regexp_ += ","
+	v.expression_ += ","
 }
 
 func (v *syntaxAnalyzer_) PreprocessLine(
@@ -343,15 +343,15 @@ func (v *syntaxAnalyzer_) PostprocessPattern(
 func (v *syntaxAnalyzer_) PreprocessQuantified(
 	quantified not.QuantifiedLike,
 ) {
-	v.regexp_ += "{"
+	v.expression_ += "{"
 }
 
 func (v *syntaxAnalyzer_) PostprocessQuantified(
 	quantified not.QuantifiedLike,
 ) {
-	v.regexp_ += "}"
+	v.expression_ += "}"
 	if !v.isGreedy_ {
-		v.regexp_ += "?"
+		v.expression_ += "?"
 		v.isGreedy_ = true // Reset scanning back to "greedy".
 	}
 }
@@ -436,12 +436,19 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.pluralNames_ = col.Set[string]()
 	v.delimited_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()
-	var implicit = map[string]string{
-		"delimiter": `"(?:" + eol_ + ")"`,
-		"newline":   `"(?:" + eol_ + ")"`,
-		"space":     `"(?:[ \\t]+)"`,
-	}
-	v.regexps_ = col.AnyCatalog[string, string](implicit)
+	v.expressions_ = col.Catalog[string, string]()
+	v.expressions_.SetValue(
+		"delimiter",
+		`"(?:)"`, // The delimiters will be filled in later but need to be first.
+	)
+	v.expressions_.SetValue(
+		"newline",
+		`"(?:" + eol_ + ")"`,
+	)
+	v.expressions_.SetValue(
+		"space",
+		`"(?:[ \\t]+)"`,
+	)
 	v.terms_ = col.Catalog[string, abs.ListLike[not.TermLike]]()
 	v.variables_ = col.Catalog[string, abs.ListLike[string]]()
 	v.references_ = col.Catalog[string, abs.ListLike[not.ReferenceLike]]()
@@ -461,7 +468,7 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 		}
 	}
 	delimiters += `)"`
-	v.regexps_.SetValue("delimiter", delimiters)
+	v.expressions_.SetValue("delimiter", delimiters)
 }
 
 func (v *syntaxAnalyzer_) PreprocessTerm(
@@ -621,13 +628,13 @@ type syntaxAnalyzer_ struct {
 	syntaxName_   string
 	legalNotice_  string
 	ruleName_     string
-	regexp_       string
+	expression_   string
 	ruleNames_    abs.SetLike[string]
 	tokenNames_   abs.SetLike[string]
 	pluralNames_  abs.SetLike[string]
 	delimited_    abs.SetLike[string]
 	delimiters_   abs.SetLike[string]
-	regexps_      abs.CatalogLike[string, string]
+	expressions_  abs.CatalogLike[string, string]
 	terms_        abs.CatalogLike[string, abs.ListLike[not.TermLike]]
 	variables_    abs.CatalogLike[string, abs.ListLike[string]]
 	references_   abs.CatalogLike[string, abs.ListLike[not.ReferenceLike]]

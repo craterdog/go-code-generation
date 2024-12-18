@@ -876,7 +876,7 @@ type parser_ struct {
 
 type parserClass_ struct {
 	// Declare the class constants.
-	syntax_    abs.CatalogLike[string, string]
+	syntax_ abs.CatalogLike[string, string]
 }
 `,
 
