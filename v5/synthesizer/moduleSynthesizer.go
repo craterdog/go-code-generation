@@ -361,6 +361,20 @@ func (v *moduleSynthesizer_) createImportedPackages(
 		)
 		importedPackages += packageAlias
 	}
+	if sts.Contains(source, "ref.") && !sts.Contains(importedPackages, "ref") {
+		var packageAlias = class.packageAlias_
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageAcronym",
+			"ref",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"reflect",
+		)
+		importedPackages += packageAlias
+	}
 	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
 		var packageAlias = class.packageAlias_
 		packageAlias = uti.ReplaceAll(
@@ -372,6 +386,20 @@ func (v *moduleSynthesizer_) createImportedPackages(
 			packageAlias,
 			"packagePath",
 			"github.com/craterdog/go-collection-framework/v5/collection",
+		)
+		importedPackages += packageAlias
+	}
+	if sts.Contains(source, "uti.") && !sts.Contains(importedPackages, "uti") {
+		var packageAlias = class.packageAlias_
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packageAcronym",
+			"uti",
+		)
+		packageAlias = uti.ReplaceAll(
+			packageAlias,
+			"packagePath",
+			"github.com/craterdog/go-missing-utilities/v2",
 		)
 		importedPackages += packageAlias
 	}
