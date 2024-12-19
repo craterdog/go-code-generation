@@ -124,10 +124,11 @@ func (v *nodeSynthesizer_) CreateClassReference() string {
 }
 
 func (v *nodeSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
-	source = v.performGlobalUpdates(source)
-	return source
+	generated = v.performGlobalUpdates(existing, generated)
+	return generated
 }
 
 // PROTECTED INTERFACE
@@ -441,7 +442,7 @@ func (v *nodeSynthesizer_) createInstanceStructure() string {
 }
 
 func (v *nodeSynthesizer_) createImportedPackages(
-	source string,
+	generated string,
 ) string {
 	var importedPackages string
 	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
@@ -450,7 +451,7 @@ func (v *nodeSynthesizer_) createImportedPackages(
 		var packagePath = association.GetKey()
 		var packageAcronym = association.GetValue()
 		var prefix = packageAcronym + "."
-		if sts.Contains(source, prefix) {
+		if sts.Contains(generated, prefix) {
 			var class = nodeSynthesizerClassReference()
 			var packageAlias = class.packageAlias_
 			packageAlias = uti.ReplaceAll(
@@ -543,17 +544,18 @@ func (v *nodeSynthesizer_) createSetterMethod(
 }
 
 func (v *nodeSynthesizer_) performGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	// Update the class imports.
-	var importedPackages = v.createImportedPackages(source)
-	source = uti.ReplaceAll(
-		source,
+	var importedPackages = v.createImportedPackages(generated)
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
 
-	return source
+	return generated
 }
 
 // Instance Structure

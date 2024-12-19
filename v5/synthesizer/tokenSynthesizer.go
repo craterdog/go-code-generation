@@ -123,16 +123,17 @@ func (v *tokenSynthesizer_) CreateClassReference() string {
 }
 
 func (v *tokenSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var class = tokenSynthesizerClassReference()
 	var importedPackages = class.importedPackages_
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

@@ -17,6 +17,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
+	reg "regexp"
 	sts "strings"
 )
 
@@ -94,15 +95,10 @@ func (v *moduleSynthesizer_) CreateClassConstructors() string {
 }
 
 func (v *moduleSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
-	var importedPackages = v.createImportedPackages(source)
-	source = uti.ReplaceAll(
-		source,
-		"importedPackages",
-		importedPackages,
-	)
-	return source
+	return v.performGlobalUpdates(existing, generated)
 }
 
 // PROTECTED INTERFACE
@@ -335,78 +331,23 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	return
 }
 
-func (v *moduleSynthesizer_) createImportedPackages(
-	source string,
+func (v *moduleSynthesizer_) createImportedPath(
+	packageAcronym string,
+	packagePath string,
 ) string {
-	var importedPackages string
 	var class = moduleSynthesizerClassReference()
-	var packageNames = v.models_.GetKeys().GetIterator()
-	for packageNames.HasNext() {
-		var packageName = packageNames.GetNext()
-		var importedPackage = class.importedPackage_
-		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
-		importedPackages += importedPackage
-	}
-	if sts.Contains(source, "fmt.") && !sts.Contains(importedPackages, "fmt") {
-		var packageAlias = class.packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"fmt",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"fmt",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "ref.") && !sts.Contains(importedPackages, "ref") {
-		var packageAlias = class.packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"ref",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"reflect",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "abs.") && !sts.Contains(importedPackages, "abs") {
-		var packageAlias = class.packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"abs",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"github.com/craterdog/go-collection-framework/v5/collection",
-		)
-		importedPackages += packageAlias
-	}
-	if sts.Contains(source, "uti.") && !sts.Contains(importedPackages, "uti") {
-		var packageAlias = class.packageAlias_
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packageAcronym",
-			"uti",
-		)
-		packageAlias = uti.ReplaceAll(
-			packageAlias,
-			"packagePath",
-			"github.com/craterdog/go-missing-utilities/v2",
-		)
-		importedPackages += packageAlias
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-	return importedPackages
+	var importedPath = class.importedPath_
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packageAcronym",
+		packageAcronym,
+	)
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packagePath",
+		packagePath,
+	)
+	return importedPath
 }
 
 func (v *moduleSynthesizer_) createNameAlias(
@@ -627,22 +568,95 @@ func (v *moduleSynthesizer_) extractType(
 	return abstractType
 }
 
+func (v *moduleSynthesizer_) performGlobalUpdates(
+	existing string,
+	generated string,
+) string {
+	// Preserve the module description and global functions.
+	var pattern = `└──────────────────────────────────────────────────────────────────────────────┘(.|\r?\n)+package module`
+	generated = v.replacePattern(pattern, existing, generated)
+	pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
+	generated = v.replacePattern(pattern, existing, generated)
+
+	// Import each package contained in the module.
+	var importedPackages string
+	var class = moduleSynthesizerClassReference()
+	var packageNames = v.models_.GetKeys().GetIterator()
+	for packageNames.HasNext() {
+		var packageName = packageNames.GetNext()
+		var importedPackage = class.importedPackage_
+		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
+		importedPackages += importedPackage
+	}
+
+	// Add in any additional required packages.
+	var mappings = map[string]string{
+		"fmt": "fmt",
+		"github.com/craterdog/go-collection-framework/v5":            "col",
+		"github.com/craterdog/go-collection-framework/v5/collection": "abs",
+		"github.com/craterdog/go-missing-utilities/v2":               "uti",
+		"reflect": "ref",
+	}
+	for packagePath, packageAcronym := range mappings {
+		if sts.Contains(importedPackages, packagePath) {
+			continue
+		}
+		switch {
+		case sts.Contains(generated, packageAcronym+"."):
+			importedPackages += v.createImportedPath(
+				packageAcronym,
+				packagePath,
+			)
+		case sts.Contains(existing, packageAcronym+"."):
+			importedPackages += v.createImportedPath(
+				packageAcronym,
+				packagePath,
+			)
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+	return generated
+}
+
 func (v *moduleSynthesizer_) replacePackageAttributes(
-	source string,
+	generated string,
 	packageName string,
 ) string {
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"packageName",
 		packageName,
 	)
 	var packageAcronym = packageName[0:3]
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"packageAcronym",
 		packageAcronym,
 	)
-	return source
+	return generated
+}
+
+func (v *moduleSynthesizer_) replacePattern(
+	pattern string,
+	existing string,
+	generated string,
+) string {
+	var matcher = reg.MustCompile(pattern)
+	var existingPattern = matcher.FindString(existing)
+	var generatedPattern = matcher.FindString(generated)
+	generated = sts.ReplaceAll(
+		generated,
+		generatedPattern,
+		existingPattern,
+	)
+	return generated
 }
 
 // Instance Structure
@@ -657,7 +671,7 @@ type moduleSynthesizer_ struct {
 type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
-	packageAlias_        string
+	importedPath_        string
 	importedPackage_     string
 	packageAliases_      string
 	typeAliases_         string
@@ -684,7 +698,7 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
 
-	packageAlias_: `
+	importedPath_: `
 	<~packageAcronym> "<packagePath>"`,
 
 	importedPackage_: `

@@ -135,28 +135,29 @@ func (v *formatterSynthesizer_) CreateClassReference() string {
 }
 
 func (v *formatterSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var syntaxMap = v.analyzer_.GetSyntaxMap()
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"syntaxMap",
 		syntaxMap,
 	)
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"syntaxName",
 		syntaxName,
 	)
 	var class = formatterSynthesizerClassReference()
 	var importedPackages = class.importedPackages_
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

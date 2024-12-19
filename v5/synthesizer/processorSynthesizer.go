@@ -135,16 +135,17 @@ func (v *processorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *processorSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var class = processorSynthesizerClassReference()
 	var importedPackages = class.importedPackages_
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

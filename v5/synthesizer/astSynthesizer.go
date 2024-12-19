@@ -101,10 +101,11 @@ func (v *astSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *astSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
-	source = v.performGlobalUpdates(source)
-	return source
+	generated = v.performGlobalUpdates(existing, generated)
+	return generated
 }
 
 // PROTECTED INTERFACE
@@ -284,7 +285,8 @@ func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
 }
 
 func (v *astSynthesizer_) performGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var importedPackages string
 	if v.analyzer_.HasPlurals() {
@@ -292,12 +294,12 @@ func (v *astSynthesizer_) performGlobalUpdates(
 	abs "github.com/craterdog/go-collection-framework/v5/collection"
 `
 	}
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // Instance Structure

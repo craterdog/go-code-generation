@@ -129,22 +129,23 @@ func (v *visitorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *visitorSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"syntaxName",
 		syntaxName,
 	)
 	var class = visitorSynthesizerClassReference()
 	var importedPackages = class.importedPackages_
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

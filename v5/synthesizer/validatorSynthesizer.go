@@ -135,22 +135,23 @@ func (v *validatorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *validatorSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var syntaxName = v.analyzer_.GetSyntaxName()
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"syntaxName",
 		syntaxName,
 	)
 	var class = validatorSynthesizerClassReference()
 	var importedPackages = class.importedPackages_
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

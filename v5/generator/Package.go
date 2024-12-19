@@ -71,6 +71,7 @@ type ClassGeneratorLike interface {
 		moduleName string,
 		packageName string,
 		className string,
+		existing string,
 		synthesizer ClassTemplateDriven,
 	) string
 }
@@ -85,6 +86,7 @@ type ModuleGeneratorLike interface {
 	GenerateModule(
 		moduleName string,
 		wikiPath string,
+		existing string,
 		synthesizer ModuleTemplateDriven,
 	) string
 }
@@ -100,6 +102,7 @@ type PackageGeneratorLike interface {
 		moduleName string,
 		wikiPath string,
 		packageName string,
+		existing string,
 		synthesizer PackageTemplateDriven,
 	) string
 }
@@ -125,7 +128,8 @@ type ClassTemplateDriven interface {
 	CreateClassStructure() string
 	CreateClassReference() string
 	PerformGlobalUpdates(
-		source string,
+		existing string,
+		generated string,
 	) string
 }
 
@@ -139,7 +143,8 @@ type ModuleTemplateDriven interface {
 	CreateTypeAliases() string
 	CreateClassConstructors() string
 	PerformGlobalUpdates(
-		source string,
+		existing string,
+		generated string,
 	) string
 }
 
@@ -157,6 +162,7 @@ type PackageTemplateDriven interface {
 	CreateInstanceDeclarations() string
 	CreateAspectDeclarations() string
 	PerformGlobalUpdates(
-		source string,
+		existing string,
+		generated string,
 	) string
 }

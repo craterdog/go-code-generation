@@ -46,50 +46,83 @@ func (v *packageGenerator_) GeneratePackage(
 	moduleName string,
 	wikiPath string,
 	packageName string,
+	existing string,
 	synthesizer PackageTemplateDriven,
 ) string {
 	// Begin with a package template.
-	var source = packageGeneratorClassReference().packageTemplate_
+	var generated = packageGeneratorClassReference().packageTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
+	generated = uti.ReplaceAll(
+		generated,
+		"legalNotice",
+		legalNotice,
+	)
 
 	// Create the warning message.
 	var warningMessage = synthesizer.CreateWarningMessage()
-	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+	generated = uti.ReplaceAll(
+		generated,
+		"warningMessage",
+		warningMessage,
+	)
 
 	// Create the package description.
 	var packageDescription = synthesizer.CreatePackageDescription()
-	source = uti.ReplaceAll(source, "packageDescription", packageDescription)
+	generated = uti.ReplaceAll(
+		generated,
+		"packageDescription",
+		packageDescription,
+	)
 
 	// Create the type declarations.
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
-	source = uti.ReplaceAll(source, "typeDeclarations", typeDeclarations)
+	generated = uti.ReplaceAll(
+		generated,
+		"typeDeclarations",
+		typeDeclarations,
+	)
 
 	// Create the functional declarations.
 	var functionalDeclarations = synthesizer.CreateFunctionalDeclarations()
-	source = uti.ReplaceAll(source, "functionalDeclarations", functionalDeclarations)
+	generated = uti.ReplaceAll(
+		generated,
+		"functionalDeclarations",
+		functionalDeclarations,
+	)
 
 	// Create the class declarations.
 	var classDeclarations = synthesizer.CreateClassDeclarations()
-	source = uti.ReplaceAll(source, "classDeclarations", classDeclarations)
+	generated = uti.ReplaceAll(
+		generated,
+		"classDeclarations",
+		classDeclarations,
+	)
 
 	// Create the instance declarations.
 	var instanceDeclarations = synthesizer.CreateInstanceDeclarations()
-	source = uti.ReplaceAll(source, "instanceDeclarations", instanceDeclarations)
+	generated = uti.ReplaceAll(
+		generated,
+		"instanceDeclarations",
+		instanceDeclarations,
+	)
 
 	// Create the aspect declarations.
 	var aspectDeclarations = synthesizer.CreateAspectDeclarations()
-	source = uti.ReplaceAll(source, "aspectDeclarations", aspectDeclarations)
+	generated = uti.ReplaceAll(
+		generated,
+		"aspectDeclarations",
+		aspectDeclarations,
+	)
 
 	// Perform global updates (this must be done last).
-	source = synthesizer.PerformGlobalUpdates(source)
-	source = uti.ReplaceAll(source, "moduleName", moduleName)
-	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
-	source = uti.ReplaceAll(source, "packageName", packageName)
+	generated = synthesizer.PerformGlobalUpdates(existing, generated)
+	generated = uti.ReplaceAll(generated, "moduleName", moduleName)
+	generated = uti.ReplaceAll(generated, "wikiPath", wikiPath)
+	generated = uti.ReplaceAll(generated, "packageName", packageName)
 
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

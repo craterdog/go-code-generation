@@ -46,73 +46,126 @@ func (v *classGenerator_) GenerateClass(
 	moduleName string,
 	packageName string,
 	className string,
+	existing string,
 	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var source = classGeneratorClassReference().classTemplate_
+	var generated = classGeneratorClassReference().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
+	generated = uti.ReplaceAll(
+		generated,
+		"legalNotice",
+		legalNotice,
+	)
 
 	// Create the warning message.
 	var warningMessage = synthesizer.CreateWarningMessage()
 	if uti.IsDefined(warningMessage) {
 		warningMessage = "\n/*" + warningMessage + "*/\n"
 	}
-	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+	generated = uti.ReplaceAll(
+		generated,
+		"warningMessage",
+		warningMessage,
+	)
 
 	// Create the access function.
 	var accessFunction = synthesizer.CreateAccessFunction()
-	source = uti.ReplaceAll(source, "accessFunction", accessFunction)
+	generated = uti.ReplaceAll(
+		generated,
+		"accessFunction",
+		accessFunction,
+	)
 
 	// Create the constructor methods.
 	var constructorMethods = synthesizer.CreateConstructorMethods()
-	source = uti.ReplaceAll(source, "constructorMethods", constructorMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"constructorMethods",
+		constructorMethods,
+	)
 
 	// Create the constant methods.
 	var constantMethods = synthesizer.CreateConstantMethods()
-	source = uti.ReplaceAll(source, "constantMethods", constantMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"constantMethods",
+		constantMethods,
+	)
 
 	// Create the function methods.
 	var functionMethods = synthesizer.CreateFunctionMethods()
-	source = uti.ReplaceAll(source, "functionMethods", functionMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"functionMethods",
+		functionMethods,
+	)
 
 	// Create the principal methods.
 	var principalMethods = synthesizer.CreatePrincipalMethods()
-	source = uti.ReplaceAll(source, "principalMethods", principalMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"principalMethods",
+		principalMethods,
+	)
 
 	// Create the attribute methods.
 	var attributeMethods = synthesizer.CreateAttributeMethods()
-	source = uti.ReplaceAll(source, "attributeMethods", attributeMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"attributeMethods",
+		attributeMethods,
+	)
 
 	// Create the aspect methods.
 	var aspectMethods = synthesizer.CreateAspectMethods()
-	source = uti.ReplaceAll(source, "aspectMethods", aspectMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"aspectMethods",
+		aspectMethods,
+	)
 
 	// Create the private methods.
 	var privateMethods = synthesizer.CreatePrivateMethods()
-	source = uti.ReplaceAll(source, "privateMethods", privateMethods)
+	generated = uti.ReplaceAll(
+		generated,
+		"privateMethods",
+		privateMethods,
+	)
 
 	// Create the instance structure.
 	var instanceStructure = synthesizer.CreateInstanceStructure()
-	source = uti.ReplaceAll(source, "instanceStructure", instanceStructure)
+	generated = uti.ReplaceAll(
+		generated,
+		"instanceStructure",
+		instanceStructure,
+	)
 
 	// Create the class structure.
 	var classStructure = synthesizer.CreateClassStructure()
-	source = uti.ReplaceAll(source, "classStructure", classStructure)
+	generated = uti.ReplaceAll(
+		generated,
+		"classStructure",
+		classStructure,
+	)
 
 	// Create the class reference.
 	var classReference = synthesizer.CreateClassReference()
-	source = uti.ReplaceAll(source, "classReference", classReference)
+	generated = uti.ReplaceAll(
+		generated,
+		"classReference",
+		classReference,
+	)
 
 	// Perform global updates (this must be done last).
-	source = synthesizer.PerformGlobalUpdates(source)
-	source = uti.ReplaceAll(source, "moduleName", moduleName)
-	source = uti.ReplaceAll(source, "packageName", packageName)
-	source = uti.ReplaceAll(source, "className", className)
+	generated = synthesizer.PerformGlobalUpdates(existing, generated)
+	generated = uti.ReplaceAll(generated, "moduleName", moduleName)
+	generated = uti.ReplaceAll(generated, "packageName", packageName)
+	generated = uti.ReplaceAll(generated, "className", className)
 
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

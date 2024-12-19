@@ -45,33 +45,50 @@ func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
 func (v *moduleGenerator_) GenerateModule(
 	moduleName string,
 	wikiPath string,
+	existing string,
 	synthesizer ModuleTemplateDriven,
 ) string {
 	// Begin with a module template.
-	var source = moduleGeneratorClassReference().moduleTemplate_
+	var generated = moduleGeneratorClassReference().moduleTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
-	source = uti.ReplaceAll(source, "legalNotice", legalNotice)
+	generated = uti.ReplaceAll(
+		generated,
+		"legalNotice",
+		legalNotice,
+	)
 
 	// Create the warning message.
 	var warningMessage = synthesizer.CreateWarningMessage()
-	source = uti.ReplaceAll(source, "warningMessage", warningMessage)
+	generated = uti.ReplaceAll(
+		generated,
+		"warningMessage",
+		warningMessage,
+	)
 
 	// Create the type aliases.
 	var typeAliases = synthesizer.CreateTypeAliases()
-	source = uti.ReplaceAll(source, "typeAliases", typeAliases)
+	generated = uti.ReplaceAll(
+		generated,
+		"typeAliases",
+		typeAliases,
+	)
 
 	// Create the class constructors.
 	var classConstructors = synthesizer.CreateClassConstructors()
-	source = uti.ReplaceAll(source, "classConstructors", classConstructors)
+	generated = uti.ReplaceAll(
+		generated,
+		"classConstructors",
+		classConstructors,
+	)
 
 	// Perform global updates (this must be done last).
-	source = synthesizer.PerformGlobalUpdates(source)
-	source = uti.ReplaceAll(source, "moduleName", moduleName)
-	source = uti.ReplaceAll(source, "wikiPath", wikiPath)
+	generated = synthesizer.PerformGlobalUpdates(existing, generated)
+	generated = uti.ReplaceAll(generated, "moduleName", moduleName)
+	generated = uti.ReplaceAll(generated, "wikiPath", wikiPath)
 
-	return source
+	return generated
 }
 
 // PROTECTED INTERFACE

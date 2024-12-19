@@ -127,10 +127,11 @@ func (v *classSynthesizer_) CreateClassReference() string {
 }
 
 func (v *classSynthesizer_) PerformGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
-	source = v.performGlobalUpdates(source)
-	return source
+	generated = v.performGlobalUpdates(existing, generated)
+	return generated
 }
 
 // PROTECTED INTERFACE
@@ -775,7 +776,8 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 }
 
 func (v *classSynthesizer_) createImportedPackages(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	var importedPackages string
 	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
@@ -784,7 +786,7 @@ func (v *classSynthesizer_) createImportedPackages(
 		var packagePath = association.GetKey()
 		var packageAcronym = association.GetValue()
 		var prefix = packageAcronym + "."
-		if sts.Contains(source, prefix) {
+		if sts.Contains(generated, prefix) {
 			var class = classSynthesizerClassReference()
 			var packageAlias = class.packageAlias_
 			packageAlias = uti.ReplaceAll(
@@ -945,12 +947,13 @@ func (v *classSynthesizer_) createSetterMethod(
 }
 
 func (v *classSynthesizer_) performGlobalUpdates(
-	source string,
+	existing string,
+	generated string,
 ) string {
 	// Update the class imports.
-	var importedPackages = v.createImportedPackages(source)
-	source = uti.ReplaceAll(
-		source,
+	var importedPackages = v.createImportedPackages(existing, generated)
+	generated = uti.ReplaceAll(
+		generated,
 		"importedPackages",
 		importedPackages,
 	)
@@ -960,8 +963,8 @@ func (v *classSynthesizer_) performGlobalUpdates(
 	if v.classAnalyzer_.IsIntrinsic() {
 		star = ""
 	}
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"*",
 		star,
 	)
@@ -969,18 +972,18 @@ func (v *classSynthesizer_) performGlobalUpdates(
 	// Insert any generics.
 	var constraints = v.classAnalyzer_.GetTypeConstraints()
 	var arguments = v.classAnalyzer_.GetTypeArguments()
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"constraints",
 		constraints,
 	)
-	source = uti.ReplaceAll(
-		source,
+	generated = uti.ReplaceAll(
+		generated,
 		"arguments",
 		arguments,
 	)
 
-	return source
+	return generated
 }
 
 func (v *classSynthesizer_) replaceAbstractionType(
