@@ -16,6 +16,8 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
+	reg "regexp"
+	sts "strings"
 )
 
 // CLASS INTERFACE
@@ -138,6 +140,8 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
+	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+	generated = v.replacePattern(pattern, existing, generated)
 	var syntaxName = v.analyzer_.GetSyntaxName()
 	generated = uti.ReplaceAll(
 		generated,
@@ -214,6 +218,22 @@ func (v *validatorSynthesizer_) createProcessTokens() string {
 		processTokens += processToken
 	}
 	return processTokens
+}
+
+func (v *validatorSynthesizer_) replacePattern(
+	pattern string,
+	existing string,
+	generated string,
+) string {
+	var matcher = reg.MustCompile(pattern)
+	var existingPattern = matcher.FindString(existing)
+	var generatedPattern = matcher.FindString(generated)
+	generated = sts.ReplaceAll(
+		generated,
+		generatedPattern,
+		existingPattern,
+	)
+	return generated
 }
 
 // Instance Structure

@@ -592,7 +592,6 @@ func (v *moduleSynthesizer_) performGlobalUpdates(
 	// Add in any additional required packages.
 	var mappings = map[string]string{
 		"fmt": "fmt",
-		"github.com/craterdog/go-collection-framework/v5":            "col",
 		"github.com/craterdog/go-collection-framework/v5/collection": "abs",
 		"github.com/craterdog/go-missing-utilities/v2":               "uti",
 		"reflect": "ref",
