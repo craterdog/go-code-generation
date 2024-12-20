@@ -839,6 +839,8 @@ func (v *parser_) putBack(
 func (v *parser_) remove(
 	tokens abs.Sequential[TokenLike],
 ) {
+	// NOTE: This method does nothing but must exist to satisfy the lint
+	// check on the generated parser code.
 }
 `,
 
