@@ -102,7 +102,9 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
-	return v.performGlobalUpdates(existing, generated)
+	generated = v.preserveExistingCode(existing, generated)
+	generated = v.updateImportedPackages(existing, generated)
+	return generated
 }
 
 // PROTECTED INTERFACE
@@ -429,20 +431,20 @@ func (v *moduleSynthesizer_) extractImportedPackages(
 	packages abs.CatalogLike[string, string],
 ) {
 	packages = col.Catalog[string, string]()
-	var lower_   = `\p{Ll}`
-	var digit_   = `\p{Nd}`
+	var lower_ = `\p{Ll}`
+	var digit_ = `\p{Nd}`
 	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
-	var white_   = `[ \t\r\n]*`
-	var path_    = `("[^"]+")`
-	var pattern  = `import \((?:.|\r?\n)*?\)`
-	var matcher  = reg.MustCompile(pattern)
-	var imports  = matcher.FindString(source)
+	var white_ = `[ \t\r\n]*`
+	var path_ = `("[^"]+")`
+	var pattern = `import \((?:.|\r?\n)*?\)`
+	var matcher = reg.MustCompile(pattern)
+	var imports = matcher.FindString(source)
 	var lines = sts.Split(imports, "\n")
 	var count = len(lines)
 	if count > 2 {
-		pattern  = acronym_ + white_ + path_
-		matcher  = reg.MustCompile(pattern)
-		lines = lines[1:count-1]
+		pattern = acronym_ + white_ + path_
+		matcher = reg.MustCompile(pattern)
+		lines = lines[1 : count-1]
 		for _, line := range lines {
 			var matches = matcher.FindStringSubmatch(line)
 			var packageAcronym = matches[1]
@@ -602,72 +604,17 @@ func (v *moduleSynthesizer_) extractType(
 	return abstractType
 }
 
-func (v *moduleSynthesizer_) performGlobalUpdates(
+func (v *moduleSynthesizer_) preserveExistingCode(
 	existing string,
 	generated string,
 ) string {
-	// Preserve the module description and global functions.
+	// Preserve the module description.
 	var pattern = `└──────────────────────────────────────────────────────────────────────────────┘(.|\r?\n)+package module`
 	generated = v.replacePattern(pattern, existing, generated)
+
+	// Preserve the global functions.
 	pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
 	generated = v.replacePattern(pattern, existing, generated)
-
-	// Seed the imported packages with the common ones.
-	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
-		map[string]string{
-			"fmt": `"fmt"`,
-			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
-			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,
-			"ref": `"reflect"`,
-		},
-	)
-
-	// Add in the imported packages from the existing code.
-	imports = abs.CatalogClass[string, string]().Merge(
-		imports, v.extractImportedPackages(existing),
-	)
-
-	// Add in the imported packages from each class-model.
-	var models = v.models_.GetIterator()
-	for models.HasNext() {
-		var association = models.GetNext()
-		var packageName = association.GetKey()
-		var packageAcronym = packageName[0:3]
-		var packagePath = `"<moduleName>/` + packageName + `"`
-		imports.SetValue(packageAcronym, packagePath)
-		var model = association.GetValue()
-		var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
-		imports = abs.CatalogClass[string, string]().Merge(
-			imports, analyzer.GetImportedPackages(),
-		)
-	}
-
-	// Create imported package statements for each imported package.
-	var importedPackages string
-	imports.SortValues() // These are sorted by path not acronym.
-	var packages = imports.GetIterator()
-	for packages.HasNext() {
-		var association = packages.GetNext()
-		var packageAcronym = association.GetKey()
-		var packagePath = association.GetValue()
-		if sts.Contains(generated, packageAcronym+".") {
-			// Only import packages that are actually used in the generated code.
-			importedPackages += v.createImportedPath(
-				packageAcronym,
-				packagePath,
-			)
-		}
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-
-	// Insert the imported packages into the generated code.
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
 	return generated
 }
 
@@ -701,6 +648,84 @@ func (v *moduleSynthesizer_) replacePattern(
 		generated,
 		generatedPattern,
 		existingPattern,
+	)
+	return generated
+}
+
+func (v *moduleSynthesizer_) updateImportedPackages(
+	existing string,
+	generated string,
+) string {
+	// Seed the imported packages with the most common ones.
+	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
+		map[string]string{
+			"fmt": `"fmt"`,
+			"col": `"github.com/craterdog/go-collection-framework/v5"`,
+			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
+			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,
+			"ref": `"reflect"`,
+			"sts": `"strings"`,
+		},
+	)
+
+	// Add in the imported packages from the existing code.
+	imports = abs.CatalogClass[string, string]().Merge(
+		imports, v.extractImportedPackages(existing),
+	)
+
+	// Add in the imported packages from each class-model.
+	var models = v.models_.GetIterator()
+	for models.HasNext() {
+		var association = models.GetNext()
+		var packageName = association.GetKey()
+		var packageAcronym = packageName[0:3]
+		var packagePath = `"<moduleName>/` + packageName + `"`
+		imports.SetValue(packageAcronym, packagePath)
+		var model = association.GetValue()
+		var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
+		imports = abs.CatalogClass[string, string]().Merge(
+			imports, analyzer.GetImportedPackages(),
+		)
+	}
+	imports.SortValuesWithRanker(
+		func(first, second abs.AssociationLike[string, string]) col.Rank {
+			var firstValue = first.GetValue()
+			var secondValue = second.GetValue()
+			switch {
+			case firstValue < secondValue:
+				return col.LesserRank
+			case firstValue > secondValue:
+				return col.GreaterRank
+			default:
+				return col.EqualRank
+			}
+		},
+	)
+
+	// Create imported package statements for each imported package.
+	var importedPackages string
+	var packages = imports.GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		if sts.Contains(generated, packageAcronym+".") {
+			// Only import packages that are actually used in the generated code.
+			importedPackages += v.createImportedPath(
+				packageAcronym,
+				packagePath,
+			)
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+
+	// Insert the imported packages into the generated code.
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
 	)
 	return generated
 }

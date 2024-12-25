@@ -14,6 +14,8 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	reg "regexp"
@@ -86,6 +88,18 @@ func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
 	var class = validatorSynthesizerClassReference()
 	var principalMethods = class.principalMethods_
+	var syntaxMap = v.analyzer_.GetSyntaxMap()
+	principalMethods = uti.ReplaceAll(
+		principalMethods,
+		"syntaxMap",
+		syntaxMap,
+	)
+	var syntaxName = v.analyzer_.GetSyntaxName()
+	principalMethods = uti.ReplaceAll(
+		principalMethods,
+		"syntaxName",
+		syntaxName,
+	)
 	return principalMethods
 }
 
@@ -140,27 +154,43 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
+	generated = v.preserveExistingCode(existing, generated)
+	generated = v.updateImportedPackages(existing, generated)
+	return generated
+}
+
+func (v *validatorSynthesizer_) preserveExistingCode(
+	existing string,
+	generated string,
+) string {
+	// Preserve the methodical method implementations.
 	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
 	generated = v.replacePattern(pattern, existing, generated)
-	var syntaxName = v.analyzer_.GetSyntaxName()
-	generated = uti.ReplaceAll(
-		generated,
-		"syntaxName",
-		syntaxName,
-	)
-	var class = validatorSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
 	return generated
 }
 
 // PROTECTED INTERFACE
 
 // Private Methods
+
+func (v *validatorSynthesizer_) createImportedPath(
+	packageAcronym string,
+	packagePath string,
+) string {
+	var class = validatorSynthesizerClassReference()
+	var importedPath = class.importedPath_
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packageAcronym",
+		packageAcronym,
+	)
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packagePath",
+		packagePath,
+	)
+	return importedPath
+}
 
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
@@ -220,6 +250,36 @@ func (v *validatorSynthesizer_) createProcessTokens() string {
 	return processTokens
 }
 
+func (v *validatorSynthesizer_) extractImportedPackages(
+	source string,
+) (
+	packages abs.CatalogLike[string, string],
+) {
+	packages = col.Catalog[string, string]()
+	var lower_ = `\p{Ll}`
+	var digit_ = `\p{Nd}`
+	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
+	var white_ = `[ \t\r\n]*`
+	var path_ = `("[^"]+")`
+	var pattern = `import \((?:.|\r?\n)*?\)`
+	var matcher = reg.MustCompile(pattern)
+	var imports = matcher.FindString(source)
+	var lines = sts.Split(imports, "\n")
+	var count = len(lines)
+	if count > 2 {
+		pattern = acronym_ + white_ + path_
+		matcher = reg.MustCompile(pattern)
+		lines = lines[1 : count-1]
+		for _, line := range lines {
+			var matches = matcher.FindStringSubmatch(line)
+			var packageAcronym = matches[1]
+			var packagePath = matches[2]
+			packages.SetValue(packageAcronym, packagePath)
+		}
+	}
+	return
+}
+
 func (v *validatorSynthesizer_) replacePattern(
 	pattern string,
 	existing string,
@@ -236,6 +296,70 @@ func (v *validatorSynthesizer_) replacePattern(
 	return generated
 }
 
+func (v *validatorSynthesizer_) updateImportedPackages(
+	existing string,
+	generated string,
+) string {
+	// Seed the imported packages with the most common ones.
+	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
+		map[string]string{
+			"fmt": `"fmt"`,
+			"ast": `"<ModuleName>/ast"`,
+			"col": `"github.com/craterdog/go-collection-framework/v5"`,
+			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
+			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,
+			"ref": `"reflect"`,
+			"sts": `"strings"`,
+		},
+	)
+
+	// Add in the imported packages from the existing code.
+	imports = abs.CatalogClass[string, string]().Merge(
+		imports, v.extractImportedPackages(existing),
+	)
+	imports.SortValuesWithRanker(
+		func(first, second abs.AssociationLike[string, string]) col.Rank {
+			var firstValue = first.GetValue()
+			var secondValue = second.GetValue()
+			switch {
+			case firstValue < secondValue:
+				return col.LesserRank
+			case firstValue > secondValue:
+				return col.GreaterRank
+			default:
+				return col.EqualRank
+			}
+		},
+	)
+
+	// Create imported package statements for each imported package.
+	var importedPackages string
+	var packages = imports.GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		if sts.Contains(generated, packageAcronym+".") {
+			// Only import packages that are actually used in the generated code.
+			importedPackages += v.createImportedPath(
+				packageAcronym,
+				packagePath,
+			)
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+
+	// Insert the imported packages into the generated code.
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+	return generated
+}
+
 // Instance Structure
 
 type validatorSynthesizer_ struct {
@@ -248,7 +372,7 @@ type validatorSynthesizer_ struct {
 type validatorSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
-	importedPackages_    string
+	importedPath_        string
 	accessFunction_      string
 	constructorMethods_  string
 	principalMethods_    string
@@ -278,10 +402,8 @@ var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
 
-	importedPackages_: `
-	fmt "fmt"
-	ast "<ModuleName>/ast"
-`,
+	importedPath_: `
+	<~packageAcronym> <packagePath>`,
 
 	accessFunction_: `
 // Access Function
