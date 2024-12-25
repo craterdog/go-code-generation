@@ -465,10 +465,14 @@ func (v *classSynthesizer_) createAttributeMethods(
 func (v *classSynthesizer_) createClassReference() string {
 	var class = classSynthesizerClassReference()
 	var classReference = class.classReference_
+	var constantInitialization = class.constantInitialization_
 	if v.classAnalyzer_.IsGeneric() {
 		classReference = class.classMap_
+		constantInitialization = class.mapInitialization_
 	}
-	var constantInitializations = v.createConstantInitializations()
+	var constantInitializations = v.createConstantInitializations(
+		constantInitialization,
+	)
 	classReference = uti.ReplaceAll(
 		classReference,
 		"constantInitializations",
@@ -513,22 +517,22 @@ func (v *classSynthesizer_) createConstantDeclarations() string {
 	return declarations
 }
 
-func (v *classSynthesizer_) createConstantInitializations() string {
-	var initializations string
+func (v *classSynthesizer_) createConstantInitializations(
+	intializationTemplate string,
+) string {
+	var constantInitializations string
 	var constants = v.classAnalyzer_.GetConstants().GetIterator()
 	for constants.HasNext() {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
-		var class = classSynthesizerClassReference()
-		var initialization = class.constantInitialization_
-		initialization = uti.ReplaceAll(
-			initialization,
+		var constantInitialization = uti.ReplaceAll(
+			intializationTemplate,
 			"constantName",
 			constantName,
 		)
-		initializations += initialization
+		constantInitializations += constantInitialization
 	}
-	return initializations
+	return constantInitializations
 }
 
 func (v *classSynthesizer_) createConstantMethod(
@@ -783,8 +787,8 @@ func (v *classSynthesizer_) createImportedPackages(
 	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
 		var association = packages.GetNext()
-		var packagePath = association.GetKey()
-		var packageAcronym = association.GetValue()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
 		var prefix = packageAcronym + "."
 		if sts.Contains(generated, prefix) {
 			var class = classSynthesizerClassReference()
@@ -1183,6 +1187,7 @@ type classSynthesizerClass_ struct {
 	classStructure_          string
 	constantDeclaration_     string
 	constantInitialization_  string
+	mapInitialization_       string
 	classReference_          string
 	classMap_                string
 }
@@ -1198,7 +1203,7 @@ var classSynthesizerClassReference_ = &classSynthesizerClass_{
 	warningMessage_: ``,
 
 	packageAlias_: `
-	<~packageAcronym> "<packagePath>"`,
+	<~packageAcronym> <packagePath>`,
 
 	accessFunction_: `
 // Access Function
@@ -1362,6 +1367,9 @@ type <~className>Class_<Constraints> struct {
 
 	constantInitialization_: `
 	// <~constantName>_: constantValue,`,
+
+	mapInitialization_: `
+			// <~constantName>_: constantValue,`,
 
 	classReference_: `
 // Class Reference

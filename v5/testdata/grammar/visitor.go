@@ -181,6 +181,7 @@ func (v *visitor_) visitArguments(
 func (v *visitor_) visitArray(
 	array ast.ArrayLike,
 ) {
+	// This method does not need to process anything.
 }
 
 func (v *visitor_) visitAspectDeclaration(
@@ -334,6 +335,7 @@ func (v *visitor_) visitAttributeSubsection(
 func (v *visitor_) visitChannel(
 	channel ast.ChannelLike,
 ) {
+	// This method does not need to process anything.
 }
 
 func (v *visitor_) visitClassDeclaration(

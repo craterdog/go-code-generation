@@ -3837,7 +3837,7 @@ func parserClassReference() *parserClass_ {
 
 var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
-	syntax_: col.AnyCatalog[string, string](
+	syntax_: col.CatalogFromMap[string, string](
 		map[string]string{
 			"$Model":                 `PackageDeclaration PrimitiveDeclarations InterfaceDeclarations`,
 			"$PackageDeclaration":    `LegalNotice PackageHeader PackageImports`,

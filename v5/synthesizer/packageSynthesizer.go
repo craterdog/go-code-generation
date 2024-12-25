@@ -221,7 +221,6 @@ Sine() returns the mathematical ratio of y/r for the angle.
 Cosine() returns the mathematical ratio of x/r for the angle.
 
 Tangent() returns the mathematical ratio of y/x for the angle.
-
 */
 type AngleClassLike interface {
 	// Constructor Methods

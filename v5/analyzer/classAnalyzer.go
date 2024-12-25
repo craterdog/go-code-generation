@@ -124,7 +124,9 @@ func (v *classAnalyzer_) analyzeAspectDeclarations(
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
 	var aspectDeclarations = aspectSection.GetAspectDeclarations()
-	v.aspectDeclarations_ = col.AnyList[ast.AspectDeclarationLike](aspectDeclarations)
+	v.aspectDeclarations_ = col.ListFromSequence[ast.AspectDeclarationLike](
+		aspectDeclarations,
+	)
 }
 
 func (v *classAnalyzer_) analyzeAspectInterfaces(
@@ -134,7 +136,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
 	if uti.IsDefined(aspectSubsection) {
 		var aspectInterfaces = aspectSubsection.GetAspectInterfaces()
-		v.aspectInterfaces_ = col.AnyList[ast.AspectInterfaceLike](
+		v.aspectInterfaces_ = col.ListFromSequence[ast.AspectInterfaceLike](
 			aspectInterfaces,
 		)
 	}
@@ -289,29 +291,28 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 	for packages.HasNext() {
 		var importedPackage = packages.GetNext()
 		var packagePath = importedPackage.GetPath()
-		packagePath = packagePath[1 : len(packagePath)-1]
 		var packageAcronym = importedPackage.GetName()
-		v.importedPackages_.SetValue(packagePath, packageAcronym)
+		v.importedPackages_.SetValue(packageAcronym, packagePath)
 	}
 	v.importedPackages_.SetValue(
 		"fmt",
-		"fmt",
+		`"fmt"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-missing-utilities/v2",
 		"uti",
+		`"github.com/craterdog/go-missing-utilities/v2"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v5",
 		"col",
+		`"github.com/craterdog/go-collection-framework/v5"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v5/collection",
 		"abs",
+		`"github.com/craterdog/go-collection-framework/v5/collection"`,
 	)
 	v.importedPackages_.SetValue(
-		"sync",
 		"syn",
+		`"sync"`,
 	)
 }
 

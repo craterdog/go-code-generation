@@ -448,8 +448,8 @@ func (v *nodeSynthesizer_) createImportedPackages(
 	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
 		var association = packages.GetNext()
-		var packagePath = association.GetKey()
-		var packageAcronym = association.GetValue()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
 		var prefix = packageAcronym + "."
 		if sts.Contains(generated, prefix) {
 			var class = nodeSynthesizerClassReference()
@@ -606,7 +606,7 @@ var nodeSynthesizerClassReference_ = &nodeSynthesizerClass_{
 `,
 
 	packageAlias_: `
-	<~packageAcronym> "<packagePath>"`,
+	<~packageAcronym> <packagePath>`,
 
 	accessFunction_: `
 // Access Function

@@ -197,8 +197,10 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// names from the catalog of expressions in their proper order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClassReference()
-	var tokenNames = col.AnySet[string](v.analyzer_.GetTokenNames())
-	var expressionNames = col.AnyCatalog[string, string](
+	var tokenNames = col.SetFromSequence[string](
+		v.analyzer_.GetTokenNames(),
+	)
+	var expressionNames = col.CatalogFromSequence[string, string](
 		v.analyzer_.GetExpressions(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
@@ -217,11 +219,16 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 }
 
 func (v *scannerSynthesizer_) createTokenIdentifiers() string {
-	var tokenIdentifiers = `ErrorToken: "error",`
+	var class = scannerSynthesizerClassReference()
+	var tokenIdentifiers = class.tokenIdentifier_
+	tokenIdentifiers = uti.ReplaceAll(
+		tokenIdentifiers,
+		"tokenName",
+		"error",
+	)
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var class = scannerSynthesizerClassReference()
 		var tokenIdentifier = class.tokenIdentifier_
 		tokenIdentifier = uti.ReplaceAll(
 			tokenIdentifier,
@@ -583,13 +590,16 @@ func scannerClassReference() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: col.AnyCatalog[TokenType, string](map[TokenType]string{
-		// Define identifiers for each type of token.
-		<TokenIdentifiers>
-	}),
-	matchers_: col.AnyCatalog[TokenType, *reg.Regexp](map[TokenType]*reg.Regexp{
-		// Define pattern matchers for each type of token.<TokenMatchers>
-	}),
+	tokens_: col.CatalogFromMap[TokenType, string](
+		map[TokenType]string{
+			// Define identifiers for each type of token.<TokenIdentifiers>
+		},
+	),
+	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
+		map[TokenType]*reg.Regexp{
+			// Define pattern matchers for each type of token.<TokenMatchers>
+		},
+	),
 }
 
 // Private Constants
@@ -616,10 +626,10 @@ const (
 `,
 
 	tokenIdentifier_: `
-		<~TokenName>Token: "<~tokenName>",`,
+			<~TokenName>Token: "<~tokenName>",`,
 
 	tokenMatcher_: `
-		<~TokenName>Token: reg.MustCompile("^" + <~tokenName>_),`,
+			<~TokenName>Token: reg.MustCompile("^" + <~tokenName>_),`,
 
 	regularExpression_: `
 	<~expressionName>_ = <ExpressionValue>`,

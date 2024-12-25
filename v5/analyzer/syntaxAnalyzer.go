@@ -432,7 +432,9 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
 	v.ruleNames_ = col.Set[string]()
-	v.tokenNames_ = col.AnySet[string]([]string{"delimiter", "newline", "space"})
+	v.tokenNames_ = col.SetFromArray[string](
+		[]string{"delimiter", "newline", "space"},
+	)
 	v.pluralNames_ = col.Set[string]()
 	v.delimited_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()

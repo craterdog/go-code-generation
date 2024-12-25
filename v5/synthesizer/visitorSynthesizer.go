@@ -167,6 +167,10 @@ func (v *visitorSynthesizer_) createInlineImplementation(
 		var variableName = variables.GetNext()
 		implementation += v.createInlineReference(reference, variableName)
 	}
+	if uti.IsUndefined(implementation) {
+		var class = visitorSynthesizerClassReference()
+		implementation = class.emptyMethod_
+	}
 	return implementation
 }
 
@@ -406,6 +410,7 @@ type visitorSynthesizerClass_ struct {
 	principalMethods_   string
 	privateMethods_     string
 	visitMethod_        string
+	emptyMethod_        string
 	multilineCases_     string
 	ruleCase_           string
 	singularRuleCase_   string
@@ -495,6 +500,10 @@ func (v *visitor_) Visit<~SyntaxName>(
 func (v *visitor_) visit<~TargetName>(
 	<targetName_> ast.<~TargetName>Like,
 ) {<MethodImplementation>}
+`,
+
+	emptyMethod_: `
+	// This method does not need to process anything.
 `,
 
 	multilineCases_: `

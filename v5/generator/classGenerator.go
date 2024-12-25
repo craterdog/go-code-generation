@@ -192,7 +192,6 @@ func classGeneratorClassReference() *classGeneratorClass_ {
 var classGeneratorClassReference_ = &classGeneratorClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice><WarningMessage>
-
 package <PackageName>
 
 import (<ImportedPackages>)

@@ -15,6 +15,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	col "github.com/craterdog/go-collection-framework/v5"
 	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
@@ -72,7 +73,10 @@ func (v *moduleSynthesizer_) CreateTypeAliases() string {
 		var association = models.GetNext()
 		var packageName = association.GetKey()
 		var model = association.GetValue()
-		var packageAliases = v.createPackageAliases(packageName, model)
+		var packageAliases = v.createPackageAliases(
+			packageName,
+			model,
+		)
 		typeAliases += packageAliases
 	}
 	return typeAliases
@@ -419,6 +423,36 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	return
 }
 
+func (v *moduleSynthesizer_) extractImportedPackages(
+	source string,
+) (
+	packages abs.CatalogLike[string, string],
+) {
+	packages = col.Catalog[string, string]()
+	var lower_   = `\p{Ll}`
+	var digit_   = `\p{Nd}`
+	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
+	var white_   = `[ \t\r\n]*`
+	var path_    = `("[^"]+")`
+	var pattern  = `import \((?:.|\r?\n)*?\)`
+	var matcher  = reg.MustCompile(pattern)
+	var imports  = matcher.FindString(source)
+	var lines = sts.Split(imports, "\n")
+	var count = len(lines)
+	if count > 2 {
+		pattern  = acronym_ + white_ + path_
+		matcher  = reg.MustCompile(pattern)
+		lines = lines[1:count-1]
+		for _, line := range lines {
+			var matches = matcher.FindStringSubmatch(line)
+			var packageAcronym = matches[1]
+			var packagePath = matches[2]
+			packages.SetValue(packageAcronym, packagePath)
+		}
+	}
+	return
+}
+
 func (v *moduleSynthesizer_) extractParameterNames(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
@@ -578,35 +612,46 @@ func (v *moduleSynthesizer_) performGlobalUpdates(
 	pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
 	generated = v.replacePattern(pattern, existing, generated)
 
-	// Import each package contained in the module.
-	var importedPackages string
-	var class = moduleSynthesizerClassReference()
-	var packageNames = v.models_.GetKeys().GetIterator()
-	for packageNames.HasNext() {
-		var packageName = packageNames.GetNext()
-		var importedPackage = class.importedPackage_
-		importedPackage = v.replacePackageAttributes(importedPackage, packageName)
-		importedPackages += importedPackage
+	// Seed the imported packages with the common ones.
+	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
+		map[string]string{
+			"fmt": `"fmt"`,
+			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
+			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,
+			"ref": `"reflect"`,
+		},
+	)
+
+	// Add in the imported packages from the existing code.
+	imports = abs.CatalogClass[string, string]().Merge(
+		imports, v.extractImportedPackages(existing),
+	)
+
+	// Add in the imported packages from each class-model.
+	var models = v.models_.GetIterator()
+	for models.HasNext() {
+		var association = models.GetNext()
+		var packageName = association.GetKey()
+		var packageAcronym = packageName[0:3]
+		var packagePath = `"<moduleName>/` + packageName + `"`
+		imports.SetValue(packageAcronym, packagePath)
+		var model = association.GetValue()
+		var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
+		imports = abs.CatalogClass[string, string]().Merge(
+			imports, analyzer.GetImportedPackages(),
+		)
 	}
 
-	// Add in any additional required packages.
-	var mappings = map[string]string{
-		"fmt": "fmt",
-		"github.com/craterdog/go-collection-framework/v5/collection": "abs",
-		"github.com/craterdog/go-missing-utilities/v2":               "uti",
-		"reflect": "ref",
-	}
-	for packagePath, packageAcronym := range mappings {
-		if sts.Contains(importedPackages, packagePath) {
-			continue
-		}
-		switch {
-		case sts.Contains(generated, packageAcronym+"."):
-			importedPackages += v.createImportedPath(
-				packageAcronym,
-				packagePath,
-			)
-		case sts.Contains(existing, packageAcronym+"."):
+	// Create imported package statements for each imported package.
+	var importedPackages string
+	imports.SortValues() // These are sorted by path not acronym.
+	var packages = imports.GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		if sts.Contains(generated, packageAcronym+".") {
+			// Only import packages that are actually used in the generated code.
 			importedPackages += v.createImportedPath(
 				packageAcronym,
 				packagePath,
@@ -616,6 +661,8 @@ func (v *moduleSynthesizer_) performGlobalUpdates(
 	if uti.IsDefined(importedPackages) {
 		importedPackages += "\n"
 	}
+
+	// Insert the imported packages into the generated code.
 	generated = uti.ReplaceAll(
 		generated,
 		"importedPackages",
@@ -671,7 +718,6 @@ type moduleSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
 	importedPath_        string
-	importedPackage_     string
 	packageAliases_      string
 	typeAliases_         string
 	enumeratedAliases_   string
@@ -698,10 +744,7 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 `,
 
 	importedPath_: `
-	<~packageAcronym> "<packagePath>"`,
-
-	importedPackage_: `
-	<~packageAcronym> "<moduleName>/<~packageName>"`,
+	<~packageAcronym> <packagePath>`,
 
 	packageAliases_: `
 // <~PackageName><TypeAliases>

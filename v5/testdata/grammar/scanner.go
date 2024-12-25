@@ -234,27 +234,31 @@ func scannerClassReference() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: col.AnyCatalog[TokenType, string](map[TokenType]string{
-		// Define identifiers for each type of token.
-		ErrorToken:     "error",
-		CommentToken:   "comment",
-		DelimiterToken: "delimiter",
-		NameToken:      "name",
-		NewlineToken:   "newline",
-		PathToken:      "path",
-		PrefixToken:    "prefix",
-		SpaceToken:     "space",
-	}),
-	matchers_: col.AnyCatalog[TokenType, *reg.Regexp](map[TokenType]*reg.Regexp{
-		// Define pattern matchers for each type of token.
-		CommentToken:   reg.MustCompile("^" + comment_),
-		DelimiterToken: reg.MustCompile("^" + delimiter_),
-		NameToken:      reg.MustCompile("^" + name_),
-		NewlineToken:   reg.MustCompile("^" + newline_),
-		PathToken:      reg.MustCompile("^" + path_),
-		PrefixToken:    reg.MustCompile("^" + prefix_),
-		SpaceToken:     reg.MustCompile("^" + space_),
-	}),
+	tokens_: col.CatalogFromMap[TokenType, string](
+		map[TokenType]string{
+			// Define identifiers for each type of token.
+			ErrorToken:     "error",
+			CommentToken:   "comment",
+			DelimiterToken: "delimiter",
+			NameToken:      "name",
+			NewlineToken:   "newline",
+			PathToken:      "path",
+			PrefixToken:    "prefix",
+			SpaceToken:     "space",
+		},
+	),
+	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
+		map[TokenType]*reg.Regexp{
+			// Define pattern matchers for each type of token.
+			CommentToken:   reg.MustCompile("^" + comment_),
+			DelimiterToken: reg.MustCompile("^" + delimiter_),
+			NameToken:      reg.MustCompile("^" + name_),
+			NewlineToken:   reg.MustCompile("^" + newline_),
+			PathToken:      reg.MustCompile("^" + path_),
+			PrefixToken:    reg.MustCompile("^" + prefix_),
+			SpaceToken:     reg.MustCompile("^" + space_),
+		},
+	),
 }
 
 // Private Constants

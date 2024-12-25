@@ -134,10 +134,9 @@ func (v *packageAnalyzer_) PreprocessImportedPackage(
 	index uint,
 	size uint,
 ) {
-	var packagePath = importedPackage.GetPath()
-	packagePath = packagePath[1 : len(packagePath)-1]
 	var packageAcronym = importedPackage.GetName()
-	v.importedPackages_.SetValue(packagePath, packageAcronym)
+	var packagePath = importedPackage.GetPath()
+	v.importedPackages_.SetValue(packageAcronym, packagePath)
 }
 
 func (v *packageAnalyzer_) PreprocessInstanceDeclaration(
@@ -159,23 +158,23 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 ) {
 	v.importedPackages_.SetValue(
 		"fmt",
-		"fmt",
+		`"fmt"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-missing-utilities/v2",
 		"uti",
+		`"github.com/craterdog/go-missing-utilities/v2"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v5",
 		"col",
+		`"github.com/craterdog/go-collection-framework/v5"`,
 	)
 	v.importedPackages_.SetValue(
-		"github.com/craterdog/go-collection-framework/v5/collection",
 		"abs",
+		`"github.com/craterdog/go-collection-framework/v5/collection"`,
 	)
 	v.importedPackages_.SetValue(
-		"sync",
 		"syn",
+		`"sync"`,
 	)
 }
 
