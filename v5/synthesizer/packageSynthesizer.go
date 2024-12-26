@@ -92,6 +92,22 @@ func (v *packageSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *packageSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	wikiPath string,
+	packageName string,
+	existing string,
+	generated string,
+) string {
+	generated = v.updateImportedPackages(moduleName, existing, generated)
+	return generated
+}
+
+// PROTECTED INTERFACE
+
+// Private Methods
+
+func (v *packageSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
@@ -104,8 +120,6 @@ func (v *packageSynthesizer_) PerformGlobalUpdates(
 	)
 	return generated
 }
-
-// PROTECTED INTERFACE
 
 // Instance Structure
 

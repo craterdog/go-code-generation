@@ -101,10 +101,13 @@ func (v *astSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *astSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	wikiPath string,
+	packageName string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.performGlobalUpdates(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -284,7 +287,8 @@ func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
 	return true
 }
 
-func (v *astSynthesizer_) performGlobalUpdates(
+func (v *astSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {

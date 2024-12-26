@@ -99,11 +99,13 @@ func (v *moduleSynthesizer_) CreateClassConstructors() string {
 }
 
 func (v *moduleSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	wikiPath string,
 	existing string,
 	generated string,
 ) string {
 	generated = v.preserveExistingCode(existing, generated)
-	generated = v.updateImportedPackages(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -653,6 +655,7 @@ func (v *moduleSynthesizer_) replacePattern(
 }
 
 func (v *moduleSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
@@ -679,7 +682,7 @@ func (v *moduleSynthesizer_) updateImportedPackages(
 		var association = models.GetNext()
 		var packageName = association.GetKey()
 		var packageAcronym = packageName[0:3]
-		var packagePath = `"<moduleName>/` + packageName + `"`
+		var packagePath = `"` + moduleName + `/` + packageName + `"`
 		imports.SetValue(packageAcronym, packagePath)
 		var model = association.GetValue()
 		var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)

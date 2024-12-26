@@ -160,11 +160,28 @@ func (v *classGenerator_) GenerateClass(
 	)
 
 	// Perform global updates (this must be done last).
-	generated = synthesizer.PerformGlobalUpdates(existing, generated)
-	generated = uti.ReplaceAll(generated, "moduleName", moduleName)
-	generated = uti.ReplaceAll(generated, "packageName", packageName)
-	generated = uti.ReplaceAll(generated, "className", className)
-
+	generated = synthesizer.PerformGlobalUpdates(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		generated,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"moduleName",
+		moduleName,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"packageName",
+		packageName,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"className",
+		className,
+	)
 	return generated
 }
 

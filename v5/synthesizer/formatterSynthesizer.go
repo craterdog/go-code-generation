@@ -151,11 +151,14 @@ func (v *formatterSynthesizer_) CreateClassReference() string {
 }
 
 func (v *formatterSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
 	existing string,
 	generated string,
 ) string {
 	generated = v.preserveExistingCode(existing, generated)
-	generated = v.updateImportedPackages(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -300,6 +303,7 @@ func (v *formatterSynthesizer_) replacePattern(
 }
 
 func (v *formatterSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
@@ -307,7 +311,7 @@ func (v *formatterSynthesizer_) updateImportedPackages(
 	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
 		map[string]string{
 			"fmt": `"fmt"`,
-			"ast": `"<ModuleName>/ast"`,
+			"ast": `"` + moduleName + `/ast"`,
 			"col": `"github.com/craterdog/go-collection-framework/v5"`,
 			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
 			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,

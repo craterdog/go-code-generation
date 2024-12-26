@@ -128,6 +128,9 @@ type ClassTemplateDriven interface {
 	CreateClassStructure() string
 	CreateClassReference() string
 	PerformGlobalUpdates(
+		moduleName string,
+		packageName string,
+		className string,
 		existing string,
 		generated string,
 	) string
@@ -143,6 +146,8 @@ type ModuleTemplateDriven interface {
 	CreateTypeAliases() string
 	CreateClassConstructors() string
 	PerformGlobalUpdates(
+		moduleName string,
+		wikiPath string,
 		existing string,
 		generated string,
 	) string
@@ -162,6 +167,9 @@ type PackageTemplateDriven interface {
 	CreateInstanceDeclarations() string
 	CreateAspectDeclarations() string
 	PerformGlobalUpdates(
+		moduleName string,
+		wikiPath string,
+		packageName string,
 		existing string,
 		generated string,
 	) string

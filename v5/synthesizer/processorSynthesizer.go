@@ -135,16 +135,13 @@ func (v *processorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *processorSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
 	existing string,
 	generated string,
 ) string {
-	var class = processorSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -208,6 +205,21 @@ func (v *processorSynthesizer_) createProcessTokens() string {
 		processTokens += processToken
 	}
 	return processTokens
+}
+
+func (v *processorSynthesizer_) updateImportedPackages(
+	moduleName string,
+	existing string,
+	generated string,
+) string {
+	var class = processorSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+	return generated
 }
 
 // Instance Structure

@@ -124,10 +124,13 @@ func (v *nodeSynthesizer_) CreateClassReference() string {
 }
 
 func (v *nodeSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.performGlobalUpdates(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -441,38 +444,6 @@ func (v *nodeSynthesizer_) createInstanceStructure() string {
 	return structure
 }
 
-func (v *nodeSynthesizer_) createImportedPackages(
-	generated string,
-) string {
-	var importedPackages string
-	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
-	for packages.HasNext() {
-		var association = packages.GetNext()
-		var packageAcronym = association.GetKey()
-		var packagePath = association.GetValue()
-		var prefix = packageAcronym + "."
-		if sts.Contains(generated, prefix) {
-			var class = nodeSynthesizerClassReference()
-			var packageAlias = class.packageAlias_
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packageAcronym",
-				packageAcronym,
-			)
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packagePath",
-				packagePath,
-			)
-			importedPackages += packageAlias
-		}
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-	return importedPackages
-}
-
 func (v *nodeSynthesizer_) createParameters(
 	sequence abs.Sequential[mod.ParameterLike],
 ) string {
@@ -543,18 +514,42 @@ func (v *nodeSynthesizer_) createSetterMethod(
 	return method
 }
 
-func (v *nodeSynthesizer_) performGlobalUpdates(
+func (v *nodeSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
-	// Update the class imports.
-	var importedPackages = v.createImportedPackages(generated)
+	var importedPackages string
+	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		var prefix = packageAcronym + "."
+		if sts.Contains(generated, prefix) {
+			var class = nodeSynthesizerClassReference()
+			var packageAlias = class.packageAlias_
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packageAcronym",
+				packageAcronym,
+			)
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packagePath",
+				packagePath,
+			)
+			importedPackages += packageAlias
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
 	generated = uti.ReplaceAll(
 		generated,
 		"importedPackages",
 		importedPackages,
 	)
-
 	return generated
 }
 

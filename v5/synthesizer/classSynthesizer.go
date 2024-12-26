@@ -127,10 +127,39 @@ func (v *classSynthesizer_) CreateClassReference() string {
 }
 
 func (v *classSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.performGlobalUpdates(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
+
+	// Update the instance method targets to "by value" if necessary.
+	var star = "*"
+	if v.classAnalyzer_.IsIntrinsic() {
+		star = ""
+	}
+	generated = uti.ReplaceAll(
+		generated,
+		"*",
+		star,
+	)
+
+	// Insert any generics.
+	var constraints = v.classAnalyzer_.GetTypeConstraints()
+	var arguments = v.classAnalyzer_.GetTypeArguments()
+	generated = uti.ReplaceAll(
+		generated,
+		"constraints",
+		constraints,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"arguments",
+		arguments,
+	)
+
 	return generated
 }
 
@@ -779,39 +808,6 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 	return method
 }
 
-func (v *classSynthesizer_) createImportedPackages(
-	existing string,
-	generated string,
-) string {
-	var importedPackages string
-	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
-	for packages.HasNext() {
-		var association = packages.GetNext()
-		var packageAcronym = association.GetKey()
-		var packagePath = association.GetValue()
-		var prefix = packageAcronym + "."
-		if sts.Contains(generated, prefix) {
-			var class = classSynthesizerClassReference()
-			var packageAlias = class.packageAlias_
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packageAcronym",
-				packageAcronym,
-			)
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packagePath",
-				packagePath,
-			)
-			importedPackages += packageAlias
-		}
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-	return importedPackages
-}
-
 func (v *classSynthesizer_) createParameters(
 	sequence abs.Sequential[mod.ParameterLike],
 ) string {
@@ -948,46 +944,6 @@ func (v *classSynthesizer_) createSetterMethod(
 		attributeCheck,
 	)
 	return method
-}
-
-func (v *classSynthesizer_) performGlobalUpdates(
-	existing string,
-	generated string,
-) string {
-	// Update the class imports.
-	var importedPackages = v.createImportedPackages(existing, generated)
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-
-	// Update the instance method targets to "by value" if necessary.
-	var star = "*"
-	if v.classAnalyzer_.IsIntrinsic() {
-		star = ""
-	}
-	generated = uti.ReplaceAll(
-		generated,
-		"*",
-		star,
-	)
-
-	// Insert any generics.
-	var constraints = v.classAnalyzer_.GetTypeConstraints()
-	var arguments = v.classAnalyzer_.GetTypeArguments()
-	generated = uti.ReplaceAll(
-		generated,
-		"constraints",
-		constraints,
-	)
-	generated = uti.ReplaceAll(
-		generated,
-		"arguments",
-		arguments,
-	)
-
-	return generated
 }
 
 func (v *classSynthesizer_) replaceAbstractionType(
@@ -1141,6 +1097,45 @@ func (v *classSynthesizer_) replaceResultType(
 		panic(message)
 	}
 	return result
+}
+
+func (v *classSynthesizer_) updateImportedPackages(
+	moduleName string,
+	existing string,
+	generated string,
+) string {
+	var importedPackages string
+	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		var prefix = packageAcronym + "."
+		if sts.Contains(generated, prefix) {
+			var class = classSynthesizerClassReference()
+			var packageAlias = class.packageAlias_
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packageAcronym",
+				packageAcronym,
+			)
+			packageAlias = uti.ReplaceAll(
+				packageAlias,
+				"packagePath",
+				packagePath,
+			)
+			importedPackages += packageAlias
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+	return generated
 }
 
 // Instance Structure

@@ -117,11 +117,28 @@ func (v *packageGenerator_) GeneratePackage(
 	)
 
 	// Perform global updates (this must be done last).
-	generated = synthesizer.PerformGlobalUpdates(existing, generated)
-	generated = uti.ReplaceAll(generated, "moduleName", moduleName)
-	generated = uti.ReplaceAll(generated, "wikiPath", wikiPath)
-	generated = uti.ReplaceAll(generated, "packageName", packageName)
-
+	generated = synthesizer.PerformGlobalUpdates(
+		moduleName,
+		wikiPath,
+		packageName,
+		existing,
+		generated,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"moduleName",
+		moduleName,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"wikiPath",
+		wikiPath,
+	)
+	generated = uti.ReplaceAll(
+		generated,
+		"packageName",
+		packageName,
+	)
 	return generated
 }
 

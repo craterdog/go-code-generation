@@ -123,6 +123,22 @@ func (v *tokenSynthesizer_) CreateClassReference() string {
 }
 
 func (v *tokenSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
+	existing string,
+	generated string,
+) string {
+	generated = v.updateImportedPackages(moduleName, existing, generated)
+	return generated
+}
+
+// PROTECTED INTERFACE
+
+// Private Methods
+
+func (v *tokenSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
@@ -135,10 +151,6 @@ func (v *tokenSynthesizer_) PerformGlobalUpdates(
 	)
 	return generated
 }
-
-// PROTECTED INTERFACE
-
-// Private Methods
 
 // Instance Structure
 

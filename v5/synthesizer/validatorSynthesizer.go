@@ -151,11 +151,14 @@ func (v *validatorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *validatorSynthesizer_) PerformGlobalUpdates(
+	moduleName string,
+	packageName string,
+	className string,
 	existing string,
 	generated string,
 ) string {
 	generated = v.preserveExistingCode(existing, generated)
-	generated = v.updateImportedPackages(existing, generated)
+	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -297,6 +300,7 @@ func (v *validatorSynthesizer_) replacePattern(
 }
 
 func (v *validatorSynthesizer_) updateImportedPackages(
+	moduleName string,
 	existing string,
 	generated string,
 ) string {
