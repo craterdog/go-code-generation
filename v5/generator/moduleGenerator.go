@@ -13,7 +13,11 @@
 package generator
 
 import (
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
+	reg "regexp"
+	sts "strings"
 )
 
 // CLASS INTERFACE
@@ -67,6 +71,14 @@ func (v *moduleGenerator_) GenerateModule(
 		warningMessage,
 	)
 
+	// Create the imported packages.
+	var importedPackages = synthesizer.CreateImportedPackages()
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+
 	// Create the type aliases.
 	var typeAliases = synthesizer.CreateTypeAliases()
 	generated = uti.ReplaceAll(
@@ -83,10 +95,8 @@ func (v *moduleGenerator_) GenerateModule(
 		classConstructors,
 	)
 
-	// Perform global updates (this must be done last).
+	// Perform global updates.
 	generated = synthesizer.PerformGlobalUpdates(
-		moduleName,
-		wikiPath,
 		existing,
 		generated,
 	)
@@ -100,10 +110,127 @@ func (v *moduleGenerator_) GenerateModule(
 		"wikiPath",
 		wikiPath,
 	)
+
+	// Clean up and format the imported packages (must be done last).
+	var class = moduleGeneratorClassReference()
+	generated = class.formatImportedPackages(
+		existing,
+		generated,
+	)
 	return generated
 }
 
 // PROTECTED INTERFACE
+
+// Private Methods
+
+func (c *moduleGeneratorClass_) createImportedPath(
+	packageAcronym string,
+	packagePath string,
+) string {
+	var importedPath = c.importedPath_
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packageAcronym",
+		packageAcronym,
+	)
+	importedPath = uti.ReplaceAll(
+		importedPath,
+		"packagePath",
+		packagePath,
+	)
+	return importedPath
+}
+
+func (c *moduleGeneratorClass_) extractImportedPackages(
+	source string,
+) (
+	packages abs.CatalogLike[string, string],
+) {
+	packages = col.Catalog[string, string]()
+	var lower_ = `\p{Ll}`
+	var digit_ = `\p{Nd}`
+	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
+	var white_ = `[ \t\r\n]*`
+	var path_ = `("[^"]+")`
+	var pattern = `import \((?:.|\r?\n)*?\)`
+	var matcher = reg.MustCompile(pattern)
+	var imports = matcher.FindString(source)
+	var lines = sts.Split(imports, "\n")
+	var count = len(lines)
+	if count > 2 {
+		pattern = acronym_ + white_ + path_
+		matcher = reg.MustCompile(pattern)
+		lines = lines[1 : count-1]
+		for _, line := range lines {
+			var matches = matcher.FindStringSubmatch(line)
+			var packageAcronym = matches[1]
+			var packagePath = matches[2]
+			packages.SetValue(packageAcronym, packagePath)
+		}
+	}
+	return
+}
+
+func (c *moduleGeneratorClass_) formatImportedPackages(
+	existing string,
+	generated string,
+) string {
+	// Start with the existing imported packages.
+	var imports = c.extractImportedPackages(existing)
+
+	// Add in the generated imported packages.
+	imports = abs.CatalogClass[string, string]().Merge(
+		imports, c.extractImportedPackages(generated),
+	)
+
+	// Sort the imported packages by path rather than name.
+	imports.SortValuesWithRanker(
+		func(first, second abs.AssociationLike[string, string]) col.Rank {
+			var firstValue = first.GetValue()
+			var secondValue = second.GetValue()
+			switch {
+			case firstValue < secondValue:
+				return col.LesserRank
+			case firstValue > secondValue:
+				return col.GreaterRank
+			default:
+				return col.EqualRank
+			}
+		},
+	)
+
+	// Create revised imported package statements for each imported package.
+	var importedPackages string
+	var packages = imports.GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageName = association.GetKey()
+		var packagePath = association.GetValue()
+		if sts.Contains(generated, packageName+".") {
+			// Only import packages that are actually used in the generated code.
+			importedPackages += c.createImportedPath(
+				packageName,
+				packagePath,
+			)
+		}
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+
+	// Replace the generated imported packages with the revised ones.
+	var pattern = `import \((?:.|\r?\n)*?\)`
+	var matcher = reg.MustCompile(pattern)
+	var generatedImports = matcher.FindString(generated)
+	var revisedImports = "import (" + importedPackages + ")"
+	generated = sts.ReplaceAll(
+		generated,
+		generatedImports,
+		revisedImports,
+	)
+	return generated
+}
 
 // Instance Structure
 
@@ -116,6 +243,7 @@ type moduleGenerator_ struct {
 type moduleGeneratorClass_ struct {
 	// Declare the class constants.
 	moduleTemplate_ string
+	importedPath_   string
 }
 
 // Class Reference
@@ -147,4 +275,7 @@ import (<ImportedPackages>)
 <ClassConstructors>
 // GLOBAL FUNCTIONS
 `,
+
+	importedPath_: `
+	<~packageAcronym> <packagePath>`,
 }

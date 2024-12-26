@@ -14,8 +14,6 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	reg "regexp"
@@ -61,6 +59,12 @@ func (v *formatterSynthesizer_) CreateWarningMessage() string {
 	var class = formatterSynthesizerClassReference()
 	var warningMessage = class.warningMessage_
 	return warningMessage
+}
+
+func (v *formatterSynthesizer_) CreateImportedPackages() string {
+	var class = formatterSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
 }
 
 func (v *formatterSynthesizer_) CreateAccessFunction() string {
@@ -151,14 +155,10 @@ func (v *formatterSynthesizer_) CreateClassReference() string {
 }
 
 func (v *formatterSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	packageName string,
-	className string,
 	existing string,
 	generated string,
 ) string {
 	generated = v.preserveExistingCode(existing, generated)
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -175,25 +175,6 @@ func (v *formatterSynthesizer_) preserveExistingCode(
 // PROTECTED INTERFACE
 
 // Private Methods
-
-func (v *formatterSynthesizer_) createImportedPath(
-	packageAcronym string,
-	packagePath string,
-) string {
-	var class = formatterSynthesizerClassReference()
-	var importedPath = class.importedPath_
-	importedPath = uti.ReplaceAll(
-		importedPath,
-		"packageAcronym",
-		packageAcronym,
-	)
-	importedPath = uti.ReplaceAll(
-		importedPath,
-		"packagePath",
-		packagePath,
-	)
-	return importedPath
-}
 
 func (v *formatterSynthesizer_) createProcessRule(
 	ruleName string,
@@ -256,36 +237,6 @@ func (v *formatterSynthesizer_) createProcessTokens() string {
 	return processTokens
 }
 
-func (v *formatterSynthesizer_) extractImportedPackages(
-	source string,
-) (
-	packages abs.CatalogLike[string, string],
-) {
-	packages = col.Catalog[string, string]()
-	var lower_ = `\p{Ll}`
-	var digit_ = `\p{Nd}`
-	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
-	var white_ = `[ \t\r\n]*`
-	var path_ = `("[^"]+")`
-	var pattern = `import \((?:.|\r?\n)*?\)`
-	var matcher = reg.MustCompile(pattern)
-	var imports = matcher.FindString(source)
-	var lines = sts.Split(imports, "\n")
-	var count = len(lines)
-	if count > 2 {
-		pattern = acronym_ + white_ + path_
-		matcher = reg.MustCompile(pattern)
-		lines = lines[1 : count-1]
-		for _, line := range lines {
-			var matches = matcher.FindStringSubmatch(line)
-			var packageAcronym = matches[1]
-			var packagePath = matches[2]
-			packages.SetValue(packageAcronym, packagePath)
-		}
-	}
-	return
-}
-
 func (v *formatterSynthesizer_) replacePattern(
 	pattern string,
 	existing string,
@@ -302,71 +253,6 @@ func (v *formatterSynthesizer_) replacePattern(
 	return generated
 }
 
-func (v *formatterSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	// Seed the imported packages with the most common ones.
-	var imports = abs.CatalogClass[string, string]().CatalogFromMap(
-		map[string]string{
-			"fmt": `"fmt"`,
-			"ast": `"` + moduleName + `/ast"`,
-			"col": `"github.com/craterdog/go-collection-framework/v5"`,
-			"abs": `"github.com/craterdog/go-collection-framework/v5/collection"`,
-			"uti": `"github.com/craterdog/go-missing-utilities/v2"`,
-			"ref": `"reflect"`,
-			"sts": `"strings"`,
-		},
-	)
-
-	// Add in the imported packages from the existing code.
-	imports = abs.CatalogClass[string, string]().Merge(
-		imports, v.extractImportedPackages(existing),
-	)
-	imports.SortValuesWithRanker(
-		func(first, second abs.AssociationLike[string, string]) col.Rank {
-			var firstValue = first.GetValue()
-			var secondValue = second.GetValue()
-			switch {
-			case firstValue < secondValue:
-				return col.LesserRank
-			case firstValue > secondValue:
-				return col.GreaterRank
-			default:
-				return col.EqualRank
-			}
-		},
-	)
-
-	// Create imported package statements for each imported package.
-	var importedPackages string
-	var packages = imports.GetIterator()
-	for packages.HasNext() {
-		var association = packages.GetNext()
-		var packageAcronym = association.GetKey()
-		var packagePath = association.GetValue()
-		if sts.Contains(generated, packageAcronym+".") {
-			// Only import packages that are actually used in the generated code.
-			importedPackages += v.createImportedPath(
-				packageAcronym,
-				packagePath,
-			)
-		}
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-
-	// Insert the imported packages into the generated code.
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
-}
-
 // Instance Structure
 
 type formatterSynthesizer_ struct {
@@ -379,7 +265,7 @@ type formatterSynthesizer_ struct {
 type formatterSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
-	importedPath_        string
+	importedPackages_    string
 	accessFunction_      string
 	constructorMethods_  string
 	principalMethods_    string
@@ -410,8 +296,15 @@ var formatterSynthesizerClassReference_ = &formatterSynthesizerClass_{
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
 
-	importedPath_: `
-	<~packageAcronym> <packagePath>`,
+	importedPackages_: `
+	fmt "fmt"
+	ast "<ModuleName>/ast"
+	col "github.com/craterdog/go-collection-framework/v5"
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	uti "github.com/craterdog/go-missing-utilities/v2"
+	ref "reflect"
+	sts "strings"
+`,
 
 	accessFunction_: `
 // Access Function

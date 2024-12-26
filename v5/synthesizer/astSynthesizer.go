@@ -65,6 +65,12 @@ func (v *astSynthesizer_) CreatePackageDescription() string {
 	return packageDescription
 }
 
+func (v *astSynthesizer_) CreateImportedPackages() string {
+	var class = astSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
+}
+
 func (v *astSynthesizer_) CreateTypeDeclarations() string {
 	var typeDeclarations string
 	return typeDeclarations
@@ -101,13 +107,9 @@ func (v *astSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *astSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	wikiPath string,
-	packageName string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -287,25 +289,6 @@ func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
 	return true
 }
 
-func (v *astSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var importedPackages string
-	if v.analyzer_.HasPlurals() {
-		importedPackages = `
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
-`
-	}
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
-}
-
 // Instance Structure
 
 type astSynthesizer_ struct {
@@ -319,6 +302,7 @@ type astSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_          string
 	packageDescription_      string
+	importedPackages_        string
 	classDeclaration_        string
 	singularRuleParameter_   string
 	pluralRuleParameter_     string
@@ -353,6 +337,10 @@ Package "ast" provides the abstract syntax tree (AST) classes for this module
 based on the "Syntax.cdsn" grammar for the module.  Each AST class manages the
 attributes associated with its corresponding rule definition found in the
 grammar.`,
+
+	importedPackages_: `
+	abs "github.com/craterdog/go-collection-framework/v5/collection"
+`,
 
 	classDeclaration_: `
 /*

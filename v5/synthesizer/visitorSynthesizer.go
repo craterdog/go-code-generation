@@ -60,6 +60,12 @@ func (v *visitorSynthesizer_) CreateWarningMessage() string {
 	return warningMessage
 }
 
+func (v *visitorSynthesizer_) CreateImportedPackages() string {
+	var class = visitorSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
+}
+
 func (v *visitorSynthesizer_) CreateAccessFunction() string {
 	var class = visitorSynthesizerClassReference()
 	var accessFunction = class.accessFunction_
@@ -129,9 +135,6 @@ func (v *visitorSynthesizer_) CreateClassReference() string {
 }
 
 func (v *visitorSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	packageName string,
-	className string,
 	existing string,
 	generated string,
 ) string {
@@ -141,7 +144,6 @@ func (v *visitorSynthesizer_) PerformGlobalUpdates(
 		"syntaxName",
 		syntaxName,
 	)
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -387,21 +389,6 @@ func (v *visitorSynthesizer_) createVisitMethod(
 		ruleName,
 	)
 	return visitMethod
-}
-
-func (v *visitorSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var class = visitorSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
 }
 
 // Instance Structure

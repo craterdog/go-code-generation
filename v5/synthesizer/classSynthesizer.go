@@ -64,6 +64,33 @@ func (v *classSynthesizer_) CreateWarningMessage() string {
 	return class.warningMessage_
 }
 
+func (v *classSynthesizer_) CreateImportedPackages() string {
+	var class = classSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
+	for packages.HasNext() {
+		var association = packages.GetNext()
+		var packageAcronym = association.GetKey()
+		var packagePath = association.GetValue()
+		var importedPath = class.importedPath_
+		importedPath = uti.ReplaceAll(
+			importedPath,
+			"packageAcronym",
+			packageAcronym,
+		)
+		importedPath = uti.ReplaceAll(
+			importedPath,
+			"packagePath",
+			packagePath,
+		)
+		importedPackages += importedPath
+	}
+	if uti.IsDefined(importedPackages) {
+		importedPackages += "\n"
+	}
+	return importedPackages
+}
+
 func (v *classSynthesizer_) CreateAccessFunction() string {
 	var class = classSynthesizerClassReference()
 	return class.accessFunction_
@@ -127,14 +154,9 @@ func (v *classSynthesizer_) CreateClassReference() string {
 }
 
 func (v *classSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	packageName string,
-	className string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
-
 	// Update the instance method targets to "by value" if necessary.
 	var star = "*"
 	if v.classAnalyzer_.IsIntrinsic() {
@@ -1099,45 +1121,6 @@ func (v *classSynthesizer_) replaceResultType(
 	return result
 }
 
-func (v *classSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var importedPackages string
-	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
-	for packages.HasNext() {
-		var association = packages.GetNext()
-		var packageAcronym = association.GetKey()
-		var packagePath = association.GetValue()
-		var prefix = packageAcronym + "."
-		if sts.Contains(generated, prefix) {
-			var class = classSynthesizerClassReference()
-			var packageAlias = class.packageAlias_
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packageAcronym",
-				packageAcronym,
-			)
-			packageAlias = uti.ReplaceAll(
-				packageAlias,
-				"packagePath",
-				packagePath,
-			)
-			importedPackages += packageAlias
-		}
-	}
-	if uti.IsDefined(importedPackages) {
-		importedPackages += "\n"
-	}
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
-}
-
 // Instance Structure
 
 type classSynthesizer_ struct {
@@ -1151,7 +1134,8 @@ type classSynthesizer_ struct {
 type classSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_          string
-	packageAlias_            string
+	importedPackages_        string
+	importedPath_            string
 	accessFunction_          string
 	constructorMethods_      string
 	constructorMethod_       string
@@ -1197,7 +1181,9 @@ var classSynthesizerClassReference_ = &classSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: ``,
 
-	packageAlias_: `
+	importedPackages_: ``,
+
+	importedPath_: `
 	<~packageAcronym> <packagePath>`,
 
 	accessFunction_: `

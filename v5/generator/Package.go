@@ -116,6 +116,7 @@ supported by all class-template-driven synthesizers.
 type ClassTemplateDriven interface {
 	CreateLegalNotice() string
 	CreateWarningMessage() string
+	CreateImportedPackages() string
 	CreateAccessFunction() string
 	CreateConstructorMethods() string
 	CreateConstantMethods() string
@@ -128,9 +129,6 @@ type ClassTemplateDriven interface {
 	CreateClassStructure() string
 	CreateClassReference() string
 	PerformGlobalUpdates(
-		moduleName string,
-		packageName string,
-		className string,
 		existing string,
 		generated string,
 	) string
@@ -143,11 +141,10 @@ supported by all module-template-driven synthesizers.
 type ModuleTemplateDriven interface {
 	CreateLegalNotice() string
 	CreateWarningMessage() string
+	CreateImportedPackages() string
 	CreateTypeAliases() string
 	CreateClassConstructors() string
 	PerformGlobalUpdates(
-		moduleName string,
-		wikiPath string,
 		existing string,
 		generated string,
 	) string
@@ -161,15 +158,13 @@ type PackageTemplateDriven interface {
 	CreateLegalNotice() string
 	CreateWarningMessage() string
 	CreatePackageDescription() string
+	CreateImportedPackages() string
 	CreateTypeDeclarations() string
 	CreateFunctionalDeclarations() string
 	CreateClassDeclarations() string
 	CreateInstanceDeclarations() string
 	CreateAspectDeclarations() string
 	PerformGlobalUpdates(
-		moduleName string,
-		wikiPath string,
-		packageName string,
 		existing string,
 		generated string,
 	) string

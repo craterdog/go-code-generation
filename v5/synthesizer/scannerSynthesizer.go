@@ -60,6 +60,12 @@ func (v *scannerSynthesizer_) CreateWarningMessage() string {
 	return warningMessage
 }
 
+func (v *scannerSynthesizer_) CreateImportedPackages() string {
+	var class = scannerSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
+}
+
 func (v *scannerSynthesizer_) CreateAccessFunction() string {
 	var class = scannerSynthesizerClassReference()
 	var accessFunction = class.accessFunction_
@@ -148,13 +154,9 @@ func (v *scannerSynthesizer_) CreateClassReference() string {
 }
 
 func (v *scannerSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	packageName string,
-	className string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -252,21 +254,6 @@ func (v *scannerSynthesizer_) createTokenMatchers() string {
 		tokenMatchers += tokenMatcher
 	}
 	return tokenMatchers
-}
-
-func (v *scannerSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var class = scannerSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
 }
 
 // Instance Structure

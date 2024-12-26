@@ -76,6 +76,14 @@ func (v *packageGenerator_) GeneratePackage(
 		packageDescription,
 	)
 
+	// Create the imported packages.
+	var importedPackages = synthesizer.CreateImportedPackages()
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+
 	// Create the type declarations.
 	var typeDeclarations = synthesizer.CreateTypeDeclarations()
 	generated = uti.ReplaceAll(
@@ -116,11 +124,8 @@ func (v *packageGenerator_) GeneratePackage(
 		aspectDeclarations,
 	)
 
-	// Perform global updates (this must be done last).
+	// Perform global updates.
 	generated = synthesizer.PerformGlobalUpdates(
-		moduleName,
-		wikiPath,
-		packageName,
 		existing,
 		generated,
 	)
@@ -139,6 +144,13 @@ func (v *packageGenerator_) GeneratePackage(
 		"packageName",
 		packageName,
 	)
+
+	// Clean up and format the imported packages (must be done last).
+	var class = moduleGeneratorClassReference()
+	generated = class.formatImportedPackages(
+		existing,
+		generated,
+	)
 	return generated
 }
 
@@ -155,6 +167,7 @@ type packageGenerator_ struct {
 type packageGeneratorClass_ struct {
 	// Declare the class constants.
 	packageTemplate_ string
+	importedPath_    string
 }
 
 // Class Reference
@@ -194,4 +207,7 @@ import (<ImportedPackages>)
 <InstanceDeclarations>
 // ASPECT DECLARATIONS
 <AspectDeclarations>`,
+
+	importedPath_: `
+	<~packageAcronym> <packagePath>`,
 }

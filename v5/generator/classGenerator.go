@@ -71,6 +71,14 @@ func (v *classGenerator_) GenerateClass(
 		warningMessage,
 	)
 
+	// Create the imported packages.
+	var importedPackages = synthesizer.CreateImportedPackages()
+	generated = uti.ReplaceAll(
+		generated,
+		"importedPackages",
+		importedPackages,
+	)
+
 	// Create the access function.
 	var accessFunction = synthesizer.CreateAccessFunction()
 	generated = uti.ReplaceAll(
@@ -159,11 +167,8 @@ func (v *classGenerator_) GenerateClass(
 		classReference,
 	)
 
-	// Perform global updates (this must be done last).
+	// Perform global updates.
 	generated = synthesizer.PerformGlobalUpdates(
-		moduleName,
-		packageName,
-		className,
 		existing,
 		generated,
 	)
@@ -182,6 +187,13 @@ func (v *classGenerator_) GenerateClass(
 		"className",
 		className,
 	)
+
+	// Clean up and format the imported packages (must be done last).
+	var class = moduleGeneratorClassReference()
+	generated = class.formatImportedPackages(
+		existing,
+		generated,
+	)
 	return generated
 }
 
@@ -198,6 +210,7 @@ type classGenerator_ struct {
 type classGeneratorClass_ struct {
 	// Declare the class constants.
 	classTemplate_ string
+	importedPath_  string
 }
 
 // Class Reference
@@ -219,4 +232,7 @@ import (<ImportedPackages>)
 <PrincipalMethods><AttributeMethods><AspectMethods>
 // PROTECTED INTERFACE
 <PrivateMethods><InstanceStructure><ClassStructure><ClassReference>`,
+
+	importedPath_: `
+	<~packageAcronym> <packagePath>`,
 }

@@ -65,6 +65,12 @@ func (v *grammarSynthesizer_) CreatePackageDescription() string {
 	return packageDescription
 }
 
+func (v *grammarSynthesizer_) CreateImportedPackages() string {
+	var class = grammarSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
+}
+
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
 	var class = grammarSynthesizerClassReference()
 	var typeDeclarations = class.typeDeclarations_
@@ -119,13 +125,9 @@ func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *grammarSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	wikiPath string,
-	packageName string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
@@ -206,21 +208,6 @@ func (v *grammarSynthesizer_) generateTokenTypes() string {
 		tokenTypes += tokenType
 	}
 	return tokenTypes
-}
-
-func (v *grammarSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var class = grammarSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
 }
 
 // Instance Structure

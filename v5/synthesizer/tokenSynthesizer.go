@@ -14,7 +14,6 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
@@ -57,6 +56,12 @@ func (v *tokenSynthesizer_) CreateWarningMessage() string {
 	var class = tokenSynthesizerClassReference()
 	var warningMessage = class.warningMessage_
 	return warningMessage
+}
+
+func (v *tokenSynthesizer_) CreateImportedPackages() string {
+	var class = tokenSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
 }
 
 func (v *tokenSynthesizer_) CreateAccessFunction() string {
@@ -123,34 +128,13 @@ func (v *tokenSynthesizer_) CreateClassReference() string {
 }
 
 func (v *tokenSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	packageName string,
-	className string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
-
-func (v *tokenSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var class = tokenSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
-}
 
 // Instance Structure
 

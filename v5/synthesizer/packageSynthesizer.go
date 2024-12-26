@@ -12,9 +12,7 @@
 
 package synthesizer
 
-import (
-	uti "github.com/craterdog/go-missing-utilities/v2"
-)
+import ()
 
 // CLASS INTERFACE
 
@@ -61,6 +59,12 @@ func (v *packageSynthesizer_) CreatePackageDescription() string {
 	return packageDescription
 }
 
+func (v *packageSynthesizer_) CreateImportedPackages() string {
+	var class = packageSynthesizerClassReference()
+	var importedPackages = class.importedPackages_
+	return importedPackages
+}
+
 func (v *packageSynthesizer_) CreateTypeDeclarations() string {
 	var class = packageSynthesizerClassReference()
 	var typeDeclarations = class.typeDeclarations_
@@ -92,34 +96,13 @@ func (v *packageSynthesizer_) CreateAspectDeclarations() string {
 }
 
 func (v *packageSynthesizer_) PerformGlobalUpdates(
-	moduleName string,
-	wikiPath string,
-	packageName string,
 	existing string,
 	generated string,
 ) string {
-	generated = v.updateImportedPackages(moduleName, existing, generated)
 	return generated
 }
 
 // PROTECTED INTERFACE
-
-// Private Methods
-
-func (v *packageSynthesizer_) updateImportedPackages(
-	moduleName string,
-	existing string,
-	generated string,
-) string {
-	var class = packageSynthesizerClassReference()
-	var importedPackages = class.importedPackages_
-	generated = uti.ReplaceAll(
-		generated,
-		"importedPackages",
-		importedPackages,
-	)
-	return generated
-}
 
 // Instance Structure
 
