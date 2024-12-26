@@ -164,30 +164,6 @@ func (v *scannerSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *scannerSynthesizer_) createRegularExpressions() string {
-	var regularExpressions string
-	var expressions = v.analyzer_.GetExpressions().GetIterator()
-	for expressions.HasNext() {
-		var association = expressions.GetNext()
-		var expressionName = association.GetKey()
-		var expressionValue = association.GetValue()
-		var class = scannerSynthesizerClassReference()
-		var regularExpression = class.regularExpression_
-		regularExpression = uti.ReplaceAll(
-			regularExpression,
-			"expressionName",
-			expressionName,
-		)
-		regularExpression = uti.ReplaceAll(
-			regularExpression,
-			"expressionValue",
-			expressionValue,
-		)
-		regularExpressions += regularExpression
-	}
-	return regularExpressions
-}
-
 func (v *scannerSynthesizer_) createFoundCases() string {
 	// NOTE: The found cases must be in the same order as the expressions
 	// declared in the syntax file.  But the expressions include patterns
@@ -215,6 +191,30 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 		}
 	}
 	return foundCases
+}
+
+func (v *scannerSynthesizer_) createRegularExpressions() string {
+	var regularExpressions string
+	var expressions = v.analyzer_.GetExpressions().GetIterator()
+	for expressions.HasNext() {
+		var association = expressions.GetNext()
+		var expressionName = association.GetKey()
+		var expressionValue = association.GetValue()
+		var class = scannerSynthesizerClassReference()
+		var regularExpression = class.regularExpression_
+		regularExpression = uti.ReplaceAll(
+			regularExpression,
+			"expressionName",
+			expressionName,
+		)
+		regularExpression = uti.ReplaceAll(
+			regularExpression,
+			"expressionValue",
+			expressionValue,
+		)
+		regularExpressions += regularExpression
+	}
+	return regularExpressions
 }
 
 func (v *scannerSynthesizer_) createTokenIdentifiers() string {

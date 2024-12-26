@@ -162,16 +162,6 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 	return generated
 }
 
-func (v *validatorSynthesizer_) preserveExistingCode(
-	existing string,
-	generated string,
-) string {
-	// Preserve the methodical method implementations.
-	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
-	generated = v.replacePattern(pattern, existing, generated)
-	return generated
-}
-
 // PROTECTED INTERFACE
 
 // Private Methods
@@ -232,6 +222,16 @@ func (v *validatorSynthesizer_) createProcessTokens() string {
 		processTokens += processToken
 	}
 	return processTokens
+}
+
+func (v *validatorSynthesizer_) preserveExistingCode(
+	existing string,
+	generated string,
+) string {
+	// Preserve the methodical method implementations.
+	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+	generated = v.replacePattern(pattern, existing, generated)
+	return generated
 }
 
 func (v *validatorSynthesizer_) replacePattern(

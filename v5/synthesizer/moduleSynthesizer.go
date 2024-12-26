@@ -164,30 +164,6 @@ func (v *moduleSynthesizer_) createClassAliases(
 	return
 }
 
-func (v *moduleSynthesizer_) createInstanceAliases(
-	instanceDeclarations abs.ListLike[mod.InstanceDeclarationLike],
-) (
-	instanceAliases string,
-) {
-	var nameAliases string
-	var instances = instanceDeclarations.GetIterator()
-	for instances.HasNext() {
-		var declaration = instances.GetNext().GetDeclaration()
-		nameAliases += v.createNameAlias(declaration)
-	}
-	if uti.IsDefined(nameAliases) {
-		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
-		instanceAliases = class.typeAliases_
-		instanceAliases = uti.ReplaceAll(
-			instanceAliases,
-			"nameAliases",
-			nameAliases,
-		)
-	}
-	return
-}
-
 func (v *moduleSynthesizer_) createConstructorFunction(
 	constructorMethod mod.ConstructorMethodLike,
 	className string,
@@ -334,6 +310,30 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 		functionalAliases = class.typeAliases_
 		functionalAliases = uti.ReplaceAll(
 			functionalAliases,
+			"nameAliases",
+			nameAliases,
+		)
+	}
+	return
+}
+
+func (v *moduleSynthesizer_) createInstanceAliases(
+	instanceDeclarations abs.ListLike[mod.InstanceDeclarationLike],
+) (
+	instanceAliases string,
+) {
+	var nameAliases string
+	var instances = instanceDeclarations.GetIterator()
+	for instances.HasNext() {
+		var declaration = instances.GetNext().GetDeclaration()
+		nameAliases += v.createNameAlias(declaration)
+	}
+	if uti.IsDefined(nameAliases) {
+		nameAliases += "\n"
+		var class = moduleSynthesizerClassReference()
+		instanceAliases = class.typeAliases_
+		instanceAliases = uti.ReplaceAll(
+			instanceAliases,
 			"nameAliases",
 			nameAliases,
 		)

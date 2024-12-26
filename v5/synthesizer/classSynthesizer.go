@@ -1076,24 +1076,6 @@ func (v *classSynthesizer_) replaceParameterTypes(
 	return replacedParameters
 }
 
-func (v *classSynthesizer_) replaceWrapperType(
-	wrapper mod.WrapperLike,
-	mappings abs.CatalogLike[string, mod.AbstractionLike],
-) mod.WrapperLike {
-	switch actual := wrapper.GetAny().(type) {
-	case mod.MapLike:
-		// eg. map[K]V -> map[string]int
-		var typeName = actual.GetName()
-		var concreteType = mappings.GetValue(typeName)
-		typeName = concreteType.GetName()
-		var map_ = mod.MapClass().Map(typeName)
-		wrapper = mod.WrapperClass().Wrapper(map_)
-	default:
-		// Ignore the rest since they don't contain any generic types.
-	}
-	return wrapper
-}
-
 func (v *classSynthesizer_) replaceResultType(
 	result mod.ResultLike,
 	mappings abs.CatalogLike[string, mod.AbstractionLike],
@@ -1119,6 +1101,24 @@ func (v *classSynthesizer_) replaceResultType(
 		panic(message)
 	}
 	return result
+}
+
+func (v *classSynthesizer_) replaceWrapperType(
+	wrapper mod.WrapperLike,
+	mappings abs.CatalogLike[string, mod.AbstractionLike],
+) mod.WrapperLike {
+	switch actual := wrapper.GetAny().(type) {
+	case mod.MapLike:
+		// eg. map[K]V -> map[string]int
+		var typeName = actual.GetName()
+		var concreteType = mappings.GetValue(typeName)
+		typeName = concreteType.GetName()
+		var map_ = mod.MapClass().Map(typeName)
+		wrapper = mod.WrapperClass().Wrapper(map_)
+	default:
+		// Ignore the rest since they don't contain any generic types.
+	}
+	return wrapper
 }
 
 // Instance Structure

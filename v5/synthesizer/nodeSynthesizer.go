@@ -140,76 +140,6 @@ func (v *nodeSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *nodeSynthesizer_) extractAttributeName(
-	accessorName string,
-) string {
-	var attributeName string
-	switch {
-	case sts.HasPrefix(accessorName, "Get"):
-		attributeName = sts.TrimPrefix(accessorName, "Get")
-	case sts.HasPrefix(accessorName, "Set"):
-		attributeName = sts.TrimPrefix(accessorName, "Set")
-	case sts.HasPrefix(accessorName, "Is"):
-		attributeName = sts.TrimPrefix(accessorName, "Is")
-	case sts.HasPrefix(accessorName, "Was"):
-		attributeName = sts.TrimPrefix(accessorName, "Was")
-	case sts.HasPrefix(accessorName, "Are"):
-		attributeName = sts.TrimPrefix(accessorName, "Are")
-	case sts.HasPrefix(accessorName, "Were"):
-		attributeName = sts.TrimPrefix(accessorName, "Were")
-	case sts.HasPrefix(accessorName, "Has"):
-		attributeName = sts.TrimPrefix(accessorName, "Has")
-	case sts.HasPrefix(accessorName, "Had"):
-		attributeName = sts.TrimPrefix(accessorName, "Had")
-	case sts.HasPrefix(accessorName, "Have"):
-		attributeName = sts.TrimPrefix(accessorName, "Have")
-	default:
-		var message = fmt.Sprintf(
-			"An unknown accessor name was found: %q",
-			accessorName,
-		)
-		panic(message)
-	}
-	attributeName = uti.MakeLowerCase(attributeName)
-	return attributeName
-}
-
-func (v *nodeSynthesizer_) extractType(
-	abstraction mod.AbstractionLike,
-) string {
-	var abstractType string
-	var wrapper = abstraction.GetOptionalWrapper()
-	if uti.IsDefined(wrapper) {
-		switch actual := wrapper.GetAny().(type) {
-		case mod.ArrayLike:
-			abstractType = "[]"
-		case mod.MapLike:
-			abstractType = "map[" + actual.GetName() + "]"
-		case mod.ChannelLike:
-			abstractType = "chan "
-		}
-	}
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		abstractType += prefix
-	}
-	var name = abstraction.GetName()
-	abstractType += name
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
-		abstractType += "[" + argument
-		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
-		for additionalArguments.HasNext() {
-			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(additionalArgument.GetAbstraction())
-			abstractType += ", " + argument
-		}
-		abstractType += "]"
-	}
-	return abstractType
-}
-
 func (v *nodeSynthesizer_) createAttributeCheck(
 	parameter mod.ParameterLike,
 ) string {
@@ -514,6 +444,76 @@ func (v *nodeSynthesizer_) createSetterMethod(
 		attributeCheck,
 	)
 	return method
+}
+
+func (v *nodeSynthesizer_) extractAttributeName(
+	accessorName string,
+) string {
+	var attributeName string
+	switch {
+	case sts.HasPrefix(accessorName, "Get"):
+		attributeName = sts.TrimPrefix(accessorName, "Get")
+	case sts.HasPrefix(accessorName, "Set"):
+		attributeName = sts.TrimPrefix(accessorName, "Set")
+	case sts.HasPrefix(accessorName, "Is"):
+		attributeName = sts.TrimPrefix(accessorName, "Is")
+	case sts.HasPrefix(accessorName, "Was"):
+		attributeName = sts.TrimPrefix(accessorName, "Was")
+	case sts.HasPrefix(accessorName, "Are"):
+		attributeName = sts.TrimPrefix(accessorName, "Are")
+	case sts.HasPrefix(accessorName, "Were"):
+		attributeName = sts.TrimPrefix(accessorName, "Were")
+	case sts.HasPrefix(accessorName, "Has"):
+		attributeName = sts.TrimPrefix(accessorName, "Has")
+	case sts.HasPrefix(accessorName, "Had"):
+		attributeName = sts.TrimPrefix(accessorName, "Had")
+	case sts.HasPrefix(accessorName, "Have"):
+		attributeName = sts.TrimPrefix(accessorName, "Have")
+	default:
+		var message = fmt.Sprintf(
+			"An unknown accessor name was found: %q",
+			accessorName,
+		)
+		panic(message)
+	}
+	attributeName = uti.MakeLowerCase(attributeName)
+	return attributeName
+}
+
+func (v *nodeSynthesizer_) extractType(
+	abstraction mod.AbstractionLike,
+) string {
+	var abstractType string
+	var wrapper = abstraction.GetOptionalWrapper()
+	if uti.IsDefined(wrapper) {
+		switch actual := wrapper.GetAny().(type) {
+		case mod.ArrayLike:
+			abstractType = "[]"
+		case mod.MapLike:
+			abstractType = "map[" + actual.GetName() + "]"
+		case mod.ChannelLike:
+			abstractType = "chan "
+		}
+	}
+	var prefix = abstraction.GetOptionalPrefix()
+	if uti.IsDefined(prefix) {
+		abstractType += prefix
+	}
+	var name = abstraction.GetName()
+	abstractType += name
+	var arguments = abstraction.GetOptionalArguments()
+	if uti.IsDefined(arguments) {
+		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
+		abstractType += "[" + argument
+		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+		for additionalArguments.HasNext() {
+			var additionalArgument = additionalArguments.GetNext().GetArgument()
+			argument = v.extractType(additionalArgument.GetAbstraction())
+			abstractType += ", " + argument
+		}
+		abstractType += "]"
+	}
+	return abstractType
 }
 
 // Instance Structure
