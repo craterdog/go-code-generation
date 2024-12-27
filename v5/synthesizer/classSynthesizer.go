@@ -27,7 +27,7 @@ import (
 // Access Function
 
 func ClassSynthesizerClass() ClassSynthesizerClassLike {
-	return classSynthesizerClassReference()
+	return classSynthesizerClass()
 }
 
 // Constructor Methods
@@ -49,7 +49,7 @@ func (c *classSynthesizerClass_) ClassSynthesizer(
 // Principal Methods
 
 func (v *classSynthesizer_) GetClass() ClassSynthesizerClassLike {
-	return classSynthesizerClassReference()
+	return classSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -60,12 +60,12 @@ func (v *classSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *classSynthesizer_) CreateWarningMessage() string {
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	return class.warningMessage_
 }
 
 func (v *classSynthesizer_) CreateImportedPackages() string {
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	var packages = v.packageAnalyzer_.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
@@ -92,7 +92,7 @@ func (v *classSynthesizer_) CreateImportedPackages() string {
 }
 
 func (v *classSynthesizer_) CreateAccessFunction() string {
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	return class.accessFunction_
 }
 
@@ -134,7 +134,7 @@ func (v *classSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *classSynthesizer_) CreatePrivateMethods() string {
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	return class.privateMethods_
 }
 
@@ -148,8 +148,8 @@ func (v *classSynthesizer_) CreateClassStructure() string {
 	return classStructure
 }
 
-func (v *classSynthesizer_) CreateClassReference() string {
-	var classReference = v.createClassReference()
+func (v *classSynthesizer_) CreateClass() string {
+	var classReference = v.createClass()
 	return classReference
 }
 
@@ -313,7 +313,7 @@ func (v *classSynthesizer_) createAspectInterface(
 			}
 		}
 	}
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var aspectInterface = class.aspectInterface_
 	aspectInterface = uti.ReplaceAll(
 		aspectInterface,
@@ -360,7 +360,7 @@ func (v *classSynthesizer_) createAspectMethod(
 	}
 	var parameters = v.createParameters(methodParameters)
 	var resultType = v.createResult(methodResult)
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var aspectMethod = class.instanceMethod_
 	if uti.IsDefined(resultType) {
 		aspectMethod = class.instanceFunction_
@@ -413,7 +413,7 @@ func (v *classSynthesizer_) createAttributeCheck(
 	var attributeName = sts.TrimSuffix(parameterName, "_")
 	// Ignore optional attributes.
 	if !sts.HasPrefix(attributeName, "optional") {
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		attributeCheck = class.attributeCheck_
 		attributeCheck = uti.ReplaceAll(
 			attributeCheck,
@@ -444,7 +444,7 @@ func (v *classSynthesizer_) createAttributeDeclarations() string {
 		var attribute = attributes.GetNext()
 		var attributeName = attribute.GetKey()
 		var attributeType = attribute.GetValue()
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		var declaration = class.attributeDeclaration_
 		declaration = uti.ReplaceAll(
 			declaration,
@@ -471,7 +471,7 @@ func (v *classSynthesizer_) createAttributeInitializations(
 		var parameterName = parameter.GetName()
 		var attributeName = sts.TrimSuffix(parameterName, "_")
 		if uti.IsDefined(v.classAnalyzer_.GetAttributes().GetValue(attributeName)) {
-			var class = classSynthesizerClassReference()
+			var class = classSynthesizerClass()
 			var initialization = class.attributeInitialization_
 			initialization = uti.ReplaceAll(
 				initialization,
@@ -502,7 +502,7 @@ func (v *classSynthesizer_) createAttributeMethods(
 			}
 			attributeMethods += attributeMethod
 		}
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		methods = class.attributeMethods_
 		methods = uti.ReplaceAll(
 			methods,
@@ -513,8 +513,8 @@ func (v *classSynthesizer_) createAttributeMethods(
 	return methods
 }
 
-func (v *classSynthesizer_) createClassReference() string {
-	var class = classSynthesizerClassReference()
+func (v *classSynthesizer_) createClass() string {
+	var class = classSynthesizerClass()
 	var classReference = class.classReference_
 	var constantInitialization = class.constantInitialization_
 	if v.classAnalyzer_.IsGeneric() {
@@ -533,7 +533,7 @@ func (v *classSynthesizer_) createClassReference() string {
 }
 
 func (v *classSynthesizer_) createClassStructure() string {
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var classStructure = class.classStructure_
 	var constantDeclarations = v.createConstantDeclarations()
 	classStructure = uti.ReplaceAll(
@@ -551,7 +551,7 @@ func (v *classSynthesizer_) createConstantDeclarations() string {
 		var constant = constants.GetNext()
 		var constantName = constant.GetKey()
 		var constantType = constant.GetValue()
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		var declaration = class.constantDeclaration_
 		declaration = uti.ReplaceAll(
 			declaration,
@@ -591,7 +591,7 @@ func (v *classSynthesizer_) createConstantMethod(
 ) string {
 	var methodName = constantMethod.GetName()
 	var resultType = v.extractType(constantMethod.GetAbstraction())
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var method = class.constantMethod_
 	method = uti.ReplaceAll(
 		method,
@@ -617,7 +617,7 @@ func (v *classSynthesizer_) createConstantMethods(
 			var constantMethod = constants.GetNext()
 			constantMethods += v.createConstantMethod(constantMethod)
 		}
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		methods = class.constantMethods_
 		methods = uti.ReplaceAll(
 			methods,
@@ -636,7 +636,7 @@ func (v *classSynthesizer_) createConstructorMethod(
 	var parameters = v.createParameters(constructorParameters)
 	var resultType = v.extractType(constructorMethod.GetAbstraction())
 	var instanceInstantiation = v.createInstanceInstantiation(constructorMethod)
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var method = class.constructorMethod_
 	method = uti.ReplaceAll(
 		method,
@@ -672,7 +672,7 @@ func (v *classSynthesizer_) createConstructorMethods(
 			var constructorMethod = constructors.GetNext()
 			constructorMethods += v.createConstructorMethod(constructorMethod)
 		}
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		methods = class.constructorMethods_
 		methods = uti.ReplaceAll(
 			methods,
@@ -689,7 +689,7 @@ func (v *classSynthesizer_) createFunctionMethod(
 	var methodName = functionMethod.GetName()
 	var parameters = v.createParameters(functionMethod.GetParameters())
 	var resultType = v.createResult(functionMethod.GetResult())
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var method = class.functionMethod_
 	method = uti.ReplaceAll(
 		method,
@@ -720,7 +720,7 @@ func (v *classSynthesizer_) createFunctionMethods(
 			var functionMethod = functions.GetNext()
 			functionMethods += v.createFunctionMethod(functionMethod)
 		}
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		methods = class.functionMethods_
 		methods = uti.ReplaceAll(
 			methods,
@@ -737,7 +737,7 @@ func (v *classSynthesizer_) createGetterMethod(
 	var methodName = getterMethod.GetName()
 	var attributeName = v.extractAttributeName(methodName)
 	var attributeType = v.extractType(getterMethod.GetAbstraction())
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var method = class.getterMethod_
 	method = uti.ReplaceAll(
 		method,
@@ -763,7 +763,7 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	var methodName = constructorMethod.GetName()
 	var className = constructorMethod.GetAbstraction().GetName()
 	className = sts.TrimSuffix(className, "Like")
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var instantiation = class.instanceInstantiation_
 	if v.classAnalyzer_.IsIntrinsic() {
 		if methodName == className {
@@ -794,7 +794,7 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 
 func (v *classSynthesizer_) createInstanceStructure() string {
 	var structure string
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	if v.classAnalyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.classAnalyzer_.GetIntrinsicType())
 		structure = class.instanceIntrinsic_
@@ -819,7 +819,7 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 	var method string
 	if v.classAnalyzer_.IsIntrinsic() {
 		var intrinsicType = v.extractType(v.classAnalyzer_.GetIntrinsicType())
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		method = class.intrinsicMethod_
 		method = uti.ReplaceAll(
 			method,
@@ -839,7 +839,7 @@ func (v *classSynthesizer_) createParameters(
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
 		var parameterType = v.extractType(parameter.GetAbstraction())
-		var class = classSynthesizerClassReference()
+		var class = classSynthesizerClass()
 		var methodParameter = class.methodParameter_
 		methodParameter = uti.ReplaceAll(
 			methodParameter,
@@ -865,7 +865,7 @@ func (v *classSynthesizer_) createPrincipalMethod(
 	var methodName = method.GetName()
 	var parameters = v.createParameters(method.GetParameters())
 	var resultType = v.createResult(method.GetOptionalResult())
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var principalMethod = class.instanceMethod_
 	if uti.IsDefined(resultType) {
 		principalMethod = class.instanceFunction_
@@ -905,7 +905,7 @@ func (v *classSynthesizer_) createPrincipalMethods(
 		var principalMethod = v.createPrincipalMethod(method)
 		principalMethods += principalMethod
 	}
-	var class = classSynthesizerClassReference()
+	var class = classSynthesizerClass()
 	var implementation = class.principalMethods_
 	implementation = uti.ReplaceAll(
 		implementation,
@@ -944,7 +944,7 @@ func (v *classSynthesizer_) createSetterMethod(
 	var parameter = setterMethod.GetParameter()
 	var attributeType = v.extractType(parameter.GetAbstraction())
 	var attributeCheck = v.createAttributeCheck(parameter)
-	var method = classSynthesizerClassReference().setterMethod_
+	var method = classSynthesizerClass().setterMethod_
 	method = uti.ReplaceAll(
 		method,
 		"methodName",
@@ -1173,7 +1173,7 @@ type classSynthesizerClass_ struct {
 
 // Class Reference
 
-func classSynthesizerClassReference() *classSynthesizerClass_ {
+func classSynthesizerClass() *classSynthesizerClass_ {
 	return classSynthesizerClassReference_
 }
 
@@ -1190,7 +1190,7 @@ var classSynthesizerClassReference_ = &classSynthesizerClass_{
 // Access Function
 
 func <~ClassName>Class<Constraints>() <~ClassName>ClassLike<Arguments> {
-	return <~className>ClassReference<Arguments>()
+	return <~className>Class<Arguments>()
 }
 `,
 
@@ -1268,7 +1268,7 @@ func (v <*><~className>_<Arguments>) <~MethodName>(
 // Principal Methods
 
 func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments> {
-	return <~className>ClassReference<Arguments>()
+	return <~className>Class<Arguments>()
 }
 <IntrinsicMethod><PrincipalMethods>`,
 
@@ -1355,7 +1355,7 @@ type <~className>Class_<Constraints> struct {
 	classReference_: `
 // Class Reference
 
-func <~className>ClassReference() *<~className>Class_ {
+func <~className>Class() *<~className>Class_ {
 	return <~className>ClassReference_
 }
 
@@ -1370,7 +1370,7 @@ var <~className>ClassReference_ = &<~className>Class_{
 var <~className>Map_ = map[string]any{}
 var <~className>Mutex_ syn.Mutex
 
-func <~className>ClassReference<Constraints>() *<~className>Class_<Arguments> {
+func <~className>Class<Constraints>() *<~className>Class_<Arguments> {
 	// Generate the name of the bound class type.
 	var class *<className>Class_<Arguments>
 	var name = fmt.Sprintf("%T", class)

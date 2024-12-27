@@ -24,7 +24,7 @@ import (
 // Access Function
 
 func ScannerSynthesizerClass() ScannerSynthesizerClassLike {
-	return scannerSynthesizerClassReference()
+	return scannerSynthesizerClass()
 }
 
 // Constructor Methods
@@ -44,7 +44,7 @@ func (c *scannerSynthesizerClass_) ScannerSynthesizer(
 // Principal Methods
 
 func (v *scannerSynthesizer_) GetClass() ScannerSynthesizerClassLike {
-	return scannerSynthesizerClassReference()
+	return scannerSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -55,19 +55,19 @@ func (v *scannerSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *scannerSynthesizer_) CreateWarningMessage() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *scannerSynthesizer_) CreateImportedPackages() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *scannerSynthesizer_) CreateAccessFunction() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
@@ -78,19 +78,19 @@ func (v *scannerSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreateConstructorMethods() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
 func (v *scannerSynthesizer_) CreateFunctionMethods() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var functionMethods = class.functionMethods_
 	return functionMethods
 }
 
 func (v *scannerSynthesizer_) CreatePrincipalMethods() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	return principalMethods
 }
@@ -106,7 +106,7 @@ func (v *scannerSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreatePrivateMethods() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	var foundCases = v.createFoundCases()
 	privateMethods = uti.ReplaceAll(
@@ -118,19 +118,19 @@ func (v *scannerSynthesizer_) CreatePrivateMethods() string {
 }
 
 func (v *scannerSynthesizer_) CreateInstanceStructure() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *scannerSynthesizer_) CreateClassStructure() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *scannerSynthesizer_) CreateClassReference() string {
-	var class = scannerSynthesizerClassReference()
+func (v *scannerSynthesizer_) CreateClass() string {
+	var class = scannerSynthesizerClass()
 	var classReference = class.classReference_
 	var tokenIdentifiers = v.createTokenIdentifiers()
 	classReference = uti.ReplaceAll(
@@ -171,7 +171,7 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// And the token names have been sorted so we must pull out the token
 	// names from the catalog of expressions in their proper order.
 	var foundCases string
-	var synthesizerClass = scannerSynthesizerClassReference()
+	var synthesizerClass = scannerSynthesizerClass()
 	var tokenNames = col.SetFromSequence[string](
 		v.analyzer_.GetTokenNames(),
 	)
@@ -200,7 +200,7 @@ func (v *scannerSynthesizer_) createRegularExpressions() string {
 		var association = expressions.GetNext()
 		var expressionName = association.GetKey()
 		var expressionValue = association.GetValue()
-		var class = scannerSynthesizerClassReference()
+		var class = scannerSynthesizerClass()
 		var regularExpression = class.regularExpression_
 		regularExpression = uti.ReplaceAll(
 			regularExpression,
@@ -218,7 +218,7 @@ func (v *scannerSynthesizer_) createRegularExpressions() string {
 }
 
 func (v *scannerSynthesizer_) createTokenIdentifiers() string {
-	var class = scannerSynthesizerClassReference()
+	var class = scannerSynthesizerClass()
 	var tokenIdentifiers = class.tokenIdentifier_
 	tokenIdentifiers = uti.ReplaceAll(
 		tokenIdentifiers,
@@ -244,7 +244,7 @@ func (v *scannerSynthesizer_) createTokenMatchers() string {
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
-		var class = scannerSynthesizerClassReference()
+		var class = scannerSynthesizerClass()
 		var tokenMatcher = class.tokenMatcher_
 		tokenMatcher = uti.ReplaceAll(
 			tokenMatcher,
@@ -290,7 +290,7 @@ type scannerSynthesizerClass_ struct {
 
 // Class Reference
 
-func scannerSynthesizerClassReference() *scannerSynthesizerClass_ {
+func scannerSynthesizerClass() *scannerSynthesizerClass_ {
 	return scannerSynthesizerClassReference_
 }
 
@@ -317,7 +317,7 @@ var scannerSynthesizerClassReference_ = &scannerSynthesizerClass_{
 // Access Function
 
 func ScannerClass() ScannerClassLike {
-	return scannerClassReference()
+	return scannerClass()
 }
 `,
 
@@ -386,7 +386,7 @@ func (c *scannerClass_) MatchesType(
 // Principal Methods
 
 func (v *scanner_) GetClass() ScannerClassLike {
-	return scannerClassReference()
+	return scannerClass()
 }
 `,
 
@@ -493,7 +493,7 @@ func (v *scanner_) foundToken(
 	tokenType TokenType,
 ) bool {
 	// Attempt to match the specified token type.
-	var class = scannerClassReference()
+	var class = scannerClass()
 	var matcher = class.matchers_.GetValue(tokenType)
 	var text = string(v.runes_[v.next_:])
 	var match = matcher.FindString(text)
@@ -583,7 +583,7 @@ type scannerClass_ struct {
 	classReference_: `
 // Class Reference
 
-func scannerClassReference() *scannerClass_ {
+func scannerClass() *scannerClass_ {
 	return scannerClassReference_
 }
 

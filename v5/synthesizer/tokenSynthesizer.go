@@ -22,7 +22,7 @@ import (
 // Access Function
 
 func TokenSynthesizerClass() TokenSynthesizerClassLike {
-	return tokenSynthesizerClassReference()
+	return tokenSynthesizerClass()
 }
 
 // Constructor Methods
@@ -42,7 +42,7 @@ func (c *tokenSynthesizerClass_) TokenSynthesizer(
 // Principal Methods
 
 func (v *tokenSynthesizer_) GetClass() TokenSynthesizerClassLike {
-	return tokenSynthesizerClassReference()
+	return tokenSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -53,19 +53,19 @@ func (v *tokenSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *tokenSynthesizer_) CreateWarningMessage() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *tokenSynthesizer_) CreateImportedPackages() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *tokenSynthesizer_) CreateAccessFunction() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
@@ -76,7 +76,7 @@ func (v *tokenSynthesizer_) CreateConstantMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreateConstructorMethods() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
@@ -87,13 +87,13 @@ func (v *tokenSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreatePrincipalMethods() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	return principalMethods
 }
 
 func (v *tokenSynthesizer_) CreateAttributeMethods() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var attributeMethods = class.attributeMethods_
 	return attributeMethods
 }
@@ -104,25 +104,25 @@ func (v *tokenSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *tokenSynthesizer_) CreatePrivateMethods() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *tokenSynthesizer_) CreateInstanceStructure() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *tokenSynthesizer_) CreateClassStructure() string {
-	var class = tokenSynthesizerClassReference()
+	var class = tokenSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *tokenSynthesizer_) CreateClassReference() string {
-	var class = tokenSynthesizerClassReference()
+func (v *tokenSynthesizer_) CreateClass() string {
+	var class = tokenSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
@@ -161,7 +161,7 @@ type tokenSynthesizerClass_ struct {
 
 // Class Reference
 
-func tokenSynthesizerClassReference() *tokenSynthesizerClass_ {
+func tokenSynthesizerClass() *tokenSynthesizerClass_ {
 	return tokenSynthesizerClassReference_
 }
 
@@ -182,7 +182,7 @@ var tokenSynthesizerClassReference_ = &tokenSynthesizerClass_{
 // Access Function
 
 func TokenClass() TokenClassLike {
-	return tokenClassReference()
+	return tokenClass()
 }
 `,
 
@@ -222,7 +222,7 @@ func (c *tokenClass_) Token(
 // Principal Methods
 
 func (v *token_) GetClass() TokenClassLike {
-	return tokenClassReference()
+	return tokenClass()
 }
 `,
 
@@ -273,7 +273,7 @@ type tokenClass_ struct {
 	classReference_: `
 // Class Reference
 
-func tokenClassReference() *tokenClass_ {
+func tokenClass() *tokenClass_ {
 	return tokenClassReference_
 }
 

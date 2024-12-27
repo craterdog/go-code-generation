@@ -34,7 +34,7 @@ import (
 // Access Function
 
 func ScannerClass() ScannerClassLike {
-	return scannerClassReference()
+	return scannerClass()
 }
 
 // Constructor Methods
@@ -99,7 +99,7 @@ func (c *scannerClass_) MatchesType(
 // Principal Methods
 
 func (v *scanner_) GetClass() ScannerClassLike {
-	return scannerClassReference()
+	return scannerClass()
 }
 
 // PROTECTED INTERFACE
@@ -140,7 +140,7 @@ func (v *scanner_) foundToken(
 	tokenType TokenType,
 ) bool {
 	// Attempt to match the specified token type.
-	var class = scannerClassReference()
+	var class = scannerClass()
 	var matcher = class.matchers_.GetValue(tokenType)
 	var text = string(v.runes_[v.next_:])
 	var match = matcher.FindString(text)
@@ -228,7 +228,7 @@ type scannerClass_ struct {
 
 // Class Reference
 
-func scannerClassReference() *scannerClass_ {
+func scannerClass() *scannerClass_ {
 	return scannerClassReference_
 }
 

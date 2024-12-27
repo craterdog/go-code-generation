@@ -25,7 +25,7 @@ import (
 // Access Function
 
 func FormatterSynthesizerClass() FormatterSynthesizerClassLike {
-	return formatterSynthesizerClassReference()
+	return formatterSynthesizerClass()
 }
 
 // Constructor Methods
@@ -45,7 +45,7 @@ func (c *formatterSynthesizerClass_) FormatterSynthesizer(
 // Principal Methods
 
 func (v *formatterSynthesizer_) GetClass() FormatterSynthesizerClassLike {
-	return formatterSynthesizerClassReference()
+	return formatterSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -56,25 +56,25 @@ func (v *formatterSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *formatterSynthesizer_) CreateWarningMessage() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *formatterSynthesizer_) CreateImportedPackages() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *formatterSynthesizer_) CreateAccessFunction() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *formatterSynthesizer_) CreateConstructorMethods() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
@@ -90,7 +90,7 @@ func (v *formatterSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreatePrincipalMethods() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	var syntaxMap = v.analyzer_.GetSyntaxMap()
 	principalMethods = uti.ReplaceAll(
@@ -113,7 +113,7 @@ func (v *formatterSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreateAspectMethods() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
@@ -131,25 +131,25 @@ func (v *formatterSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *formatterSynthesizer_) CreatePrivateMethods() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *formatterSynthesizer_) CreateInstanceStructure() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *formatterSynthesizer_) CreateClassStructure() string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *formatterSynthesizer_) CreateClassReference() string {
-	var class = formatterSynthesizerClassReference()
+func (v *formatterSynthesizer_) CreateClass() string {
+	var class = formatterSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
@@ -169,7 +169,7 @@ func (v *formatterSynthesizer_) PerformGlobalUpdates(
 func (v *formatterSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
 		processRule = class.processIndexedRule_
@@ -200,7 +200,7 @@ func (v *formatterSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	var class = formatterSynthesizerClassReference()
+	var class = formatterSynthesizerClass()
 	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = class.processIndexedToken_
@@ -283,7 +283,7 @@ type formatterSynthesizerClass_ struct {
 
 // Class Reference
 
-func formatterSynthesizerClassReference() *formatterSynthesizerClass_ {
+func formatterSynthesizerClass() *formatterSynthesizerClass_ {
 	return formatterSynthesizerClassReference_
 }
 
@@ -310,7 +310,7 @@ var formatterSynthesizerClassReference_ = &formatterSynthesizerClass_{
 // Access Function
 
 func FormatterClass() FormatterClassLike {
-	return formatterClassReference()
+	return formatterClass()
 }
 `,
 
@@ -333,7 +333,7 @@ func (c *formatterClass_) Formatter() FormatterLike {
 // Principal Methods
 
 func (v *formatter_) GetClass() FormatterClassLike {
-	return formatterClassReference()
+	return formatterClass()
 }
 
 func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) string {
@@ -467,7 +467,7 @@ type formatterClass_ struct {
 	classReference_: `
 // Class Reference
 
-func formatterClassReference() *formatterClass_ {
+func formatterClass() *formatterClass_ {
 	return formatterClassReference_
 }
 

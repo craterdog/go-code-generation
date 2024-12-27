@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func ProcessorSynthesizerClass() ProcessorSynthesizerClassLike {
-	return processorSynthesizerClassReference()
+	return processorSynthesizerClass()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *processorSynthesizerClass_) ProcessorSynthesizer(
 // Principal Methods
 
 func (v *processorSynthesizer_) GetClass() ProcessorSynthesizerClassLike {
-	return processorSynthesizerClassReference()
+	return processorSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -54,25 +54,25 @@ func (v *processorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *processorSynthesizer_) CreateWarningMessage() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *processorSynthesizer_) CreateImportedPackages() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *processorSynthesizer_) CreateAccessFunction() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *processorSynthesizer_) CreateConstructorMethods() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
@@ -88,7 +88,7 @@ func (v *processorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *processorSynthesizer_) CreatePrincipalMethods() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	return principalMethods
 }
@@ -99,7 +99,7 @@ func (v *processorSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *processorSynthesizer_) CreateAspectMethods() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
@@ -117,25 +117,25 @@ func (v *processorSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *processorSynthesizer_) CreatePrivateMethods() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *processorSynthesizer_) CreateInstanceStructure() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *processorSynthesizer_) CreateClassStructure() string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *processorSynthesizer_) CreateClassReference() string {
-	var class = processorSynthesizerClassReference()
+func (v *processorSynthesizer_) CreateClass() string {
+	var class = processorSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
@@ -154,7 +154,7 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 func (v *processorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
 		processRule = class.processIndexedRule_
@@ -185,7 +185,7 @@ func (v *processorSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	var class = processorSynthesizerClassReference()
+	var class = processorSynthesizerClass()
 	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = class.processIndexedToken_
@@ -238,7 +238,7 @@ type processorSynthesizerClass_ struct {
 
 // Class Reference
 
-func processorSynthesizerClassReference() *processorSynthesizerClass_ {
+func processorSynthesizerClass() *processorSynthesizerClass_ {
 	return processorSynthesizerClassReference_
 }
 
@@ -259,7 +259,7 @@ var processorSynthesizerClassReference_ = &processorSynthesizerClass_{
 // Access Function
 
 func ProcessorClass() ProcessorClassLike {
-	return processorClassReference()
+	return processorClass()
 }
 `,
 
@@ -278,7 +278,7 @@ func (c *processorClass_) Processor() ProcessorLike {
 // Principal Methods
 
 func (v *processor_) GetClass() ProcessorClassLike {
-	return processorClassReference()
+	return processorClass()
 }
 `,
 
@@ -363,7 +363,7 @@ type processorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func processorClassReference() *processorClass_ {
+func processorClass() *processorClass_ {
 	return processorClassReference_
 }
 

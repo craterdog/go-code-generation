@@ -21,7 +21,7 @@ import (
 // Access Function
 
 func ClassGeneratorClass() ClassGeneratorClassLike {
-	return classGeneratorClassReference()
+	return classGeneratorClass()
 }
 
 // Constructor Methods
@@ -39,7 +39,7 @@ func (c *classGeneratorClass_) ClassGenerator() ClassGeneratorLike {
 // Principal Methods
 
 func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
-	return classGeneratorClassReference()
+	return classGeneratorClass()
 }
 
 func (v *classGenerator_) GenerateClass(
@@ -50,7 +50,7 @@ func (v *classGenerator_) GenerateClass(
 	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var generated = classGeneratorClassReference().classTemplate_
+	var generated = classGeneratorClass().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -160,7 +160,7 @@ func (v *classGenerator_) GenerateClass(
 	)
 
 	// Create the class reference.
-	var classReference = synthesizer.CreateClassReference()
+	var classReference = synthesizer.CreateClass()
 	generated = uti.ReplaceAll(
 		generated,
 		"classReference",
@@ -189,7 +189,7 @@ func (v *classGenerator_) GenerateClass(
 	)
 
 	// Clean up and format the imported packages (must be done last).
-	var class = moduleGeneratorClassReference()
+	var class = moduleGeneratorClass()
 	generated = class.formatImportedPackages(
 		existing,
 		generated,
@@ -215,7 +215,7 @@ type classGeneratorClass_ struct {
 
 // Class Reference
 
-func classGeneratorClassReference() *classGeneratorClass_ {
+func classGeneratorClass() *classGeneratorClass_ {
 	return classGeneratorClassReference_
 }
 

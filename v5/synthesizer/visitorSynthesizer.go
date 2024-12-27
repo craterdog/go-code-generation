@@ -24,7 +24,7 @@ import (
 // Access Function
 
 func VisitorSynthesizerClass() VisitorSynthesizerClassLike {
-	return visitorSynthesizerClassReference()
+	return visitorSynthesizerClass()
 }
 
 // Constructor Methods
@@ -44,7 +44,7 @@ func (c *visitorSynthesizerClass_) VisitorSynthesizer(
 // Principal Methods
 
 func (v *visitorSynthesizer_) GetClass() VisitorSynthesizerClassLike {
-	return visitorSynthesizerClassReference()
+	return visitorSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -55,25 +55,25 @@ func (v *visitorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *visitorSynthesizer_) CreateWarningMessage() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *visitorSynthesizer_) CreateImportedPackages() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *visitorSynthesizer_) CreateAccessFunction() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *visitorSynthesizer_) CreateConstructorMethods() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
@@ -89,7 +89,7 @@ func (v *visitorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *visitorSynthesizer_) CreatePrincipalMethods() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	return principalMethods
 }
@@ -106,7 +106,7 @@ func (v *visitorSynthesizer_) CreateAspectMethods() string {
 
 func (v *visitorSynthesizer_) CreatePrivateMethods() string {
 	var visitMethods = v.createVisitMethods()
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	privateMethods = uti.ReplaceAll(
 		privateMethods,
@@ -117,19 +117,19 @@ func (v *visitorSynthesizer_) CreatePrivateMethods() string {
 }
 
 func (v *visitorSynthesizer_) CreateInstanceStructure() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *visitorSynthesizer_) CreateClassStructure() string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *visitorSynthesizer_) CreateClassReference() string {
-	var class = visitorSynthesizerClassReference()
+func (v *visitorSynthesizer_) CreateClass() string {
+	var class = visitorSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
@@ -167,7 +167,7 @@ func (v *visitorSynthesizer_) createInlineImplementation(
 		implementation += v.createInlineReference(reference, variableName)
 	}
 	if uti.IsUndefined(implementation) {
-		var class = visitorSynthesizerClassReference()
+		var class = visitorSynthesizerClass()
 		implementation = class.emptyMethod_
 	}
 	return implementation
@@ -193,7 +193,7 @@ func (v *visitorSynthesizer_) createInlineRule(
 	variableName string,
 ) string {
 	var inlineRule string
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	switch v.createPlurality(reference) {
 	case "singular":
 		inlineRule = class.singularRuleBlock_
@@ -222,7 +222,7 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	ruleName string,
 	slot uint,
 ) string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var inlineSlot = class.slotBlock_
 	inlineSlot = uti.ReplaceAll(
 		inlineSlot,
@@ -237,7 +237,7 @@ func (v *visitorSynthesizer_) createInlineToken(
 	variableName string,
 ) string {
 	var inlineToken string
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	switch v.createPlurality(reference) {
 	case "singular":
 		inlineToken = class.singularTokenBlock_
@@ -277,7 +277,7 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 			ruleCases += v.createMultilineRule(identifier)
 		}
 	}
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	implementation = class.multilineCases_
 	implementation = uti.ReplaceAll(
 		implementation,
@@ -295,7 +295,7 @@ func (v *visitorSynthesizer_) createMultilineImplementation(
 func (v *visitorSynthesizer_) createMultilineRule(
 	ruleName string,
 ) string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var multilineRule = class.ruleCase_
 	if v.analyzer_.IsPlural(ruleName) {
 		multilineRule = class.singularRuleCase_
@@ -311,7 +311,7 @@ func (v *visitorSynthesizer_) createMultilineRule(
 func (v *visitorSynthesizer_) createMultilineToken(
 	tokenName string,
 ) string {
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var multilineToken = class.tokenCase_
 	if v.analyzer_.IsPlural(tokenName) {
 		multilineToken = class.singularTokenCase_
@@ -376,7 +376,7 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	case uti.IsDefined(v.analyzer_.GetReferences(ruleName)):
 		methodImplementation = v.createInlineImplementation(ruleName)
 	}
-	var class = visitorSynthesizerClassReference()
+	var class = visitorSynthesizerClass()
 	var visitMethod = class.visitMethod_
 	visitMethod = uti.ReplaceAll(
 		visitMethod,
@@ -431,7 +431,7 @@ type visitorSynthesizerClass_ struct {
 
 // Class Reference
 
-func visitorSynthesizerClassReference() *visitorSynthesizerClass_ {
+func visitorSynthesizerClass() *visitorSynthesizerClass_ {
 	return visitorSynthesizerClassReference_
 }
 
@@ -454,7 +454,7 @@ var visitorSynthesizerClassReference_ = &visitorSynthesizerClass_{
 // Access Function
 
 func VisitorClass() VisitorClassLike {
-	return visitorClassReference()
+	return visitorClass()
 }
 `,
 
@@ -479,7 +479,7 @@ func (c *visitorClass_) Visitor(
 // Principal Methods
 
 func (v *visitor_) GetClass() VisitorClassLike {
-	return visitorClassReference()
+	return visitorClass()
 }
 
 func (v *visitor_) Visit<~SyntaxName>(
@@ -651,7 +651,7 @@ type visitorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func visitorClassReference() *visitorClass_ {
+func visitorClass() *visitorClass_ {
 	return visitorClassReference_
 }
 

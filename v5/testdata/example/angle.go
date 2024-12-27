@@ -19,7 +19,7 @@ import ()
 // Access Function
 
 func AngleClass() AngleClassLike {
-	return angleClassReference()
+	return angleClass()
 }
 
 // Constructor Methods
@@ -80,7 +80,7 @@ func (c *angleClass_) Tangent(
 // Principal Methods
 
 func (v angle_) GetClass() AngleClassLike {
-	return angleClassReference()
+	return angleClass()
 }
 
 func (v angle_) GetIntrinsic() float64 {
@@ -137,7 +137,7 @@ type angleClass_ struct {
 
 // Class Reference
 
-func angleClassReference() *angleClass_ {
+func angleClass() *angleClass_ {
 	return angleClassReference_
 }
 

@@ -34,7 +34,7 @@ import (
 // Access Function
 
 func ParserClass() ParserClassLike {
-	return parserClassReference()
+	return parserClass()
 }
 
 // Constructor Methods
@@ -51,7 +51,7 @@ func (c *parserClass_) Parser() ParserLike {
 // Principal Methods
 
 func (v *parser_) GetClass() ParserClassLike {
-	return parserClassReference()
+	return parserClass()
 }
 
 func (v *parser_) ParseSource(
@@ -3769,7 +3769,7 @@ func (v *parser_) formatError(
 func (v *parser_) getDefinition(
 	ruleName string,
 ) string {
-	var syntax = parserClassReference().syntax_
+	var syntax = parserClass().syntax_
 	var definition = syntax.GetValue(ruleName)
 	return definition
 }
@@ -3831,7 +3831,7 @@ type parserClass_ struct {
 
 // Class Reference
 
-func parserClassReference() *parserClass_ {
+func parserClass() *parserClass_ {
 	return parserClassReference_
 }
 

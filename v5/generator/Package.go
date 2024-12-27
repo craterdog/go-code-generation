@@ -127,7 +127,7 @@ type ClassTemplateDriven interface {
 	CreatePrivateMethods() string
 	CreateInstanceStructure() string
 	CreateClassStructure() string
-	CreateClassReference() string
+	CreateClass() string
 	PerformGlobalUpdates(
 		existing string,
 		generated string,

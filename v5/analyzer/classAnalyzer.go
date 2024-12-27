@@ -26,7 +26,7 @@ import (
 // Access Function
 
 func ClassAnalyzerClass() ClassAnalyzerClassLike {
-	return classAnalyzerClassReference()
+	return classAnalyzerClass()
 }
 
 // Constructor Methods
@@ -48,7 +48,7 @@ func (c *classAnalyzerClass_) ClassAnalyzer(
 // Principal Methods
 
 func (v *classAnalyzer_) GetClass() ClassAnalyzerClassLike {
-	return classAnalyzerClassReference()
+	return classAnalyzerClass()
 }
 
 func (v *classAnalyzer_) GetLegalNotice() string {
@@ -530,7 +530,7 @@ type classAnalyzerClass_ struct {
 
 // Class Reference
 
-func classAnalyzerClassReference() *classAnalyzerClass_ {
+func classAnalyzerClass() *classAnalyzerClass_ {
 	return classAnalyzerClassReference_
 }
 

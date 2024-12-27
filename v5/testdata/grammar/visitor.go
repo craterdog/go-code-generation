@@ -30,7 +30,7 @@ import (
 // Access Function
 
 func VisitorClass() VisitorClassLike {
-	return visitorClassReference()
+	return visitorClass()
 }
 
 // Constructor Methods
@@ -53,7 +53,7 @@ func (c *visitorClass_) Visitor(
 // Principal Methods
 
 func (v *visitor_) GetClass() VisitorClassLike {
-	return visitorClassReference()
+	return visitorClass()
 }
 
 func (v *visitor_) VisitModel(
@@ -1306,7 +1306,7 @@ type visitorClass_ struct {
 
 // Class Reference
 
-func visitorClassReference() *visitorClass_ {
+func visitorClass() *visitorClass_ {
 	return visitorClassReference_
 }
 

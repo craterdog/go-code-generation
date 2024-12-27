@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func PackageAnalyzerClass() PackageAnalyzerClassLike {
-	return packageAnalyzerClassReference()
+	return packageAnalyzerClass()
 }
 
 // Constructor Methods
@@ -55,7 +55,7 @@ func (c *packageAnalyzerClass_) PackageAnalyzer(
 // Principal Methods
 
 func (v *packageAnalyzer_) GetClass() PackageAnalyzerClassLike {
-	return packageAnalyzerClassReference()
+	return packageAnalyzerClass()
 }
 
 func (v *packageAnalyzer_) GetPackageName() string {
@@ -230,7 +230,7 @@ type packageAnalyzerClass_ struct {
 
 // Class Reference
 
-func packageAnalyzerClassReference() *packageAnalyzerClass_ {
+func packageAnalyzerClass() *packageAnalyzerClass_ {
 	return packageAnalyzerClassReference_
 }
 

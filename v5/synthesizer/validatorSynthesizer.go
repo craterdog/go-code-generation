@@ -25,7 +25,7 @@ import (
 // Access Function
 
 func ValidatorSynthesizerClass() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerClassReference()
+	return validatorSynthesizerClass()
 }
 
 // Constructor Methods
@@ -45,7 +45,7 @@ func (c *validatorSynthesizerClass_) ValidatorSynthesizer(
 // Principal Methods
 
 func (v *validatorSynthesizer_) GetClass() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerClassReference()
+	return validatorSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -56,25 +56,25 @@ func (v *validatorSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *validatorSynthesizer_) CreateWarningMessage() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *validatorSynthesizer_) CreateImportedPackages() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
 func (v *validatorSynthesizer_) CreateAccessFunction() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
 func (v *validatorSynthesizer_) CreateConstructorMethods() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
@@ -90,7 +90,7 @@ func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	var syntaxMap = v.analyzer_.GetSyntaxMap()
 	principalMethods = uti.ReplaceAll(
@@ -113,7 +113,7 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreateAspectMethods() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
@@ -131,25 +131,25 @@ func (v *validatorSynthesizer_) CreateAspectMethods() string {
 }
 
 func (v *validatorSynthesizer_) CreatePrivateMethods() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
 func (v *validatorSynthesizer_) CreateInstanceStructure() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
 func (v *validatorSynthesizer_) CreateClassStructure() string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *validatorSynthesizer_) CreateClassReference() string {
-	var class = validatorSynthesizerClassReference()
+func (v *validatorSynthesizer_) CreateClass() string {
+	var class = validatorSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
@@ -169,7 +169,7 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
 		processRule = class.processIndexedRule_
@@ -200,7 +200,7 @@ func (v *validatorSynthesizer_) createProcessToken(
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	var class = validatorSynthesizerClassReference()
+	var class = validatorSynthesizerClass()
 	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = class.processIndexedToken_
@@ -279,7 +279,7 @@ type validatorSynthesizerClass_ struct {
 
 // Class Reference
 
-func validatorSynthesizerClassReference() *validatorSynthesizerClass_ {
+func validatorSynthesizerClass() *validatorSynthesizerClass_ {
 	return validatorSynthesizerClassReference_
 }
 
@@ -306,7 +306,7 @@ var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 // Access Function
 
 func ValidatorClass() ValidatorClassLike {
-	return validatorClassReference()
+	return validatorClass()
 }
 `,
 
@@ -329,7 +329,7 @@ func (c *validatorClass_) Validator() ValidatorLike {
 // Principal Methods
 
 func (v *validator_) GetClass() ValidatorClassLike {
-	return validatorClassReference()
+	return validatorClass()
 }
 
 func (v *validator_) Validate<~SyntaxName>(
@@ -447,7 +447,7 @@ type validatorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func validatorClassReference() *validatorClass_ {
+func validatorClass() *validatorClass_ {
 	return validatorClassReference_
 }
 

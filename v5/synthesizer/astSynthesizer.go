@@ -23,7 +23,7 @@ import (
 // Access Function
 
 func AstSynthesizerClass() AstSynthesizerClassLike {
-	return astSynthesizerClassReference()
+	return astSynthesizerClass()
 }
 
 // Constructor Methods
@@ -43,7 +43,7 @@ func (c *astSynthesizerClass_) AstSynthesizer(
 // Principal Methods
 
 func (v *astSynthesizer_) GetClass() AstSynthesizerClassLike {
-	return astSynthesizerClassReference()
+	return astSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -54,19 +54,19 @@ func (v *astSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *astSynthesizer_) CreateWarningMessage() string {
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *astSynthesizer_) CreatePackageDescription() string {
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var packageDescription = class.packageDescription_
 	return packageDescription
 }
 
 func (v *astSynthesizer_) CreateImportedPackages() string {
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
@@ -144,7 +144,7 @@ func (v *astSynthesizer_) createClassDeclaration(
 		// This class represents a multiline rule.
 		parameters += "\n\t\tany_ any,\n\t"
 	}
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var classDeclaration = class.classDeclaration_
 	classDeclaration = uti.ReplaceAll(
 		classDeclaration,
@@ -164,7 +164,7 @@ func (v *astSynthesizer_) createGetterMethod(
 	attributeName string,
 	attributeType string,
 ) string {
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var getterMethod = class.ruleGetterMethod_
 	if attributeType == "string" {
 		getterMethod = class.tokenGetterMethod_
@@ -213,7 +213,7 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 		// This instance represents a multiline rule.
 		getterMethods += "\n\tGetAny() any"
 	}
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	var instanceDeclaration = class.instanceDeclaration_
 	var principalMethods = class.principalMethods_
 	instanceDeclaration = uti.ReplaceAll(
@@ -250,7 +250,7 @@ func (v *astSynthesizer_) createParameter(
 ) (
 	parameter string,
 ) {
-	var class = astSynthesizerClassReference()
+	var class = astSynthesizerClass()
 	parameter = class.singularRuleParameter_
 	if parameterType == "string" {
 		parameter = class.singularTokenParameter_
@@ -319,7 +319,7 @@ type astSynthesizerClass_ struct {
 
 // Class Reference
 
-func astSynthesizerClassReference() *astSynthesizerClass_ {
+func astSynthesizerClass() *astSynthesizerClass_ {
 	return astSynthesizerClassReference_
 }
 

@@ -26,7 +26,7 @@ import (
 // Access Function
 
 func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
-	return moduleSynthesizerClassReference()
+	return moduleSynthesizerClass()
 }
 
 // Constructor Methods
@@ -46,7 +46,7 @@ func (c *moduleSynthesizerClass_) ModuleSynthesizer(
 // Principal Methods
 
 func (v *moduleSynthesizer_) GetClass() ModuleSynthesizerClassLike {
-	return moduleSynthesizerClassReference()
+	return moduleSynthesizerClass()
 }
 
 // TemplateDriven Methods
@@ -60,13 +60,13 @@ func (v *moduleSynthesizer_) CreateLegalNotice() string {
 }
 
 func (v *moduleSynthesizer_) CreateWarningMessage() string {
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
 func (v *moduleSynthesizer_) CreateImportedPackages() string {
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
@@ -129,7 +129,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		aspectAliases = class.typeAliases_
 		aspectAliases = uti.ReplaceAll(
 			aspectAliases,
@@ -153,7 +153,7 @@ func (v *moduleSynthesizer_) createClassAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		classAliases = class.typeAliases_
 		classAliases = uti.ReplaceAll(
 			classAliases,
@@ -169,7 +169,7 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 	className string,
 	model mod.ModelLike,
 ) string {
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var constructorFunction = class.constructorFunction_
 	var methodName = constructorMethod.GetName()
 	var parameters = v.extractParameters(constructorMethod, model)
@@ -214,7 +214,7 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		)
 		constructors += constructorFunction
 	}
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var classConstructors = class.classConstructors_
 	classConstructors = uti.ReplaceAll(
 		classConstructors,
@@ -268,7 +268,7 @@ func (v *moduleSynthesizer_) createEnumeratedAliases(
 	enumeratedAliases string,
 ) {
 	var nameAliases string
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var names = enumeratedValues.GetIterator()
 	for names.HasNext() {
 		var name = names.GetNext()
@@ -306,7 +306,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		functionalAliases = class.typeAliases_
 		functionalAliases = uti.ReplaceAll(
 			functionalAliases,
@@ -330,7 +330,7 @@ func (v *moduleSynthesizer_) createInstanceAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		instanceAliases = class.typeAliases_
 		instanceAliases = uti.ReplaceAll(
 			instanceAliases,
@@ -351,7 +351,7 @@ func (v *moduleSynthesizer_) createNameAlias(
 		// Type aliases are not supported for generic types in Go.
 		return
 	}
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	nameAlias = class.nameAlias_
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
@@ -372,7 +372,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 	typeAliases += v.createClassAliases(analyzer.GetClassDeclarations())
 	typeAliases += v.createInstanceAliases(analyzer.GetInstanceDeclarations())
 	typeAliases += v.createAspectAliases(analyzer.GetAspectDeclarations())
-	var class = moduleSynthesizerClassReference()
+	var class = moduleSynthesizerClass()
 	var packageAliases = class.packageAliases_
 	packageAliases = uti.ReplaceAll(
 		packageAliases,
@@ -399,7 +399,7 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		typeAliases = class.typeAliases_
 		typeAliases = uti.ReplaceAll(
 			typeAliases,
@@ -440,7 +440,7 @@ func (v *moduleSynthesizer_) extractParameters(
 			parameter.GetAbstraction(),
 			model,
 		)
-		var class = moduleSynthesizerClassReference()
+		var class = moduleSynthesizerClass()
 		var methodParameter = class.methodParameter_
 		methodParameter = uti.ReplaceAll(
 			methodParameter,
@@ -631,7 +631,7 @@ type moduleSynthesizerClass_ struct {
 
 // Class Reference
 
-func moduleSynthesizerClassReference() *moduleSynthesizerClass_ {
+func moduleSynthesizerClass() *moduleSynthesizerClass_ {
 	return moduleSynthesizerClassReference_
 }
 
