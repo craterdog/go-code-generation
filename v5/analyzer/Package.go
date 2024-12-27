@@ -31,7 +31,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
@@ -89,14 +89,14 @@ type ClassAnalyzerLike interface {
 	GetTypeArguments() string
 	IsIntrinsic() bool
 	GetIntrinsicType() mod.AbstractionLike
-	GetConstants() abs.CatalogLike[string, string]
-	GetAttributes() abs.CatalogLike[string, string]
-	GetConstructorMethods() abs.ListLike[mod.ConstructorMethodLike]
-	GetConstantMethods() abs.ListLike[mod.ConstantMethodLike]
-	GetFunctionMethods() abs.ListLike[mod.FunctionMethodLike]
-	GetPrincipalMethods() abs.ListLike[mod.PrincipalMethodLike]
-	GetAttributeMethods() abs.ListLike[mod.AttributeMethodLike]
-	GetAspectInterfaces() abs.ListLike[mod.AspectInterfaceLike]
+	GetConstants() col.CatalogLike[string, string]
+	GetAttributes() col.CatalogLike[string, string]
+	GetConstructorMethods() col.ListLike[mod.ConstructorMethodLike]
+	GetConstantMethods() col.ListLike[mod.ConstantMethodLike]
+	GetFunctionMethods() col.ListLike[mod.FunctionMethodLike]
+	GetPrincipalMethods() col.ListLike[mod.PrincipalMethodLike]
+	GetAttributeMethods() col.ListLike[mod.AttributeMethodLike]
+	GetAspectInterfaces() col.ListLike[mod.AspectInterfaceLike]
 }
 
 /*
@@ -108,13 +108,13 @@ type PackageAnalyzerLike interface {
 	GetClass() PackageAnalyzerClassLike
 	GetLegalNotice() string
 	GetPackageName() string
-	GetImportedPackages() abs.CatalogLike[string, string]
-	GetTypeDeclarations() abs.ListLike[mod.TypeDeclarationLike]
-	GetEnumeratedValues() abs.ListLike[string]
-	GetFunctionalDeclarations() abs.ListLike[mod.FunctionalDeclarationLike]
-	GetClassDeclarations() abs.ListLike[mod.ClassDeclarationLike]
-	GetInstanceDeclarations() abs.ListLike[mod.InstanceDeclarationLike]
-	GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike]
+	GetImportedPackages() col.CatalogLike[string, string]
+	GetTypeDeclarations() col.ListLike[mod.TypeDeclarationLike]
+	GetEnumeratedValues() col.ListLike[string]
+	GetFunctionalDeclarations() col.ListLike[mod.FunctionalDeclarationLike]
+	GetClassDeclarations() col.ListLike[mod.ClassDeclarationLike]
+	GetInstanceDeclarations() col.ListLike[mod.InstanceDeclarationLike]
+	GetAspectDeclarations() col.ListLike[mod.AspectDeclarationLike]
 
 	// Aspect Interfaces
 	mod.Methodical
@@ -130,30 +130,30 @@ type SyntaxAnalyzerLike interface {
 	GetLegalNotice() string
 	GetSyntaxName() string
 	HasPlurals() bool
-	GetRuleNames() abs.SetLike[string]
-	GetTokenNames() abs.SetLike[string]
+	GetRuleNames() col.SetLike[string]
+	GetTokenNames() col.SetLike[string]
 	IsDelimited(
 		ruleName string,
 	) bool
 	GetTerms(
 		ruleName string,
-	) abs.ListLike[not.TermLike]
+	) col.ListLike[not.TermLike]
 	GetReferences(
 		ruleName string,
-	) abs.ListLike[not.ReferenceLike]
+	) col.ListLike[not.ReferenceLike]
 	GetVariables(
 		ruleName string,
-	) abs.ListLike[string]
+	) col.ListLike[string]
 	GetVariableType(
 		reference not.ReferenceLike,
 	) string
 	GetIdentifiers(
 		ruleName string,
-	) abs.ListLike[not.IdentifierLike]
+	) col.ListLike[not.IdentifierLike]
 	IsPlural(
 		identifierName string,
 	) bool
-	GetExpressions() abs.CatalogLike[string, string]
+	GetExpressions() col.CatalogLike[string, string]
 	GetSyntaxMap() string
 
 	// Aspect Interfaces

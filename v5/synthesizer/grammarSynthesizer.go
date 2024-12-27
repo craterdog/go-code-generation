@@ -263,7 +263,7 @@ abstract syntax tree (AST) for this module:
 
 	importedPackages_: `
 	ast "<ModuleName>/ast"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 `,
 
 	typeDeclarations_: `
@@ -327,7 +327,7 @@ type ScannerClassLike interface {
 	// Constructor Methods
 	Scanner(
 		source string,
-		tokens abs.QueueLike[TokenLike],
+		tokens col.QueueLike[TokenLike],
 	) ScannerLike
 
 	// Function Methods

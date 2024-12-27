@@ -339,7 +339,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	importedPackages_: `
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 `,
 
 	classDeclaration_: `
@@ -356,11 +356,11 @@ type <~ClassName>ClassLike interface {
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
-		<parameterName_> abs.Sequential[<ParameterType>],`,
+		<parameterName_> col.Sequential[<ParameterType>],`,
 	singularTokenParameter_: `
 		<parameterName_> string,`,
 	pluralTokenParameter_: `
-		<parameterName_> abs.Sequential[string],`,
+		<parameterName_> col.Sequential[string],`,
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
@@ -379,9 +379,9 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	ruleGetterMethod_: `
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
-	Get<~AttributeName>() abs.Sequential[<AttributeType>]`,
+	Get<~AttributeName>() col.Sequential[<AttributeType>]`,
 	tokenGetterMethod_: `
 	Get<~AttributeName>() string`,
 	pluralTokenGetterMethod_: `
-	Get<~AttributeName>() abs.Sequential[string]`,
+	Get<~AttributeName>() col.Sequential[string]`,
 }

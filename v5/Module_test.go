@@ -15,7 +15,7 @@ package module_test
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5"
-	col "github.com/craterdog/go-collection-framework/v5"
+	fra "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	ass "github.com/stretchr/testify/assert"
@@ -67,7 +67,7 @@ func TestPackageGeneration(t *tes.T) {
 }
 
 func TestModuleGeneration(t *tes.T) {
-	var models = col.Catalog[string, mod.ModelLike]()
+	var models = fra.Catalog[string, mod.ModelLike]()
 
 	// Read in the AST package file.
 	var packageName = "ast"

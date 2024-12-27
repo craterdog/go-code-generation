@@ -295,8 +295,6 @@ var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	ref "reflect"
 	sts "strings"

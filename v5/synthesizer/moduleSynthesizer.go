@@ -15,7 +15,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
@@ -32,7 +32,7 @@ func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 // Constructor Methods
 
 func (c *moduleSynthesizerClass_) ModuleSynthesizer(
-	models abs.CatalogLike[string, mod.ModelLike],
+	models col.CatalogLike[string, mod.ModelLike],
 ) ModuleSynthesizerLike {
 	var instance = &moduleSynthesizer_{
 		// Initialize the instance attributes.
@@ -116,7 +116,7 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *moduleSynthesizer_) createAspectAliases(
-	aspectDeclarations abs.ListLike[mod.AspectDeclarationLike],
+	aspectDeclarations col.ListLike[mod.AspectDeclarationLike],
 ) (
 	aspectAliases string,
 ) {
@@ -141,7 +141,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 }
 
 func (v *moduleSynthesizer_) createClassAliases(
-	classDeclarations abs.ListLike[mod.ClassDeclarationLike],
+	classDeclarations col.ListLike[mod.ClassDeclarationLike],
 ) (
 	classAliases string,
 ) {
@@ -263,7 +263,7 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 }
 
 func (v *moduleSynthesizer_) createEnumeratedAliases(
-	enumeratedValues abs.ListLike[string],
+	enumeratedValues col.ListLike[string],
 ) (
 	enumeratedAliases string,
 ) {
@@ -293,7 +293,7 @@ func (v *moduleSynthesizer_) createEnumeratedAliases(
 }
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
-	functionalDeclarations abs.ListLike[mod.FunctionalDeclarationLike],
+	functionalDeclarations col.ListLike[mod.FunctionalDeclarationLike],
 ) (
 	functionalAliases string,
 ) {
@@ -318,7 +318,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 }
 
 func (v *moduleSynthesizer_) createInstanceAliases(
-	instanceDeclarations abs.ListLike[mod.InstanceDeclarationLike],
+	instanceDeclarations col.ListLike[mod.InstanceDeclarationLike],
 ) (
 	instanceAliases string,
 ) {
@@ -387,7 +387,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 }
 
 func (v *moduleSynthesizer_) createTypeAliases(
-	typeDeclarations abs.ListLike[mod.TypeDeclarationLike],
+	typeDeclarations col.ListLike[mod.TypeDeclarationLike],
 ) (
 	typeAliases string,
 ) {
@@ -611,7 +611,7 @@ func (v *moduleSynthesizer_) replacePattern(
 
 type moduleSynthesizer_ struct {
 	// Declare the instance attributes.
-	models_ abs.CatalogLike[string, mod.ModelLike]
+	models_ col.CatalogLike[string, mod.ModelLike]
 }
 
 // Class Structure
@@ -647,8 +647,7 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	ref "reflect"
 	sts "strings"

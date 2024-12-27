@@ -15,8 +15,8 @@ package analyzer
 import (
 	fmt "fmt"
 	ast "github.com/craterdog/go-class-model/v5/ast"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	fra "github.com/craterdog/go-collection-framework/v5"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
 )
@@ -55,7 +55,7 @@ func (v *classAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *classAnalyzer_) GetImportedPackages() abs.CatalogLike[string, string] {
+func (v *classAnalyzer_) GetImportedPackages() col.CatalogLike[string, string] {
 	return v.importedPackages_
 }
 
@@ -79,39 +79,39 @@ func (v *classAnalyzer_) GetIntrinsicType() ast.AbstractionLike {
 	return v.intrinsicType_
 }
 
-func (v *classAnalyzer_) GetConstants() abs.CatalogLike[string, string] {
+func (v *classAnalyzer_) GetConstants() col.CatalogLike[string, string] {
 	return v.constants_
 }
 
-func (v *classAnalyzer_) GetAttributes() abs.CatalogLike[string, string] {
+func (v *classAnalyzer_) GetAttributes() col.CatalogLike[string, string] {
 	return v.attributes_
 }
 
-func (v *classAnalyzer_) GetConstructorMethods() abs.ListLike[ast.ConstructorMethodLike] {
+func (v *classAnalyzer_) GetConstructorMethods() col.ListLike[ast.ConstructorMethodLike] {
 	return v.constructorMethods_
 }
 
-func (v *classAnalyzer_) GetConstantMethods() abs.ListLike[ast.ConstantMethodLike] {
+func (v *classAnalyzer_) GetConstantMethods() col.ListLike[ast.ConstantMethodLike] {
 	return v.constantMethods_
 }
 
-func (v *classAnalyzer_) GetFunctionMethods() abs.ListLike[ast.FunctionMethodLike] {
+func (v *classAnalyzer_) GetFunctionMethods() col.ListLike[ast.FunctionMethodLike] {
 	return v.functionMethods_
 }
 
-func (v *classAnalyzer_) GetPrincipalMethods() abs.ListLike[ast.PrincipalMethodLike] {
+func (v *classAnalyzer_) GetPrincipalMethods() col.ListLike[ast.PrincipalMethodLike] {
 	return v.principalMethods_
 }
 
-func (v *classAnalyzer_) GetAttributeMethods() abs.ListLike[ast.AttributeMethodLike] {
+func (v *classAnalyzer_) GetAttributeMethods() col.ListLike[ast.AttributeMethodLike] {
 	return v.attributeMethods_
 }
 
-func (v *classAnalyzer_) GetAspectInterfaces() abs.ListLike[ast.AspectInterfaceLike] {
+func (v *classAnalyzer_) GetAspectInterfaces() col.ListLike[ast.AspectInterfaceLike] {
 	return v.aspectInterfaces_
 }
 
-func (v *classAnalyzer_) GetAspectDeclarations() abs.ListLike[ast.AspectDeclarationLike] {
+func (v *classAnalyzer_) GetAspectDeclarations() col.ListLike[ast.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -124,7 +124,7 @@ func (v *classAnalyzer_) analyzeAspectDeclarations(
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
 	var aspectDeclarations = aspectSection.GetAspectDeclarations()
-	v.aspectDeclarations_ = col.ListFromSequence[ast.AspectDeclarationLike](
+	v.aspectDeclarations_ = fra.ListFromSequence[ast.AspectDeclarationLike](
 		aspectDeclarations,
 	)
 }
@@ -136,7 +136,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
 	if uti.IsDefined(aspectSubsection) {
 		var aspectInterfaces = aspectSubsection.GetAspectInterfaces()
-		v.aspectInterfaces_ = col.ListFromSequence[ast.AspectInterfaceLike](
+		v.aspectInterfaces_ = fra.ListFromSequence[ast.AspectInterfaceLike](
 			aspectInterfaces,
 		)
 	}
@@ -145,7 +145,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 func (v *classAnalyzer_) analyzeAttributeMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.attributeMethods_ = col.List[ast.AttributeMethodLike]()
+	v.attributeMethods_ = fra.List[ast.AttributeMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
 	if uti.IsDefined(attributeSubsection) {
@@ -192,7 +192,7 @@ func (v *classAnalyzer_) analyzeClass(
 func (v *classAnalyzer_) analyzeClassConstants(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constants_ = col.Catalog[string, string]()
+	v.constants_ = fra.Catalog[string, string]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
 	if uti.IsDefined(constantSubsection) {
@@ -241,7 +241,7 @@ func (v *classAnalyzer_) analyzeClassStructure(
 func (v *classAnalyzer_) analyzeConstantMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constantMethods_ = col.List[ast.ConstantMethodLike]()
+	v.constantMethods_ = fra.List[ast.ConstantMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
 	if uti.IsDefined(constantSubsection) {
@@ -256,7 +256,7 @@ func (v *classAnalyzer_) analyzeConstantMethods(
 func (v *classAnalyzer_) analyzeConstructorMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constructorMethods_ = col.List[ast.ConstructorMethodLike]()
+	v.constructorMethods_ = fra.List[ast.ConstructorMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constructorSubsection = classMethods.GetConstructorSubsection()
 	var constructorMethods = constructorSubsection.GetConstructorMethods().GetIterator()
@@ -269,7 +269,7 @@ func (v *classAnalyzer_) analyzeConstructorMethods(
 func (v *classAnalyzer_) analyzeFunctionMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.functionMethods_ = col.List[ast.FunctionMethodLike]()
+	v.functionMethods_ = fra.List[ast.FunctionMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var functionSubsection = classMethods.GetOptionalFunctionSubsection()
 	if uti.IsDefined(functionSubsection) {
@@ -285,7 +285,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 	packageDeclaration ast.PackageDeclarationLike,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
-	v.importedPackages_ = col.Catalog[string, string]()
+	v.importedPackages_ = fra.Catalog[string, string]()
 	var packageImports = packageDeclaration.GetPackageImports()
 	var packages = packageImports.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
@@ -319,7 +319,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 func (v *classAnalyzer_) analyzePrincipalMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.principalMethods_ = col.List[ast.PrincipalMethodLike]()
+	v.principalMethods_ = fra.List[ast.PrincipalMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var principalSubsection = instanceMethods.GetPrincipalSubsection()
 	var principalMethods = principalSubsection.GetPrincipalMethods().GetIterator()
@@ -356,7 +356,7 @@ func (v *classAnalyzer_) analyzePrivateAttributes(
 func (v *classAnalyzer_) analyzePublicAttributes(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.attributes_ = col.Catalog[string, string]()
+	v.attributes_ = fra.Catalog[string, string]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
 	if uti.IsDefined(attributeSubsection) {
@@ -506,20 +506,20 @@ type classAnalyzer_ struct {
 	// Declare the instance attributes.
 	legalNotice_        string
 	isGeneric_          bool
-	importedPackages_   abs.CatalogLike[string, string]
+	importedPackages_   col.CatalogLike[string, string]
 	typeConstraints_    string
 	typeArguments_      string
 	isIntrinsic_        bool
 	intrinsicType_      ast.AbstractionLike
-	constants_          abs.CatalogLike[string, string]
-	attributes_         abs.CatalogLike[string, string]
-	constructorMethods_ abs.ListLike[ast.ConstructorMethodLike]
-	constantMethods_    abs.ListLike[ast.ConstantMethodLike]
-	functionMethods_    abs.ListLike[ast.FunctionMethodLike]
-	principalMethods_   abs.ListLike[ast.PrincipalMethodLike]
-	attributeMethods_   abs.ListLike[ast.AttributeMethodLike]
-	aspectInterfaces_   abs.ListLike[ast.AspectInterfaceLike]
-	aspectDeclarations_ abs.ListLike[ast.AspectDeclarationLike]
+	constants_          col.CatalogLike[string, string]
+	attributes_         col.CatalogLike[string, string]
+	constructorMethods_ col.ListLike[ast.ConstructorMethodLike]
+	constantMethods_    col.ListLike[ast.ConstantMethodLike]
+	functionMethods_    col.ListLike[ast.FunctionMethodLike]
+	principalMethods_   col.ListLike[ast.PrincipalMethodLike]
+	attributeMethods_   col.ListLike[ast.AttributeMethodLike]
+	aspectInterfaces_   col.ListLike[ast.AspectInterfaceLike]
+	aspectDeclarations_ col.ListLike[ast.AspectDeclarationLike]
 }
 
 // Class Structure

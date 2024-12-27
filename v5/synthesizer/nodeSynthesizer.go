@@ -16,7 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	sts "strings"
 )
@@ -160,7 +160,7 @@ func (v *nodeSynthesizer_) createAttributeCheck(
 }
 
 func (v *nodeSynthesizer_) createAttributeChecks(
-	sequence abs.Sequential[mod.ParameterLike],
+	sequence col.Sequential[mod.ParameterLike],
 ) string {
 	var attributeChecks string
 	var parameters = sequence.GetIterator()
@@ -197,7 +197,7 @@ func (v *nodeSynthesizer_) createAttributeDeclarations() string {
 }
 
 func (v *nodeSynthesizer_) createAttributeInitializations(
-	sequence abs.Sequential[mod.ParameterLike],
+	sequence col.Sequential[mod.ParameterLike],
 ) string {
 	var initializations string
 	var parameters = sequence.GetIterator()
@@ -220,7 +220,7 @@ func (v *nodeSynthesizer_) createAttributeInitializations(
 }
 
 func (v *nodeSynthesizer_) createAttributeMethods(
-	sequence abs.Sequential[mod.AttributeMethodLike],
+	sequence col.Sequential[mod.AttributeMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(sequence) {
@@ -294,7 +294,7 @@ func (v *nodeSynthesizer_) createConstructorMethod(
 }
 
 func (v *nodeSynthesizer_) createConstructorMethods(
-	sequence abs.Sequential[mod.ConstructorMethodLike],
+	sequence col.Sequential[mod.ConstructorMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(sequence) {
@@ -377,7 +377,7 @@ func (v *nodeSynthesizer_) createInstanceStructure() string {
 }
 
 func (v *nodeSynthesizer_) createParameters(
-	sequence abs.Sequential[mod.ParameterLike],
+	sequence col.Sequential[mod.ParameterLike],
 ) string {
 	var methodParameters string
 	var parameters = sequence.GetIterator()
@@ -406,7 +406,7 @@ func (v *nodeSynthesizer_) createParameters(
 }
 
 func (v *nodeSynthesizer_) createPrincipalMethods(
-	sequence abs.Sequential[mod.PrincipalMethodLike],
+	sequence col.Sequential[mod.PrincipalMethodLike],
 ) string {
 	var class = nodeSynthesizerClass()
 	var implementation = class.principalMethods_
@@ -564,7 +564,7 @@ var nodeSynthesizerClassReference_ = &nodeSynthesizerClass_{
 `,
 
 	importedPackages_: `
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 `,
 

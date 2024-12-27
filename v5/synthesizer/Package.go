@@ -32,7 +32,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
@@ -94,7 +94,7 @@ functions that must be supported by all module-synthesizer-class-like classes.
 type ModuleSynthesizerClassLike interface {
 	// Constructor Methods
 	ModuleSynthesizer(
-		models abs.CatalogLike[string, mod.ModelLike],
+		models col.CatalogLike[string, mod.ModelLike],
 	) ModuleSynthesizerLike
 }
 

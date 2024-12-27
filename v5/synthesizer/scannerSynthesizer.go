@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	col "github.com/craterdog/go-collection-framework/v5"
+	fra "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
@@ -172,10 +172,10 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// names from the catalog of expressions in their proper order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
-	var tokenNames = col.SetFromSequence[string](
+	var tokenNames = fra.SetFromSequence[string](
 		v.analyzer_.GetTokenNames(),
 	)
-	var expressionNames = col.CatalogFromSequence[string, string](
+	var expressionNames = fra.CatalogFromSequence[string, string](
 		v.analyzer_.GetExpressions(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
@@ -305,8 +305,8 @@ var scannerSynthesizerClassReference_ = &scannerSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	fra "github.com/craterdog/go-collection-framework/v5"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
@@ -326,7 +326,7 @@ func ScannerClass() ScannerClassLike {
 
 func (c *scannerClass_) Scanner(
 	source string,
-	tokens abs.QueueLike[TokenLike],
+	tokens col.QueueLike[TokenLike],
 ) ScannerLike {
 	if uti.IsUndefined(source) {
 		panic("The \"source\" attribute is required by this class.")
@@ -566,7 +566,7 @@ type scanner_ struct {
 	line_     uint // The line number in the source string of the next rune.
 	position_ uint // The position in the current line of the next rune.
 	runes_    []rune
-	tokens_   abs.QueueLike[TokenLike]
+	tokens_   col.QueueLike[TokenLike]
 }
 `,
 
@@ -575,8 +575,8 @@ type scanner_ struct {
 
 type scannerClass_ struct {
 	// Declare the class constants.
-	tokens_   abs.CatalogLike[TokenType, string]
-	matchers_ abs.CatalogLike[TokenType, *reg.Regexp]
+	tokens_   col.CatalogLike[TokenType, string]
+	matchers_ col.CatalogLike[TokenType, *reg.Regexp]
 }
 `,
 
@@ -589,12 +589,12 @@ func scannerClass() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: col.CatalogFromMap[TokenType, string](
+	tokens_: fra.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
 			// Define identifiers for each type of token.<TokenIdentifiers>
 		},
 	),
-	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
+	matchers_: fra.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of token.<TokenMatchers>
 		},

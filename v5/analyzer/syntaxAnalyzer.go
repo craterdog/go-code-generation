@@ -13,8 +13,8 @@
 package analyzer
 
 import (
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	fra "github.com/craterdog/go-collection-framework/v5"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	stc "strconv"
@@ -54,13 +54,13 @@ func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
 	return syntaxAnalyzerClass()
 }
 
-func (v *syntaxAnalyzer_) GetExpressions() abs.CatalogLike[string, string] {
+func (v *syntaxAnalyzer_) GetExpressions() col.CatalogLike[string, string] {
 	return v.expressions_
 }
 
 func (v *syntaxAnalyzer_) GetIdentifiers(
 	ruleName string,
-) abs.ListLike[not.IdentifierLike] {
+) col.ListLike[not.IdentifierLike] {
 	return v.identifiers_.GetValue(ruleName)
 }
 
@@ -70,11 +70,11 @@ func (v *syntaxAnalyzer_) GetLegalNotice() string {
 
 func (v *syntaxAnalyzer_) GetReferences(
 	ruleName string,
-) abs.ListLike[not.ReferenceLike] {
+) col.ListLike[not.ReferenceLike] {
 	return v.references_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetRuleNames() abs.SetLike[string] {
+func (v *syntaxAnalyzer_) GetRuleNames() col.SetLike[string] {
 	return v.ruleNames_
 }
 
@@ -88,17 +88,17 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 
 func (v *syntaxAnalyzer_) GetTerms(
 	ruleName string,
-) abs.ListLike[not.TermLike] {
+) col.ListLike[not.TermLike] {
 	return v.terms_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetTokenNames() abs.SetLike[string] {
+func (v *syntaxAnalyzer_) GetTokenNames() col.SetLike[string] {
 	return v.tokenNames_
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
 	ruleName string,
-) abs.ListLike[string] {
+) col.ListLike[string] {
 	return v.variables_.GetValue(ruleName)
 }
 
@@ -401,12 +401,12 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	var definition = rule.GetDefinition()
 	switch definition.GetAny().(type) {
 	case not.InlineLike:
-		var terms = col.List[not.TermLike]()
+		var terms = fra.List[not.TermLike]()
 		v.terms_.SetValue(ruleName, terms)
-		var references = col.List[not.ReferenceLike]()
+		var references = fra.List[not.ReferenceLike]()
 		v.references_.SetValue(ruleName, references)
 	case not.MultilineLike:
-		var identifiers = col.List[not.IdentifierLike]()
+		var identifiers = fra.List[not.IdentifierLike]()
 		v.identifiers_.SetValue(ruleName, identifiers)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
@@ -431,14 +431,14 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.isGreedy_ = true // The default is "greedy" scanning.
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
-	v.ruleNames_ = col.Set[string]()
-	v.tokenNames_ = col.SetFromArray[string](
+	v.ruleNames_ = fra.Set[string]()
+	v.tokenNames_ = fra.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
 	)
-	v.pluralNames_ = col.Set[string]()
-	v.delimited_ = col.Set[string]()
-	v.delimiters_ = col.Set[string]()
-	v.expressions_ = col.Catalog[string, string]()
+	v.pluralNames_ = fra.Set[string]()
+	v.delimited_ = fra.Set[string]()
+	v.delimiters_ = fra.Set[string]()
+	v.expressions_ = fra.Catalog[string, string]()
 	v.expressions_.SetValue(
 		"delimiter",
 		`"(?:)"`, // The delimiters will be filled in later but need to be first.
@@ -451,10 +451,10 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		"space",
 		`"(?:[ \\t]+)"`,
 	)
-	v.terms_ = col.Catalog[string, abs.ListLike[not.TermLike]]()
-	v.variables_ = col.Catalog[string, abs.ListLike[string]]()
-	v.references_ = col.Catalog[string, abs.ListLike[not.ReferenceLike]]()
-	v.identifiers_ = col.Catalog[string, abs.ListLike[not.IdentifierLike]]()
+	v.terms_ = fra.Catalog[string, col.ListLike[not.TermLike]]()
+	v.variables_ = fra.Catalog[string, col.ListLike[string]]()
+	v.references_ = fra.Catalog[string, col.ListLike[not.ReferenceLike]]()
+	v.identifiers_ = fra.Catalog[string, col.ListLike[not.IdentifierLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
@@ -583,7 +583,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Extract the variable names from the inline references.
-	var variables = col.List[string]()
+	var variables = fra.List[string]()
 	var iterator = references.GetIterator()
 	for iterator.HasNext() {
 		var reference = iterator.GetNext()
@@ -604,12 +604,12 @@ func (v *syntaxAnalyzer_) extractVariables(
 			if leftName == rightName {
 				if count == 1 {
 					var uniqueName = leftName + stc.Itoa(count)
-					var index = col.Index(left.GetSlot())
+					var index = fra.Index(left.GetSlot())
 					variables.SetValue(index, uniqueName)
 				}
 				count++
 				rightName = rightName + stc.Itoa(count)
-				var index = col.Index(right.GetSlot())
+				var index = fra.Index(right.GetSlot())
 				variables.SetValue(index, rightName)
 			}
 		}
@@ -631,16 +631,16 @@ type syntaxAnalyzer_ struct {
 	legalNotice_  string
 	ruleName_     string
 	expression_   string
-	ruleNames_    abs.SetLike[string]
-	tokenNames_   abs.SetLike[string]
-	pluralNames_  abs.SetLike[string]
-	delimited_    abs.SetLike[string]
-	delimiters_   abs.SetLike[string]
-	expressions_  abs.CatalogLike[string, string]
-	terms_        abs.CatalogLike[string, abs.ListLike[not.TermLike]]
-	variables_    abs.CatalogLike[string, abs.ListLike[string]]
-	references_   abs.CatalogLike[string, abs.ListLike[not.ReferenceLike]]
-	identifiers_  abs.CatalogLike[string, abs.ListLike[not.IdentifierLike]]
+	ruleNames_    col.SetLike[string]
+	tokenNames_   col.SetLike[string]
+	pluralNames_  col.SetLike[string]
+	delimited_    col.SetLike[string]
+	delimiters_   col.SetLike[string]
+	expressions_  col.CatalogLike[string, string]
+	terms_        col.CatalogLike[string, col.ListLike[not.TermLike]]
+	variables_    col.CatalogLike[string, col.ListLike[string]]
+	references_   col.CatalogLike[string, col.ListLike[not.ReferenceLike]]
+	identifiers_  col.CatalogLike[string, col.ListLike[not.IdentifierLike]]
 
 	// Declare the inherited aspects.
 	not.Methodical

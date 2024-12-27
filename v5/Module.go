@@ -32,7 +32,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
 	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v5"
 )
 
@@ -484,8 +484,8 @@ func ModuleSynthesizer(arguments ...any) ModuleSynthesizerLike {
 	var argumentTypes string
 	for _, argument := range arguments {
 		switch actual := argument.(type) {
-		case abs.CatalogLike[string, mod.ModelLike]:
-			argumentTypes += "abs.CatalogLike[string, mod.ModelLike], "
+		case col.CatalogLike[string, mod.ModelLike]:
+			argumentTypes += "col.CatalogLike[string, mod.ModelLike], "
 		default:
 			var message = fmt.Sprintf(
 				"An unexpected argument type was passed into the ModuleSynthesizer constructor: %v of type %T",
@@ -504,8 +504,8 @@ func ModuleSynthesizer(arguments ...any) ModuleSynthesizerLike {
 	// Call the corresponding constructor.
 	var instance_ ModuleSynthesizerLike
 	switch argumentTypes {
-	case "abs.CatalogLike[string, mod.ModelLike]":
-		var models = arguments[0].(abs.CatalogLike[string, mod.ModelLike])
+	case "col.CatalogLike[string, mod.ModelLike]":
+		var models = arguments[0].(col.CatalogLike[string, mod.ModelLike])
 		instance_ = syn.ModuleSynthesizerClass().ModuleSynthesizer(
 			models,
 		)

@@ -14,8 +14,8 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	fra "github.com/craterdog/go-collection-framework/v5"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 )
 
 // CLASS INTERFACE
@@ -33,13 +33,13 @@ func (c *packageAnalyzerClass_) PackageAnalyzer(
 ) PackageAnalyzerLike {
 	var instance = &packageAnalyzer_{
 		// Initialize the instance attributes.
-		importedPackages_:       col.Catalog[string, string](),
-		typeDeclarations_:       col.List[mod.TypeDeclarationLike](),
-		enumeratedValues_:       col.List[string](),
-		functionalDeclarations_: col.List[mod.FunctionalDeclarationLike](),
-		classDeclarations_:      col.List[mod.ClassDeclarationLike](),
-		instanceDeclarations_:   col.List[mod.InstanceDeclarationLike](),
-		aspectDeclarations_:     col.List[mod.AspectDeclarationLike](),
+		importedPackages_:       fra.Catalog[string, string](),
+		typeDeclarations_:       fra.List[mod.TypeDeclarationLike](),
+		enumeratedValues_:       fra.List[string](),
+		functionalDeclarations_: fra.List[mod.FunctionalDeclarationLike](),
+		classDeclarations_:      fra.List[mod.ClassDeclarationLike](),
+		instanceDeclarations_:   fra.List[mod.InstanceDeclarationLike](),
+		aspectDeclarations_:     fra.List[mod.AspectDeclarationLike](),
 
 		// Initialize the inherited aspects.
 		Methodical: mod.Processor(),
@@ -66,31 +66,31 @@ func (v *packageAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *packageAnalyzer_) GetImportedPackages() abs.CatalogLike[string, string] {
+func (v *packageAnalyzer_) GetImportedPackages() col.CatalogLike[string, string] {
 	return v.importedPackages_
 }
 
-func (v *packageAnalyzer_) GetTypeDeclarations() abs.ListLike[mod.TypeDeclarationLike] {
+func (v *packageAnalyzer_) GetTypeDeclarations() col.ListLike[mod.TypeDeclarationLike] {
 	return v.typeDeclarations_
 }
 
-func (v *packageAnalyzer_) GetEnumeratedValues() abs.ListLike[string] {
+func (v *packageAnalyzer_) GetEnumeratedValues() col.ListLike[string] {
 	return v.enumeratedValues_
 }
 
-func (v *packageAnalyzer_) GetFunctionalDeclarations() abs.ListLike[mod.FunctionalDeclarationLike] {
+func (v *packageAnalyzer_) GetFunctionalDeclarations() col.ListLike[mod.FunctionalDeclarationLike] {
 	return v.functionalDeclarations_
 }
 
-func (v *packageAnalyzer_) GetClassDeclarations() abs.ListLike[mod.ClassDeclarationLike] {
+func (v *packageAnalyzer_) GetClassDeclarations() col.ListLike[mod.ClassDeclarationLike] {
 	return v.classDeclarations_
 }
 
-func (v *packageAnalyzer_) GetInstanceDeclarations() abs.ListLike[mod.InstanceDeclarationLike] {
+func (v *packageAnalyzer_) GetInstanceDeclarations() col.ListLike[mod.InstanceDeclarationLike] {
 	return v.instanceDeclarations_
 }
 
-func (v *packageAnalyzer_) GetAspectDeclarations() abs.ListLike[mod.AspectDeclarationLike] {
+func (v *packageAnalyzer_) GetAspectDeclarations() col.ListLike[mod.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -210,13 +210,13 @@ type packageAnalyzer_ struct {
 	visitor_                mod.VisitorLike
 	legalNotice_            string
 	packageName_            string
-	importedPackages_       abs.CatalogLike[string, string]
-	typeDeclarations_       abs.ListLike[mod.TypeDeclarationLike]
-	enumeratedValues_       abs.ListLike[string]
-	functionalDeclarations_ abs.ListLike[mod.FunctionalDeclarationLike]
-	classDeclarations_      abs.ListLike[mod.ClassDeclarationLike]
-	instanceDeclarations_   abs.ListLike[mod.InstanceDeclarationLike]
-	aspectDeclarations_     abs.ListLike[mod.AspectDeclarationLike]
+	importedPackages_       col.CatalogLike[string, string]
+	typeDeclarations_       col.ListLike[mod.TypeDeclarationLike]
+	enumeratedValues_       col.ListLike[string]
+	functionalDeclarations_ col.ListLike[mod.FunctionalDeclarationLike]
+	classDeclarations_      col.ListLike[mod.ClassDeclarationLike]
+	instanceDeclarations_   col.ListLike[mod.InstanceDeclarationLike]
+	aspectDeclarations_     col.ListLike[mod.AspectDeclarationLike]
 
 	// Declare the inherited aspects.
 	mod.Methodical

@@ -13,8 +13,8 @@
 package generator
 
 import (
-	col "github.com/craterdog/go-collection-framework/v5"
-	abs "github.com/craterdog/go-collection-framework/v5/collection"
+	fra "github.com/craterdog/go-collection-framework/v5"
+	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"
 	sts "strings"
@@ -145,9 +145,9 @@ func (c *moduleGeneratorClass_) createImportedPath(
 func (c *moduleGeneratorClass_) extractImportedPackages(
 	source string,
 ) (
-	packages abs.CatalogLike[string, string],
+	packages col.CatalogLike[string, string],
 ) {
-	packages = col.Catalog[string, string]()
+	packages = fra.Catalog[string, string]()
 	var lower_ = `\p{Ll}`
 	var digit_ = `\p{Nd}`
 	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
@@ -180,22 +180,22 @@ func (c *moduleGeneratorClass_) formatImportedPackages(
 	var imports = c.extractImportedPackages(existing)
 
 	// Add in the generated imported packages.
-	imports = abs.CatalogClass[string, string]().Merge(
+	imports = col.CatalogClass[string, string]().Merge(
 		imports, c.extractImportedPackages(generated),
 	)
 
 	// Sort the imported packages by path rather than name.
 	imports.SortValuesWithRanker(
-		func(first, second abs.AssociationLike[string, string]) col.Rank {
+		func(first, second col.AssociationLike[string, string]) fra.Rank {
 			var firstValue = first.GetValue()
 			var secondValue = second.GetValue()
 			switch {
 			case firstValue < secondValue:
-				return col.LesserRank
+				return fra.LesserRank
 			case firstValue > secondValue:
-				return col.GreaterRank
+				return fra.GreaterRank
 			default:
-				return col.EqualRank
+				return fra.EqualRank
 			}
 		},
 	)
