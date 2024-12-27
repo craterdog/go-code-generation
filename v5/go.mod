@@ -3,10 +3,10 @@ module github.com/craterdog/go-code-generation/v5
 go 1.23
 
 require (
-	github.com/craterdog/go-class-model/v5 v5.17.0
-	github.com/craterdog/go-collection-framework/v5 v5.2.0
+	github.com/craterdog/go-class-model/v5 v5.17.1
+	github.com/craterdog/go-collection-framework/v5 v5.3.0
 	github.com/craterdog/go-missing-utilities/v2 v2.5.1
-	github.com/craterdog/go-syntax-notation/v5 v5.12.0
+	github.com/craterdog/go-syntax-notation/v5 v5.12.1
 	github.com/stretchr/testify v1.10.0
 )
 
