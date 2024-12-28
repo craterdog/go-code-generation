@@ -1,11 +1,11 @@
-github.com/craterdog/go-class-model/v5 v5.18.1 h1:ZLIGSnby7lk0gjNGID6Sl2utqOd4sA3YxloZo42s1oE=
-github.com/craterdog/go-class-model/v5 v5.18.1/go.mod h1:PQzCu27MSZ0ubOPgsTqa95oAkYSpaEPOgJi0/lZ+o3o=
-github.com/craterdog/go-collection-framework/v5 v5.4.0 h1:Ggu81n03CI68c4QozOoe8vs60B/LUBgkVXEHsSCSZxo=
-github.com/craterdog/go-collection-framework/v5 v5.4.0/go.mod h1:T9uw6AD8dz3xHLe8+35bkQOY7TdFq/nC3zUo1Iwd75k=
+github.com/craterdog/go-class-model/v5 v5.18.2 h1:tpZHphvfwhRW2QJXL97nCxA6wWpmAZV4ouuQZVWEIJw=
+github.com/craterdog/go-class-model/v5 v5.18.2/go.mod h1:HiFyGxonerwkYmKFbstiObD0lxN4WKl7dLD7OoN3EGE=
+github.com/craterdog/go-collection-framework/v5 v5.5.0 h1:u3AjV1lNSv9b7lF3eIJBx5iWtaTwgbTHwLYKtx94KtE=
+github.com/craterdog/go-collection-framework/v5 v5.5.0/go.mod h1:T9uw6AD8dz3xHLe8+35bkQOY7TdFq/nC3zUo1Iwd75k=
 github.com/craterdog/go-missing-utilities/v2 v2.5.1 h1:vIh9M0kM76Ac6dsg4dWJVzJ1UBP+nqXoVGAygSSdR7I=
 github.com/craterdog/go-missing-utilities/v2 v2.5.1/go.mod h1:HYrTLz5rD5SjsPdWUkMSiuA5Pk0L8yYo9t2DkfMTcCQ=
-github.com/craterdog/go-syntax-notation/v5 v5.13.1 h1:rKt5aI33xe1Sl4/M1YZIjSCw89cT+ivT4KTZzhzaJ3I=
-github.com/craterdog/go-syntax-notation/v5 v5.13.1/go.mod h1:LlKyB1r9VVqHik+XdUXS+7ChKRSUzwxpkqxvadCXKrs=
+github.com/craterdog/go-syntax-notation/v5 v5.13.2 h1:YHujSYyOIvMo3por7QyrSZS327fCVAKB6ZIpgqeGwf4=
+github.com/craterdog/go-syntax-notation/v5 v5.13.2/go.mod h1:vYOFP27oKdUkXPouh/OtmCzs4D9Iku9HiKPyW4IFFKE=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

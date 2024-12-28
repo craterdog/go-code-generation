@@ -597,7 +597,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	for left.HasNext() {
 		var leftName = left.GetNext()
 		var slot = left.GetSlot()
-		right.ToSlot(slot)
+		right.SetSlot(slot)
 		for right.HasNext() {
 			var count = 1
 			var rightName = right.GetNext()
