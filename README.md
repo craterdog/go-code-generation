@@ -1,6 +1,6 @@
 <img src="https://craterdog.com/images/CraterDog.png" width="50%">
 
-## Go Syntax Generation
+## Go Code Generation
 
 ### Overview
 This project provides template-based code generation capabilities that allow
@@ -13,7 +13,7 @@ also generated.
 For more information on this project click on the following links:
  * [project documentation](https://github.com/craterdog/go-code-generation/wiki)
  * [coding conventions](https://github.com/craterdog/go-class-model/wiki)
- * [command-line tools](https://github.com/craterdog/go-syntax-tools/wiki)
+ * [command-line tools](https://github.com/craterdog/go-development-tools/wiki)
 
 ### Getting Started
 To include the Go packages for this module use the following import statement:
