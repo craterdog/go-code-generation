@@ -107,7 +107,9 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
-	generated = v.preserveExistingCode(existing, generated)
+	if uti.IsDefined(existing) {
+		generated = v.preserveExistingCode(existing, generated)
+	}
 	return generated
 }
 
