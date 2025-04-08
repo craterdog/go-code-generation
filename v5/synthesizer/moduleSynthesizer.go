@@ -32,11 +32,13 @@ func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 // Constructor Methods
 
 func (c *moduleSynthesizerClass_) ModuleSynthesizer(
+	moduleName string,
 	models col.CatalogLike[string, mod.ModelLike],
 ) ModuleSynthesizerLike {
 	var instance = &moduleSynthesizer_{
 		// Initialize the instance attributes.
-		models_: models,
+		moduleName_: moduleName,
+		models_:     models,
 	}
 	return instance
 }
@@ -68,6 +70,14 @@ func (v *moduleSynthesizer_) CreateWarningMessage() string {
 func (v *moduleSynthesizer_) CreateImportedPackages() string {
 	var class = moduleSynthesizerClass()
 	var importedPackages = class.importedPackages_
+	var models = v.models_.GetIterator()
+	for models.HasNext() {
+		var association = models.GetNext()
+		var packageName = association.GetKey()
+		var packageAcronym = packageName[0:3]
+		var packagePath = v.moduleName_ + "/" + packageName
+		importedPackages += "\t" + packageAcronym + " \"" + packagePath + "\"\n"
+	}
 	return importedPackages
 }
 
@@ -613,7 +623,8 @@ func (v *moduleSynthesizer_) replacePattern(
 
 type moduleSynthesizer_ struct {
 	// Declare the instance attributes.
-	models_ col.CatalogLike[string, mod.ModelLike]
+	moduleName_ string
+	models_     col.CatalogLike[string, mod.ModelLike]
 }
 
 // Class Structure

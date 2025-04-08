@@ -54,13 +54,12 @@ func TestPackageGeneration(t *tes.T) {
 	// Generate the grammar Package.go file.
 	packageName = "grammar"
 	filename = directory + packageName + "/Package.go"
-	var existing = uti.ReadFile(filename)
 	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
 	generated = generator.GeneratePackage(
 		moduleName,
 		wikiPath,
 		packageName,
-		existing,
+		"", // There is no pre-existing grammar package file.
 		grammarSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -85,13 +84,15 @@ func TestModuleGeneration(t *tes.T) {
 
 	// Regenerate the module file.
 	filename = directory + "Module.go"
-	var existing = uti.ReadFile(filename)
 	var generator = gen.ModuleGenerator()
-	var moduleSynthesizer = gen.ModuleSynthesizer(models)
+	var moduleSynthesizer = gen.ModuleSynthesizer(
+		moduleName,
+		models,
+	)
 	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
-		existing,
+		"", // There is no pre-existing module file.
 		moduleSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -144,13 +145,12 @@ func TestTokenGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "token"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing token class file.
 		tokenSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -170,13 +170,12 @@ func TestScannerGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "scanner"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing scanner class file.
 		scannerSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -196,13 +195,12 @@ func TestParserGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "parser"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var parserSynthesizer = gen.ParserSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing parser class file.
 		parserSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -222,13 +220,12 @@ func TestVisitorGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "visitor"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing visitor class file.
 		visitorSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -274,13 +271,12 @@ func TestProcessorGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "processor"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing processor class file.
 		processorSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
@@ -299,14 +295,13 @@ func TestValidatorGeneration(t *tes.T) {
 	var packageName = "grammar"
 	var className = "validator"
 	filename = directory + packageName + "/" + className + ".go"
-	var existing = uti.ReadFile(filename)
 	var generator = gen.ClassGenerator()
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
 	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
-		existing,
+		"", // There is no pre-existing validator class file.
 		validatorSynthesizer,
 	)
 	uti.WriteFile(filename, generated)

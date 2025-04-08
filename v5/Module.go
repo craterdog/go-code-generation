@@ -13,21 +13,22 @@
 /*
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
 │              This "Module.go" file was automatically generated.              │
-│  Updates to any section other than the GLOBAL FUNCTIONS may be overwritten.  │
+│      Updates to any part of this file—other than the Module Description      │
+│             and the Global Functions sections may be overwritten.            │
 └──────────────────────────────────────────────────────────────────────────────┘
+
 Package "module" declares type aliases for the commonly used types declared in
-the packages contained in this module.  It also provides a default constructor
-for each commonly used class that is exported by the module.  Each constructor
-delegates the actual construction process to its corresponding concrete class
-declared in the corresponding package contained within this module.
+the packages contained in this module.  It also provides constructors for each
+commonly used class that is exported by the module.  Each constructor delegates
+the actual construction process to its corresponding concrete class declared in
+the corresponding package contained within this module.
 
 For detailed documentation on this entire module refer to the wiki:
-  - github.com/craterdog/go-code-generation/wiki
+  - https://github.com/craterdog/go-code-generation/wiki
 */
 package module
 
 import (
-	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v5/analyzer"
 	gen "github.com/craterdog/go-code-generation/v5/generator"
@@ -41,12 +42,24 @@ import (
 // Analyzer
 
 type (
+	ClassAnalyzerClassLike   = ana.ClassAnalyzerClassLike
+	PackageAnalyzerClassLike = ana.PackageAnalyzerClassLike
+	SyntaxAnalyzerClassLike  = ana.SyntaxAnalyzerClassLike
+)
+
+type (
 	ClassAnalyzerLike   = ana.ClassAnalyzerLike
 	PackageAnalyzerLike = ana.PackageAnalyzerLike
 	SyntaxAnalyzerLike  = ana.SyntaxAnalyzerLike
 )
 
 // Generator
+
+type (
+	ClassGeneratorClassLike   = gen.ClassGeneratorClassLike
+	ModuleGeneratorClassLike  = gen.ModuleGeneratorClassLike
+	PackageGeneratorClassLike = gen.PackageGeneratorClassLike
+)
 
 type (
 	ClassGeneratorLike   = gen.ClassGeneratorLike
@@ -61,6 +74,22 @@ type (
 )
 
 // Synthesizer
+
+type (
+	AstSynthesizerClassLike       = syn.AstSynthesizerClassLike
+	ClassSynthesizerClassLike     = syn.ClassSynthesizerClassLike
+	FormatterSynthesizerClassLike = syn.FormatterSynthesizerClassLike
+	GrammarSynthesizerClassLike   = syn.GrammarSynthesizerClassLike
+	ModuleSynthesizerClassLike    = syn.ModuleSynthesizerClassLike
+	NodeSynthesizerClassLike      = syn.NodeSynthesizerClassLike
+	PackageSynthesizerClassLike   = syn.PackageSynthesizerClassLike
+	ParserSynthesizerClassLike    = syn.ParserSynthesizerClassLike
+	ProcessorSynthesizerClassLike = syn.ProcessorSynthesizerClassLike
+	ScannerSynthesizerClassLike   = syn.ScannerSynthesizerClassLike
+	TokenSynthesizerClassLike     = syn.TokenSynthesizerClassLike
+	ValidatorSynthesizerClassLike = syn.ValidatorSynthesizerClassLike
+	VisitorSynthesizerClassLike   = syn.VisitorSynthesizerClassLike
+)
 
 type (
 	AstSynthesizerLike       = syn.AstSynthesizerLike
@@ -78,764 +107,188 @@ type (
 	VisitorSynthesizerLike   = syn.VisitorSynthesizerLike
 )
 
-// DEFAULT CONSTRUCTORS
+// CLASS CONSTRUCTORS
 
-// Analyzer
+// Analyzer/ClassAnalyzer
 
-func ClassAnalyzer(arguments ...any) ClassAnalyzerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case mod.ModelLike:
-			argumentTypes += "mod.ModelLike, "
-		case string:
-			argumentTypes += "string, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ClassAnalyzer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ ClassAnalyzerLike
-	switch argumentTypes {
-	case "mod.ModelLike, string":
-		var model = arguments[0].(mod.ModelLike)
-		var className = arguments[1].(string)
-		instance_ = ana.ClassAnalyzerClass().ClassAnalyzer(
-			model,
-			className,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ClassAnalyzer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ClassAnalyzer(
+	model mod.ModelLike,
+	className string,
+) ana.ClassAnalyzerLike {
+	return ana.ClassAnalyzerClass().ClassAnalyzer(
+		model,
+		className,
+	)
 }
 
-func PackageAnalyzer(arguments ...any) PackageAnalyzerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case mod.ModelLike:
-			argumentTypes += "mod.ModelLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the PackageAnalyzer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Analyzer/PackageAnalyzer
 
-	// Call the corresponding constructor.
-	var instance_ PackageAnalyzerLike
-	switch argumentTypes {
-	case "mod.ModelLike":
-		var model = arguments[0].(mod.ModelLike)
-		instance_ = ana.PackageAnalyzerClass().PackageAnalyzer(
-			model,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No PackageAnalyzer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func PackageAnalyzer(
+	model mod.ModelLike,
+) ana.PackageAnalyzerLike {
+	return ana.PackageAnalyzerClass().PackageAnalyzer(
+		model,
+	)
 }
 
-func SyntaxAnalyzer(arguments ...any) SyntaxAnalyzerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the SyntaxAnalyzer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Analyzer/SyntaxAnalyzer
 
-	// Call the corresponding constructor.
-	var instance_ SyntaxAnalyzerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = ana.SyntaxAnalyzerClass().SyntaxAnalyzer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No SyntaxAnalyzer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func SyntaxAnalyzer(
+	syntax not.SyntaxLike,
+) ana.SyntaxAnalyzerLike {
+	return ana.SyntaxAnalyzerClass().SyntaxAnalyzer(
+		syntax,
+	)
 }
 
-// Generator
+// Generator/ClassGenerator
 
-func ClassGenerator(arguments ...any) ClassGeneratorLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ClassGenerator constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ ClassGeneratorLike
-	switch argumentTypes {
-	case "":
-		instance_ = gen.ClassGeneratorClass().ClassGenerator()
-	default:
-		var message = fmt.Sprintf(
-			"No ClassGenerator constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ClassGenerator() gen.ClassGeneratorLike {
+	return gen.ClassGeneratorClass().ClassGenerator()
 }
 
-func ModuleGenerator(arguments ...any) ModuleGeneratorLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ModuleGenerator constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Generator/ModuleGenerator
 
-	// Call the corresponding constructor.
-	var instance_ ModuleGeneratorLike
-	switch argumentTypes {
-	case "":
-		instance_ = gen.ModuleGeneratorClass().ModuleGenerator()
-	default:
-		var message = fmt.Sprintf(
-			"No ModuleGenerator constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ModuleGenerator() gen.ModuleGeneratorLike {
+	return gen.ModuleGeneratorClass().ModuleGenerator()
 }
 
-func PackageGenerator(arguments ...any) PackageGeneratorLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the PackageGenerator constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Generator/PackageGenerator
 
-	// Call the corresponding constructor.
-	var instance_ PackageGeneratorLike
-	switch argumentTypes {
-	case "":
-		instance_ = gen.PackageGeneratorClass().PackageGenerator()
-	default:
-		var message = fmt.Sprintf(
-			"No PackageGenerator constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func PackageGenerator() gen.PackageGeneratorLike {
+	return gen.PackageGeneratorClass().PackageGenerator()
 }
 
-// Synthesizer
+// Synthesizer/AstSynthesizer
 
-func AstSynthesizer(arguments ...any) AstSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the AstSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
-
-	// Call the corresponding constructor.
-	var instance_ AstSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.AstSynthesizerClass().AstSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No AstSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func AstSynthesizer(
+	syntax not.SyntaxLike,
+) syn.AstSynthesizerLike {
+	return syn.AstSynthesizerClass().AstSynthesizer(
+		syntax,
+	)
 }
 
-func ClassSynthesizer(arguments ...any) ClassSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case mod.ModelLike:
-			argumentTypes += "mod.ModelLike, "
-		case string:
-			argumentTypes += "string, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ClassSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ClassSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ClassSynthesizerLike
-	switch argumentTypes {
-	case "mod.ModelLike, string":
-		var model = arguments[0].(mod.ModelLike)
-		var className = arguments[1].(string)
-		instance_ = syn.ClassSynthesizerClass().ClassSynthesizer(
-			model,
-			className,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ClassSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ClassSynthesizer(
+	model mod.ModelLike,
+	className string,
+) syn.ClassSynthesizerLike {
+	return syn.ClassSynthesizerClass().ClassSynthesizer(
+		model,
+		className,
+	)
 }
 
-func FormatterSynthesizer(arguments ...any) FormatterSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the FormatterSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/FormatterSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ FormatterSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.FormatterSynthesizerClass().FormatterSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No FormatterSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func FormatterSynthesizer(
+	syntax not.SyntaxLike,
+) syn.FormatterSynthesizerLike {
+	return syn.FormatterSynthesizerClass().FormatterSynthesizer(
+		syntax,
+	)
 }
 
-func GrammarSynthesizer(arguments ...any) GrammarSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the GrammarSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/GrammarSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ GrammarSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.GrammarSynthesizerClass().GrammarSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No GrammarSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func GrammarSynthesizer(
+	syntax not.SyntaxLike,
+) syn.GrammarSynthesizerLike {
+	return syn.GrammarSynthesizerClass().GrammarSynthesizer(
+		syntax,
+	)
 }
 
-func ModuleSynthesizer(arguments ...any) ModuleSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case col.CatalogLike[string, mod.ModelLike]:
-			argumentTypes += "col.CatalogLike[string, mod.ModelLike], "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ModuleSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ModuleSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ModuleSynthesizerLike
-	switch argumentTypes {
-	case "col.CatalogLike[string, mod.ModelLike]":
-		var models = arguments[0].(col.CatalogLike[string, mod.ModelLike])
-		instance_ = syn.ModuleSynthesizerClass().ModuleSynthesizer(
-			models,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ModuleSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ModuleSynthesizer(
+	moduleName string,
+	models col.CatalogLike[string, mod.ModelLike],
+) syn.ModuleSynthesizerLike {
+	return syn.ModuleSynthesizerClass().ModuleSynthesizer(
+		moduleName,
+		models,
+	)
 }
 
-func NodeSynthesizer(arguments ...any) NodeSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case mod.ModelLike:
-			argumentTypes += "mod.ModelLike, "
-		case string:
-			argumentTypes += "string, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the NodeSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/NodeSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ NodeSynthesizerLike
-	switch argumentTypes {
-	case "mod.ModelLike, string":
-		var model = arguments[0].(mod.ModelLike)
-		var className = arguments[1].(string)
-		instance_ = syn.NodeSynthesizerClass().NodeSynthesizer(
-			model,
-			className,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No NodeSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func NodeSynthesizer(
+	model mod.ModelLike,
+	className string,
+) syn.NodeSynthesizerLike {
+	return syn.NodeSynthesizerClass().NodeSynthesizer(
+		model,
+		className,
+	)
 }
 
-func PackageSynthesizer(arguments ...any) PackageSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the PackageSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/PackageSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ PackageSynthesizerLike
-	switch argumentTypes {
-	case "":
-		instance_ = syn.PackageSynthesizerClass().PackageSynthesizer()
-	default:
-		var message = fmt.Sprintf(
-			"No PackageSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func PackageSynthesizer() syn.PackageSynthesizerLike {
+	return syn.PackageSynthesizerClass().PackageSynthesizer()
 }
 
-func ParserSynthesizer(arguments ...any) ParserSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ParserSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ParserSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ParserSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ParserSynthesizerClass().ParserSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ParserSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ParserSynthesizer(
+	syntax not.SyntaxLike,
+) syn.ParserSynthesizerLike {
+	return syn.ParserSynthesizerClass().ParserSynthesizer(
+		syntax,
+	)
 }
 
-func ProcessorSynthesizer(arguments ...any) ProcessorSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ProcessorSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ProcessorSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ProcessorSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ProcessorSynthesizerClass().ProcessorSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ProcessorSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ProcessorSynthesizer(
+	syntax not.SyntaxLike,
+) syn.ProcessorSynthesizerLike {
+	return syn.ProcessorSynthesizerClass().ProcessorSynthesizer(
+		syntax,
+	)
 }
 
-func ScannerSynthesizer(arguments ...any) ScannerSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ScannerSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ScannerSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ScannerSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ScannerSynthesizerClass().ScannerSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ScannerSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ScannerSynthesizer(
+	syntax not.SyntaxLike,
+) syn.ScannerSynthesizerLike {
+	return syn.ScannerSynthesizerClass().ScannerSynthesizer(
+		syntax,
+	)
 }
 
-func TokenSynthesizer(arguments ...any) TokenSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the TokenSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/TokenSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ TokenSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.TokenSynthesizerClass().TokenSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No TokenSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func TokenSynthesizer(
+	syntax not.SyntaxLike,
+) syn.TokenSynthesizerLike {
+	return syn.TokenSynthesizerClass().TokenSynthesizer(
+		syntax,
+	)
 }
 
-func ValidatorSynthesizer(arguments ...any) ValidatorSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the ValidatorSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/ValidatorSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ ValidatorSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.ValidatorSynthesizerClass().ValidatorSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No ValidatorSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func ValidatorSynthesizer(
+	syntax not.SyntaxLike,
+) syn.ValidatorSynthesizerLike {
+	return syn.ValidatorSynthesizerClass().ValidatorSynthesizer(
+		syntax,
+	)
 }
 
-func VisitorSynthesizer(arguments ...any) VisitorSynthesizerLike {
-	// Analyze the arguments.
-	var argumentTypes string
-	for _, argument := range arguments {
-		switch actual := argument.(type) {
-		case not.SyntaxLike:
-			argumentTypes += "not.SyntaxLike, "
-		default:
-			var message = fmt.Sprintf(
-				"An unexpected argument type was passed into the VisitorSynthesizer constructor: %v of type %T",
-				argument,
-				actual,
-			)
-			panic(message)
-		}
-	}
-	var length = len(argumentTypes)
-	if length > 0 {
-		// Remove the trailing comma and space.
-		argumentTypes = argumentTypes[:length-2]
-	}
+// Synthesizer/VisitorSynthesizer
 
-	// Call the corresponding constructor.
-	var instance_ VisitorSynthesizerLike
-	switch argumentTypes {
-	case "not.SyntaxLike":
-		var syntax = arguments[0].(not.SyntaxLike)
-		instance_ = syn.VisitorSynthesizerClass().VisitorSynthesizer(
-			syntax,
-		)
-	default:
-		var message = fmt.Sprintf(
-			"No VisitorSynthesizer constructor matching the arguments was found: %v\n",
-			arguments,
-		)
-		panic(message)
-	}
-	return instance_
+func VisitorSynthesizer(
+	syntax not.SyntaxLike,
+) syn.VisitorSynthesizerLike {
+	return syn.VisitorSynthesizerClass().VisitorSynthesizer(
+		syntax,
+	)
 }
 
 // GLOBAL FUNCTIONS

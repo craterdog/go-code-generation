@@ -94,6 +94,7 @@ functions that must be supported by all module-synthesizer-class-like classes.
 type ModuleSynthesizerClassLike interface {
 	// Constructor Methods
 	ModuleSynthesizer(
+		moduleName string,
 		models col.CatalogLike[string, mod.ModelLike],
 	) ModuleSynthesizerLike
 }
