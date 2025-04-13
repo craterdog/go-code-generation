@@ -153,7 +153,7 @@ func (v *syntaxAnalyzer_) ProcessExcluded(
 func (v *syntaxAnalyzer_) ProcessGlyph(
 	glyph string,
 ) {
-	var character = glyph[1:2] //Remove the single quotes.
+	var character = glyph[1 : len(glyph)-1] // Remove the single quotes.
 	character = v.escapeText(character)
 	v.expression_ += character
 }
