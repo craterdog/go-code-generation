@@ -189,7 +189,7 @@ func (v *syntaxAnalyzer_) ProcessLowercase(
 	if v.inDefinition_ {
 		v.tokenNames_.AddValue(lowercase)
 	}
-	if v.inPattern_ {
+	if v.inPattern_ > 0 {
 		v.expression_ += `(?:" + ` + lowercase + `_ + ")`
 	}
 }
@@ -331,13 +331,13 @@ func (v *syntaxAnalyzer_) PreprocessLine(
 func (v *syntaxAnalyzer_) PreprocessPattern(
 	definition not.PatternLike,
 ) {
-	v.inPattern_ = true
+	v.inPattern_++
 }
 
 func (v *syntaxAnalyzer_) PostprocessPattern(
 	definition not.PatternLike,
 ) {
-	v.inPattern_ = false
+	v.inPattern_--
 }
 
 func (v *syntaxAnalyzer_) PreprocessQuantified(
@@ -624,7 +624,7 @@ type syntaxAnalyzer_ struct {
 	visitor_      not.VisitorLike
 	isGreedy_     bool
 	inDefinition_ bool
-	inPattern_    bool
+	inPattern_    uint8
 	hasLiteral_   bool
 	syntaxMap_    string
 	syntaxName_   string
