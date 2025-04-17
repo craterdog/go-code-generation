@@ -382,7 +382,10 @@ func (v *formatter_) Preprocess<~RuleName>(
 func (v *formatter_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	switch slot {
+	default:
+		v.appendString(" ")
+	}
 }
 
 func (v *formatter_) Postprocess<~RuleName>(
@@ -404,7 +407,10 @@ func (v *formatter_) Preprocess<~RuleName>(
 func (v *formatter_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	switch slot {
+	default:
+		v.appendString(" ")
+	}
 }
 
 func (v *formatter_) Postprocess<~RuleName>(
