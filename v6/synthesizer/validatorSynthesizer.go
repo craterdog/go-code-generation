@@ -13,9 +13,9 @@
 package synthesizer
 
 import (
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 	reg "regexp"
 	sts "strings"
 )
@@ -24,16 +24,16 @@ import (
 
 // Access Function
 
-func FormatterSynthesizerClass() FormatterSynthesizerClassLike {
-	return formatterSynthesizerClass()
+func ValidatorSynthesizerClass() ValidatorSynthesizerClassLike {
+	return validatorSynthesizerClass()
 }
 
 // Constructor Methods
 
-func (c *formatterSynthesizerClass_) FormatterSynthesizer(
+func (c *validatorSynthesizerClass_) ValidatorSynthesizer(
 	syntax not.SyntaxLike,
-) FormatterSynthesizerLike {
-	var instance = &formatterSynthesizer_{
+) ValidatorSynthesizerLike {
+	var instance = &validatorSynthesizer_{
 		// Initialize the instance attributes.
 		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
@@ -44,53 +44,53 @@ func (c *formatterSynthesizerClass_) FormatterSynthesizer(
 
 // Principal Methods
 
-func (v *formatterSynthesizer_) GetClass() FormatterSynthesizerClassLike {
-	return formatterSynthesizerClass()
+func (v *validatorSynthesizer_) GetClass() ValidatorSynthesizerClassLike {
+	return validatorSynthesizerClass()
 }
 
 // TemplateDriven Methods
 
-func (v *formatterSynthesizer_) CreateLegalNotice() string {
+func (v *validatorSynthesizer_) CreateLegalNotice() string {
 	var legalNotice = v.analyzer_.GetLegalNotice()
 	return legalNotice
 }
 
-func (v *formatterSynthesizer_) CreateWarningMessage() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateWarningMessage() string {
+	var class = validatorSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
-func (v *formatterSynthesizer_) CreateImportedPackages() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateImportedPackages() string {
+	var class = validatorSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
-func (v *formatterSynthesizer_) CreateAccessFunction() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateAccessFunction() string {
+	var class = validatorSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
-func (v *formatterSynthesizer_) CreateConstructorMethods() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateConstructorMethods() string {
+	var class = validatorSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
-func (v *formatterSynthesizer_) CreateConstantMethods() string {
+func (v *validatorSynthesizer_) CreateConstantMethods() string {
 	var constantMethods string
 	return constantMethods
 }
 
-func (v *formatterSynthesizer_) CreateFunctionMethods() string {
+func (v *validatorSynthesizer_) CreateFunctionMethods() string {
 	var functionMethods string
 	return functionMethods
 }
 
-func (v *formatterSynthesizer_) CreatePrincipalMethods() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
+	var class = validatorSynthesizerClass()
 	var principalMethods = class.principalMethods_
 	var syntaxMap = v.analyzer_.GetSyntaxMap()
 	principalMethods = uti.ReplaceAll(
@@ -107,13 +107,13 @@ func (v *formatterSynthesizer_) CreatePrincipalMethods() string {
 	return principalMethods
 }
 
-func (v *formatterSynthesizer_) CreateAttributeMethods() string {
+func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 	var attributeMethods string
 	return attributeMethods
 }
 
-func (v *formatterSynthesizer_) CreateAspectMethods() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateAspectMethods() string {
+	var class = validatorSynthesizerClass()
 	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
@@ -130,31 +130,31 @@ func (v *formatterSynthesizer_) CreateAspectMethods() string {
 	return aspectMethods
 }
 
-func (v *formatterSynthesizer_) CreatePrivateMethods() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreatePrivateMethods() string {
+	var class = validatorSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
-func (v *formatterSynthesizer_) CreateInstanceStructure() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateInstanceStructure() string {
+	var class = validatorSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
-func (v *formatterSynthesizer_) CreateClassStructure() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateClassStructure() string {
+	var class = validatorSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *formatterSynthesizer_) CreateClass() string {
-	var class = formatterSynthesizerClass()
+func (v *validatorSynthesizer_) CreateClass() string {
+	var class = validatorSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
 
-func (v *formatterSynthesizer_) PerformGlobalUpdates(
+func (v *validatorSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
@@ -168,10 +168,10 @@ func (v *formatterSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *formatterSynthesizer_) createProcessRule(
+func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var class = formatterSynthesizerClass()
+	var class = validatorSynthesizerClass()
 	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
 		processRule = class.processIndexedRule_
@@ -184,7 +184,7 @@ func (v *formatterSynthesizer_) createProcessRule(
 	return processRule
 }
 
-func (v *formatterSynthesizer_) createProcessRules() string {
+func (v *validatorSynthesizer_) createProcessRules() string {
 	var processRules string
 	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
 	for ruleNames.HasNext() {
@@ -195,20 +195,17 @@ func (v *formatterSynthesizer_) createProcessRules() string {
 	return processRules
 }
 
-func (v *formatterSynthesizer_) createProcessToken(
+func (v *validatorSynthesizer_) createProcessToken(
 	tokenName string,
 ) string {
 	var processToken string
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	var class = formatterSynthesizerClass()
+	var class = validatorSynthesizerClass()
 	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = class.processIndexedToken_
-	}
-	if tokenName == "newline" {
-		processToken = class.processNewline_
 	}
 	processToken = uti.ReplaceAll(
 		processToken,
@@ -218,7 +215,7 @@ func (v *formatterSynthesizer_) createProcessToken(
 	return processToken
 }
 
-func (v *formatterSynthesizer_) createProcessTokens() string {
+func (v *validatorSynthesizer_) createProcessTokens() string {
 	var processTokens string
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
@@ -229,7 +226,7 @@ func (v *formatterSynthesizer_) createProcessTokens() string {
 	return processTokens
 }
 
-func (v *formatterSynthesizer_) preserveExistingCode(
+func (v *validatorSynthesizer_) preserveExistingCode(
 	existing string,
 	generated string,
 ) string {
@@ -239,7 +236,7 @@ func (v *formatterSynthesizer_) preserveExistingCode(
 	return generated
 }
 
-func (v *formatterSynthesizer_) replacePattern(
+func (v *validatorSynthesizer_) replacePattern(
 	pattern string,
 	existing string,
 	generated string,
@@ -257,14 +254,14 @@ func (v *formatterSynthesizer_) replacePattern(
 
 // Instance Structure
 
-type formatterSynthesizer_ struct {
+type validatorSynthesizer_ struct {
 	// Declare the instance attributes.
 	analyzer_ ana.SyntaxAnalyzerLike
 }
 
 // Class Structure
 
-type formatterSynthesizerClass_ struct {
+type validatorSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
 	importedPackages_    string
@@ -273,7 +270,6 @@ type formatterSynthesizerClass_ struct {
 	principalMethods_    string
 	aspectMethods_       string
 	processToken_        string
-	processNewline_      string
 	processIndexedToken_ string
 	processRule_         string
 	processIndexedRule_  string
@@ -285,11 +281,11 @@ type formatterSynthesizerClass_ struct {
 
 // Class Reference
 
-func formatterSynthesizerClass() *formatterSynthesizerClass_ {
-	return formatterSynthesizerClassReference_
+func validatorSynthesizerClass() *validatorSynthesizerClass_ {
+	return validatorSynthesizerClassReference_
 }
 
-var formatterSynthesizerClassReference_ = &formatterSynthesizerClass_{
+var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
@@ -309,16 +305,16 @@ var formatterSynthesizerClassReference_ = &formatterSynthesizerClass_{
 	accessFunction_: `
 // Access Function
 
-func FormatterClass() FormatterClassLike {
-	return formatterClass()
+func ValidatorClass() ValidatorClassLike {
+	return validatorClass()
 }
 `,
 
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *formatterClass_) Formatter() FormatterLike {
-	var instance = &formatter_{
+func (c *validatorClass_) Validator() ValidatorLike {
+	var instance = &validator_{
 		// Initialize the instance attributes.
 
 		// Initialize the inherited aspects.
@@ -332,13 +328,14 @@ func (c *formatterClass_) Formatter() FormatterLike {
 	principalMethods_: `
 // Principal Methods
 
-func (v *formatter_) GetClass() FormatterClassLike {
-	return formatterClass()
+func (v *validator_) GetClass() ValidatorClassLike {
+	return validatorClass()
 }
 
-func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) string {
+func (v *validator_) Validate<~SyntaxName>(
+	<syntaxName_> ast.<~SyntaxName>Like,
+) {
 	v.visitor_.Visit<~SyntaxName>(<syntaxName_>)
-	return v.getResult()
 }
 `,
 
@@ -347,115 +344,92 @@ func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) st
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-func (v *formatter_) Process<~TokenName>(
+func (v *validator_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
-	v.appendString(<tokenName_>)
-}
-`,
-
-	processNewline_: `
-func (v *formatter_) Process<~TokenName>(
-	<tokenName_> string,
-) {
-	v.appendNewline()
+	v.validateToken(<tokenName_>, <~TokenName>Token)
 }
 `,
 
 	processIndexedToken_: `
-func (v *formatter_) Process<~TokenName>(
+func (v *validator_) Process<~TokenName>(
 	<tokenName_> string,
 	index uint,
 	size uint,
 ) {
-	v.appendString(<tokenName_>)
+	v.validateToken(<tokenName_>, <~TokenName>Token)
 }
 `,
 
 	processRule_: `
-func (v *formatter_) Preprocess<~RuleName>(
+func (v *validator_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add any validation checks.
 }
 
-func (v *formatter_) Process<~RuleName>Slot(
+func (v *validator_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	switch slot {
-	default:
-		v.appendString(" ")
-	}
+	// TBD - Add any validation checks.
 }
 
-func (v *formatter_) Postprocess<~RuleName>(
+func (v *validator_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add any validation checks.
 }
 `,
 
 	processIndexedRule_: `
-func (v *formatter_) Preprocess<~RuleName>(
+func (v *validator_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
 	size uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add any validation checks.
 }
 
-func (v *formatter_) Process<~RuleName>Slot(
+func (v *validator_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	switch slot {
-	default:
-		v.appendString(" ")
-	}
+	// TBD - Add any validation checks.
 }
 
-func (v *formatter_) Postprocess<~RuleName>(
+func (v *validator_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
 	size uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add any validation checks.
 }
 `,
 
 	privateMethods_: `
 // Private Methods
 
-func (v *formatter_) appendNewline() {
-	var newline = "\n"
-	var indentation = "\t"
-	var level uint
-	for ; level < v.depth_; level++ {
-		newline += indentation
-	}
-	v.appendString(newline)
-}
-
-func (v *formatter_) appendString(
-	string_ string,
+func (v *validator_) validateToken(
+	tokenValue string,
+	tokenType TokenType,
 ) {
-	v.result_.WriteString(string_)
-}
-
-func (v *formatter_) getResult() string {
-	var result = v.result_.String()
-	v.result_.Reset()
-	return result
+	var scannerClass = ScannerClass()
+	if !scannerClass.MatchesType(tokenValue, tokenType) {
+		var message = fmt.Sprintf(
+			"The following token value is not of type %v: %v",
+			scannerClass.FormatType(tokenType),
+			tokenValue,
+		)
+		panic(message)
+	}
 }
 `,
 
 	instanceStructure_: `
 // Instance Structure
 
-type formatter_ struct {
+type validator_ struct {
 	// Declare the instance attributes.
 	visitor_ VisitorLike
-	depth_   uint
-	result_  sts.Builder
 
 	// Declare the inherited aspects.
 	Methodical
@@ -465,7 +439,7 @@ type formatter_ struct {
 	classStructure_: `
 // Class Structure
 
-type formatterClass_ struct {
+type validatorClass_ struct {
 	// Declare the class constants.
 }
 `,
@@ -473,11 +447,11 @@ type formatterClass_ struct {
 	classReference_: `
 // Class Reference
 
-func formatterClass() *formatterClass_ {
-	return formatterClassReference_
+func validatorClass() *validatorClass_ {
+	return validatorClassReference_
 }
 
-var formatterClassReference_ = &formatterClass_{
+var validatorClassReference_ = &validatorClass_{
 	// Initialize the class constants.
 }
 `,

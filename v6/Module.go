@@ -30,11 +30,11 @@ package module
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	gen "github.com/craterdog/go-code-generation/v5/generator"
-	syn "github.com/craterdog/go-code-generation/v5/synthesizer"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
+	gen "github.com/craterdog/go-code-generation/v6/generator"
+	syn "github.com/craterdog/go-code-generation/v6/synthesizer"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 )
 
 // TYPE ALIASES

@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	reg "regexp"

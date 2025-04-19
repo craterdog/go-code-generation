@@ -31,9 +31,9 @@ package synthesizer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v5/generator"
+	gen "github.com/craterdog/go-code-generation/v6/generator"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 )
 
 // TYPE DECLARATIONS

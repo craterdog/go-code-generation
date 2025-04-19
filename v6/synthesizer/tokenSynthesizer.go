@@ -13,8 +13,8 @@
 package synthesizer
 
 import (
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
+	not "github.com/craterdog/go-syntax-notation/v6"
 )
 
 // CLASS INTERFACE

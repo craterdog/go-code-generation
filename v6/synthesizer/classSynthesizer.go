@@ -15,7 +15,7 @@ package synthesizer
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5/ast"
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
 	fra "github.com/craterdog/go-collection-framework/v5"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"

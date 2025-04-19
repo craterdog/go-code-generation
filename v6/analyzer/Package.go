@@ -32,7 +32,7 @@ package analyzer
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 )
 
 // TYPE DECLARATIONS

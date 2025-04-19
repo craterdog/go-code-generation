@@ -13,27 +13,25 @@
 package synthesizer
 
 import (
-	ana "github.com/craterdog/go-code-generation/v5/analyzer"
+	ana "github.com/craterdog/go-code-generation/v6/analyzer"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
-	reg "regexp"
-	sts "strings"
+	not "github.com/craterdog/go-syntax-notation/v6"
 )
 
 // CLASS INTERFACE
 
 // Access Function
 
-func ValidatorSynthesizerClass() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerClass()
+func ProcessorSynthesizerClass() ProcessorSynthesizerClassLike {
+	return processorSynthesizerClass()
 }
 
 // Constructor Methods
 
-func (c *validatorSynthesizerClass_) ValidatorSynthesizer(
+func (c *processorSynthesizerClass_) ProcessorSynthesizer(
 	syntax not.SyntaxLike,
-) ValidatorSynthesizerLike {
-	var instance = &validatorSynthesizer_{
+) ProcessorSynthesizerLike {
+	var instance = &processorSynthesizer_{
 		// Initialize the instance attributes.
 		analyzer_: ana.SyntaxAnalyzerClass().SyntaxAnalyzer(syntax),
 	}
@@ -44,76 +42,64 @@ func (c *validatorSynthesizerClass_) ValidatorSynthesizer(
 
 // Principal Methods
 
-func (v *validatorSynthesizer_) GetClass() ValidatorSynthesizerClassLike {
-	return validatorSynthesizerClass()
+func (v *processorSynthesizer_) GetClass() ProcessorSynthesizerClassLike {
+	return processorSynthesizerClass()
 }
 
 // TemplateDriven Methods
 
-func (v *validatorSynthesizer_) CreateLegalNotice() string {
+func (v *processorSynthesizer_) CreateLegalNotice() string {
 	var legalNotice = v.analyzer_.GetLegalNotice()
 	return legalNotice
 }
 
-func (v *validatorSynthesizer_) CreateWarningMessage() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateWarningMessage() string {
+	var class = processorSynthesizerClass()
 	var warningMessage = class.warningMessage_
 	return warningMessage
 }
 
-func (v *validatorSynthesizer_) CreateImportedPackages() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateImportedPackages() string {
+	var class = processorSynthesizerClass()
 	var importedPackages = class.importedPackages_
 	return importedPackages
 }
 
-func (v *validatorSynthesizer_) CreateAccessFunction() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateAccessFunction() string {
+	var class = processorSynthesizerClass()
 	var accessFunction = class.accessFunction_
 	return accessFunction
 }
 
-func (v *validatorSynthesizer_) CreateConstructorMethods() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateConstructorMethods() string {
+	var class = processorSynthesizerClass()
 	var constructorMethods = class.constructorMethods_
 	return constructorMethods
 }
 
-func (v *validatorSynthesizer_) CreateConstantMethods() string {
+func (v *processorSynthesizer_) CreateConstantMethods() string {
 	var constantMethods string
 	return constantMethods
 }
 
-func (v *validatorSynthesizer_) CreateFunctionMethods() string {
+func (v *processorSynthesizer_) CreateFunctionMethods() string {
 	var functionMethods string
 	return functionMethods
 }
 
-func (v *validatorSynthesizer_) CreatePrincipalMethods() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreatePrincipalMethods() string {
+	var class = processorSynthesizerClass()
 	var principalMethods = class.principalMethods_
-	var syntaxMap = v.analyzer_.GetSyntaxMap()
-	principalMethods = uti.ReplaceAll(
-		principalMethods,
-		"syntaxMap",
-		syntaxMap,
-	)
-	var syntaxName = v.analyzer_.GetSyntaxName()
-	principalMethods = uti.ReplaceAll(
-		principalMethods,
-		"syntaxName",
-		syntaxName,
-	)
 	return principalMethods
 }
 
-func (v *validatorSynthesizer_) CreateAttributeMethods() string {
+func (v *processorSynthesizer_) CreateAttributeMethods() string {
 	var attributeMethods string
 	return attributeMethods
 }
 
-func (v *validatorSynthesizer_) CreateAspectMethods() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateAspectMethods() string {
+	var class = processorSynthesizerClass()
 	var aspectMethods = class.aspectMethods_
 	var processTokens = v.createProcessTokens()
 	aspectMethods = uti.ReplaceAll(
@@ -130,37 +116,34 @@ func (v *validatorSynthesizer_) CreateAspectMethods() string {
 	return aspectMethods
 }
 
-func (v *validatorSynthesizer_) CreatePrivateMethods() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreatePrivateMethods() string {
+	var class = processorSynthesizerClass()
 	var privateMethods = class.privateMethods_
 	return privateMethods
 }
 
-func (v *validatorSynthesizer_) CreateInstanceStructure() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateInstanceStructure() string {
+	var class = processorSynthesizerClass()
 	var instanceStructure = class.instanceStructure_
 	return instanceStructure
 }
 
-func (v *validatorSynthesizer_) CreateClassStructure() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateClassStructure() string {
+	var class = processorSynthesizerClass()
 	var classStructure = class.classStructure_
 	return classStructure
 }
 
-func (v *validatorSynthesizer_) CreateClass() string {
-	var class = validatorSynthesizerClass()
+func (v *processorSynthesizer_) CreateClass() string {
+	var class = processorSynthesizerClass()
 	var classReference = class.classReference_
 	return classReference
 }
 
-func (v *validatorSynthesizer_) PerformGlobalUpdates(
+func (v *processorSynthesizer_) PerformGlobalUpdates(
 	existing string,
 	generated string,
 ) string {
-	if uti.IsDefined(existing) {
-		generated = v.preserveExistingCode(existing, generated)
-	}
 	return generated
 }
 
@@ -168,10 +151,10 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *validatorSynthesizer_) createProcessRule(
+func (v *processorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
-	var class = validatorSynthesizerClass()
+	var class = processorSynthesizerClass()
 	var processRule = class.processRule_
 	if v.analyzer_.IsPlural(ruleName) {
 		processRule = class.processIndexedRule_
@@ -184,7 +167,7 @@ func (v *validatorSynthesizer_) createProcessRule(
 	return processRule
 }
 
-func (v *validatorSynthesizer_) createProcessRules() string {
+func (v *processorSynthesizer_) createProcessRules() string {
 	var processRules string
 	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
 	for ruleNames.HasNext() {
@@ -195,14 +178,14 @@ func (v *validatorSynthesizer_) createProcessRules() string {
 	return processRules
 }
 
-func (v *validatorSynthesizer_) createProcessToken(
+func (v *processorSynthesizer_) createProcessToken(
 	tokenName string,
 ) string {
 	var processToken string
 	if tokenName == "delimiter" {
 		return processToken
 	}
-	var class = validatorSynthesizerClass()
+	var class = processorSynthesizerClass()
 	processToken = class.processToken_
 	if v.analyzer_.IsPlural(tokenName) {
 		processToken = class.processIndexedToken_
@@ -215,7 +198,7 @@ func (v *validatorSynthesizer_) createProcessToken(
 	return processToken
 }
 
-func (v *validatorSynthesizer_) createProcessTokens() string {
+func (v *processorSynthesizer_) createProcessTokens() string {
 	var processTokens string
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
@@ -226,42 +209,16 @@ func (v *validatorSynthesizer_) createProcessTokens() string {
 	return processTokens
 }
 
-func (v *validatorSynthesizer_) preserveExistingCode(
-	existing string,
-	generated string,
-) string {
-	// Preserve the methodical method implementations.
-	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
-	generated = v.replacePattern(pattern, existing, generated)
-	return generated
-}
-
-func (v *validatorSynthesizer_) replacePattern(
-	pattern string,
-	existing string,
-	generated string,
-) string {
-	var matcher = reg.MustCompile(pattern)
-	var existingPattern = matcher.FindString(existing)
-	var generatedPattern = matcher.FindString(generated)
-	generated = sts.ReplaceAll(
-		generated,
-		generatedPattern,
-		existingPattern,
-	)
-	return generated
-}
-
 // Instance Structure
 
-type validatorSynthesizer_ struct {
+type processorSynthesizer_ struct {
 	// Declare the instance attributes.
 	analyzer_ ana.SyntaxAnalyzerLike
 }
 
 // Class Structure
 
-type validatorSynthesizerClass_ struct {
+type processorSynthesizerClass_ struct {
 	// Declare the class constants.
 	warningMessage_      string
 	importedPackages_    string
@@ -281,46 +238,38 @@ type validatorSynthesizerClass_ struct {
 
 // Class Reference
 
-func validatorSynthesizerClass() *validatorSynthesizerClass_ {
-	return validatorSynthesizerClassReference_
+func processorSynthesizerClass() *processorSynthesizerClass_ {
+	return processorSynthesizerClassReference_
 }
 
-var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
+var processorSynthesizerClassReference_ = &processorSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
 │                 This class file was automatically generated.                 │
-│ Updates to any section other than the Methodical Methods may be overwritten. │
+│                     Any updates to it may be overwritten.                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
 
 	importedPackages_: `
-	fmt "fmt"
 	ast "<ModuleName>/ast"
-	uti "github.com/craterdog/go-missing-utilities/v2"
-	ref "reflect"
-	sts "strings"
 `,
 
 	accessFunction_: `
 // Access Function
 
-func ValidatorClass() ValidatorClassLike {
-	return validatorClass()
+func ProcessorClass() ProcessorClassLike {
+	return processorClass()
 }
 `,
 
 	constructorMethods_: `
 // Constructor Methods
 
-func (c *validatorClass_) Validator() ValidatorLike {
-	var instance = &validator_{
+func (c *processorClass_) Processor() ProcessorLike {
+	var instance = &processor_{
 		// Initialize the instance attributes.
-
-		// Initialize the inherited aspects.
-		Methodical: ProcessorClass().Processor(),
 	}
-	instance.visitor_ = VisitorClass().Visitor(instance)
 	return instance
 }
 `,
@@ -328,14 +277,8 @@ func (c *validatorClass_) Validator() ValidatorLike {
 	principalMethods_: `
 // Principal Methods
 
-func (v *validator_) GetClass() ValidatorClassLike {
-	return validatorClass()
-}
-
-func (v *validator_) Validate<~SyntaxName>(
-	<syntaxName_> ast.<~SyntaxName>Like,
-) {
-	v.visitor_.Visit<~SyntaxName>(<syntaxName_>)
+func (v *processor_) GetClass() ProcessorClassLike {
+	return processorClass()
 }
 `,
 
@@ -344,102 +287,75 @@ func (v *validator_) Validate<~SyntaxName>(
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-func (v *validator_) Process<~TokenName>(
+func (v *processor_) Process<~TokenName>(
 	<tokenName_> string,
 ) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
 }
 `,
 
 	processIndexedToken_: `
-func (v *validator_) Process<~TokenName>(
+func (v *processor_) Process<~TokenName>(
 	<tokenName_> string,
 	index uint,
 	size uint,
 ) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
 }
 `,
 
 	processRule_: `
-func (v *validator_) Preprocess<~RuleName>(
+func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
-	// TBD - Add any validation checks.
 }
 
-func (v *validator_) Process<~RuleName>Slot(
+func (v *processor_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	// TBD - Add any validation checks.
 }
 
-func (v *validator_) Postprocess<~RuleName>(
+func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 ) {
-	// TBD - Add any validation checks.
 }
 `,
 
 	processIndexedRule_: `
-func (v *validator_) Preprocess<~RuleName>(
+func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
 	size uint,
 ) {
-	// TBD - Add any validation checks.
 }
 
-func (v *validator_) Process<~RuleName>Slot(
+func (v *processor_) Process<~RuleName>Slot(
 	slot uint,
 ) {
-	// TBD - Add any validation checks.
 }
 
-func (v *validator_) Postprocess<~RuleName>(
+func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
 	size uint,
 ) {
-	// TBD - Add any validation checks.
 }
 `,
 
 	privateMethods_: `
 // Private Methods
-
-func (v *validator_) validateToken(
-	tokenValue string,
-	tokenType TokenType,
-) {
-	var scannerClass = ScannerClass()
-	if !scannerClass.MatchesType(tokenValue, tokenType) {
-		var message = fmt.Sprintf(
-			"The following token value is not of type %v: %v",
-			scannerClass.FormatType(tokenType),
-			tokenValue,
-		)
-		panic(message)
-	}
-}
 `,
 
 	instanceStructure_: `
 // Instance Structure
 
-type validator_ struct {
+type processor_ struct {
 	// Declare the instance attributes.
-	visitor_ VisitorLike
-
-	// Declare the inherited aspects.
-	Methodical
 }
 `,
 
 	classStructure_: `
 // Class Structure
 
-type validatorClass_ struct {
+type processorClass_ struct {
 	// Declare the class constants.
 }
 `,
@@ -447,11 +363,11 @@ type validatorClass_ struct {
 	classReference_: `
 // Class Reference
 
-func validatorClass() *validatorClass_ {
-	return validatorClassReference_
+func processorClass() *processorClass_ {
+	return processorClassReference_
 }
 
-var validatorClassReference_ = &validatorClass_{
+var processorClassReference_ = &processorClass_{
 	// Initialize the class constants.
 }
 `,

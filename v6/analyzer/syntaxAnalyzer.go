@@ -16,7 +16,7 @@ import (
 	fra "github.com/craterdog/go-collection-framework/v5"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 	stc "strconv"
 	sts "strings"
 )
@@ -259,6 +259,22 @@ func (v *syntaxAnalyzer_) PostprocessExpression(
 	v.expressions_.SetValue(expressionName, v.expression_)
 }
 
+func (v *syntaxAnalyzer_) PreprocessExpressionOption(
+	option not.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+	var lowercase = option.GetLowercase()
+	var identifier = not.Identifier(lowercase)
+	var identifiers = v.identifiers_.GetValue(v.ruleName_)
+	identifiers.AppendValue(identifier)
+	v.syntaxMap_ += "\n    " + identifier.GetAny().(string)
+	var note = option.GetOptionalNote()
+	if uti.IsDefined(note) {
+		v.syntaxMap_ += "  " + note
+	}
+}
+
 func (v *syntaxAnalyzer_) PreprocessExtent(
 	extent not.ExtentLike,
 ) {
@@ -311,21 +327,6 @@ func (v *syntaxAnalyzer_) PreprocessLimit(
 	limit not.LimitLike,
 ) {
 	v.expression_ += ","
-}
-
-func (v *syntaxAnalyzer_) PreprocessLine(
-	line not.LineLike,
-	index uint,
-	size uint,
-) {
-	var identifier = line.GetIdentifier()
-	var identifiers = v.identifiers_.GetValue(v.ruleName_)
-	identifiers.AppendValue(identifier)
-	v.syntaxMap_ += "\n  - " + identifier.GetAny().(string)
-	var note = line.GetOptionalNote()
-	if uti.IsDefined(note) {
-		v.syntaxMap_ += "  " + note
-	}
 }
 
 func (v *syntaxAnalyzer_) PreprocessPattern(
@@ -405,7 +406,10 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 		v.terms_.SetValue(ruleName, terms)
 		var references = fra.List[not.ReferenceLike]()
 		v.references_.SetValue(ruleName, references)
-	case not.MultilineLike:
+	case not.MultiruleLike:
+		var identifiers = fra.List[not.IdentifierLike]()
+		v.identifiers_.SetValue(ruleName, identifiers)
+	case not.MultiexpressionLike:
 		var identifiers = fra.List[not.IdentifierLike]()
 		v.identifiers_.SetValue(ruleName, identifiers)
 	}
@@ -423,6 +427,22 @@ func (v *syntaxAnalyzer_) PostprocessRule(
 		v.delimited_.AddValue(ruleName)
 	}
 	v.syntaxMap_ += "`,"
+}
+
+func (v *syntaxAnalyzer_) PreprocessRuleOption(
+	option not.RuleOptionLike,
+	index uint,
+	size uint,
+) {
+	var uppercase = option.GetUppercase()
+	var identifier = not.Identifier(uppercase)
+	var identifiers = v.identifiers_.GetValue(v.ruleName_)
+	identifiers.AppendValue(identifier)
+	v.syntaxMap_ += "\n    " + identifier.GetAny().(string)
+	var note = option.GetOptionalNote()
+	if uti.IsDefined(note) {
+		v.syntaxMap_ += "  " + note
+	}
 }
 
 func (v *syntaxAnalyzer_) PreprocessSyntax(
