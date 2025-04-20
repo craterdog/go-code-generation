@@ -290,8 +290,8 @@ func (v *parserSynthesizer_) createInlineImplementation(
 				"identifier",
 				identifier,
 			)
-		case string:
-			var delimiter = actual
+		case not.LiteralLike:
+			var delimiter = actual.GetQuote()
 			parseStep = v.createDelimiterStep()
 			parseStep = uti.ReplaceAll(
 				parseStep,

@@ -281,13 +281,13 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expression patterns for each token type.
-	delimiter_    = "(?:)"
+	delimiter_    = "(?:type|package|map|iota|interface|import|func|const|chan|\\}|\\{|\\]|\\[|\\)|\\(|=|// TYPE DECLARATIONS|// Principal Methods|// INSTANCE DECLARATIONS|// Function Methods|// FUNCTIONAL DECLARATIONS|// Constructor Methods|// Constant Methods|// CLASS DECLARATIONS|// Attribute Methods|// Aspect Interfaces|// ASPECT DECLARATIONS|,)"
 	newline_      = "(?:" + eol_ + ")"
 	space_        = "(?:[ \\t]+)"
 	alphanumeric_ = "(?:" + lower_ + "|" + upper_ + "|" + digit_ + ")"
 	character_    = "(?:" + lower_ + "|" + upper_ + ")"
-	comment_      = "(?:" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "" + eol_ + ")"
+	comment_      = "(?:/\\*" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "\\*/" + eol_ + ")"
 	prefix_       = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + "){2}\\.)"
-	name_         = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + ")*?)"
+	name_         = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + ")*_?)"
 	path_         = "(?:\"" + any_ + "*?\")"
 )

@@ -168,21 +168,6 @@ func (v *syntaxAnalyzer_) ProcessIntrinsic(
 	v.expression_ += `" + ` + intrinsic + `_ + "`
 }
 
-func (v *syntaxAnalyzer_) ProcessLiteral(
-	literal string,
-) {
-	v.hasLiteral_ = true
-	var delimiter, err = stc.Unquote(literal) // Remove the double quotes.
-	if err != nil {
-		panic(err)
-	}
-	delimiter = v.escapeText(delimiter)
-	if v.inDefinition_ {
-		v.delimiters_.AddValue(delimiter)
-	}
-	v.expression_ += delimiter
-}
-
 func (v *syntaxAnalyzer_) ProcessLowercase(
 	lowercase string,
 ) {
@@ -204,6 +189,21 @@ func (v *syntaxAnalyzer_) ProcessOptional(
 	optional string,
 ) {
 	v.expression_ += optional
+}
+
+func (v *syntaxAnalyzer_) ProcessQuote(
+	quote string,
+) {
+	v.hasLiteral_ = true
+	var delimiter, err = stc.Unquote(quote) // Remove the double quotes.
+	if err != nil {
+		panic(err)
+	}
+	delimiter = v.escapeText(delimiter)
+	if v.inDefinition_ {
+		v.delimiters_.AddValue(delimiter)
+	}
+	v.expression_ += delimiter
 }
 
 func (v *syntaxAnalyzer_) ProcessRepeated(
@@ -406,10 +406,7 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 		v.terms_.SetValue(ruleName, terms)
 		var references = fra.List[not.ReferenceLike]()
 		v.references_.SetValue(ruleName, references)
-	case not.MultiruleLike:
-		var identifiers = fra.List[not.IdentifierLike]()
-		v.identifiers_.SetValue(ruleName, identifiers)
-	case not.MultiexpressionLike:
+	case not.MultiruleLike, not.MultiexpressionLike:
 		var identifiers = fra.List[not.IdentifierLike]()
 		v.identifiers_.SetValue(ruleName, identifiers)
 	}
@@ -502,8 +499,8 @@ func (v *syntaxAnalyzer_) PreprocessTerm(
 		v.syntaxMap_ += " "
 	}
 	switch actual := term.GetAny().(type) {
-	case string:
-		v.syntaxMap_ += actual
+	case not.LiteralLike:
+		v.syntaxMap_ += actual.GetQuote()
 	}
 	var terms = v.terms_.GetValue(v.ruleName_)
 	terms.AppendValue(term)
