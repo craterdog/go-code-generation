@@ -27,7 +27,7 @@ abstract syntax tree (AST) for this module:
   - Processor provides empty processor methods to be inherited by the processors.
 
 For detailed documentation on this package refer to the wiki:
-  - https://github.com/craterdog/go-class-model/wiki
+  - https://github.com/craterdog/go-syntax-notation/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:
@@ -41,8 +41,8 @@ on interfaces, not on each other.
 package grammar
 
 import (
-	ast "github.com/craterdog/go-class-model/v5/ast"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 )
 
 // TYPE DECLARATIONS
@@ -57,11 +57,18 @@ const (
 	ErrorToken TokenType = iota
 	CommentToken
 	DelimiterToken
-	NameToken
+	ExcludedToken
+	GlyphToken
+	IntrinsicToken
+	LowercaseToken
 	NewlineToken
-	PathToken
-	PrefixToken
+	NoteToken
+	NumberToken
+	OptionalToken
+	QuoteToken
+	RepeatedToken
 	SpaceToken
+	UppercaseToken
 )
 
 // FUNCTIONAL DECLARATIONS
@@ -176,8 +183,8 @@ instance of a concrete formatter-like class.
 type FormatterLike interface {
 	// Principal Methods
 	GetClass() FormatterClassLike
-	FormatModel(
-		model ast.ModelLike,
+	FormatSyntax(
+		syntax ast.SyntaxLike,
 	) string
 
 	// Aspect Interfaces
@@ -194,7 +201,7 @@ type ParserLike interface {
 	GetClass() ParserClassLike
 	ParseSource(
 		source string,
-	) ast.ModelLike
+	) ast.SyntaxLike
 }
 
 /*
@@ -244,8 +251,8 @@ instance of a concrete validator-like class.
 type ValidatorLike interface {
 	// Principal Methods
 	GetClass() ValidatorClassLike
-	ValidateModel(
-		model ast.ModelLike,
+	ValidateSyntax(
+		syntax ast.SyntaxLike,
 	)
 
 	// Aspect Interfaces
@@ -260,8 +267,8 @@ instance of a concrete visitor-like class.
 type VisitorLike interface {
 	// Principal Methods
 	GetClass() VisitorClassLike
-	VisitModel(
-		model ast.ModelLike,
+	VisitSyntax(
+		syntax ast.SyntaxLike,
 	)
 }
 
@@ -275,582 +282,342 @@ type Methodical interface {
 	ProcessComment(
 		comment string,
 	)
-	ProcessName(
-		name string,
+	ProcessExcluded(
+		excluded string,
+	)
+	ProcessGlyph(
+		glyph string,
+	)
+	ProcessIntrinsic(
+		intrinsic string,
+	)
+	ProcessLowercase(
+		lowercase string,
 	)
 	ProcessNewline(
 		newline string,
 	)
-	ProcessPath(
-		path string,
+	ProcessNote(
+		note string,
 	)
-	ProcessPrefix(
-		prefix string,
+	ProcessNumber(
+		number string,
+	)
+	ProcessOptional(
+		optional string,
+	)
+	ProcessQuote(
+		quote string,
+	)
+	ProcessRepeated(
+		repeated string,
 	)
 	ProcessSpace(
 		space string,
 	)
-	PreprocessAbstraction(
-		abstraction ast.AbstractionLike,
+	ProcessUppercase(
+		uppercase string,
 	)
-	ProcessAbstractionSlot(
-		slot uint,
-	)
-	PostprocessAbstraction(
-		abstraction ast.AbstractionLike,
-	)
-	PreprocessAdditionalArgument(
-		additionalArgument ast.AdditionalArgumentLike,
+	PreprocessAlternative(
+		alternative ast.AlternativeLike,
 		index uint,
 		size uint,
 	)
-	ProcessAdditionalArgumentSlot(
+	ProcessAlternativeSlot(
 		slot uint,
 	)
-	PostprocessAdditionalArgument(
-		additionalArgument ast.AdditionalArgumentLike,
+	PostprocessAlternative(
+		alternative ast.AlternativeLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAdditionalConstraint(
-		additionalConstraint ast.AdditionalConstraintLike,
+	PreprocessCardinality(
+		cardinality ast.CardinalityLike,
+	)
+	ProcessCardinalitySlot(
+		slot uint,
+	)
+	PostprocessCardinality(
+		cardinality ast.CardinalityLike,
+	)
+	PreprocessCharacter(
+		character ast.CharacterLike,
 		index uint,
 		size uint,
 	)
-	ProcessAdditionalConstraintSlot(
+	ProcessCharacterSlot(
 		slot uint,
 	)
-	PostprocessAdditionalConstraint(
-		additionalConstraint ast.AdditionalConstraintLike,
+	PostprocessCharacter(
+		character ast.CharacterLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAdditionalValue(
-		additionalValue ast.AdditionalValueLike,
+	PreprocessConstrained(
+		constrained ast.ConstrainedLike,
+	)
+	ProcessConstrainedSlot(
+		slot uint,
+	)
+	PostprocessConstrained(
+		constrained ast.ConstrainedLike,
+	)
+	PreprocessDefinition(
+		definition ast.DefinitionLike,
+	)
+	ProcessDefinitionSlot(
+		slot uint,
+	)
+	PostprocessDefinition(
+		definition ast.DefinitionLike,
+	)
+	PreprocessElement(
+		element ast.ElementLike,
+	)
+	ProcessElementSlot(
+		slot uint,
+	)
+	PostprocessElement(
+		element ast.ElementLike,
+	)
+	PreprocessExplicit(
+		explicit ast.ExplicitLike,
+	)
+	ProcessExplicitSlot(
+		slot uint,
+	)
+	PostprocessExplicit(
+		explicit ast.ExplicitLike,
+	)
+	PreprocessExpression(
+		expression ast.ExpressionLike,
 		index uint,
 		size uint,
 	)
-	ProcessAdditionalValueSlot(
+	ProcessExpressionSlot(
 		slot uint,
 	)
-	PostprocessAdditionalValue(
-		additionalValue ast.AdditionalValueLike,
+	PostprocessExpression(
+		expression ast.ExpressionLike,
 		index uint,
 		size uint,
 	)
-	PreprocessArgument(
-		argument ast.ArgumentLike,
-	)
-	ProcessArgumentSlot(
-		slot uint,
-	)
-	PostprocessArgument(
-		argument ast.ArgumentLike,
-	)
-	PreprocessArguments(
-		arguments ast.ArgumentsLike,
-	)
-	ProcessArgumentsSlot(
-		slot uint,
-	)
-	PostprocessArguments(
-		arguments ast.ArgumentsLike,
-	)
-	PreprocessArray(
-		array ast.ArrayLike,
-	)
-	ProcessArraySlot(
-		slot uint,
-	)
-	PostprocessArray(
-		array ast.ArrayLike,
-	)
-	PreprocessAspectDeclaration(
-		aspectDeclaration ast.AspectDeclarationLike,
+	PreprocessExpressionOption(
+		expressionOption ast.ExpressionOptionLike,
 		index uint,
 		size uint,
 	)
-	ProcessAspectDeclarationSlot(
+	ProcessExpressionOptionSlot(
 		slot uint,
 	)
-	PostprocessAspectDeclaration(
-		aspectDeclaration ast.AspectDeclarationLike,
+	PostprocessExpressionOption(
+		expressionOption ast.ExpressionOptionLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAspectInterface(
-		aspectInterface ast.AspectInterfaceLike,
+	PreprocessExtent(
+		extent ast.ExtentLike,
+	)
+	ProcessExtentSlot(
+		slot uint,
+	)
+	PostprocessExtent(
+		extent ast.ExtentLike,
+	)
+	PreprocessFilter(
+		filter ast.FilterLike,
+	)
+	ProcessFilterSlot(
+		slot uint,
+	)
+	PostprocessFilter(
+		filter ast.FilterLike,
+	)
+	PreprocessGroup(
+		group ast.GroupLike,
+	)
+	ProcessGroupSlot(
+		slot uint,
+	)
+	PostprocessGroup(
+		group ast.GroupLike,
+	)
+	PreprocessIdentifier(
+		identifier ast.IdentifierLike,
+	)
+	ProcessIdentifierSlot(
+		slot uint,
+	)
+	PostprocessIdentifier(
+		identifier ast.IdentifierLike,
+	)
+	PreprocessImplicit(
+		implicit ast.ImplicitLike,
+	)
+	ProcessImplicitSlot(
+		slot uint,
+	)
+	PostprocessImplicit(
+		implicit ast.ImplicitLike,
+	)
+	PreprocessInline(
+		inline ast.InlineLike,
+	)
+	ProcessInlineSlot(
+		slot uint,
+	)
+	PostprocessInline(
+		inline ast.InlineLike,
+	)
+	PreprocessLimit(
+		limit ast.LimitLike,
+	)
+	ProcessLimitSlot(
+		slot uint,
+	)
+	PostprocessLimit(
+		limit ast.LimitLike,
+	)
+	PreprocessLiteral(
+		literal ast.LiteralLike,
+	)
+	ProcessLiteralSlot(
+		slot uint,
+	)
+	PostprocessLiteral(
+		literal ast.LiteralLike,
+	)
+	PreprocessMultiexpression(
+		multiexpression ast.MultiexpressionLike,
+	)
+	ProcessMultiexpressionSlot(
+		slot uint,
+	)
+	PostprocessMultiexpression(
+		multiexpression ast.MultiexpressionLike,
+	)
+	PreprocessMultirule(
+		multirule ast.MultiruleLike,
+	)
+	ProcessMultiruleSlot(
+		slot uint,
+	)
+	PostprocessMultirule(
+		multirule ast.MultiruleLike,
+	)
+	PreprocessNotice(
+		notice ast.NoticeLike,
+	)
+	ProcessNoticeSlot(
+		slot uint,
+	)
+	PostprocessNotice(
+		notice ast.NoticeLike,
+	)
+	PreprocessOption(
+		option ast.OptionLike,
+	)
+	ProcessOptionSlot(
+		slot uint,
+	)
+	PostprocessOption(
+		option ast.OptionLike,
+	)
+	PreprocessPattern(
+		pattern ast.PatternLike,
+	)
+	ProcessPatternSlot(
+		slot uint,
+	)
+	PostprocessPattern(
+		pattern ast.PatternLike,
+	)
+	PreprocessQuantified(
+		quantified ast.QuantifiedLike,
+	)
+	ProcessQuantifiedSlot(
+		slot uint,
+	)
+	PostprocessQuantified(
+		quantified ast.QuantifiedLike,
+	)
+	PreprocessReference(
+		reference ast.ReferenceLike,
+	)
+	ProcessReferenceSlot(
+		slot uint,
+	)
+	PostprocessReference(
+		reference ast.ReferenceLike,
+	)
+	PreprocessRepetition(
+		repetition ast.RepetitionLike,
 		index uint,
 		size uint,
 	)
-	ProcessAspectInterfaceSlot(
+	ProcessRepetitionSlot(
 		slot uint,
 	)
-	PostprocessAspectInterface(
-		aspectInterface ast.AspectInterfaceLike,
+	PostprocessRepetition(
+		repetition ast.RepetitionLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAspectMethod(
-		aspectMethod ast.AspectMethodLike,
+	PreprocessRule(
+		rule ast.RuleLike,
 		index uint,
 		size uint,
 	)
-	ProcessAspectMethodSlot(
+	ProcessRuleSlot(
 		slot uint,
 	)
-	PostprocessAspectMethod(
-		aspectMethod ast.AspectMethodLike,
+	PostprocessRule(
+		rule ast.RuleLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAspectSection(
-		aspectSection ast.AspectSectionLike,
-	)
-	ProcessAspectSectionSlot(
-		slot uint,
-	)
-	PostprocessAspectSection(
-		aspectSection ast.AspectSectionLike,
-	)
-	PreprocessAspectSubsection(
-		aspectSubsection ast.AspectSubsectionLike,
-	)
-	ProcessAspectSubsectionSlot(
-		slot uint,
-	)
-	PostprocessAspectSubsection(
-		aspectSubsection ast.AspectSubsectionLike,
-	)
-	PreprocessAttributeMethod(
-		attributeMethod ast.AttributeMethodLike,
+	PreprocessRuleOption(
+		ruleOption ast.RuleOptionLike,
 		index uint,
 		size uint,
 	)
-	ProcessAttributeMethodSlot(
+	ProcessRuleOptionSlot(
 		slot uint,
 	)
-	PostprocessAttributeMethod(
-		attributeMethod ast.AttributeMethodLike,
+	PostprocessRuleOption(
+		ruleOption ast.RuleOptionLike,
 		index uint,
 		size uint,
 	)
-	PreprocessAttributeSubsection(
-		attributeSubsection ast.AttributeSubsectionLike,
+	PreprocessSyntax(
+		syntax ast.SyntaxLike,
 	)
-	ProcessAttributeSubsectionSlot(
+	ProcessSyntaxSlot(
 		slot uint,
 	)
-	PostprocessAttributeSubsection(
-		attributeSubsection ast.AttributeSubsectionLike,
+	PostprocessSyntax(
+		syntax ast.SyntaxLike,
 	)
-	PreprocessChannel(
-		channel ast.ChannelLike,
-	)
-	ProcessChannelSlot(
-		slot uint,
-	)
-	PostprocessChannel(
-		channel ast.ChannelLike,
-	)
-	PreprocessClassDeclaration(
-		classDeclaration ast.ClassDeclarationLike,
+	PreprocessTerm(
+		term ast.TermLike,
 		index uint,
 		size uint,
 	)
-	ProcessClassDeclarationSlot(
+	ProcessTermSlot(
 		slot uint,
 	)
-	PostprocessClassDeclaration(
-		classDeclaration ast.ClassDeclarationLike,
+	PostprocessTerm(
+		term ast.TermLike,
 		index uint,
 		size uint,
 	)
-	PreprocessClassMethods(
-		classMethods ast.ClassMethodsLike,
+	PreprocessText(
+		text ast.TextLike,
 	)
-	ProcessClassMethodsSlot(
+	ProcessTextSlot(
 		slot uint,
 	)
-	PostprocessClassMethods(
-		classMethods ast.ClassMethodsLike,
-	)
-	PreprocessClassSection(
-		classSection ast.ClassSectionLike,
-	)
-	ProcessClassSectionSlot(
-		slot uint,
-	)
-	PostprocessClassSection(
-		classSection ast.ClassSectionLike,
-	)
-	PreprocessConstantMethod(
-		constantMethod ast.ConstantMethodLike,
-		index uint,
-		size uint,
-	)
-	ProcessConstantMethodSlot(
-		slot uint,
-	)
-	PostprocessConstantMethod(
-		constantMethod ast.ConstantMethodLike,
-		index uint,
-		size uint,
-	)
-	PreprocessConstantSubsection(
-		constantSubsection ast.ConstantSubsectionLike,
-	)
-	ProcessConstantSubsectionSlot(
-		slot uint,
-	)
-	PostprocessConstantSubsection(
-		constantSubsection ast.ConstantSubsectionLike,
-	)
-	PreprocessConstraint(
-		constraint ast.ConstraintLike,
-	)
-	ProcessConstraintSlot(
-		slot uint,
-	)
-	PostprocessConstraint(
-		constraint ast.ConstraintLike,
-	)
-	PreprocessConstraints(
-		constraints ast.ConstraintsLike,
-	)
-	ProcessConstraintsSlot(
-		slot uint,
-	)
-	PostprocessConstraints(
-		constraints ast.ConstraintsLike,
-	)
-	PreprocessConstructorMethod(
-		constructorMethod ast.ConstructorMethodLike,
-		index uint,
-		size uint,
-	)
-	ProcessConstructorMethodSlot(
-		slot uint,
-	)
-	PostprocessConstructorMethod(
-		constructorMethod ast.ConstructorMethodLike,
-		index uint,
-		size uint,
-	)
-	PreprocessConstructorSubsection(
-		constructorSubsection ast.ConstructorSubsectionLike,
-	)
-	ProcessConstructorSubsectionSlot(
-		slot uint,
-	)
-	PostprocessConstructorSubsection(
-		constructorSubsection ast.ConstructorSubsectionLike,
-	)
-	PreprocessDeclaration(
-		declaration ast.DeclarationLike,
-	)
-	ProcessDeclarationSlot(
-		slot uint,
-	)
-	PostprocessDeclaration(
-		declaration ast.DeclarationLike,
-	)
-	PreprocessEnumeration(
-		enumeration ast.EnumerationLike,
-	)
-	ProcessEnumerationSlot(
-		slot uint,
-	)
-	PostprocessEnumeration(
-		enumeration ast.EnumerationLike,
-	)
-	PreprocessFunctionMethod(
-		functionMethod ast.FunctionMethodLike,
-		index uint,
-		size uint,
-	)
-	ProcessFunctionMethodSlot(
-		slot uint,
-	)
-	PostprocessFunctionMethod(
-		functionMethod ast.FunctionMethodLike,
-		index uint,
-		size uint,
-	)
-	PreprocessFunctionSubsection(
-		functionSubsection ast.FunctionSubsectionLike,
-	)
-	ProcessFunctionSubsectionSlot(
-		slot uint,
-	)
-	PostprocessFunctionSubsection(
-		functionSubsection ast.FunctionSubsectionLike,
-	)
-	PreprocessFunctionalDeclaration(
-		functionalDeclaration ast.FunctionalDeclarationLike,
-		index uint,
-		size uint,
-	)
-	ProcessFunctionalDeclarationSlot(
-		slot uint,
-	)
-	PostprocessFunctionalDeclaration(
-		functionalDeclaration ast.FunctionalDeclarationLike,
-		index uint,
-		size uint,
-	)
-	PreprocessFunctionalSection(
-		functionalSection ast.FunctionalSectionLike,
-	)
-	ProcessFunctionalSectionSlot(
-		slot uint,
-	)
-	PostprocessFunctionalSection(
-		functionalSection ast.FunctionalSectionLike,
-	)
-	PreprocessGetterMethod(
-		getterMethod ast.GetterMethodLike,
-	)
-	ProcessGetterMethodSlot(
-		slot uint,
-	)
-	PostprocessGetterMethod(
-		getterMethod ast.GetterMethodLike,
-	)
-	PreprocessImportedPackage(
-		importedPackage ast.ImportedPackageLike,
-		index uint,
-		size uint,
-	)
-	ProcessImportedPackageSlot(
-		slot uint,
-	)
-	PostprocessImportedPackage(
-		importedPackage ast.ImportedPackageLike,
-		index uint,
-		size uint,
-	)
-	PreprocessInstanceDeclaration(
-		instanceDeclaration ast.InstanceDeclarationLike,
-		index uint,
-		size uint,
-	)
-	ProcessInstanceDeclarationSlot(
-		slot uint,
-	)
-	PostprocessInstanceDeclaration(
-		instanceDeclaration ast.InstanceDeclarationLike,
-		index uint,
-		size uint,
-	)
-	PreprocessInstanceMethods(
-		instanceMethods ast.InstanceMethodsLike,
-	)
-	ProcessInstanceMethodsSlot(
-		slot uint,
-	)
-	PostprocessInstanceMethods(
-		instanceMethods ast.InstanceMethodsLike,
-	)
-	PreprocessInstanceSection(
-		instanceSection ast.InstanceSectionLike,
-	)
-	ProcessInstanceSectionSlot(
-		slot uint,
-	)
-	PostprocessInstanceSection(
-		instanceSection ast.InstanceSectionLike,
-	)
-	PreprocessInterfaceDeclarations(
-		interfaceDeclarations ast.InterfaceDeclarationsLike,
-	)
-	ProcessInterfaceDeclarationsSlot(
-		slot uint,
-	)
-	PostprocessInterfaceDeclarations(
-		interfaceDeclarations ast.InterfaceDeclarationsLike,
-	)
-	PreprocessLegalNotice(
-		legalNotice ast.LegalNoticeLike,
-	)
-	ProcessLegalNoticeSlot(
-		slot uint,
-	)
-	PostprocessLegalNotice(
-		legalNotice ast.LegalNoticeLike,
-	)
-	PreprocessMap(
-		map_ ast.MapLike,
-	)
-	ProcessMapSlot(
-		slot uint,
-	)
-	PostprocessMap(
-		map_ ast.MapLike,
-	)
-	PreprocessMethod(
-		method ast.MethodLike,
-	)
-	ProcessMethodSlot(
-		slot uint,
-	)
-	PostprocessMethod(
-		method ast.MethodLike,
-	)
-	PreprocessModel(
-		model ast.ModelLike,
-	)
-	ProcessModelSlot(
-		slot uint,
-	)
-	PostprocessModel(
-		model ast.ModelLike,
-	)
-	PreprocessMultivalue(
-		multivalue ast.MultivalueLike,
-	)
-	ProcessMultivalueSlot(
-		slot uint,
-	)
-	PostprocessMultivalue(
-		multivalue ast.MultivalueLike,
-	)
-	PreprocessNone(
-		none ast.NoneLike,
-	)
-	ProcessNoneSlot(
-		slot uint,
-	)
-	PostprocessNone(
-		none ast.NoneLike,
-	)
-	PreprocessPackageDeclaration(
-		packageDeclaration ast.PackageDeclarationLike,
-	)
-	ProcessPackageDeclarationSlot(
-		slot uint,
-	)
-	PostprocessPackageDeclaration(
-		packageDeclaration ast.PackageDeclarationLike,
-	)
-	PreprocessPackageHeader(
-		packageHeader ast.PackageHeaderLike,
-	)
-	ProcessPackageHeaderSlot(
-		slot uint,
-	)
-	PostprocessPackageHeader(
-		packageHeader ast.PackageHeaderLike,
-	)
-	PreprocessPackageImports(
-		packageImports ast.PackageImportsLike,
-	)
-	ProcessPackageImportsSlot(
-		slot uint,
-	)
-	PostprocessPackageImports(
-		packageImports ast.PackageImportsLike,
-	)
-	PreprocessParameter(
-		parameter ast.ParameterLike,
-		index uint,
-		size uint,
-	)
-	ProcessParameterSlot(
-		slot uint,
-	)
-	PostprocessParameter(
-		parameter ast.ParameterLike,
-		index uint,
-		size uint,
-	)
-	PreprocessPrimitiveDeclarations(
-		primitiveDeclarations ast.PrimitiveDeclarationsLike,
-	)
-	ProcessPrimitiveDeclarationsSlot(
-		slot uint,
-	)
-	PostprocessPrimitiveDeclarations(
-		primitiveDeclarations ast.PrimitiveDeclarationsLike,
-	)
-	PreprocessPrincipalMethod(
-		principalMethod ast.PrincipalMethodLike,
-		index uint,
-		size uint,
-	)
-	ProcessPrincipalMethodSlot(
-		slot uint,
-	)
-	PostprocessPrincipalMethod(
-		principalMethod ast.PrincipalMethodLike,
-		index uint,
-		size uint,
-	)
-	PreprocessPrincipalSubsection(
-		principalSubsection ast.PrincipalSubsectionLike,
-	)
-	ProcessPrincipalSubsectionSlot(
-		slot uint,
-	)
-	PostprocessPrincipalSubsection(
-		principalSubsection ast.PrincipalSubsectionLike,
-	)
-	PreprocessResult(
-		result ast.ResultLike,
-	)
-	ProcessResultSlot(
-		slot uint,
-	)
-	PostprocessResult(
-		result ast.ResultLike,
-	)
-	PreprocessSetterMethod(
-		setterMethod ast.SetterMethodLike,
-	)
-	ProcessSetterMethodSlot(
-		slot uint,
-	)
-	PostprocessSetterMethod(
-		setterMethod ast.SetterMethodLike,
-	)
-	PreprocessTypeDeclaration(
-		typeDeclaration ast.TypeDeclarationLike,
-		index uint,
-		size uint,
-	)
-	ProcessTypeDeclarationSlot(
-		slot uint,
-	)
-	PostprocessTypeDeclaration(
-		typeDeclaration ast.TypeDeclarationLike,
-		index uint,
-		size uint,
-	)
-	PreprocessTypeSection(
-		typeSection ast.TypeSectionLike,
-	)
-	ProcessTypeSectionSlot(
-		slot uint,
-	)
-	PostprocessTypeSection(
-		typeSection ast.TypeSectionLike,
-	)
-	PreprocessValue(
-		value ast.ValueLike,
-	)
-	ProcessValueSlot(
-		slot uint,
-	)
-	PostprocessValue(
-		value ast.ValueLike,
-	)
-	PreprocessWrapper(
-		wrapper ast.WrapperLike,
-	)
-	ProcessWrapperSlot(
-		slot uint,
-	)
-	PostprocessWrapper(
-		wrapper ast.WrapperLike,
+	PostprocessText(
+		text ast.TextLike,
 	)
 }

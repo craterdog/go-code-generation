@@ -195,9 +195,16 @@ loop:
 		case v.foundToken(NewlineToken):
 		case v.foundToken(SpaceToken):
 		case v.foundToken(CommentToken):
-		case v.foundToken(PrefixToken):
-		case v.foundToken(NameToken):
-		case v.foundToken(PathToken):
+		case v.foundToken(ExcludedToken):
+		case v.foundToken(GlyphToken):
+		case v.foundToken(IntrinsicToken):
+		case v.foundToken(LowercaseToken):
+		case v.foundToken(NoteToken):
+		case v.foundToken(NumberToken):
+		case v.foundToken(OptionalToken):
+		case v.foundToken(QuoteToken):
+		case v.foundToken(RepeatedToken):
+		case v.foundToken(UppercaseToken):
 		default:
 			v.foundError()
 			break loop
@@ -240,11 +247,18 @@ var scannerClassReference_ = &scannerClass_{
 			ErrorToken:     "error",
 			CommentToken:   "comment",
 			DelimiterToken: "delimiter",
-			NameToken:      "name",
+			ExcludedToken:  "excluded",
+			GlyphToken:     "glyph",
+			IntrinsicToken: "intrinsic",
+			LowercaseToken: "lowercase",
 			NewlineToken:   "newline",
-			PathToken:      "path",
-			PrefixToken:    "prefix",
+			NoteToken:      "note",
+			NumberToken:    "number",
+			OptionalToken:  "optional",
+			QuoteToken:     "quote",
+			RepeatedToken:  "repeated",
 			SpaceToken:     "space",
+			UppercaseToken: "uppercase",
 		},
 	),
 	matchers_: fra.CatalogFromMap[TokenType, *reg.Regexp](
@@ -252,11 +266,18 @@ var scannerClassReference_ = &scannerClass_{
 			// Define pattern matchers for each type of token.
 			CommentToken:   reg.MustCompile("^" + comment_),
 			DelimiterToken: reg.MustCompile("^" + delimiter_),
-			NameToken:      reg.MustCompile("^" + name_),
+			ExcludedToken:  reg.MustCompile("^" + excluded_),
+			GlyphToken:     reg.MustCompile("^" + glyph_),
+			IntrinsicToken: reg.MustCompile("^" + intrinsic_),
+			LowercaseToken: reg.MustCompile("^" + lowercase_),
 			NewlineToken:   reg.MustCompile("^" + newline_),
-			PathToken:      reg.MustCompile("^" + path_),
-			PrefixToken:    reg.MustCompile("^" + prefix_),
+			NoteToken:      reg.MustCompile("^" + note_),
+			NumberToken:    reg.MustCompile("^" + number_),
+			OptionalToken:  reg.MustCompile("^" + optional_),
+			QuoteToken:     reg.MustCompile("^" + quote_),
+			RepeatedToken:  reg.MustCompile("^" + repeated_),
 			SpaceToken:     reg.MustCompile("^" + space_),
+			UppercaseToken: reg.MustCompile("^" + uppercase_),
 		},
 	),
 }
@@ -281,13 +302,21 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expression patterns for each token type.
-	delimiter_    = "(?:type|package|map|iota|interface|import|func|const|chan|\\}|\\{|\\]|\\[|\\)|\\(|=|// TYPE DECLARATIONS|// Principal Methods|// INSTANCE DECLARATIONS|// Function Methods|// FUNCTIONAL DECLARATIONS|// Constructor Methods|// Constant Methods|// CLASS DECLARATIONS|// Attribute Methods|// Aspect Interfaces|// ASPECT DECLARATIONS|,)"
-	newline_      = "(?:" + eol_ + ")"
-	space_        = "(?:[ \\t]+)"
-	alphanumeric_ = "(?:" + lower_ + "|" + upper_ + "|" + digit_ + ")"
-	character_    = "(?:" + lower_ + "|" + upper_ + ")"
-	comment_      = "(?:/\\*" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "\\*/" + eol_ + ")"
-	prefix_       = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + "){2}\\.)"
-	name_         = "(?:(?:" + character_ + ")(?:" + alphanumeric_ + ")*_?)"
-	path_         = "(?:\"" + any_ + "*?\")"
+	delimiter_ = "(?:\\}|\\||\\{|\\]|\\[|\\.\\.|\\)|\\(|\\$|:)"
+	newline_   = "(?:" + eol_ + ")"
+	space_     = "(?:[ \\t]+)"
+	base16_    = "(?:[0-9a-f])"
+	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"
+	escape_    = "(?:\\\\((?:" + unicode_ + ")|[abfnrtv\"\\\\]))"
+	excluded_  = "(?:~)"
+	glyph_     = "(?:'[^" + control_ + "]')"
+	intrinsic_ = "(?:ANY|CONTROL|DIGIT|EOL|LOWER|UPPER)"
+	lowercase_ = "(?:" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	note_      = "(?:! [^" + control_ + "]*)"
+	number_    = "(?:" + digit_ + "+)"
+	optional_  = "(?:\\?)"
+	quote_     = "(?:\"((?:" + escape_ + ")|[^\"" + control_ + "])+\")"
+	repeated_  = "(?:\\*|\\+)"
+	unicode_   = "(?:(x(?:" + base16_ + "){2})|(u(?:" + base16_ + "){4})|(U(?:" + base16_ + "){8}))"
+	uppercase_ = "(?:" + upper_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
 )

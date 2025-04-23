@@ -22,7 +22,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.
 
 For detailed documentation on this package refer to the wiki:
-  - https://github.com/craterdog/go-class-model/wiki
+  - https://github.com/craterdog/go-syntax-notation/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:
@@ -46,1447 +46,790 @@ import (
 // CLASS DECLARATIONS
 
 /*
-AbstractionClassLike is a class interface that declares the
+AlternativeClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete abstraction-like class.
+supported by each concrete alternative-like class.
 */
-type AbstractionClassLike interface {
+type AlternativeClassLike interface {
 	// Constructor Methods
-	Abstraction(
-		optionalWrapper WrapperLike,
-		optionalPrefix string,
-		name string,
-		optionalArguments ArgumentsLike,
-	) AbstractionLike
+	Alternative(
+		option OptionLike,
+	) AlternativeLike
 }
 
 /*
-AdditionalArgumentClassLike is a class interface that declares the
+CardinalityClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete additional-argument-like class.
+supported by each concrete cardinality-like class.
 */
-type AdditionalArgumentClassLike interface {
+type CardinalityClassLike interface {
 	// Constructor Methods
-	AdditionalArgument(
-		argument ArgumentLike,
-	) AdditionalArgumentLike
-}
-
-/*
-AdditionalConstraintClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete additional-constraint-like class.
-*/
-type AdditionalConstraintClassLike interface {
-	// Constructor Methods
-	AdditionalConstraint(
-		constraint ConstraintLike,
-	) AdditionalConstraintLike
-}
-
-/*
-AdditionalValueClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete additional-value-like class.
-*/
-type AdditionalValueClassLike interface {
-	// Constructor Methods
-	AdditionalValue(
-		name string,
-	) AdditionalValueLike
-}
-
-/*
-ArgumentClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete argument-like class.
-*/
-type ArgumentClassLike interface {
-	// Constructor Methods
-	Argument(
-		abstraction AbstractionLike,
-	) ArgumentLike
-}
-
-/*
-ArgumentsClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete arguments-like class.
-*/
-type ArgumentsClassLike interface {
-	// Constructor Methods
-	Arguments(
-		argument ArgumentLike,
-		additionalArguments col.Sequential[AdditionalArgumentLike],
-	) ArgumentsLike
-}
-
-/*
-ArrayClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete array-like class.
-*/
-type ArrayClassLike interface {
-	// Constructor Methods
-	Array() ArrayLike
-}
-
-/*
-AspectDeclarationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete aspect-declaration-like class.
-*/
-type AspectDeclarationClassLike interface {
-	// Constructor Methods
-	AspectDeclaration(
-		declaration DeclarationLike,
-		aspectMethods col.Sequential[AspectMethodLike],
-	) AspectDeclarationLike
-}
-
-/*
-AspectInterfaceClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete aspect-interface-like class.
-*/
-type AspectInterfaceClassLike interface {
-	// Constructor Methods
-	AspectInterface(
-		abstraction AbstractionLike,
-	) AspectInterfaceLike
-}
-
-/*
-AspectMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete aspect-method-like class.
-*/
-type AspectMethodClassLike interface {
-	// Constructor Methods
-	AspectMethod(
-		method MethodLike,
-	) AspectMethodLike
-}
-
-/*
-AspectSectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete aspect-section-like class.
-*/
-type AspectSectionClassLike interface {
-	// Constructor Methods
-	AspectSection(
-		aspectDeclarations col.Sequential[AspectDeclarationLike],
-	) AspectSectionLike
-}
-
-/*
-AspectSubsectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete aspect-subsection-like class.
-*/
-type AspectSubsectionClassLike interface {
-	// Constructor Methods
-	AspectSubsection(
-		aspectInterfaces col.Sequential[AspectInterfaceLike],
-	) AspectSubsectionLike
-}
-
-/*
-AttributeMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete attribute-method-like class.
-*/
-type AttributeMethodClassLike interface {
-	// Constructor Methods
-	AttributeMethod(
+	Cardinality(
 		any_ any,
-	) AttributeMethodLike
+	) CardinalityLike
 }
 
 /*
-AttributeSubsectionClassLike is a class interface that declares the
+CharacterClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete attribute-subsection-like class.
+supported by each concrete character-like class.
 */
-type AttributeSubsectionClassLike interface {
+type CharacterClassLike interface {
 	// Constructor Methods
-	AttributeSubsection(
-		attributeMethods col.Sequential[AttributeMethodLike],
-	) AttributeSubsectionLike
+	Character(
+		any_ any,
+	) CharacterLike
 }
 
 /*
-ChannelClassLike is a class interface that declares the
+ConstrainedClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete channel-like class.
+supported by each concrete constrained-like class.
 */
-type ChannelClassLike interface {
+type ConstrainedClassLike interface {
 	// Constructor Methods
-	Channel() ChannelLike
+	Constrained(
+		any_ any,
+	) ConstrainedLike
 }
 
 /*
-ClassDeclarationClassLike is a class interface that declares the
+DefinitionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete class-declaration-like class.
+supported by each concrete definition-like class.
 */
-type ClassDeclarationClassLike interface {
+type DefinitionClassLike interface {
 	// Constructor Methods
-	ClassDeclaration(
-		declaration DeclarationLike,
-		classMethods ClassMethodsLike,
-	) ClassDeclarationLike
+	Definition(
+		any_ any,
+	) DefinitionLike
 }
 
 /*
-ClassMethodsClassLike is a class interface that declares the
+ElementClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete class-methods-like class.
+supported by each concrete element-like class.
 */
-type ClassMethodsClassLike interface {
+type ElementClassLike interface {
 	// Constructor Methods
-	ClassMethods(
-		constructorSubsection ConstructorSubsectionLike,
-		optionalConstantSubsection ConstantSubsectionLike,
-		optionalFunctionSubsection FunctionSubsectionLike,
-	) ClassMethodsLike
+	Element(
+		any_ any,
+	) ElementLike
 }
 
 /*
-ClassSectionClassLike is a class interface that declares the
+ExplicitClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete class-section-like class.
+supported by each concrete explicit-like class.
 */
-type ClassSectionClassLike interface {
+type ExplicitClassLike interface {
 	// Constructor Methods
-	ClassSection(
-		classDeclarations col.Sequential[ClassDeclarationLike],
-	) ClassSectionLike
+	Explicit(
+		glyph string,
+		optionalExtent ExtentLike,
+	) ExplicitLike
 }
 
 /*
-ConstantMethodClassLike is a class interface that declares the
+ExpressionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete constant-method-like class.
+supported by each concrete expression-like class.
 */
-type ConstantMethodClassLike interface {
+type ExpressionClassLike interface {
 	// Constructor Methods
-	ConstantMethod(
-		name string,
-		abstraction AbstractionLike,
-	) ConstantMethodLike
+	Expression(
+		lowercase string,
+		pattern PatternLike,
+		optionalNote string,
+	) ExpressionLike
 }
 
 /*
-ConstantSubsectionClassLike is a class interface that declares the
+ExpressionOptionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete constant-subsection-like class.
+supported by each concrete expression-option-like class.
 */
-type ConstantSubsectionClassLike interface {
+type ExpressionOptionClassLike interface {
 	// Constructor Methods
-	ConstantSubsection(
-		constantMethods col.Sequential[ConstantMethodLike],
-	) ConstantSubsectionLike
-}
-
-/*
-ConstraintClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete constraint-like class.
-*/
-type ConstraintClassLike interface {
-	// Constructor Methods
-	Constraint(
-		name string,
-		abstraction AbstractionLike,
-	) ConstraintLike
-}
-
-/*
-ConstraintsClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete constraints-like class.
-*/
-type ConstraintsClassLike interface {
-	// Constructor Methods
-	Constraints(
-		constraint ConstraintLike,
-		additionalConstraints col.Sequential[AdditionalConstraintLike],
-	) ConstraintsLike
-}
-
-/*
-ConstructorMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete constructor-method-like class.
-*/
-type ConstructorMethodClassLike interface {
-	// Constructor Methods
-	ConstructorMethod(
-		name string,
-		parameters col.Sequential[ParameterLike],
-		abstraction AbstractionLike,
-	) ConstructorMethodLike
-}
-
-/*
-ConstructorSubsectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete constructor-subsection-like class.
-*/
-type ConstructorSubsectionClassLike interface {
-	// Constructor Methods
-	ConstructorSubsection(
-		constructorMethods col.Sequential[ConstructorMethodLike],
-	) ConstructorSubsectionLike
-}
-
-/*
-DeclarationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete declaration-like class.
-*/
-type DeclarationClassLike interface {
-	// Constructor Methods
-	Declaration(
-		comment string,
-		name string,
-		optionalConstraints ConstraintsLike,
-	) DeclarationLike
-}
-
-/*
-EnumerationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete enumeration-like class.
-*/
-type EnumerationClassLike interface {
-	// Constructor Methods
-	Enumeration(
-		value ValueLike,
-		additionalValues col.Sequential[AdditionalValueLike],
-	) EnumerationLike
-}
-
-/*
-FunctionMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete function-method-like class.
-*/
-type FunctionMethodClassLike interface {
-	// Constructor Methods
-	FunctionMethod(
-		name string,
-		parameters col.Sequential[ParameterLike],
-		result ResultLike,
-	) FunctionMethodLike
-}
-
-/*
-FunctionSubsectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete function-subsection-like class.
-*/
-type FunctionSubsectionClassLike interface {
-	// Constructor Methods
-	FunctionSubsection(
-		functionMethods col.Sequential[FunctionMethodLike],
-	) FunctionSubsectionLike
-}
-
-/*
-FunctionalDeclarationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete functional-declaration-like class.
-*/
-type FunctionalDeclarationClassLike interface {
-	// Constructor Methods
-	FunctionalDeclaration(
-		declaration DeclarationLike,
-		parameters col.Sequential[ParameterLike],
-		result ResultLike,
-	) FunctionalDeclarationLike
-}
-
-/*
-FunctionalSectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete functional-section-like class.
-*/
-type FunctionalSectionClassLike interface {
-	// Constructor Methods
-	FunctionalSection(
-		functionalDeclarations col.Sequential[FunctionalDeclarationLike],
-	) FunctionalSectionLike
-}
-
-/*
-GetterMethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete getter-method-like class.
-*/
-type GetterMethodClassLike interface {
-	// Constructor Methods
-	GetterMethod(
-		name string,
-		abstraction AbstractionLike,
-	) GetterMethodLike
-}
-
-/*
-ImportedPackageClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete imported-package-like class.
-*/
-type ImportedPackageClassLike interface {
-	// Constructor Methods
-	ImportedPackage(
-		name string,
-		path string,
-	) ImportedPackageLike
-}
-
-/*
-InstanceDeclarationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete instance-declaration-like class.
-*/
-type InstanceDeclarationClassLike interface {
-	// Constructor Methods
-	InstanceDeclaration(
-		declaration DeclarationLike,
-		instanceMethods InstanceMethodsLike,
-	) InstanceDeclarationLike
-}
-
-/*
-InstanceMethodsClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete instance-methods-like class.
-*/
-type InstanceMethodsClassLike interface {
-	// Constructor Methods
-	InstanceMethods(
-		principalSubsection PrincipalSubsectionLike,
-		optionalAttributeSubsection AttributeSubsectionLike,
-		optionalAspectSubsection AspectSubsectionLike,
-	) InstanceMethodsLike
-}
-
-/*
-InstanceSectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete instance-section-like class.
-*/
-type InstanceSectionClassLike interface {
-	// Constructor Methods
-	InstanceSection(
-		instanceDeclarations col.Sequential[InstanceDeclarationLike],
-	) InstanceSectionLike
-}
-
-/*
-InterfaceDeclarationsClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete interface-declarations-like class.
-*/
-type InterfaceDeclarationsClassLike interface {
-	// Constructor Methods
-	InterfaceDeclarations(
-		classSection ClassSectionLike,
-		instanceSection InstanceSectionLike,
-		aspectSection AspectSectionLike,
-	) InterfaceDeclarationsLike
-}
-
-/*
-LegalNoticeClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete legal-notice-like class.
-*/
-type LegalNoticeClassLike interface {
-	// Constructor Methods
-	LegalNotice(
-		comment string,
-	) LegalNoticeLike
-}
-
-/*
-MapClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete map-like class.
-*/
-type MapClassLike interface {
-	// Constructor Methods
-	Map(
-		name string,
-	) MapLike
-}
-
-/*
-MethodClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete method-like class.
-*/
-type MethodClassLike interface {
-	// Constructor Methods
-	Method(
-		name string,
-		parameters col.Sequential[ParameterLike],
-		optionalResult ResultLike,
-	) MethodLike
-}
-
-/*
-ModelClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete model-like class.
-*/
-type ModelClassLike interface {
-	// Constructor Methods
-	Model(
-		packageDeclaration PackageDeclarationLike,
-		primitiveDeclarations PrimitiveDeclarationsLike,
-		interfaceDeclarations InterfaceDeclarationsLike,
-	) ModelLike
-}
-
-/*
-MultivalueClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete multivalue-like class.
-*/
-type MultivalueClassLike interface {
-	// Constructor Methods
-	Multivalue(
-		parameters col.Sequential[ParameterLike],
-	) MultivalueLike
-}
-
-/*
-NoneClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete none-like class.
-*/
-type NoneClassLike interface {
-	// Constructor Methods
-	None(
+	ExpressionOption(
 		newline string,
-	) NoneLike
+		lowercase string,
+		optionalNote string,
+	) ExpressionOptionLike
 }
 
 /*
-PackageDeclarationClassLike is a class interface that declares the
+ExtentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete package-declaration-like class.
+supported by each concrete extent-like class.
 */
-type PackageDeclarationClassLike interface {
+type ExtentClassLike interface {
 	// Constructor Methods
-	PackageDeclaration(
-		legalNotice LegalNoticeLike,
-		packageHeader PackageHeaderLike,
-		packageImports PackageImportsLike,
-	) PackageDeclarationLike
+	Extent(
+		glyph string,
+	) ExtentLike
 }
 
 /*
-PackageHeaderClassLike is a class interface that declares the
+FilterClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete package-header-like class.
+supported by each concrete filter-like class.
 */
-type PackageHeaderClassLike interface {
+type FilterClassLike interface {
 	// Constructor Methods
-	PackageHeader(
+	Filter(
+		optionalExcluded string,
+		characters col.Sequential[CharacterLike],
+	) FilterLike
+}
+
+/*
+GroupClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete group-like class.
+*/
+type GroupClassLike interface {
+	// Constructor Methods
+	Group(
+		pattern PatternLike,
+	) GroupLike
+}
+
+/*
+IdentifierClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete identifier-like class.
+*/
+type IdentifierClassLike interface {
+	// Constructor Methods
+	Identifier(
+		any_ any,
+	) IdentifierLike
+}
+
+/*
+ImplicitClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete implicit-like class.
+*/
+type ImplicitClassLike interface {
+	// Constructor Methods
+	Implicit(
+		intrinsic string,
+	) ImplicitLike
+}
+
+/*
+InlineClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete inline-like class.
+*/
+type InlineClassLike interface {
+	// Constructor Methods
+	Inline(
+		terms col.Sequential[TermLike],
+		optionalNote string,
+	) InlineLike
+}
+
+/*
+LimitClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete limit-like class.
+*/
+type LimitClassLike interface {
+	// Constructor Methods
+	Limit(
+		optionalNumber string,
+	) LimitLike
+}
+
+/*
+LiteralClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete literal-like class.
+*/
+type LiteralClassLike interface {
+	// Constructor Methods
+	Literal(
+		quote string,
+	) LiteralLike
+}
+
+/*
+MultiexpressionClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete multiexpression-like class.
+*/
+type MultiexpressionClassLike interface {
+	// Constructor Methods
+	Multiexpression(
+		expressionOptions col.Sequential[ExpressionOptionLike],
+	) MultiexpressionLike
+}
+
+/*
+MultiruleClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete multirule-like class.
+*/
+type MultiruleClassLike interface {
+	// Constructor Methods
+	Multirule(
+		ruleOptions col.Sequential[RuleOptionLike],
+	) MultiruleLike
+}
+
+/*
+NoticeClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete notice-like class.
+*/
+type NoticeClassLike interface {
+	// Constructor Methods
+	Notice(
 		comment string,
-		name string,
-	) PackageHeaderLike
+		newline string,
+	) NoticeLike
 }
 
 /*
-PackageImportsClassLike is a class interface that declares the
+OptionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete package-imports-like class.
+supported by each concrete option-like class.
 */
-type PackageImportsClassLike interface {
+type OptionClassLike interface {
 	// Constructor Methods
-	PackageImports(
-		importedPackages col.Sequential[ImportedPackageLike],
-	) PackageImportsLike
+	Option(
+		repetitions col.Sequential[RepetitionLike],
+	) OptionLike
 }
 
 /*
-ParameterClassLike is a class interface that declares the
+PatternClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete parameter-like class.
+supported by each concrete pattern-like class.
 */
-type ParameterClassLike interface {
+type PatternClassLike interface {
 	// Constructor Methods
-	Parameter(
-		name string,
-		abstraction AbstractionLike,
-	) ParameterLike
+	Pattern(
+		option OptionLike,
+		alternatives col.Sequential[AlternativeLike],
+	) PatternLike
 }
 
 /*
-PrimitiveDeclarationsClassLike is a class interface that declares the
+QuantifiedClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete primitive-declarations-like class.
+supported by each concrete quantified-like class.
 */
-type PrimitiveDeclarationsClassLike interface {
+type QuantifiedClassLike interface {
 	// Constructor Methods
-	PrimitiveDeclarations(
-		typeSection TypeSectionLike,
-		functionalSection FunctionalSectionLike,
-	) PrimitiveDeclarationsLike
+	Quantified(
+		number string,
+		optionalLimit LimitLike,
+	) QuantifiedLike
 }
 
 /*
-PrincipalMethodClassLike is a class interface that declares the
+ReferenceClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete principal-method-like class.
+supported by each concrete reference-like class.
 */
-type PrincipalMethodClassLike interface {
+type ReferenceClassLike interface {
 	// Constructor Methods
-	PrincipalMethod(
-		method MethodLike,
-	) PrincipalMethodLike
+	Reference(
+		identifier IdentifierLike,
+		optionalCardinality CardinalityLike,
+	) ReferenceLike
 }
 
 /*
-PrincipalSubsectionClassLike is a class interface that declares the
+RepetitionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete principal-subsection-like class.
+supported by each concrete repetition-like class.
 */
-type PrincipalSubsectionClassLike interface {
+type RepetitionClassLike interface {
 	// Constructor Methods
-	PrincipalSubsection(
-		principalMethods col.Sequential[PrincipalMethodLike],
-	) PrincipalSubsectionLike
+	Repetition(
+		element ElementLike,
+		optionalCardinality CardinalityLike,
+	) RepetitionLike
 }
 
 /*
-ResultClassLike is a class interface that declares the
+RuleClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete result-like class.
+supported by each concrete rule-like class.
 */
-type ResultClassLike interface {
+type RuleClassLike interface {
 	// Constructor Methods
-	Result(
+	Rule(
+		uppercase string,
+		definition DefinitionLike,
+	) RuleLike
+}
+
+/*
+RuleOptionClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete rule-option-like class.
+*/
+type RuleOptionClassLike interface {
+	// Constructor Methods
+	RuleOption(
+		newline string,
+		uppercase string,
+		optionalNote string,
+	) RuleOptionLike
+}
+
+/*
+SyntaxClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete syntax-like class.
+*/
+type SyntaxClassLike interface {
+	// Constructor Methods
+	Syntax(
+		notice NoticeLike,
+		comment1 string,
+		rules col.Sequential[RuleLike],
+		comment2 string,
+		expressions col.Sequential[ExpressionLike],
+	) SyntaxLike
+}
+
+/*
+TermClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete term-like class.
+*/
+type TermClassLike interface {
+	// Constructor Methods
+	Term(
 		any_ any,
-	) ResultLike
+	) TermLike
 }
 
 /*
-SetterMethodClassLike is a class interface that declares the
+TextClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete setter-method-like class.
+supported by each concrete text-like class.
 */
-type SetterMethodClassLike interface {
+type TextClassLike interface {
 	// Constructor Methods
-	SetterMethod(
-		name string,
-		parameter ParameterLike,
-	) SetterMethodLike
-}
-
-/*
-TypeDeclarationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete type-declaration-like class.
-*/
-type TypeDeclarationClassLike interface {
-	// Constructor Methods
-	TypeDeclaration(
-		declaration DeclarationLike,
-		abstraction AbstractionLike,
-		optionalEnumeration EnumerationLike,
-	) TypeDeclarationLike
-}
-
-/*
-TypeSectionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete type-section-like class.
-*/
-type TypeSectionClassLike interface {
-	// Constructor Methods
-	TypeSection(
-		typeDeclarations col.Sequential[TypeDeclarationLike],
-	) TypeSectionLike
-}
-
-/*
-ValueClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete value-like class.
-*/
-type ValueClassLike interface {
-	// Constructor Methods
-	Value(
-		name string,
-		abstraction AbstractionLike,
-	) ValueLike
-}
-
-/*
-WrapperClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete wrapper-like class.
-*/
-type WrapperClassLike interface {
-	// Constructor Methods
-	Wrapper(
+	Text(
 		any_ any,
-	) WrapperLike
+	) TextLike
 }
 
 // INSTANCE DECLARATIONS
 
 /*
-AbstractionLike is an instance interface that declares the
+AlternativeLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete abstraction-like class.
+by each instance of a concrete alternative-like class.
 */
-type AbstractionLike interface {
+type AlternativeLike interface {
 	// Principal Methods
-	GetClass() AbstractionClassLike
+	GetClass() AlternativeClassLike
 
 	// Attribute Methods
-	GetOptionalWrapper() WrapperLike
-	GetOptionalPrefix() string
-	GetName() string
-	GetOptionalArguments() ArgumentsLike
+	GetOption() OptionLike
 }
 
 /*
-AdditionalArgumentLike is an instance interface that declares the
+CardinalityLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete additional-argument-like class.
+by each instance of a concrete cardinality-like class.
 */
-type AdditionalArgumentLike interface {
+type CardinalityLike interface {
 	// Principal Methods
-	GetClass() AdditionalArgumentClassLike
-
-	// Attribute Methods
-	GetArgument() ArgumentLike
-}
-
-/*
-AdditionalConstraintLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete additional-constraint-like class.
-*/
-type AdditionalConstraintLike interface {
-	// Principal Methods
-	GetClass() AdditionalConstraintClassLike
-
-	// Attribute Methods
-	GetConstraint() ConstraintLike
-}
-
-/*
-AdditionalValueLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete additional-value-like class.
-*/
-type AdditionalValueLike interface {
-	// Principal Methods
-	GetClass() AdditionalValueClassLike
-
-	// Attribute Methods
-	GetName() string
-}
-
-/*
-ArgumentLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete argument-like class.
-*/
-type ArgumentLike interface {
-	// Principal Methods
-	GetClass() ArgumentClassLike
-
-	// Attribute Methods
-	GetAbstraction() AbstractionLike
-}
-
-/*
-ArgumentsLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete arguments-like class.
-*/
-type ArgumentsLike interface {
-	// Principal Methods
-	GetClass() ArgumentsClassLike
-
-	// Attribute Methods
-	GetArgument() ArgumentLike
-	GetAdditionalArguments() col.Sequential[AdditionalArgumentLike]
-}
-
-/*
-ArrayLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete array-like class.
-*/
-type ArrayLike interface {
-	// Principal Methods
-	GetClass() ArrayClassLike
-}
-
-/*
-AspectDeclarationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete aspect-declaration-like class.
-*/
-type AspectDeclarationLike interface {
-	// Principal Methods
-	GetClass() AspectDeclarationClassLike
-
-	// Attribute Methods
-	GetDeclaration() DeclarationLike
-	GetAspectMethods() col.Sequential[AspectMethodLike]
-}
-
-/*
-AspectInterfaceLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete aspect-interface-like class.
-*/
-type AspectInterfaceLike interface {
-	// Principal Methods
-	GetClass() AspectInterfaceClassLike
-
-	// Attribute Methods
-	GetAbstraction() AbstractionLike
-}
-
-/*
-AspectMethodLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete aspect-method-like class.
-*/
-type AspectMethodLike interface {
-	// Principal Methods
-	GetClass() AspectMethodClassLike
-
-	// Attribute Methods
-	GetMethod() MethodLike
-}
-
-/*
-AspectSectionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete aspect-section-like class.
-*/
-type AspectSectionLike interface {
-	// Principal Methods
-	GetClass() AspectSectionClassLike
-
-	// Attribute Methods
-	GetAspectDeclarations() col.Sequential[AspectDeclarationLike]
-}
-
-/*
-AspectSubsectionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete aspect-subsection-like class.
-*/
-type AspectSubsectionLike interface {
-	// Principal Methods
-	GetClass() AspectSubsectionClassLike
-
-	// Attribute Methods
-	GetAspectInterfaces() col.Sequential[AspectInterfaceLike]
-}
-
-/*
-AttributeMethodLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete attribute-method-like class.
-*/
-type AttributeMethodLike interface {
-	// Principal Methods
-	GetClass() AttributeMethodClassLike
+	GetClass() CardinalityClassLike
 
 	// Attribute Methods
 	GetAny() any
 }
 
 /*
-AttributeSubsectionLike is an instance interface that declares the
+CharacterLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete attribute-subsection-like class.
+by each instance of a concrete character-like class.
 */
-type AttributeSubsectionLike interface {
+type CharacterLike interface {
 	// Principal Methods
-	GetClass() AttributeSubsectionClassLike
+	GetClass() CharacterClassLike
 
 	// Attribute Methods
-	GetAttributeMethods() col.Sequential[AttributeMethodLike]
+	GetAny() any
 }
 
 /*
-ChannelLike is an instance interface that declares the
+ConstrainedLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete channel-like class.
+by each instance of a concrete constrained-like class.
 */
-type ChannelLike interface {
+type ConstrainedLike interface {
 	// Principal Methods
-	GetClass() ChannelClassLike
-}
-
-/*
-ClassDeclarationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete class-declaration-like class.
-*/
-type ClassDeclarationLike interface {
-	// Principal Methods
-	GetClass() ClassDeclarationClassLike
+	GetClass() ConstrainedClassLike
 
 	// Attribute Methods
-	GetDeclaration() DeclarationLike
-	GetClassMethods() ClassMethodsLike
+	GetAny() any
 }
 
 /*
-ClassMethodsLike is an instance interface that declares the
+DefinitionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete class-methods-like class.
+by each instance of a concrete definition-like class.
 */
-type ClassMethodsLike interface {
+type DefinitionLike interface {
 	// Principal Methods
-	GetClass() ClassMethodsClassLike
+	GetClass() DefinitionClassLike
 
 	// Attribute Methods
-	GetConstructorSubsection() ConstructorSubsectionLike
-	GetOptionalConstantSubsection() ConstantSubsectionLike
-	GetOptionalFunctionSubsection() FunctionSubsectionLike
+	GetAny() any
 }
 
 /*
-ClassSectionLike is an instance interface that declares the
+ElementLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete class-section-like class.
+by each instance of a concrete element-like class.
 */
-type ClassSectionLike interface {
+type ElementLike interface {
 	// Principal Methods
-	GetClass() ClassSectionClassLike
+	GetClass() ElementClassLike
 
 	// Attribute Methods
-	GetClassDeclarations() col.Sequential[ClassDeclarationLike]
+	GetAny() any
 }
 
 /*
-ConstantMethodLike is an instance interface that declares the
+ExplicitLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constant-method-like class.
+by each instance of a concrete explicit-like class.
 */
-type ConstantMethodLike interface {
+type ExplicitLike interface {
 	// Principal Methods
-	GetClass() ConstantMethodClassLike
+	GetClass() ExplicitClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetAbstraction() AbstractionLike
+	GetGlyph() string
+	GetOptionalExtent() ExtentLike
 }
 
 /*
-ConstantSubsectionLike is an instance interface that declares the
+ExpressionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constant-subsection-like class.
+by each instance of a concrete expression-like class.
 */
-type ConstantSubsectionLike interface {
+type ExpressionLike interface {
 	// Principal Methods
-	GetClass() ConstantSubsectionClassLike
+	GetClass() ExpressionClassLike
 
 	// Attribute Methods
-	GetConstantMethods() col.Sequential[ConstantMethodLike]
+	GetLowercase() string
+	GetPattern() PatternLike
+	GetOptionalNote() string
 }
 
 /*
-ConstraintLike is an instance interface that declares the
+ExpressionOptionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constraint-like class.
+by each instance of a concrete expression-option-like class.
 */
-type ConstraintLike interface {
+type ExpressionOptionLike interface {
 	// Principal Methods
-	GetClass() ConstraintClassLike
+	GetClass() ExpressionOptionClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetAbstraction() AbstractionLike
+	GetNewline() string
+	GetLowercase() string
+	GetOptionalNote() string
 }
 
 /*
-ConstraintsLike is an instance interface that declares the
+ExtentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constraints-like class.
+by each instance of a concrete extent-like class.
 */
-type ConstraintsLike interface {
+type ExtentLike interface {
 	// Principal Methods
-	GetClass() ConstraintsClassLike
+	GetClass() ExtentClassLike
 
 	// Attribute Methods
-	GetConstraint() ConstraintLike
-	GetAdditionalConstraints() col.Sequential[AdditionalConstraintLike]
+	GetGlyph() string
 }
 
 /*
-ConstructorMethodLike is an instance interface that declares the
+FilterLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constructor-method-like class.
+by each instance of a concrete filter-like class.
 */
-type ConstructorMethodLike interface {
+type FilterLike interface {
 	// Principal Methods
-	GetClass() ConstructorMethodClassLike
+	GetClass() FilterClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetParameters() col.Sequential[ParameterLike]
-	GetAbstraction() AbstractionLike
+	GetOptionalExcluded() string
+	GetCharacters() col.Sequential[CharacterLike]
 }
 
 /*
-ConstructorSubsectionLike is an instance interface that declares the
+GroupLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constructor-subsection-like class.
+by each instance of a concrete group-like class.
 */
-type ConstructorSubsectionLike interface {
+type GroupLike interface {
 	// Principal Methods
-	GetClass() ConstructorSubsectionClassLike
+	GetClass() GroupClassLike
 
 	// Attribute Methods
-	GetConstructorMethods() col.Sequential[ConstructorMethodLike]
+	GetPattern() PatternLike
 }
 
 /*
-DeclarationLike is an instance interface that declares the
+IdentifierLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete declaration-like class.
+by each instance of a concrete identifier-like class.
 */
-type DeclarationLike interface {
+type IdentifierLike interface {
 	// Principal Methods
-	GetClass() DeclarationClassLike
+	GetClass() IdentifierClassLike
 
 	// Attribute Methods
-	GetComment() string
-	GetName() string
-	GetOptionalConstraints() ConstraintsLike
+	GetAny() any
 }
 
 /*
-EnumerationLike is an instance interface that declares the
+ImplicitLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete enumeration-like class.
+by each instance of a concrete implicit-like class.
 */
-type EnumerationLike interface {
+type ImplicitLike interface {
 	// Principal Methods
-	GetClass() EnumerationClassLike
+	GetClass() ImplicitClassLike
 
 	// Attribute Methods
-	GetValue() ValueLike
-	GetAdditionalValues() col.Sequential[AdditionalValueLike]
+	GetIntrinsic() string
 }
 
 /*
-FunctionMethodLike is an instance interface that declares the
+InlineLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete function-method-like class.
+by each instance of a concrete inline-like class.
 */
-type FunctionMethodLike interface {
+type InlineLike interface {
 	// Principal Methods
-	GetClass() FunctionMethodClassLike
+	GetClass() InlineClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetParameters() col.Sequential[ParameterLike]
-	GetResult() ResultLike
+	GetTerms() col.Sequential[TermLike]
+	GetOptionalNote() string
 }
 
 /*
-FunctionSubsectionLike is an instance interface that declares the
+LimitLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete function-subsection-like class.
+by each instance of a concrete limit-like class.
 */
-type FunctionSubsectionLike interface {
+type LimitLike interface {
 	// Principal Methods
-	GetClass() FunctionSubsectionClassLike
+	GetClass() LimitClassLike
 
 	// Attribute Methods
-	GetFunctionMethods() col.Sequential[FunctionMethodLike]
+	GetOptionalNumber() string
 }
 
 /*
-FunctionalDeclarationLike is an instance interface that declares the
+LiteralLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete functional-declaration-like class.
+by each instance of a concrete literal-like class.
 */
-type FunctionalDeclarationLike interface {
+type LiteralLike interface {
 	// Principal Methods
-	GetClass() FunctionalDeclarationClassLike
+	GetClass() LiteralClassLike
 
 	// Attribute Methods
-	GetDeclaration() DeclarationLike
-	GetParameters() col.Sequential[ParameterLike]
-	GetResult() ResultLike
+	GetQuote() string
 }
 
 /*
-FunctionalSectionLike is an instance interface that declares the
+MultiexpressionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete functional-section-like class.
+by each instance of a concrete multiexpression-like class.
 */
-type FunctionalSectionLike interface {
+type MultiexpressionLike interface {
 	// Principal Methods
-	GetClass() FunctionalSectionClassLike
+	GetClass() MultiexpressionClassLike
 
 	// Attribute Methods
-	GetFunctionalDeclarations() col.Sequential[FunctionalDeclarationLike]
+	GetExpressionOptions() col.Sequential[ExpressionOptionLike]
 }
 
 /*
-GetterMethodLike is an instance interface that declares the
+MultiruleLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete getter-method-like class.
+by each instance of a concrete multirule-like class.
 */
-type GetterMethodLike interface {
+type MultiruleLike interface {
 	// Principal Methods
-	GetClass() GetterMethodClassLike
+	GetClass() MultiruleClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetAbstraction() AbstractionLike
+	GetRuleOptions() col.Sequential[RuleOptionLike]
 }
 
 /*
-ImportedPackageLike is an instance interface that declares the
+NoticeLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete imported-package-like class.
+by each instance of a concrete notice-like class.
 */
-type ImportedPackageLike interface {
+type NoticeLike interface {
 	// Principal Methods
-	GetClass() ImportedPackageClassLike
-
-	// Attribute Methods
-	GetName() string
-	GetPath() string
-}
-
-/*
-InstanceDeclarationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete instance-declaration-like class.
-*/
-type InstanceDeclarationLike interface {
-	// Principal Methods
-	GetClass() InstanceDeclarationClassLike
-
-	// Attribute Methods
-	GetDeclaration() DeclarationLike
-	GetInstanceMethods() InstanceMethodsLike
-}
-
-/*
-InstanceMethodsLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete instance-methods-like class.
-*/
-type InstanceMethodsLike interface {
-	// Principal Methods
-	GetClass() InstanceMethodsClassLike
-
-	// Attribute Methods
-	GetPrincipalSubsection() PrincipalSubsectionLike
-	GetOptionalAttributeSubsection() AttributeSubsectionLike
-	GetOptionalAspectSubsection() AspectSubsectionLike
-}
-
-/*
-InstanceSectionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete instance-section-like class.
-*/
-type InstanceSectionLike interface {
-	// Principal Methods
-	GetClass() InstanceSectionClassLike
-
-	// Attribute Methods
-	GetInstanceDeclarations() col.Sequential[InstanceDeclarationLike]
-}
-
-/*
-InterfaceDeclarationsLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete interface-declarations-like class.
-*/
-type InterfaceDeclarationsLike interface {
-	// Principal Methods
-	GetClass() InterfaceDeclarationsClassLike
-
-	// Attribute Methods
-	GetClassSection() ClassSectionLike
-	GetInstanceSection() InstanceSectionLike
-	GetAspectSection() AspectSectionLike
-}
-
-/*
-LegalNoticeLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete legal-notice-like class.
-*/
-type LegalNoticeLike interface {
-	// Principal Methods
-	GetClass() LegalNoticeClassLike
+	GetClass() NoticeClassLike
 
 	// Attribute Methods
 	GetComment() string
-}
-
-/*
-MapLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete map-like class.
-*/
-type MapLike interface {
-	// Principal Methods
-	GetClass() MapClassLike
-
-	// Attribute Methods
-	GetName() string
-}
-
-/*
-MethodLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete method-like class.
-*/
-type MethodLike interface {
-	// Principal Methods
-	GetClass() MethodClassLike
-
-	// Attribute Methods
-	GetName() string
-	GetParameters() col.Sequential[ParameterLike]
-	GetOptionalResult() ResultLike
-}
-
-/*
-ModelLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete model-like class.
-*/
-type ModelLike interface {
-	// Principal Methods
-	GetClass() ModelClassLike
-
-	// Attribute Methods
-	GetPackageDeclaration() PackageDeclarationLike
-	GetPrimitiveDeclarations() PrimitiveDeclarationsLike
-	GetInterfaceDeclarations() InterfaceDeclarationsLike
-}
-
-/*
-MultivalueLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete multivalue-like class.
-*/
-type MultivalueLike interface {
-	// Principal Methods
-	GetClass() MultivalueClassLike
-
-	// Attribute Methods
-	GetParameters() col.Sequential[ParameterLike]
-}
-
-/*
-NoneLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete none-like class.
-*/
-type NoneLike interface {
-	// Principal Methods
-	GetClass() NoneClassLike
-
-	// Attribute Methods
 	GetNewline() string
 }
 
 /*
-PackageDeclarationLike is an instance interface that declares the
+OptionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete package-declaration-like class.
+by each instance of a concrete option-like class.
 */
-type PackageDeclarationLike interface {
+type OptionLike interface {
 	// Principal Methods
-	GetClass() PackageDeclarationClassLike
+	GetClass() OptionClassLike
 
 	// Attribute Methods
-	GetLegalNotice() LegalNoticeLike
-	GetPackageHeader() PackageHeaderLike
-	GetPackageImports() PackageImportsLike
+	GetRepetitions() col.Sequential[RepetitionLike]
 }
 
 /*
-PackageHeaderLike is an instance interface that declares the
+PatternLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete package-header-like class.
+by each instance of a concrete pattern-like class.
 */
-type PackageHeaderLike interface {
+type PatternLike interface {
 	// Principal Methods
-	GetClass() PackageHeaderClassLike
+	GetClass() PatternClassLike
 
 	// Attribute Methods
-	GetComment() string
-	GetName() string
+	GetOption() OptionLike
+	GetAlternatives() col.Sequential[AlternativeLike]
 }
 
 /*
-PackageImportsLike is an instance interface that declares the
+QuantifiedLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete package-imports-like class.
+by each instance of a concrete quantified-like class.
 */
-type PackageImportsLike interface {
+type QuantifiedLike interface {
 	// Principal Methods
-	GetClass() PackageImportsClassLike
+	GetClass() QuantifiedClassLike
 
 	// Attribute Methods
-	GetImportedPackages() col.Sequential[ImportedPackageLike]
+	GetNumber() string
+	GetOptionalLimit() LimitLike
 }
 
 /*
-ParameterLike is an instance interface that declares the
+ReferenceLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete parameter-like class.
+by each instance of a concrete reference-like class.
 */
-type ParameterLike interface {
+type ReferenceLike interface {
 	// Principal Methods
-	GetClass() ParameterClassLike
+	GetClass() ReferenceClassLike
 
 	// Attribute Methods
-	GetName() string
-	GetAbstraction() AbstractionLike
+	GetIdentifier() IdentifierLike
+	GetOptionalCardinality() CardinalityLike
 }
 
 /*
-PrimitiveDeclarationsLike is an instance interface that declares the
+RepetitionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete primitive-declarations-like class.
+by each instance of a concrete repetition-like class.
 */
-type PrimitiveDeclarationsLike interface {
+type RepetitionLike interface {
 	// Principal Methods
-	GetClass() PrimitiveDeclarationsClassLike
+	GetClass() RepetitionClassLike
 
 	// Attribute Methods
-	GetTypeSection() TypeSectionLike
-	GetFunctionalSection() FunctionalSectionLike
+	GetElement() ElementLike
+	GetOptionalCardinality() CardinalityLike
 }
 
 /*
-PrincipalMethodLike is an instance interface that declares the
+RuleLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete principal-method-like class.
+by each instance of a concrete rule-like class.
 */
-type PrincipalMethodLike interface {
+type RuleLike interface {
 	// Principal Methods
-	GetClass() PrincipalMethodClassLike
+	GetClass() RuleClassLike
 
 	// Attribute Methods
-	GetMethod() MethodLike
+	GetUppercase() string
+	GetDefinition() DefinitionLike
 }
 
 /*
-PrincipalSubsectionLike is an instance interface that declares the
+RuleOptionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete principal-subsection-like class.
+by each instance of a concrete rule-option-like class.
 */
-type PrincipalSubsectionLike interface {
+type RuleOptionLike interface {
 	// Principal Methods
-	GetClass() PrincipalSubsectionClassLike
+	GetClass() RuleOptionClassLike
 
 	// Attribute Methods
-	GetPrincipalMethods() col.Sequential[PrincipalMethodLike]
+	GetNewline() string
+	GetUppercase() string
+	GetOptionalNote() string
 }
 
 /*
-ResultLike is an instance interface that declares the
+SyntaxLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete result-like class.
+by each instance of a concrete syntax-like class.
 */
-type ResultLike interface {
+type SyntaxLike interface {
 	// Principal Methods
-	GetClass() ResultClassLike
+	GetClass() SyntaxClassLike
+
+	// Attribute Methods
+	GetNotice() NoticeLike
+	GetComment1() string
+	GetRules() col.Sequential[RuleLike]
+	GetComment2() string
+	GetExpressions() col.Sequential[ExpressionLike]
+}
+
+/*
+TermLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete term-like class.
+*/
+type TermLike interface {
+	// Principal Methods
+	GetClass() TermClassLike
 
 	// Attribute Methods
 	GetAny() any
 }
 
 /*
-SetterMethodLike is an instance interface that declares the
+TextLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete setter-method-like class.
+by each instance of a concrete text-like class.
 */
-type SetterMethodLike interface {
+type TextLike interface {
 	// Principal Methods
-	GetClass() SetterMethodClassLike
-
-	// Attribute Methods
-	GetName() string
-	GetParameter() ParameterLike
-}
-
-/*
-TypeDeclarationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete type-declaration-like class.
-*/
-type TypeDeclarationLike interface {
-	// Principal Methods
-	GetClass() TypeDeclarationClassLike
-
-	// Attribute Methods
-	GetDeclaration() DeclarationLike
-	GetAbstraction() AbstractionLike
-	GetOptionalEnumeration() EnumerationLike
-}
-
-/*
-TypeSectionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete type-section-like class.
-*/
-type TypeSectionLike interface {
-	// Principal Methods
-	GetClass() TypeSectionClassLike
-
-	// Attribute Methods
-	GetTypeDeclarations() col.Sequential[TypeDeclarationLike]
-}
-
-/*
-ValueLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete value-like class.
-*/
-type ValueLike interface {
-	// Principal Methods
-	GetClass() ValueClassLike
-
-	// Attribute Methods
-	GetName() string
-	GetAbstraction() AbstractionLike
-}
-
-/*
-WrapperLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete wrapper-like class.
-*/
-type WrapperLike interface {
-	// Principal Methods
-	GetClass() WrapperClassLike
+	GetClass() TextClassLike
 
 	// Attribute Methods
 	GetAny() any

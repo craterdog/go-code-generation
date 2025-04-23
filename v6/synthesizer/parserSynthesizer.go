@@ -259,27 +259,71 @@ func (v *parserSynthesizer_) createDelimiterStep() string {
 	return delimiterStep
 }
 
+func (v *parserSynthesizer_) isMultiexpression(
+	ruleName string,
+) bool {
+	var result = true
+	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
+	for identifiers.HasNext() {
+		var identifier = identifiers.GetNext().GetAny().(string)
+		switch {
+		case not.MatchesType(identifier, not.LowercaseToken):
+			// Each identifier refers to an expression.
+			return true
+		case uti.IsDefined(v.analyzer_.GetReferences(identifier)):
+			// The identifier refers to an inline rule.
+			return false
+		default:
+			// The identifier refers to a multiline rule.
+			result = result && v.isMultiexpression(identifier)
+		}
+
+	}
+	return result
+}
+
 func (v *parserSynthesizer_) createInlineImplementation(
 	ruleName string,
 ) string {
+	var parseStep string
 	var class = parserSynthesizerClass()
 	var implementation = class.declarationStep_
 	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() {
 		var term = terms.GetNext()
-		var parseStep string
 		switch actual := term.GetAny().(type) {
+		case not.LiteralLike:
+			// The term is a delimiter.
+			var delimiter = actual.GetQuote()
+			parseStep = v.createDelimiterStep()
+			parseStep = uti.ReplaceAll(
+				parseStep,
+				"delimiter",
+				delimiter,
+			)
 		case not.ReferenceLike:
+			// The term is a reference to a rule or an expression.
 			var cardinality = actual.GetOptionalCardinality()
-			var variableName = variables.GetNext()
 			var identifier = actual.GetIdentifier().GetAny().(string)
 			switch {
 			case not.MatchesType(identifier, not.LowercaseToken):
-				parseStep = v.createTokenStep(cardinality)
-			case not.MatchesType(identifier, not.UppercaseToken):
+				// The identifier refers to an expression.
+				parseStep = v.createExpressionStep(cardinality)
+			case uti.IsUndefined(v.analyzer_.GetReferences(identifier)):
+				// The identifier refers to a multiline rule.
+				if v.isMultiexpression(identifier) {
+					// The identifier refers to nested elements only.
+					parseStep = v.createMultiexpressionStep(cardinality)
+				} else {
+					// The identifier refers to at least one nested inline rule.
+					parseStep = v.createRuleStep(cardinality)
+				}
+			default:
+				// The identifier refers to an inline rule.
 				parseStep = v.createRuleStep(cardinality)
 			}
+			var variableName = variables.GetNext()
 			parseStep = uti.ReplaceAll(
 				parseStep,
 				"variableName",
@@ -289,14 +333,6 @@ func (v *parserSynthesizer_) createInlineImplementation(
 				parseStep,
 				"identifier",
 				identifier,
-			)
-		case not.LiteralLike:
-			var delimiter = actual.GetQuote()
-			parseStep = v.createDelimiterStep()
-			parseStep = uti.ReplaceAll(
-				parseStep,
-				"delimiter",
-				delimiter,
 			)
 		}
 		implementation += parseStep
@@ -371,6 +407,22 @@ func (v *parserSynthesizer_) createParseMethods() string {
 	return parseMethods
 }
 
+func (v *parserSynthesizer_) createMultiexpressionStep(
+	cardinality not.CardinalityLike,
+) string {
+	var class = parserSynthesizerClass()
+	var optionalStep = class.parseOptionalMultiexpressionStep_
+	var requiredStep = class.parseRequiredMultiexpressionStep_
+	var repeatedStep = class.parseRepeatedMultiexpressionStep_
+	var ruleStep = v.createCardinality(
+		cardinality,
+		optionalStep,
+		requiredStep,
+		repeatedStep,
+	)
+	return ruleStep
+}
+
 func (v *parserSynthesizer_) createRuleStep(
 	cardinality not.CardinalityLike,
 ) string {
@@ -387,13 +439,13 @@ func (v *parserSynthesizer_) createRuleStep(
 	return ruleStep
 }
 
-func (v *parserSynthesizer_) createTokenStep(
+func (v *parserSynthesizer_) createExpressionStep(
 	cardinality not.CardinalityLike,
 ) string {
 	var class = parserSynthesizerClass()
-	var optionalStep = class.parseOptionalTokenStep_
-	var requiredStep = class.parseRequiredTokenStep_
-	var repeatedStep = class.parseRepeatedTokenStep_
+	var optionalStep = class.parseOptionalExpressionStep_
+	var requiredStep = class.parseRequiredExpressionStep_
+	var repeatedStep = class.parseRepeatedExpressionStep_
 	var tokenStep = v.createCardinality(
 		cardinality,
 		optionalStep,
@@ -414,30 +466,33 @@ type parserSynthesizer_ struct {
 
 type parserSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_         string
-	importedPackages_       string
-	accessFunction_         string
-	constructorMethods_     string
-	parseMethod_            string
-	parseDelimiterStep_     string
-	declarationStep_        string
-	parseRequiredTokenStep_ string
-	parseOptionalTokenStep_ string
-	parseRepeatedTokenStep_ string
-	parseRequiredRuleStep_  string
-	parseOptionalRuleStep_  string
-	parseRepeatedRuleStep_  string
-	parseFoundStep_         string
-	parseTokenCase_         string
-	parseRuleCase_          string
-	parseDefaultCase_       string
-	principalMethods_       string
-	privateMethods_         string
-	possibleDelimiter_      string
-	requiredDelimiter_      string
-	instanceStructure_      string
-	classStructure_         string
-	classReference_         string
+	warningMessage_                   string
+	importedPackages_                 string
+	accessFunction_                   string
+	constructorMethods_               string
+	parseMethod_                      string
+	parseDelimiterStep_               string
+	declarationStep_                  string
+	parseRequiredExpressionStep_      string
+	parseOptionalExpressionStep_      string
+	parseRepeatedExpressionStep_      string
+	parseRequiredMultiexpressionStep_ string
+	parseOptionalMultiexpressionStep_ string
+	parseRepeatedMultiexpressionStep_ string
+	parseRequiredRuleStep_            string
+	parseOptionalRuleStep_            string
+	parseRepeatedRuleStep_            string
+	parseFoundStep_                   string
+	parseTokenCase_                   string
+	parseRuleCase_                    string
+	parseDefaultCase_                 string
+	principalMethods_                 string
+	privateMethods_                   string
+	possibleDelimiter_                string
+	requiredDelimiter_                string
+	instanceStructure_                string
+	classStructure_                   string
+	classReference_                   string
 }
 
 // Class Reference
@@ -515,13 +570,13 @@ func (v *parser_) parse<~RuleName>() (
 	var tokens = fra.List[TokenLike]()
 `,
 
-	parseRequiredTokenStep_: `
+	parseRequiredExpressionStep_: `
 	// Attempt to parse a single <~identifier> token.
 	var <variableName_> string
 	<variableName_>, token, ok = v.parseToken(<~Identifier>Token)
 	if !ok {
 		if uti.IsDefined(tokens) {
-			// This is not a single <~RuleName> rule.
+			// This is not a single <~identifier> token.
 			v.putBack(tokens)
 			return
 		} else {
@@ -535,7 +590,7 @@ func (v *parser_) parse<~RuleName>() (
 	}
 `,
 
-	parseOptionalTokenStep_: `
+	parseOptionalExpressionStep_: `
 	// Attempt to parse an optional <~identifier> token.
 	var <variableName_> string
 	<variableName_>, token, ok = v.parseToken(<~Identifier>Token)
@@ -544,7 +599,7 @@ func (v *parser_) parse<~RuleName>() (
 	}
 `,
 
-	parseRepeatedTokenStep_: `
+	parseRepeatedExpressionStep_: `
 	// Attempt to parse multiple <~identifier> tokens.
 	var <variableName_> = fra.List[string]()
 <~variableName>Loop:
@@ -573,6 +628,69 @@ func (v *parser_) parse<~RuleName>() (
 	}
 `,
 
+	parseRequiredMultiexpressionStep_: `
+	// Attempt to parse a single <~Identifier> rule.
+	var <variableName_> ast.<~Identifier>Like
+	<variableName_>, token, ok = v.parse<~Identifier>()
+	switch {
+	case ok:
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	case uti.IsDefined(tokens):
+		// This is not a single <~Identifier> rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$<~RuleName>", token)
+		panic(message)
+	}
+`,
+
+	parseOptionalMultiexpressionStep_: `
+	// Attempt to parse an optional <~Identifier> rule.
+	var <variableName_> ast.<~Identifier>Like
+	<variableName_>, _, ok = v.parse<~Identifier>()
+	if ok {
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	}
+`,
+
+	parseRepeatedMultiexpressionStep_: `
+	// Attempt to parse multiple <~Identifier> rules.
+	var <variableName_> = fra.List[ast.<~Identifier>Like]()
+<~variableName>Loop:
+	for count := 0; count < <last>; count++ {
+		var <identifier_> ast.<~Identifier>Like
+		<identifier_>, token, ok = v.parse<~Identifier>()
+		if !ok {
+			switch {
+			case count >= <first>:
+				break <~variableName>Loop
+			case uti.IsDefined(tokens):
+				// This is not multiple <~Identifier> rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$<~RuleName>", token)
+				message += "<first> or more <~Identifier> rules are required."
+				panic(message)
+			}
+		}
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+		<variableName_>.AppendValue(<identifier_>)
+	}
+`,
+
 	parseRequiredRuleStep_: `
 	// Attempt to parse a single <~Identifier> rule.
 	var <variableName_> ast.<~Identifier>Like
@@ -582,7 +700,7 @@ func (v *parser_) parse<~RuleName>() (
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single <~RuleName> rule.
+		// This is not a single <~Identifier> rule.
 		v.putBack(tokens)
 		return
 	default:

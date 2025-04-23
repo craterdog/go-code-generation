@@ -14,33 +14,31 @@ package module_test
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
 	tes "testing"
 )
 
-var modelFiles = []string{
-	"./ast/Package.go",
-	"./grammar/Package.go",
-	"./example/Package.go",
+var syntaxFiles = []string{
+	"./Syntax.cdsn",
+	//"./testdata/bali.cdsn",
+	//"./testdata/gcmn.cdsn",
+	//"./testdata/full.cdsn",
 }
 
 func TestRoundTrips(t *tes.T) {
 	fmt.Println("Round Trip Tests:")
-	for _, modelFile := range modelFiles {
-		fmt.Printf("   %v\n", modelFile)
-		var bytes, err = osx.ReadFile(modelFile)
+	for _, syntaxFile := range syntaxFiles {
+		fmt.Printf("   %v\n", syntaxFile)
+		var bytes, err = osx.ReadFile(syntaxFile)
 		if err != nil {
 			panic(err)
 		}
 		var source = string(bytes)
-		var parser = mod.Parser()
-		var model = parser.ParseSource(source)
-		var validator = mod.Validator()
-		validator.ValidateModel(model)
-		var formatter = mod.Formatter()
-		var actual = formatter.FormatModel(model)
+		var syntax = not.ParseSource(source)
+		not.ValidateSyntax(syntax)
+		var actual = not.FormatSyntax(syntax)
 		ass.Equal(t, source, actual)
 	}
 	fmt.Println("Done.")
