@@ -344,7 +344,9 @@ func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) st
 
 	aspectMethods_: `
 // Methodical Methods
-<ProcessTokens><ProcessRules>`,
+<ProcessTokens><ProcessRules>
+const _indentation = "\t"
+`,
 
 	processToken_: `
 func (v *formatter_) Process<~TokenName>(
@@ -427,10 +429,9 @@ func (v *formatter_) Postprocess<~RuleName>(
 
 func (v *formatter_) appendNewline() {
 	var newline = "\n"
-	var indentation = "\t"
 	var level uint
 	for ; level < v.depth_; level++ {
-		newline += indentation
+		newline += _indentation
 	}
 	v.appendString(newline)
 }

@@ -344,16 +344,17 @@ func (v *formatter_) PreprocessTerm(
 	v.appendString(" ")
 }
 
+const _indentation = "    "
+
 // PROTECTED INTERFACE
 
 // Private Methods
 
 func (v *formatter_) appendNewline() {
 	var newline = "\n"
-	var indentation = "    "
 	var level uint
 	for ; level < v.depth_; level++ {
-		newline += indentation
+		newline += _indentation
 	}
 	v.appendString(newline)
 }
