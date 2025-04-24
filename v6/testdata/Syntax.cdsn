@@ -114,7 +114,7 @@ $comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible ma
 
 $escape: '\' (unicode | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
 
-$excluded: "~"
+$excluded: '~'
 
 $glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
 
@@ -126,11 +126,11 @@ $note: "! " ~[CONTROL]*
 
 $number: DIGIT+
 
-$optional: "?"
+$optional: '?'
 
 $quote: '"' (escape | ~['"' CONTROL])+ '"'
 
-$repeated: "*" | "+"
+$repeated: '*' | '+'
 
 $unicode: ('x' base16{2}) | ('u' base16{4}) | ('U' base16{8})
 
