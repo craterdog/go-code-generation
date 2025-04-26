@@ -22,9 +22,6 @@ import (
 
 var syntaxFiles = []string{
 	"./Syntax.cdsn",
-	//"./testdata/bali.cdsn",
-	//"./testdata/gcmn.cdsn",
-	//"./testdata/full.cdsn",
 }
 
 func TestRoundTrips(t *tes.T) {

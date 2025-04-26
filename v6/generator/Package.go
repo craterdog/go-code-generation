@@ -14,7 +14,7 @@
 Package "generator" provides template-based code generators that can generate
 Go files that conform to the Crater Dog Technologies™ Go Coding Conventions
 located here:
-  - https://github.com/craterdog/go-class-model/wiki
+  - https://github.com/craterdog/go-development-tools/wiki/Coding-Conventions
 
 Additional concrete implementations of the classes declared by this package can
 be developed and used seamlessly since the interface declarations only depend on

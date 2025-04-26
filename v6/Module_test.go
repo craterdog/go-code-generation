@@ -84,6 +84,7 @@ func TestModuleGeneration(t *tes.T) {
 
 	// Regenerate the module file.
 	filename = directory + "Module.go"
+	var existing = uti.ReadFile(filename)
 	var generator = gen.ModuleGenerator()
 	var moduleSynthesizer = gen.ModuleSynthesizer(
 		moduleName,
@@ -92,7 +93,7 @@ func TestModuleGeneration(t *tes.T) {
 	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
-		"", // There is no pre-existing module file.
+		existing,
 		moduleSynthesizer,
 	)
 	uti.WriteFile(filename, generated)
