@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package generator
+package assembler
 
 import (
 	fra "github.com/craterdog/go-collection-framework/v5"
@@ -24,14 +24,14 @@ import (
 
 // Access Function
 
-func ModuleGeneratorClass() ModuleGeneratorClassLike {
-	return moduleGeneratorClass()
+func ModuleAssemblerClass() ModuleAssemblerClassLike {
+	return moduleAssemblerClass()
 }
 
 // Constructor Methods
 
-func (c *moduleGeneratorClass_) ModuleGenerator() ModuleGeneratorLike {
-	var instance = &moduleGenerator_{
+func (c *moduleAssemblerClass_) ModuleAssembler() ModuleAssemblerLike {
+	var instance = &moduleAssembler_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -42,18 +42,18 @@ func (c *moduleGeneratorClass_) ModuleGenerator() ModuleGeneratorLike {
 
 // Principal Methods
 
-func (v *moduleGenerator_) GetClass() ModuleGeneratorClassLike {
-	return moduleGeneratorClass()
+func (v *moduleAssembler_) GetClass() ModuleAssemblerClassLike {
+	return moduleAssemblerClass()
 }
 
-func (v *moduleGenerator_) GenerateModule(
+func (v *moduleAssembler_) AssembleModule(
 	moduleName string,
 	wikiPath string,
 	existing string,
 	synthesizer ModuleTemplateDriven,
 ) string {
 	// Begin with a module template.
-	var generated = moduleGeneratorClass().moduleTemplate_
+	var generated = moduleAssemblerClass().moduleTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -112,7 +112,7 @@ func (v *moduleGenerator_) GenerateModule(
 	)
 
 	// Clean up and format the imported packages (must be done last).
-	var class = moduleGeneratorClass()
+	var class = moduleAssemblerClass()
 	generated = class.formatImportedPackages(
 		existing,
 		generated,
@@ -124,7 +124,7 @@ func (v *moduleGenerator_) GenerateModule(
 
 // Private Methods
 
-func (c *moduleGeneratorClass_) createImportedPath(
+func (c *moduleAssemblerClass_) createImportedPath(
 	packageAcronym string,
 	packagePath string,
 ) string {
@@ -142,7 +142,7 @@ func (c *moduleGeneratorClass_) createImportedPath(
 	return importedPath
 }
 
-func (c *moduleGeneratorClass_) extractImportedPackages(
+func (c *moduleAssemblerClass_) extractImportedPackages(
 	source string,
 ) (
 	packages col.CatalogLike[string, string],
@@ -172,7 +172,7 @@ func (c *moduleGeneratorClass_) extractImportedPackages(
 	return
 }
 
-func (c *moduleGeneratorClass_) formatImportedPackages(
+func (c *moduleAssemblerClass_) formatImportedPackages(
 	existing string,
 	generated string,
 ) string {
@@ -234,13 +234,13 @@ func (c *moduleGeneratorClass_) formatImportedPackages(
 
 // Instance Structure
 
-type moduleGenerator_ struct {
+type moduleAssembler_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type moduleGeneratorClass_ struct {
+type moduleAssemblerClass_ struct {
 	// Declare the class constants.
 	moduleTemplate_ string
 	importedPath_   string
@@ -248,11 +248,11 @@ type moduleGeneratorClass_ struct {
 
 // Class Reference
 
-func moduleGeneratorClass() *moduleGeneratorClass_ {
-	return moduleGeneratorClassReference_
+func moduleAssemblerClass() *moduleAssemblerClass_ {
+	return moduleAssemblerClassReference_
 }
 
-var moduleGeneratorClassReference_ = &moduleGeneratorClass_{
+var moduleAssemblerClassReference_ = &moduleAssemblerClass_{
 	// Initialize the class constants.
 	moduleTemplate_: `<LegalNotice>
 /*<WarningMessage>

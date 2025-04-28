@@ -32,37 +32,31 @@ func TestPackageGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the AST Package.go file.
+	var generated = gen.GenerateAstPackage(
+		moduleName,
+		wikiPath,
+		syntax,
+	)
+	source = gen.FormatModel(generated)
 	var packageName = "ast"
 	uti.RemakeDirectory(directory + packageName)
-	var generator = gen.PackageGenerator()
-	var astSynthesizer = gen.AstSynthesizer(syntax)
-	var generated = generator.GeneratePackage(
-		moduleName,
-		wikiPath,
-		packageName,
-		"", // There is no pre-existing AST package file.
-		astSynthesizer,
-	)
 	filename = directory + packageName + "/Package.go"
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 
 	// Generate the grammar Package.go file.
-	packageName = "grammar"
-	filename = directory + packageName + "/Package.go"
-	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
-	generated = generator.GeneratePackage(
+	generated = gen.GenerateGrammarPackage(
 		moduleName,
 		wikiPath,
-		packageName,
-		"", // There is no pre-existing grammar package file.
-		grammarSynthesizer,
+		syntax,
 	)
-	uti.WriteFile(filename, generated)
+	source = gen.FormatModel(generated)
+	packageName = "grammar"
+	filename = directory + packageName + "/Package.go"
+	uti.WriteFile(filename, source)
 }
 
 func TestModuleGeneration(t *tes.T) {
@@ -85,18 +79,13 @@ func TestModuleGeneration(t *tes.T) {
 	// Regenerate the module file.
 	filename = directory + "Module.go"
 	var existing = uti.ReadFile(filename)
-	var generator = gen.ModuleGenerator()
-	var moduleSynthesizer = gen.ModuleSynthesizer(
-		moduleName,
-		models,
-	)
-	var generated = generator.GenerateModule(
+	source = gen.GenerateModule(
 		moduleName,
 		wikiPath,
 		existing,
-		moduleSynthesizer,
+		models,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestAstGeneration(t *tes.T) {
@@ -105,10 +94,8 @@ func TestAstGeneration(t *tes.T) {
 	var filename = directory + packageName + "/Package.go"
 	var source = uti.ReadFile(filename)
 	var model = mod.ParseSource(source)
-	mod.ValidateModel(model)
-	var actual = mod.FormatModel(model)
+	var actual = gen.FormatModel(model)
 	ass.Equal(t, source, actual)
-	var generator = gen.ClassGenerator()
 
 	// Generate the AST concrete classes.
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
@@ -119,16 +106,13 @@ func TestAstGeneration(t *tes.T) {
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var nodeSynthesizer = gen.NodeSynthesizer(model, className)
-		var generated = generator.GenerateClass(
+		source = gen.GenerateAstClass(
 			moduleName,
-			packageName,
 			className,
-			"", // There is no pre-existing AST class file.
-			nodeSynthesizer,
+			model,
 		)
 		filename = directory + packageName + "/" + className + ".go"
-		uti.WriteFile(filename, generated)
+		uti.WriteFile(filename, source)
 	}
 }
 
@@ -137,24 +121,18 @@ func TestTokenGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the token concrete class.
-	var generator = gen.ClassGenerator()
+	source = gen.GenerateTokenClass(
+		moduleName,
+		syntax,
+	)
 	var packageName = "grammar"
 	var className = "token"
 	filename = directory + packageName + "/" + className + ".go"
-	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
-	var generated = generator.GenerateClass(
-		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing token class file.
-		tokenSynthesizer,
-	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestScannerGeneration(t *tes.T) {
@@ -162,24 +140,18 @@ func TestScannerGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the scanner concrete class.
-	var generator = gen.ClassGenerator()
+	source = gen.GenerateScannerClass(
+		moduleName,
+		syntax,
+	)
 	var packageName = "grammar"
 	var className = "scanner"
 	filename = directory + packageName + "/" + className + ".go"
-	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
-	var generated = generator.GenerateClass(
-		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing scanner class file.
-		scannerSynthesizer,
-	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestParserGeneration(t *tes.T) {
@@ -187,24 +159,18 @@ func TestParserGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the parser concrete class.
-	var generator = gen.ClassGenerator()
+	source = gen.GenerateParserClass(
+		moduleName,
+		syntax,
+	)
 	var packageName = "grammar"
 	var className = "parser"
 	filename = directory + packageName + "/" + className + ".go"
-	var parserSynthesizer = gen.ParserSynthesizer(syntax)
-	var generated = generator.GenerateClass(
-		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing parser class file.
-		parserSynthesizer,
-	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestVisitorGeneration(t *tes.T) {
@@ -212,24 +178,18 @@ func TestVisitorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the visitor concrete class.
-	var generator = gen.ClassGenerator()
+	source = gen.GenerateVisitorClass(
+		moduleName,
+		syntax,
+	)
 	var packageName = "grammar"
 	var className = "visitor"
 	filename = directory + packageName + "/" + className + ".go"
-	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
-	var generated = generator.GenerateClass(
-		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing visitor class file.
-		visitorSynthesizer,
-	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestFormatterGeneration(t *tes.T) {
@@ -237,8 +197,7 @@ func TestFormatterGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
@@ -246,16 +205,12 @@ func TestFormatterGeneration(t *tes.T) {
 	var className = "formatter"
 	filename = directory + packageName + "/" + className + ".go"
 	var existing = uti.ReadFile(filename)
-	var generator = gen.ClassGenerator()
-	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
-	var generated = generator.GenerateClass(
+	source = gen.GenerateFormatterClass(
 		moduleName,
-		packageName,
-		className,
 		existing,
-		formatterSynthesizer,
+		syntax,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestProcessorGeneration(t *tes.T) {
@@ -263,24 +218,18 @@ func TestProcessorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the processor concrete class.
-	var generator = gen.ClassGenerator()
+	source = gen.GenerateProcessorClass(
+		moduleName,
+		syntax,
+	)
 	var packageName = "grammar"
 	var className = "processor"
 	filename = directory + packageName + "/" + className + ".go"
-	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
-	var generated = generator.GenerateClass(
-		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing processor class file.
-		processorSynthesizer,
-	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestValidatorGeneration(t *tes.T) {
@@ -288,24 +237,20 @@ func TestValidatorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	not.ValidateSyntax(syntax)
-	var actual = not.FormatSyntax(syntax)
+	var actual = gen.FormatSyntax(syntax)
 	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
 	var packageName = "grammar"
 	var className = "validator"
 	filename = directory + packageName + "/" + className + ".go"
-	var generator = gen.ClassGenerator()
-	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
-	var generated = generator.GenerateClass(
+	var existing = uti.ReadFile(filename)
+	source = gen.GenerateValidatorClass(
 		moduleName,
-		packageName,
-		className,
-		"", // There is no pre-existing validator class file.
-		validatorSynthesizer,
+		existing,
+		syntax,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func TestExampleGeneration(t *tes.T) {
@@ -313,13 +258,13 @@ func TestExampleGeneration(t *tes.T) {
 	var packageName = "example"
 	var wikiPath = "https://github.com/craterdog/go-package-example/wiki"
 	uti.RemakeDirectory(directory + packageName)
-	var packageGenerator = gen.PackageGenerator()
+	var packageAssembler = gen.PackageAssembler()
 	var packageSynthesizer = gen.PackageSynthesizer()
-	var generated = packageGenerator.GeneratePackage(
+	var generated = packageAssembler.AssemblePackage(
 		moduleName,
 		wikiPath,
 		packageName,
-		"", // There is no pre-existing example package file.
+		"", // There is no existing example package file.
 		packageSynthesizer,
 	)
 	var filename = directory + packageName + "/Package.go"
@@ -332,7 +277,7 @@ func TestExampleGeneration(t *tes.T) {
 	ass.Equal(t, generated, actual)
 
 	// Generate the example concrete classes.
-	var classGenerator = gen.ClassGenerator()
+	var classAssembler = gen.ClassAssembler()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
@@ -342,11 +287,11 @@ func TestExampleGeneration(t *tes.T) {
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
 		var classSynthesizer = gen.ClassSynthesizer(model, className)
-		generated = classGenerator.GenerateClass(
+		generated = classAssembler.AssembleClass(
 			moduleName,
 			packageName,
 			className,
-			"", // There are no pre-existing example class files.
+			"", // There are no existing example class files.
 			classSynthesizer,
 		)
 		filename = directory + packageName + "/" + className + ".go"

@@ -11,9 +11,9 @@
 */
 
 /*
-Package "generator" provides template-based code generators that can generate
-Go files that conform to the Crater Dog Technologies™ Go Coding Conventions
-located here:
+Package "assembler" provides template-based code assemblers that can assemble
+Go code snippets into complete Go files that conform to the Crater Dog
+Technologies™ Go Coding Conventions located here:
   - https://github.com/craterdog/go-development-tools/wiki/Coding-Conventions
 
 Additional concrete implementations of the classes declared by this package can
@@ -21,7 +21,7 @@ be developed and used seamlessly since the interface declarations only depend on
 other interfaces and intrinsic types—and the class implementations only depend
 on interfaces, not on each other.
 */
-package generator
+package assembler
 
 import ()
 
@@ -32,42 +32,42 @@ import ()
 // CLASS DECLARATIONS
 
 /*
-ClassGeneratorClassLike declares the set of class constants, constructors and
-functions that must be supported by all class-generator-class-like classes.
+ClassAssemblerClassLike declares the set of class constants, constructors and
+functions that must be supported by all class-assembler-class-like classes.
 */
-type ClassGeneratorClassLike interface {
+type ClassAssemblerClassLike interface {
 	// Constructor Methods
-	ClassGenerator() ClassGeneratorLike
+	ClassAssembler() ClassAssemblerLike
 }
 
 /*
-ModuleGeneratorClassLike declares the set of class constants, constructors and
-functions that must be supported by all module-generator-class-like classes.
+ModuleAssemblerClassLike declares the set of class constants, constructors and
+functions that must be supported by all module-assembler-class-like classes.
 */
-type ModuleGeneratorClassLike interface {
+type ModuleAssemblerClassLike interface {
 	// Constructor Methods
-	ModuleGenerator() ModuleGeneratorLike
+	ModuleAssembler() ModuleAssemblerLike
 }
 
 /*
-PackageGeneratorClassLike declares the set of class constants, constructors and
-functions that must be supported by all package-generator-class-like classes.
+PackageAssemblerClassLike declares the set of class constants, constructors and
+functions that must be supported by all package-assembler-class-like classes.
 */
-type PackageGeneratorClassLike interface {
+type PackageAssemblerClassLike interface {
 	// Constructor Methods
-	PackageGenerator() PackageGeneratorLike
+	PackageAssembler() PackageAssemblerLike
 }
 
 // INSTANCE DECLARATIONS
 
 /*
-ClassGeneratorLike declares the set of aspects and methods that must be
-supported by all class-generator-like instances.
+ClassAssemblerLike declares the set of aspects and methods that must be
+supported by all class-assembler-like instances.
 */
-type ClassGeneratorLike interface {
+type ClassAssemblerLike interface {
 	// Principal Methods
-	GetClass() ClassGeneratorClassLike
-	GenerateClass(
+	GetClass() ClassAssemblerClassLike
+	AssembleClass(
 		moduleName string,
 		packageName string,
 		className string,
@@ -77,13 +77,13 @@ type ClassGeneratorLike interface {
 }
 
 /*
-ModuleGeneratorLike declares the set of aspects and methods that must be
-supported by all module-generator-like instances.
+ModuleAssemblerLike declares the set of aspects and methods that must be
+supported by all module-assembler-like instances.
 */
-type ModuleGeneratorLike interface {
+type ModuleAssemblerLike interface {
 	// Principal Methods
-	GetClass() ModuleGeneratorClassLike
-	GenerateModule(
+	GetClass() ModuleAssemblerClassLike
+	AssembleModule(
 		moduleName string,
 		wikiPath string,
 		existing string,
@@ -92,13 +92,13 @@ type ModuleGeneratorLike interface {
 }
 
 /*
-PackageGeneratorLike declares the set of aspects and methods that must be
-supported by all package-generator-like instances.
+PackageAssemblerLike declares the set of aspects and methods that must be
+supported by all package-assembler-like instances.
 */
-type PackageGeneratorLike interface {
+type PackageAssemblerLike interface {
 	// Principal Methods
-	GetClass() PackageGeneratorClassLike
-	GeneratePackage(
+	GetClass() PackageAssemblerClassLike
+	AssemblePackage(
 		moduleName string,
 		wikiPath string,
 		packageName string,

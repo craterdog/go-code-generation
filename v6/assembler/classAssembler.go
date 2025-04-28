@@ -10,7 +10,7 @@
 ................................................................................
 */
 
-package generator
+package assembler
 
 import (
 	uti "github.com/craterdog/go-missing-utilities/v2"
@@ -20,14 +20,14 @@ import (
 
 // Access Function
 
-func ClassGeneratorClass() ClassGeneratorClassLike {
-	return classGeneratorClass()
+func ClassAssemblerClass() ClassAssemblerClassLike {
+	return classAssemblerClass()
 }
 
 // Constructor Methods
 
-func (c *classGeneratorClass_) ClassGenerator() ClassGeneratorLike {
-	var instance = &classGenerator_{
+func (c *classAssemblerClass_) ClassAssembler() ClassAssemblerLike {
+	var instance = &classAssembler_{
 		// Initialize the instance attributes.
 	}
 	return instance
@@ -38,11 +38,11 @@ func (c *classGeneratorClass_) ClassGenerator() ClassGeneratorLike {
 
 // Principal Methods
 
-func (v *classGenerator_) GetClass() ClassGeneratorClassLike {
-	return classGeneratorClass()
+func (v *classAssembler_) GetClass() ClassAssemblerClassLike {
+	return classAssemblerClass()
 }
 
-func (v *classGenerator_) GenerateClass(
+func (v *classAssembler_) AssembleClass(
 	moduleName string,
 	packageName string,
 	className string,
@@ -50,7 +50,7 @@ func (v *classGenerator_) GenerateClass(
 	synthesizer ClassTemplateDriven,
 ) string {
 	// Begin with a class template.
-	var generated = classGeneratorClass().classTemplate_
+	var generated = classAssemblerClass().classTemplate_
 
 	// Create the legal notice.
 	var legalNotice = synthesizer.CreateLegalNotice()
@@ -189,7 +189,7 @@ func (v *classGenerator_) GenerateClass(
 	)
 
 	// Clean up and format the imported packages (must be done last).
-	var class = moduleGeneratorClass()
+	var class = moduleAssemblerClass()
 	generated = class.formatImportedPackages(
 		existing,
 		generated,
@@ -201,13 +201,13 @@ func (v *classGenerator_) GenerateClass(
 
 // Instance Structure
 
-type classGenerator_ struct {
+type classAssembler_ struct {
 	// Declare the instance attributes.
 }
 
 // Class Structure
 
-type classGeneratorClass_ struct {
+type classAssemblerClass_ struct {
 	// Declare the class constants.
 	classTemplate_ string
 	importedPath_  string
@@ -215,11 +215,11 @@ type classGeneratorClass_ struct {
 
 // Class Reference
 
-func classGeneratorClass() *classGeneratorClass_ {
-	return classGeneratorClassReference_
+func classAssemblerClass() *classAssemblerClass_ {
+	return classAssemblerClassReference_
 }
 
-var classGeneratorClassReference_ = &classGeneratorClass_{
+var classAssemblerClassReference_ = &classAssemblerClass_{
 	// Initialize the class constants.
 	classTemplate_: `<LegalNotice><WarningMessage>
 package <PackageName>

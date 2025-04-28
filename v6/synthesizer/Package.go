@@ -31,7 +31,7 @@ package synthesizer
 
 import (
 	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v6/generator"
+	ass "github.com/craterdog/go-code-generation/v6/assembler"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v6"
 )
@@ -197,7 +197,7 @@ type AstSynthesizerLike interface {
 	GetClass() AstSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.PackageTemplateDriven
+	ass.PackageTemplateDriven
 }
 
 /*
@@ -209,7 +209,7 @@ type ClassSynthesizerLike interface {
 	GetClass() ClassSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -221,7 +221,7 @@ type FormatterSynthesizerLike interface {
 	GetClass() FormatterSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -233,7 +233,7 @@ type GrammarSynthesizerLike interface {
 	GetClass() GrammarSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.PackageTemplateDriven
+	ass.PackageTemplateDriven
 }
 
 /*
@@ -245,7 +245,7 @@ type ModuleSynthesizerLike interface {
 	GetClass() ModuleSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ModuleTemplateDriven
+	ass.ModuleTemplateDriven
 }
 
 /*
@@ -257,7 +257,7 @@ type NodeSynthesizerLike interface {
 	GetClass() NodeSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -269,7 +269,7 @@ type PackageSynthesizerLike interface {
 	GetClass() PackageSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.PackageTemplateDriven
+	ass.PackageTemplateDriven
 }
 
 /*
@@ -281,7 +281,7 @@ type ParserSynthesizerLike interface {
 	GetClass() ParserSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -293,7 +293,7 @@ type ProcessorSynthesizerLike interface {
 	GetClass() ProcessorSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -305,7 +305,7 @@ type ScannerSynthesizerLike interface {
 	GetClass() ScannerSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -317,7 +317,7 @@ type TokenSynthesizerLike interface {
 	GetClass() TokenSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -329,7 +329,7 @@ type ValidatorSynthesizerLike interface {
 	GetClass() ValidatorSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 /*
@@ -341,7 +341,7 @@ type VisitorSynthesizerLike interface {
 	GetClass() VisitorSynthesizerClassLike
 
 	// Aspect Interfaces
-	gen.ClassTemplateDriven
+	ass.ClassTemplateDriven
 }
 
 // ASPECT DECLARATIONS

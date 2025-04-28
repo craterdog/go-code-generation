@@ -31,7 +31,7 @@ package module
 import (
 	mod "github.com/craterdog/go-class-model/v5"
 	ana "github.com/craterdog/go-code-generation/v6/analyzer"
-	gen "github.com/craterdog/go-code-generation/v6/generator"
+	ass "github.com/craterdog/go-code-generation/v6/assembler"
 	syn "github.com/craterdog/go-code-generation/v6/synthesizer"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
 	not "github.com/craterdog/go-syntax-notation/v6"
@@ -53,24 +53,24 @@ type (
 	SyntaxAnalyzerLike  = ana.SyntaxAnalyzerLike
 )
 
-// Generator
+// Assembler
 
 type (
-	ClassGeneratorClassLike   = gen.ClassGeneratorClassLike
-	ModuleGeneratorClassLike  = gen.ModuleGeneratorClassLike
-	PackageGeneratorClassLike = gen.PackageGeneratorClassLike
+	ClassAssemblerClassLike   = ass.ClassAssemblerClassLike
+	ModuleAssemblerClassLike  = ass.ModuleAssemblerClassLike
+	PackageAssemblerClassLike = ass.PackageAssemblerClassLike
 )
 
 type (
-	ClassGeneratorLike   = gen.ClassGeneratorLike
-	ModuleGeneratorLike  = gen.ModuleGeneratorLike
-	PackageGeneratorLike = gen.PackageGeneratorLike
+	ClassAssemblerLike   = ass.ClassAssemblerLike
+	ModuleAssemblerLike  = ass.ModuleAssemblerLike
+	PackageAssemblerLike = ass.PackageAssemblerLike
 )
 
 type (
-	ClassTemplateDriven   = gen.ClassTemplateDriven
-	ModuleTemplateDriven  = gen.ModuleTemplateDriven
-	PackageTemplateDriven = gen.PackageTemplateDriven
+	ClassTemplateDriven   = ass.ClassTemplateDriven
+	ModuleTemplateDriven  = ass.ModuleTemplateDriven
+	PackageTemplateDriven = ass.PackageTemplateDriven
 )
 
 // Synthesizer
@@ -141,22 +141,22 @@ func SyntaxAnalyzer(
 	)
 }
 
-// Generator/ClassGenerator
+// Assembler/ClassAssembler
 
-func ClassGenerator() gen.ClassGeneratorLike {
-	return gen.ClassGeneratorClass().ClassGenerator()
+func ClassAssembler() ass.ClassAssemblerLike {
+	return ass.ClassAssemblerClass().ClassAssembler()
 }
 
-// Generator/ModuleGenerator
+// Assembler/ModuleAssembler
 
-func ModuleGenerator() gen.ModuleGeneratorLike {
-	return gen.ModuleGeneratorClass().ModuleGenerator()
+func ModuleAssembler() ass.ModuleAssemblerLike {
+	return ass.ModuleAssemblerClass().ModuleAssembler()
 }
 
-// Generator/PackageGenerator
+// Assembler/PackageAssembler
 
-func PackageGenerator() gen.PackageGeneratorLike {
-	return gen.PackageGeneratorClass().PackageGenerator()
+func PackageAssembler() ass.PackageAssemblerLike {
+	return ass.PackageAssemblerClass().PackageAssembler()
 }
 
 // Synthesizer/AstSynthesizer
@@ -292,3 +292,237 @@ func VisitorSynthesizer(
 }
 
 // GLOBAL FUNCTIONS
+
+func FormatSyntax(
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	return not.FormatSyntax(syntax)
+}
+
+func FormatModel(
+	model mod.ModelLike,
+) string {
+	mod.ValidateModel(model)
+	return mod.FormatModel(model)
+}
+
+func GenerateAstPackage(
+	moduleName string,
+	wikiPath string,
+	syntax not.SyntaxLike,
+) mod.ModelLike {
+	var packageName = "ast"
+	var existing = "" // There is no existing AST package.
+	var assembler = PackageAssembler()
+	var synthesizer = AstSynthesizer(syntax)
+	var source = assembler.AssemblePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		existing,
+		synthesizer,
+	)
+	var model = mod.ParseSource(source)
+	return model
+}
+
+func GenerateGrammarPackage(
+	moduleName string,
+	wikiPath string,
+	syntax not.SyntaxLike,
+) mod.ModelLike {
+	var packageName = "grammar"
+	var existing = "" // There is no existing grammar package.
+	var assembler = PackageAssembler()
+	var synthesizer = GrammarSynthesizer(syntax)
+	var source = assembler.AssemblePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		existing,
+		synthesizer,
+	)
+	var model = mod.ParseSource(source)
+	return model
+}
+
+func GenerateModule(
+	moduleName string,
+	wikiPath string,
+	existing string,
+	models col.CatalogLike[string, mod.ModelLike],
+) string {
+	var assembler = ModuleAssembler()
+	var synthesizer = ModuleSynthesizer(
+		moduleName,
+		models,
+	)
+	var source = assembler.AssembleModule(
+		moduleName,
+		wikiPath,
+		existing,
+		synthesizer,
+	)
+	return source
+}
+
+func GenerateAstClass(
+	moduleName string,
+	className string,
+	model mod.ModelLike,
+) string {
+	var packageName = "ast"
+	var existing = "" // There is no existing AST class.
+	mod.ValidateModel(model)
+	var assembler = ClassAssembler()
+	var synthesizer = NodeSynthesizer(model, className)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateTokenClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "token"
+	var existing = "" // There is no existing token class.
+	var synthesizer = TokenSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateScannerClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "scanner"
+	var existing = "" // There is no existing scanner class.
+	var synthesizer = ScannerSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateParserClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "parser"
+	var existing = "" // There is no existing parser class.
+	var synthesizer = ParserSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateVisitorClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "visitor"
+	var existing = "" // There is no existing visitor class.
+	var synthesizer = VisitorSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateFormatterClass(
+	moduleName string,
+	existing string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "formatter"
+	var synthesizer = FormatterSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateProcessorClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "processor"
+	var existing = "" // There is no existing processor class.
+	var synthesizer = ProcessorSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
+
+func GenerateValidatorClass(
+	moduleName string,
+	existing string,
+	syntax not.SyntaxLike,
+) string {
+	not.ValidateSyntax(syntax)
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "validator"
+	var synthesizer = ValidatorSynthesizer(syntax)
+	var generated = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return generated
+}
