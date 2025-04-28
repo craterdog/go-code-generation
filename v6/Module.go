@@ -367,6 +367,28 @@ func GenerateModule(
 	return source
 }
 
+func GenerateClass(
+	moduleName string,
+	packageName string,
+	className string,
+	existing string,
+	model mod.ModelLike,
+) string {
+	var assembler = ClassAssembler()
+	var synthesizer = ClassSynthesizer(
+		model,
+		className,
+	)
+	var source = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return source
+}
+
 func GenerateAstClass(
 	moduleName string,
 	className string,
@@ -374,97 +396,73 @@ func GenerateAstClass(
 ) string {
 	var packageName = "ast"
 	var existing = "" // There is no existing AST class.
-	mod.ValidateModel(model)
 	var assembler = ClassAssembler()
 	var synthesizer = NodeSynthesizer(model, className)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
+	return source
 }
 
 func GenerateTokenClass(
 	moduleName string,
 	syntax not.SyntaxLike,
 ) string {
-	not.ValidateSyntax(syntax)
 	var assembler = ClassAssembler()
 	var packageName = "grammar"
 	var className = "token"
 	var existing = "" // There is no existing token class.
 	var synthesizer = TokenSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
+	return source
 }
 
 func GenerateScannerClass(
 	moduleName string,
 	syntax not.SyntaxLike,
 ) string {
-	not.ValidateSyntax(syntax)
 	var assembler = ClassAssembler()
 	var packageName = "grammar"
 	var className = "scanner"
 	var existing = "" // There is no existing scanner class.
 	var synthesizer = ScannerSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
+	return source
 }
 
 func GenerateParserClass(
 	moduleName string,
 	syntax not.SyntaxLike,
 ) string {
-	not.ValidateSyntax(syntax)
 	var assembler = ClassAssembler()
 	var packageName = "grammar"
 	var className = "parser"
 	var existing = "" // There is no existing parser class.
 	var synthesizer = ParserSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
-}
-
-func GenerateVisitorClass(
-	moduleName string,
-	syntax not.SyntaxLike,
-) string {
-	not.ValidateSyntax(syntax)
-	var assembler = ClassAssembler()
-	var packageName = "grammar"
-	var className = "visitor"
-	var existing = "" // There is no existing visitor class.
-	var synthesizer = VisitorSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
-		moduleName,
-		packageName,
-		className,
-		existing,
-		synthesizer,
-	)
-	return generated
+	return source
 }
 
 func GenerateFormatterClass(
@@ -472,39 +470,18 @@ func GenerateFormatterClass(
 	existing string,
 	syntax not.SyntaxLike,
 ) string {
-	not.ValidateSyntax(syntax)
 	var assembler = ClassAssembler()
 	var packageName = "grammar"
 	var className = "formatter"
 	var synthesizer = FormatterSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
-}
-
-func GenerateProcessorClass(
-	moduleName string,
-	syntax not.SyntaxLike,
-) string {
-	not.ValidateSyntax(syntax)
-	var assembler = ClassAssembler()
-	var packageName = "grammar"
-	var className = "processor"
-	var existing = "" // There is no existing processor class.
-	var synthesizer = ProcessorSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
-		moduleName,
-		packageName,
-		className,
-		existing,
-		synthesizer,
-	)
-	return generated
+	return source
 }
 
 func GenerateValidatorClass(
@@ -512,17 +489,54 @@ func GenerateValidatorClass(
 	existing string,
 	syntax not.SyntaxLike,
 ) string {
-	not.ValidateSyntax(syntax)
 	var assembler = ClassAssembler()
 	var packageName = "grammar"
 	var className = "validator"
 	var synthesizer = ValidatorSynthesizer(syntax)
-	var generated = assembler.AssembleClass(
+	var source = assembler.AssembleClass(
 		moduleName,
 		packageName,
 		className,
 		existing,
 		synthesizer,
 	)
-	return generated
+	return source
+}
+
+func GenerateVisitorClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "visitor"
+	var existing = "" // There is no existing visitor class.
+	var synthesizer = VisitorSynthesizer(syntax)
+	var source = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return source
+}
+
+func GenerateProcessorClass(
+	moduleName string,
+	syntax not.SyntaxLike,
+) string {
+	var assembler = ClassAssembler()
+	var packageName = "grammar"
+	var className = "processor"
+	var existing = "" // There is no existing processor class.
+	var synthesizer = ProcessorSynthesizer(syntax)
+	var source = assembler.AssembleClass(
+		moduleName,
+		packageName,
+		className,
+		existing,
+		synthesizer,
+	)
+	return source
 }
