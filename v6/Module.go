@@ -293,18 +293,23 @@ func VisitorSynthesizer(
 
 // GLOBAL FUNCTIONS
 
-func FormatSyntax(
-	syntax not.SyntaxLike,
-) string {
-	not.ValidateSyntax(syntax)
-	return not.FormatSyntax(syntax)
-}
-
-func FormatModel(
-	model mod.ModelLike,
-) string {
-	mod.ValidateModel(model)
-	return mod.FormatModel(model)
+func CreatePackage(
+	moduleName string,
+	wikiPath string,
+	packageName string,
+) mod.ModelLike {
+	var existing = "" // There is no existing package.
+	var assembler = PackageAssembler()
+	var synthesizer = PackageSynthesizer()
+	var source = assembler.AssemblePackage(
+		moduleName,
+		wikiPath,
+		packageName,
+		existing,
+		synthesizer,
+	)
+	var model = mod.ParseSource(source)
+	return model
 }
 
 func GenerateAstPackage(

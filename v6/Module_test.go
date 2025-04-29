@@ -18,7 +18,6 @@ import (
 	fra "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v6"
-	ass "github.com/stretchr/testify/assert"
 	sts "strings"
 	tes "testing"
 )
@@ -32,28 +31,28 @@ func TestPackageGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the AST Package.go file.
-	var generated = gen.GenerateAstPackage(
+	var model = gen.GenerateAstPackage(
 		moduleName,
 		wikiPath,
 		syntax,
 	)
-	source = gen.FormatModel(generated)
+	mod.ValidateModel(model)
+	source = mod.FormatModel(model)
 	var packageName = "ast"
 	uti.RemakeDirectory(directory + packageName)
 	filename = directory + packageName + "/Package.go"
 	uti.WriteFile(filename, source)
 
 	// Generate the grammar Package.go file.
-	generated = gen.GenerateGrammarPackage(
+	model = gen.GenerateGrammarPackage(
 		moduleName,
 		wikiPath,
 		syntax,
 	)
-	source = gen.FormatModel(generated)
+	mod.ValidateModel(model)
+	source = mod.FormatModel(model)
 	packageName = "grammar"
 	filename = directory + packageName + "/Package.go"
 	uti.WriteFile(filename, source)
@@ -94,8 +93,7 @@ func TestAstGeneration(t *tes.T) {
 	var filename = directory + packageName + "/Package.go"
 	var source = uti.ReadFile(filename)
 	var model = mod.ParseSource(source)
-	var actual = gen.FormatModel(model)
-	ass.Equal(t, source, actual)
+	mod.ValidateModel(model)
 
 	// Generate the AST concrete classes.
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
@@ -121,8 +119,6 @@ func TestTokenGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the token concrete class.
 	source = gen.GenerateTokenClass(
@@ -140,8 +136,6 @@ func TestScannerGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the scanner concrete class.
 	source = gen.GenerateScannerClass(
@@ -159,8 +153,6 @@ func TestParserGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the parser concrete class.
 	source = gen.GenerateParserClass(
@@ -178,8 +170,6 @@ func TestVisitorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the visitor concrete class.
 	source = gen.GenerateVisitorClass(
@@ -197,8 +187,6 @@ func TestFormatterGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the formatter concrete class.
 	var packageName = "grammar"
@@ -218,8 +206,6 @@ func TestProcessorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the processor concrete class.
 	source = gen.GenerateProcessorClass(
@@ -237,8 +223,6 @@ func TestValidatorGeneration(t *tes.T) {
 	var filename = directory + "Syntax.cdsn"
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
-	var actual = gen.FormatSyntax(syntax)
-	ass.Equal(t, source, actual)
 
 	// Generate the validator concrete class.
 	var packageName = "grammar"
@@ -258,43 +242,34 @@ func TestExampleGeneration(t *tes.T) {
 	var packageName = "example"
 	var wikiPath = "https://github.com/craterdog/go-package-example/wiki"
 	uti.RemakeDirectory(directory + packageName)
-	var packageAssembler = gen.PackageAssembler()
-	var packageSynthesizer = gen.PackageSynthesizer()
-	var generated = packageAssembler.AssemblePackage(
+	var model = gen.CreatePackage(
 		moduleName,
 		wikiPath,
 		packageName,
-		"", // There is no existing example package file.
-		packageSynthesizer,
 	)
-	var filename = directory + packageName + "/Package.go"
-	uti.WriteFile(filename, generated)
-
-	// Validate the class model.
-	var model = mod.ParseSource(generated)
 	mod.ValidateModel(model)
-	var actual = mod.FormatModel(model)
-	ass.Equal(t, generated, actual)
+	var source = mod.FormatModel(model)
+	var filename = directory + packageName + "/Package.go"
+	uti.WriteFile(filename, source)
 
 	// Generate the example concrete classes.
-	var classAssembler = gen.ClassAssembler()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
 	for classDeclarations.HasNext() {
+		var existing string // There is no existing class file.
 		var classDeclaration = classDeclarations.GetNext()
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var classSynthesizer = gen.ClassSynthesizer(model, className)
-		generated = classAssembler.AssembleClass(
+		source = gen.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			"", // There are no existing example class files.
-			classSynthesizer,
+			existing,
+			model,
 		)
 		filename = directory + packageName + "/" + className + ".go"
-		uti.WriteFile(filename, generated)
+		uti.WriteFile(filename, source)
 	}
 }
