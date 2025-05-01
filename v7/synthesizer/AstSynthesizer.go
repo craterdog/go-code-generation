@@ -334,7 +334,7 @@ var astSynthesizerClassReference_ = &astSynthesizerClass_{
 
 	packageDescription_: `
 Package "ast" provides the abstract syntax tree (AST) classes for this module
-based on the "Syntax.cdsn" grammar for the module.  Each AST class manages the
+based on the "syntax.cdsn" grammar for the module.  Each AST class manages the
 attributes associated with its corresponding rule definition found in the
 grammar.`,
 

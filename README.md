@@ -5,7 +5,7 @@
 ### Overview
 This project provides template-based code generation capabilities that allow
 the generation of a Go module containing a `grammar` package defining a parser,
-validator and formatter for a specified `Syntax.cdsn` file.  An `ast` package
+validator and formatter for a specified `syntax.cdsn` file.  An `ast` package
 containing a class for each node in the corresponding _abstract syntax tree_ is
 also generated.
 
@@ -14,14 +14,6 @@ For more information on this project click on the following links:
  * [project documentation](https://github.com/craterdog/go-code-generation/wiki)
  * [coding conventions](https://github.com/craterdog/go-development-tools/wiki/Coding-Conventions)
  * [command-line tools](https://github.com/craterdog/go-development-tools/wiki)
-
-### Getting Started
-To include the Go packages for this module use the following import statement:
-```go
-import (
-	gen "github.com/craterdog/go-code-generation/v6"
-)
-```
 
 ### Contributing
 Project contributors are always welcome. Check out the contributing guidelines
