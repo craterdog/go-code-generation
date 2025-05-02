@@ -32,7 +32,7 @@ func TestPackageGeneration(t *tes.T) {
 	var source = uti.ReadFile(filename)
 	var syntax = not.ParseSource(source)
 
-	// Generate the AST package_spec.go file.
+	// Generate the AST package_api.go file.
 	var model = gen.GenerateAstPackage(
 		moduleName,
 		wikiPath,
@@ -42,10 +42,10 @@ func TestPackageGeneration(t *tes.T) {
 	source = mod.FormatModel(model)
 	var packageName = "ast"
 	uti.RemakeDirectory(directory + packageName)
-	filename = directory + packageName + "/package_spec.go"
+	filename = directory + packageName + "/package_api.go"
 	uti.WriteFile(filename, source)
 
-	// Generate the grammar package_spec.go file.
+	// Generate the grammar package_api.go file.
 	model = gen.GenerateGrammarPackage(
 		moduleName,
 		wikiPath,
@@ -54,7 +54,7 @@ func TestPackageGeneration(t *tes.T) {
 	mod.ValidateModel(model)
 	source = mod.FormatModel(model)
 	packageName = "grammar"
-	filename = directory + packageName + "/package_spec.go"
+	filename = directory + packageName + "/package_api.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -63,20 +63,20 @@ func TestModuleGeneration(t *tes.T) {
 
 	// Read in the AST package file.
 	var packageName = "ast"
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	var source = uti.ReadFile(filename)
 	var model = mod.ParseSource(source)
 	models.SetValue(packageName, model)
 
 	// Read in the grammar package file.
 	packageName = "grammar"
-	filename = directory + packageName + "/package_spec.go"
+	filename = directory + packageName + "/package_api.go"
 	source = uti.ReadFile(filename)
 	model = mod.ParseSource(source)
 	models.SetValue(packageName, model)
 
 	// Regenerate the module file.
-	filename = directory + "module_spec.go"
+	filename = directory + "module_api.go"
 	var existing = uti.ReadFile(filename)
 	source = gen.GenerateModule(
 		moduleName,
@@ -90,7 +90,7 @@ func TestModuleGeneration(t *tes.T) {
 func TestAstGeneration(t *tes.T) {
 	// Validate the class model.
 	var packageName = "ast"
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	var source = uti.ReadFile(filename)
 	var model = mod.ParseSource(source)
 	mod.ValidateModel(model)
@@ -250,7 +250,7 @@ func TestExampleGeneration(t *tes.T) {
 	)
 	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	uti.WriteFile(filename, source)
 
 	// Generate the example concrete classes.

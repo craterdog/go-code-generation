@@ -245,7 +245,7 @@ var grammarSynthesizerClassReference_ = &grammarSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│           This "package_spec.go" file was automatically generated.           │
+│            This "package_api.go" file was automatically generated.           │
 │                     Any updates to it may be overwritten.                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
