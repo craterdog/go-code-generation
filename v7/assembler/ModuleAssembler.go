@@ -86,12 +86,12 @@ func (v *moduleAssembler_) AssembleModule(
 		typeAliases,
 	)
 
-	// Create the class constructors.
-	var classConstructors = synthesizer.CreateClassConstructors()
+	// Create the class accessors.
+	var classAccessors = synthesizer.CreateClassAccessors()
 	generated = uti.ReplaceAll(
 		generated,
-		"classConstructors",
-		classConstructors,
+		"classAccessors",
+		classAccessors,
 	)
 
 	// Perform global updates.
@@ -270,8 +270,8 @@ import (<ImportedPackages>)
 
 // TYPE ALIASES
 <TypeAliases>
-// CLASS CONSTRUCTORS
-<ClassConstructors>
+// CLASS ACCESSORS
+<ClassAccessors>
 // GLOBAL FUNCTIONS
 `,
 

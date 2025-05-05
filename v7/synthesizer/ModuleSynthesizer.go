@@ -97,20 +97,19 @@ func (v *moduleSynthesizer_) CreateTypeAliases() string {
 	return typeAliases
 }
 
-func (v *moduleSynthesizer_) CreateClassConstructors() string {
-	var classConstructors string
+func (v *moduleSynthesizer_) CreateClassAccessors() string {
+	var classAccessors string
 	var models = v.models_.GetIterator()
 	for models.HasNext() {
 		var association = models.GetNext()
 		var packageName = association.GetKey()
 		var model = association.GetValue()
-		var constructorFunctions = v.createConstructorFunctions(
+		classAccessors += v.createAccessFunctions(
 			packageName,
 			model,
 		)
-		classConstructors += constructorFunctions
 	}
-	return classConstructors
+	return classAccessors
 }
 
 func (v *moduleSynthesizer_) PerformGlobalUpdates(
@@ -206,16 +205,17 @@ func (v *moduleSynthesizer_) createConstructorFunction(
 	return constructorFunction
 }
 
-func (v *moduleSynthesizer_) createClassConstructors(
+func (v *moduleSynthesizer_) createClassFunctions(
 	model mod.ModelLike,
 	classDeclaration mod.ClassDeclarationLike,
 ) string {
-	var constructors string
+	var class = moduleSynthesizerClass()
 	var className = sts.TrimSuffix(
 		classDeclaration.GetDeclaration().GetName(),
 		"ClassLike",
 	)
 	className = uti.MakeLowerCase(className)
+	var classFunctions = class.classFunctions_
 	var analyzerClass = ana.ClassAnalyzerClass()
 	var analyzer = analyzerClass.ClassAnalyzer(model, className)
 	var constructorMethods = analyzer.GetConstructorMethods().GetIterator()
@@ -226,54 +226,47 @@ func (v *moduleSynthesizer_) createClassConstructors(
 			className,
 			model,
 		)
-		constructors += constructorFunction
+		classFunctions += constructorFunction
 	}
-	var class = moduleSynthesizerClass()
-	var classConstructors = class.classConstructors_
-	classConstructors = uti.ReplaceAll(
-		classConstructors,
-		"constructors",
-		constructors,
-	)
-	classConstructors = uti.ReplaceAll(
-		classConstructors,
+	classFunctions = uti.ReplaceAll(
+		classFunctions,
 		"className",
 		className,
 	)
 	var constraints = analyzer.GetTypeConstraints()
-	classConstructors = uti.ReplaceAll(
-		classConstructors,
+	classFunctions = uti.ReplaceAll(
+		classFunctions,
 		"constraints",
 		constraints,
 	)
 	var arguments = analyzer.GetTypeArguments()
-	classConstructors = uti.ReplaceAll(
-		classConstructors,
+	classFunctions = uti.ReplaceAll(
+		classFunctions,
 		"arguments",
 		arguments,
 	)
 
-	return classConstructors
+	return classFunctions
 }
 
-func (v *moduleSynthesizer_) createConstructorFunctions(
+func (v *moduleSynthesizer_) createAccessFunctions(
 	packageName string,
 	model mod.ModelLike,
 ) string {
-	var constructorFunctions string
+	var class = moduleSynthesizerClass()
+	var accessFunctions = class.accessFunctions_
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classes = classSection.GetClassDeclarations().GetIterator()
 	for classes.HasNext() {
 		var class = classes.GetNext()
-		var constructors = v.createClassConstructors(model, class)
-		constructorFunctions += constructors
+		accessFunctions += v.createClassFunctions(model, class)
 	}
-	constructorFunctions = v.replacePackageAttributes(
-		constructorFunctions,
+	accessFunctions = v.replacePackageAttributes(
+		accessFunctions,
 		packageName,
 	)
-	return constructorFunctions
+	return accessFunctions
 }
 
 func (v *moduleSynthesizer_) createEnumeratedAliases(
@@ -698,7 +691,8 @@ type moduleSynthesizerClass_ struct {
 	enumeratedAliases_   string
 	constantAlias_       string
 	nameAlias_           string
-	classConstructors_   string
+	accessFunctions_     string
+	classFunctions_      string
 	constructorFunction_ string
 	methodParameter_     string
 }
@@ -745,9 +739,15 @@ const (<ConstantAliases>)`,
 	nameAlias_: `
 	<Name><Constraints> = <~packageAcronym>.<Name><Arguments>`,
 
-	classConstructors_: `
-// <~PackageName>/<~ClassName><Constructors>
+	accessFunctions_: `
+// <~PackageName>
 `,
+
+	classFunctions_: `
+
+func <~ClassName>Class<Constraints>() <~packageAcronym>.<~ClassName>ClassLike<Arguments> {
+	return <~packageAcronym>.<~ClassName>Class<Arguments>()
+}`,
 
 	constructorFunction_: `
 

@@ -143,7 +143,7 @@ type ModuleTemplateDriven interface {
 	CreateWarningMessage() string
 	CreateImportedPackages() string
 	CreateTypeAliases() string
-	CreateClassConstructors() string
+	CreateClassAccessors() string
 	PerformGlobalUpdates(
 		existing string,
 		generated string,
