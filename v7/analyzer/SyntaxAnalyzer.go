@@ -13,8 +13,7 @@
 package analyzer
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 	stc "strconv"
@@ -402,12 +401,12 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	var definition = rule.GetDefinition()
 	switch definition.GetAny().(type) {
 	case not.InlineLike:
-		var terms = fra.List[not.TermLike]()
+		var terms = col.List[not.TermLike]()
 		v.terms_.SetValue(ruleName, terms)
-		var references = fra.List[not.ReferenceLike]()
+		var references = col.List[not.ReferenceLike]()
 		v.references_.SetValue(ruleName, references)
 	case not.MultiruleLike, not.MultiexpressionLike:
-		var identifiers = fra.List[not.IdentifierLike]()
+		var identifiers = col.List[not.IdentifierLike]()
 		v.identifiers_.SetValue(ruleName, identifiers)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
@@ -448,14 +447,14 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.isGreedy_ = true // The default is "greedy" scanning.
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
-	v.ruleNames_ = fra.Set[string]()
-	v.tokenNames_ = fra.SetFromArray[string](
+	v.ruleNames_ = col.Set[string]()
+	v.tokenNames_ = col.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
 	)
-	v.pluralNames_ = fra.Set[string]()
-	v.delimited_ = fra.Set[string]()
-	v.delimiters_ = fra.Set[string]()
-	v.expressions_ = fra.Catalog[string, string]()
+	v.pluralNames_ = col.Set[string]()
+	v.delimited_ = col.Set[string]()
+	v.delimiters_ = col.Set[string]()
+	v.expressions_ = col.Catalog[string, string]()
 	v.expressions_.SetValue(
 		"delimiter",
 		`"(?:)"`, // The delimiters will be filled in later but need to be first.
@@ -468,10 +467,10 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		"space",
 		`"(?:[ \\t]+)"`,
 	)
-	v.terms_ = fra.Catalog[string, col.ListLike[not.TermLike]]()
-	v.variables_ = fra.Catalog[string, col.ListLike[string]]()
-	v.references_ = fra.Catalog[string, col.ListLike[not.ReferenceLike]]()
-	v.identifiers_ = fra.Catalog[string, col.ListLike[not.IdentifierLike]]()
+	v.terms_ = col.Catalog[string, col.ListLike[not.TermLike]]()
+	v.variables_ = col.Catalog[string, col.ListLike[string]]()
+	v.references_ = col.Catalog[string, col.ListLike[not.ReferenceLike]]()
+	v.identifiers_ = col.Catalog[string, col.ListLike[not.IdentifierLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
@@ -600,7 +599,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Extract the variable names from the inline references.
-	var variables = fra.List[string]()
+	var variables = col.List[string]()
 	var iterator = references.GetIterator()
 	for iterator.HasNext() {
 		var reference = iterator.GetNext()
@@ -621,12 +620,12 @@ func (v *syntaxAnalyzer_) extractVariables(
 			if leftName == rightName {
 				if count == 1 {
 					var uniqueName = leftName + stc.Itoa(count)
-					var index = fra.Index(left.GetSlot())
+					var index = col.Index(left.GetSlot())
 					variables.SetValue(index, uniqueName)
 				}
 				count++
 				rightName = rightName + stc.Itoa(count)
-				var index = fra.Index(right.GetSlot())
+				var index = col.Index(right.GetSlot())
 				variables.SetValue(index, rightName)
 			}
 		}

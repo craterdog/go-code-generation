@@ -16,7 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v7"
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	sts "strings"
 )
@@ -564,7 +564,7 @@ var nodeSynthesizerClassReference_ = &nodeSynthesizerClass_{
 `,
 
 	importedPackages_: `
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 `,
 

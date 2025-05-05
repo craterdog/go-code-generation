@@ -513,8 +513,7 @@ var parserSynthesizerClassReference_ = &parserSynthesizerClass_{
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	mat "math"
 	sts "strings"
@@ -567,7 +566,7 @@ func (v *parser_) parse<~RuleName>() (
 `,
 
 	declarationStep_: `
-	var tokens = fra.List[TokenLike]()
+	var tokens = col.List[TokenLike]()
 `,
 
 	parseRequiredExpressionStep_: `
@@ -601,7 +600,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	parseRepeatedExpressionStep_: `
 	// Attempt to parse multiple <~identifier> tokens.
-	var <variableName_> = fra.List[string]()
+	var <variableName_> = col.List[string]()
 <~variableName>Loop:
 	for count := 0; count < <last>; count++ {
 		var <identifier_> string
@@ -663,7 +662,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	parseRepeatedMultiexpressionStep_: `
 	// Attempt to parse multiple <~Identifier> rules.
-	var <variableName_> = fra.List[ast.<~Identifier>Like]()
+	var <variableName_> = col.List[ast.<~Identifier>Like]()
 <~variableName>Loop:
 	for count := 0; count < <last>; count++ {
 		var <identifier_> ast.<~Identifier>Like
@@ -722,7 +721,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	parseRepeatedRuleStep_: `
 	// Attempt to parse multiple <~Identifier> rules.
-	var <variableName_> = fra.List[ast.<~Identifier>Like]()
+	var <variableName_> = col.List[ast.<~Identifier>Like]()
 <~variableName>Loop:
 	for count := 0; count < <last>; count++ {
 		var <identifier_> ast.<~Identifier>Like
@@ -794,8 +793,8 @@ func (v *parser_) ParseSource(
 	source string,
 ) ast.<~SyntaxName>Like {
 	v.source_ = sts.ReplaceAll(source, "\t", "    ")
-	v.tokens_ = fra.Queue[TokenLike]()
-	v.next_ = fra.Stack[TokenLike]()
+	v.tokens_ = col.Queue[TokenLike]()
+	v.next_ = col.Stack[TokenLike]()
 
 	// The scanner runs in a separate Go routine.
 	ScannerClass().Scanner(v.source_, v.tokens_)
@@ -843,7 +842,7 @@ func (v *parser_) parseToken(
 	ok bool,
 ) {
 	// Attempt to parse a specific token type.
-	var tokens = fra.List[TokenLike]()
+	var tokens = col.List[TokenLike]()
 	token = v.getNextToken()
 	for token != nil {
 		tokens.AppendValue(token)
@@ -1009,7 +1008,7 @@ func parserClass() *parserClass_ {
 
 var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
-	syntax_: fra.CatalogFromMap[string, string](
+	syntax_: col.CatalogFromMap[string, string](
 		map[string]string{<SyntaxMap>
 		},
 	),

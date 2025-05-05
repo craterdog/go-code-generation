@@ -31,7 +31,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 )
 

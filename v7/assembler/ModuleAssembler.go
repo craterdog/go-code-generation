@@ -13,8 +13,7 @@
 package assembler
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
 	sts "strings"
@@ -147,7 +146,7 @@ func (c *moduleAssemblerClass_) extractImportedPackages(
 ) (
 	packages col.CatalogLike[string, string],
 ) {
-	packages = fra.Catalog[string, string]()
+	packages = col.Catalog[string, string]()
 	var lower_ = `\p{Ll}`
 	var digit_ = `\p{Nd}`
 	var acronym_ = `(` + lower_ + `(?:` + lower_ + `|` + digit_ + `){2})`
@@ -180,22 +179,22 @@ func (c *moduleAssemblerClass_) formatImportedPackages(
 	var imports = c.extractImportedPackages(existing)
 
 	// Add in the generated imported packages.
-	imports = col.CatalogClass[string, string]().Merge(
+	imports = col.CatalogMerge[string, string](
 		imports, c.extractImportedPackages(generated),
 	)
 
 	// Sort the imported packages by path rather than name.
 	imports.SortValuesWithRanker(
-		func(first, second col.AssociationLike[string, string]) fra.Rank {
+		func(first, second col.AssociationLike[string, string]) col.Rank {
 			var firstValue = first.GetValue()
 			var secondValue = second.GetValue()
 			switch {
 			case firstValue < secondValue:
-				return fra.LesserRank
+				return col.LesserRank
 			case firstValue > secondValue:
-				return fra.GreaterRank
+				return col.GreaterRank
 			default:
-				return fra.EqualRank
+				return col.EqualRank
 			}
 		},
 	)

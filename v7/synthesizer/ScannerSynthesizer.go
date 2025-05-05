@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
-	fra "github.com/craterdog/go-collection-framework/v7"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 )
@@ -172,10 +172,10 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// names from the catalog of expressions in their proper order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
-	var tokenNames = fra.SetFromSequence[string](
+	var tokenNames = col.SetFromSequence[string](
 		v.analyzer_.GetTokenNames(),
 	)
-	var expressionNames = fra.CatalogFromSequence[string, string](
+	var expressionNames = col.CatalogFromSequence[string, string](
 		v.analyzer_.GetExpressions(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
@@ -305,8 +305,7 @@ var scannerSynthesizerClassReference_ = &scannerSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
 	sts "strings"
@@ -589,12 +588,12 @@ func scannerClass() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: fra.CatalogFromMap[TokenType, string](
+	tokens_: col.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
 			// Define identifiers for each type of token.<TokenIdentifiers>
 		},
 	),
-	matchers_: fra.CatalogFromMap[TokenType, *reg.Regexp](
+	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of token.<TokenMatchers>
 		},

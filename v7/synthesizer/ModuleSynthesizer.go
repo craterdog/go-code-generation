@@ -15,7 +15,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v7"
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
 	sts "strings"
@@ -129,6 +129,7 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 
 func (v *moduleSynthesizer_) createAspectAliases(
 	aspectDeclarations col.ListLike[mod.AspectDeclarationLike],
+	model mod.ModelLike,
 ) (
 	aspectAliases string,
 ) {
@@ -136,7 +137,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 	var aspects = aspectDeclarations.GetIterator()
 	for aspects.HasNext() {
 		var declaration = aspects.GetNext().GetDeclaration()
-		var nameAlias = v.createNameAlias(declaration)
+		var nameAlias = v.createNameAlias(declaration, model)
 		nameAliases += nameAlias
 	}
 	if uti.IsDefined(nameAliases) {
@@ -154,6 +155,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 
 func (v *moduleSynthesizer_) createClassAliases(
 	classDeclarations col.ListLike[mod.ClassDeclarationLike],
+	model mod.ModelLike,
 ) (
 	classAliases string,
 ) {
@@ -161,7 +163,7 @@ func (v *moduleSynthesizer_) createClassAliases(
 	var classes = classDeclarations.GetIterator()
 	for classes.HasNext() {
 		var declaration = classes.GetNext().GetDeclaration()
-		nameAliases += v.createNameAlias(declaration)
+		nameAliases += v.createNameAlias(declaration, model)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
@@ -239,12 +241,12 @@ func (v *moduleSynthesizer_) createClassConstructors(
 		className,
 	)
 	var constraints = analyzer.GetTypeConstraints()
-	var arguments = analyzer.GetTypeArguments()
 	classConstructors = uti.ReplaceAll(
 		classConstructors,
 		"constraints",
 		constraints,
 	)
+	var arguments = analyzer.GetTypeArguments()
 	classConstructors = uti.ReplaceAll(
 		classConstructors,
 		"arguments",
@@ -276,29 +278,30 @@ func (v *moduleSynthesizer_) createConstructorFunctions(
 
 func (v *moduleSynthesizer_) createEnumeratedAliases(
 	enumeratedValues col.ListLike[string],
+	model mod.ModelLike,
 ) (
 	enumeratedAliases string,
 ) {
-	var nameAliases string
+	var constantAliases string
 	var class = moduleSynthesizerClass()
-	var names = enumeratedValues.GetIterator()
-	for names.HasNext() {
-		var name = names.GetNext()
-		var nameAlias = class.nameAlias_
-		nameAlias = uti.ReplaceAll(
-			nameAlias,
-			"name",
-			name,
+	var constants = enumeratedValues.GetIterator()
+	for constants.HasNext() {
+		var constant = constants.GetNext()
+		var constantAlias = class.constantAlias_
+		constantAlias = uti.ReplaceAll(
+			constantAlias,
+			"constant",
+			constant,
 		)
-		nameAliases += nameAlias
+		constantAliases += constantAlias
 	}
-	if uti.IsDefined(nameAliases) {
-		nameAliases += "\n"
+	if uti.IsDefined(constantAliases) {
+		constantAliases += "\n"
 		enumeratedAliases = class.enumeratedAliases_
 		enumeratedAliases = uti.ReplaceAll(
 			enumeratedAliases,
-			"nameAliases",
-			nameAliases,
+			"constantAliases",
+			constantAliases,
 		)
 	}
 	return
@@ -306,6 +309,7 @@ func (v *moduleSynthesizer_) createEnumeratedAliases(
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
 	functionalDeclarations col.ListLike[mod.FunctionalDeclarationLike],
+	model mod.ModelLike,
 ) (
 	functionalAliases string,
 ) {
@@ -313,7 +317,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 	var functionals = functionalDeclarations.GetIterator()
 	for functionals.HasNext() {
 		var declaration = functionals.GetNext().GetDeclaration()
-		var nameAlias = v.createNameAlias(declaration)
+		var nameAlias = v.createNameAlias(declaration, model)
 		nameAliases += nameAlias
 	}
 	if uti.IsDefined(nameAliases) {
@@ -331,6 +335,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 
 func (v *moduleSynthesizer_) createInstanceAliases(
 	instanceDeclarations col.ListLike[mod.InstanceDeclarationLike],
+	model mod.ModelLike,
 ) (
 	instanceAliases string,
 ) {
@@ -338,7 +343,7 @@ func (v *moduleSynthesizer_) createInstanceAliases(
 	var instances = instanceDeclarations.GetIterator()
 	for instances.HasNext() {
 		var declaration = instances.GetNext().GetDeclaration()
-		nameAliases += v.createNameAlias(declaration)
+		nameAliases += v.createNameAlias(declaration, model)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
@@ -355,20 +360,55 @@ func (v *moduleSynthesizer_) createInstanceAliases(
 
 func (v *moduleSynthesizer_) createNameAlias(
 	declaration mod.DeclarationLike,
+	model mod.ModelLike,
 ) (
 	nameAlias string,
 ) {
-	var name = declaration.GetName()
-	if uti.IsDefined(declaration.GetOptionalConstraints()) {
-		// Type aliases are not supported for generic types in Go.
-		return
-	}
 	var class = moduleSynthesizerClass()
 	nameAlias = class.nameAlias_
+	var name = declaration.GetName()
 	nameAlias = uti.ReplaceAll(
 		nameAlias,
 		"name",
 		name,
+	)
+	var constraints string
+	var arguments string
+	var optionalConstraints = declaration.GetOptionalConstraints()
+	if uti.IsDefined(optionalConstraints) {
+		constraints = "["
+		arguments = "["
+		var constraint = optionalConstraints.GetConstraint()
+		var constraintName = constraint.GetName()
+		var constraintType = v.extractType(
+			constraint.GetAbstraction(),
+			model,
+		)
+		constraints += constraintName + " " + constraintType
+		arguments += constraintName
+		var additionalConstraints = optionalConstraints.GetAdditionalConstraints().GetIterator()
+		for additionalConstraints.HasNext() {
+			constraint = additionalConstraints.GetNext().GetConstraint()
+			constraintName = constraint.GetName()
+			constraintType = v.extractType(
+				constraint.GetAbstraction(),
+				model,
+			)
+			constraints += ", " + constraintName + " " + constraintType
+			arguments += ", " + constraintName
+		}
+		constraints += "]"
+		arguments += "]"
+	}
+	nameAlias = uti.ReplaceAll(
+		nameAlias,
+		"constraints",
+		constraints,
+	)
+	nameAlias = uti.ReplaceAll(
+		nameAlias,
+		"arguments",
+		arguments,
 	)
 	return
 }
@@ -378,12 +418,31 @@ func (v *moduleSynthesizer_) createPackageAliases(
 	model mod.ModelLike,
 ) string {
 	var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
-	var typeAliases = v.createTypeAliases(analyzer.GetTypeDeclarations())
-	typeAliases += v.createEnumeratedAliases(analyzer.GetEnumeratedValues())
-	typeAliases += v.createFunctionalAliases(analyzer.GetFunctionalDeclarations())
-	typeAliases += v.createClassAliases(analyzer.GetClassDeclarations())
-	typeAliases += v.createInstanceAliases(analyzer.GetInstanceDeclarations())
-	typeAliases += v.createAspectAliases(analyzer.GetAspectDeclarations())
+	var typeAliases = v.createTypeAliases(
+		analyzer.GetTypeDeclarations(),
+		model,
+	)
+	typeAliases += v.createEnumeratedAliases(
+		analyzer.GetEnumeratedValues(),
+		model,
+	)
+
+	typeAliases += v.createFunctionalAliases(
+		analyzer.GetFunctionalDeclarations(),
+		model,
+	)
+	typeAliases += v.createClassAliases(
+		analyzer.GetClassDeclarations(),
+		model,
+	)
+	typeAliases += v.createInstanceAliases(
+		analyzer.GetInstanceDeclarations(),
+		model,
+	)
+	typeAliases += v.createAspectAliases(
+		analyzer.GetAspectDeclarations(),
+		model,
+	)
 	var class = moduleSynthesizerClass()
 	var packageAliases = class.packageAliases_
 	packageAliases = uti.ReplaceAll(
@@ -400,6 +459,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 
 func (v *moduleSynthesizer_) createTypeAliases(
 	typeDeclarations col.ListLike[mod.TypeDeclarationLike],
+	model mod.ModelLike,
 ) (
 	typeAliases string,
 ) {
@@ -407,7 +467,7 @@ func (v *moduleSynthesizer_) createTypeAliases(
 	var types = typeDeclarations.GetIterator()
 	for types.HasNext() {
 		var typeDeclaration = types.GetNext().GetDeclaration()
-		nameAliases += v.createNameAlias(typeDeclaration)
+		nameAliases += v.createNameAlias(typeDeclaration, model)
 	}
 	if uti.IsDefined(nameAliases) {
 		nameAliases += "\n"
@@ -636,6 +696,7 @@ type moduleSynthesizerClass_ struct {
 	packageAliases_      string
 	typeAliases_         string
 	enumeratedAliases_   string
+	constantAlias_       string
 	nameAlias_           string
 	classConstructors_   string
 	constructorFunction_ string
@@ -660,7 +721,7 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	ref "reflect"
 	sts "strings"
@@ -676,10 +737,13 @@ type (<NameAliases>)`,
 
 	enumeratedAliases_: `
 
-const (<NameAliases>)`,
+const (<ConstantAliases>)`,
+
+	constantAlias_: `
+	<Constant> = <~packageAcronym>.<Constant>`,
 
 	nameAlias_: `
-	<Name> = <~packageAcronym>.<Name>`,
+	<Name><Constraints> = <~packageAcronym>.<Name><Arguments>`,
 
 	classConstructors_: `
 // <~PackageName>/<~ClassName><Constructors>

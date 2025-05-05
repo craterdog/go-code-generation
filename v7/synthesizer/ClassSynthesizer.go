@@ -16,8 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v7/ast"
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	sts "strings"
 )
@@ -228,7 +227,7 @@ func (v *classSynthesizer_) extractConcreteMappings(
 	arguments mod.ArgumentsLike,
 ) col.CatalogLike[string, mod.AbstractionLike] {
 	// Create the mappings catalog.
-	var mappings = fra.Catalog[string, mod.AbstractionLike]()
+	var mappings = col.Catalog[string, mod.AbstractionLike]()
 	if uti.IsUndefined(constraints) || uti.IsUndefined(arguments) {
 		return mappings
 	}
@@ -1026,7 +1025,7 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 	argument = v.replaceArgumentType(argument, mappings)
 
 	// Replace the generic types of any additional arguments with concrete types.
-	var additionalArguments = fra.List[mod.AdditionalArgumentLike]()
+	var additionalArguments = col.List[mod.AdditionalArgumentLike]()
 	var iterator = arguments.GetAdditionalArguments().GetIterator()
 	for iterator.HasNext() {
 		var additionalArgument = iterator.GetNext()
@@ -1066,7 +1065,7 @@ func (v *classSynthesizer_) replaceParameterTypes(
 	sequence col.Sequential[mod.ParameterLike],
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) col.Sequential[mod.ParameterLike] {
-	var replacedParameters = fra.List[mod.ParameterLike]()
+	var replacedParameters = col.List[mod.ParameterLike]()
 	var parameters = sequence.GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()

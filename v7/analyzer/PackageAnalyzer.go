@@ -14,8 +14,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v7"
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 )
 
 // CLASS INTERFACE
@@ -33,13 +32,13 @@ func (c *packageAnalyzerClass_) PackageAnalyzer(
 ) PackageAnalyzerLike {
 	var instance = &packageAnalyzer_{
 		// Initialize the instance attributes.
-		importedPackages_:       fra.Catalog[string, string](),
-		typeDeclarations_:       fra.List[mod.TypeDeclarationLike](),
-		enumeratedValues_:       fra.List[string](),
-		functionalDeclarations_: fra.List[mod.FunctionalDeclarationLike](),
-		classDeclarations_:      fra.List[mod.ClassDeclarationLike](),
-		instanceDeclarations_:   fra.List[mod.InstanceDeclarationLike](),
-		aspectDeclarations_:     fra.List[mod.AspectDeclarationLike](),
+		importedPackages_:       col.Catalog[string, string](),
+		typeDeclarations_:       col.List[mod.TypeDeclarationLike](),
+		enumeratedValues_:       col.List[string](),
+		functionalDeclarations_: col.List[mod.FunctionalDeclarationLike](),
+		classDeclarations_:      col.List[mod.ClassDeclarationLike](),
+		instanceDeclarations_:   col.List[mod.InstanceDeclarationLike](),
+		aspectDeclarations_:     col.List[mod.AspectDeclarationLike](),
 
 		// Initialize the inherited aspects.
 		Methodical: mod.Processor(),
@@ -167,10 +166,6 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 	v.importedPackages_.SetValue(
 		"col",
 		`"github.com/craterdog/go-collection-framework/v7"`,
-	)
-	v.importedPackages_.SetValue(
-		"abs",
-		`"github.com/craterdog/go-collection-framework/v7/collection"`,
 	)
 	v.importedPackages_.SetValue(
 		"syn",

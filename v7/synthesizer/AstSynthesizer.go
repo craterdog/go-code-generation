@@ -339,7 +339,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	importedPackages_: `
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 `,
 
 	classDeclaration_: `

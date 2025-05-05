@@ -15,8 +15,7 @@ package analyzer
 import (
 	fmt "fmt"
 	ast "github.com/craterdog/go-class-model/v7/ast"
-	fra "github.com/craterdog/go-collection-framework/v7"
-	col "github.com/craterdog/go-collection-framework/v7/collection"
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	sts "strings"
 )
@@ -124,7 +123,7 @@ func (v *classAnalyzer_) analyzeAspectDeclarations(
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
 	var aspectDeclarations = aspectSection.GetAspectDeclarations()
-	v.aspectDeclarations_ = fra.ListFromSequence[ast.AspectDeclarationLike](
+	v.aspectDeclarations_ = col.ListFromSequence[ast.AspectDeclarationLike](
 		aspectDeclarations,
 	)
 }
@@ -136,7 +135,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
 	if uti.IsDefined(aspectSubsection) {
 		var aspectInterfaces = aspectSubsection.GetAspectInterfaces()
-		v.aspectInterfaces_ = fra.ListFromSequence[ast.AspectInterfaceLike](
+		v.aspectInterfaces_ = col.ListFromSequence[ast.AspectInterfaceLike](
 			aspectInterfaces,
 		)
 	}
@@ -145,7 +144,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 func (v *classAnalyzer_) analyzeAttributeMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.attributeMethods_ = fra.List[ast.AttributeMethodLike]()
+	v.attributeMethods_ = col.List[ast.AttributeMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
 	if uti.IsDefined(attributeSubsection) {
@@ -192,7 +191,7 @@ func (v *classAnalyzer_) analyzeClass(
 func (v *classAnalyzer_) analyzeClassConstants(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constants_ = fra.Catalog[string, string]()
+	v.constants_ = col.Catalog[string, string]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
 	if uti.IsDefined(constantSubsection) {
@@ -241,7 +240,7 @@ func (v *classAnalyzer_) analyzeClassStructure(
 func (v *classAnalyzer_) analyzeConstantMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constantMethods_ = fra.List[ast.ConstantMethodLike]()
+	v.constantMethods_ = col.List[ast.ConstantMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
 	if uti.IsDefined(constantSubsection) {
@@ -256,7 +255,7 @@ func (v *classAnalyzer_) analyzeConstantMethods(
 func (v *classAnalyzer_) analyzeConstructorMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.constructorMethods_ = fra.List[ast.ConstructorMethodLike]()
+	v.constructorMethods_ = col.List[ast.ConstructorMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constructorSubsection = classMethods.GetConstructorSubsection()
 	var constructorMethods = constructorSubsection.GetConstructorMethods().GetIterator()
@@ -269,7 +268,7 @@ func (v *classAnalyzer_) analyzeConstructorMethods(
 func (v *classAnalyzer_) analyzeFunctionMethods(
 	classDeclaration ast.ClassDeclarationLike,
 ) {
-	v.functionMethods_ = fra.List[ast.FunctionMethodLike]()
+	v.functionMethods_ = col.List[ast.FunctionMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var functionSubsection = classMethods.GetOptionalFunctionSubsection()
 	if uti.IsDefined(functionSubsection) {
@@ -285,7 +284,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 	packageDeclaration ast.PackageDeclarationLike,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
-	v.importedPackages_ = fra.Catalog[string, string]()
+	v.importedPackages_ = col.Catalog[string, string]()
 	var packageImports = packageDeclaration.GetPackageImports()
 	var packages = packageImports.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
@@ -307,10 +306,6 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 		`"github.com/craterdog/go-collection-framework/v7"`,
 	)
 	v.importedPackages_.SetValue(
-		"abs",
-		`"github.com/craterdog/go-collection-framework/v7/collection"`,
-	)
-	v.importedPackages_.SetValue(
 		"syn",
 		`"sync"`,
 	)
@@ -319,7 +314,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 func (v *classAnalyzer_) analyzePrincipalMethods(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.principalMethods_ = fra.List[ast.PrincipalMethodLike]()
+	v.principalMethods_ = col.List[ast.PrincipalMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var principalSubsection = instanceMethods.GetPrincipalSubsection()
 	var principalMethods = principalSubsection.GetPrincipalMethods().GetIterator()
@@ -356,7 +351,7 @@ func (v *classAnalyzer_) analyzePrivateAttributes(
 func (v *classAnalyzer_) analyzePublicAttributes(
 	instanceDeclaration ast.InstanceDeclarationLike,
 ) {
-	v.attributes_ = fra.Catalog[string, string]()
+	v.attributes_ = col.Catalog[string, string]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
 	if uti.IsDefined(attributeSubsection) {

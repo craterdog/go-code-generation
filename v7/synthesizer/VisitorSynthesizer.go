@@ -158,7 +158,7 @@ func (v *visitorSynthesizer_) createInlineImplementation(
 	var references = v.analyzer_.GetReferences(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for references.HasNext() && variables.HasNext() {
-		var slot uint = uint(references.GetSlot())
+		var slot = uint(references.GetSlot())
 		if slot > 0 {
 			implementation += v.createInlineSlot(ruleName, slot)
 		}
