@@ -745,14 +745,14 @@ const (<ConstantAliases>)`,
 
 	classFunctions_: `
 
-func <~ClassName>Class<Constraints>() <~packageAcronym>.<~ClassName>ClassLike<Arguments> {
+func <~ClassName>Class<Constraints>() <~ClassName>ClassLike<Arguments> {
 	return <~packageAcronym>.<~ClassName>Class<Arguments>()
 }`,
 
 	constructorFunction_: `
 
-func <MethodName><Constraints>(<Parameters>) <~packageAcronym>.<~ClassName>Like<Arguments> {
-	return <~packageAcronym>.<~ClassName>Class<Arguments>().<MethodName>(<ParameterNames>)
+func <MethodName><Constraints>(<Parameters>) <~ClassName>Like<Arguments> {
+	return <~ClassName>Class<Arguments>().<MethodName>(<ParameterNames>)
 }`,
 
 	methodParameter_: `
