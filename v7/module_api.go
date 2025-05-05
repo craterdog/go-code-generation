@@ -53,26 +53,6 @@ type (
 	SyntaxAnalyzerLike  = ana.SyntaxAnalyzerLike
 )
 
-// Assembler
-
-type (
-	ClassAssemblerClassLike   = ass.ClassAssemblerClassLike
-	ModuleAssemblerClassLike  = ass.ModuleAssemblerClassLike
-	PackageAssemblerClassLike = ass.PackageAssemblerClassLike
-)
-
-type (
-	ClassAssemblerLike   = ass.ClassAssemblerLike
-	ModuleAssemblerLike  = ass.ModuleAssemblerLike
-	PackageAssemblerLike = ass.PackageAssemblerLike
-)
-
-type (
-	ClassTemplateDriven   = ass.ClassTemplateDriven
-	ModuleTemplateDriven  = ass.ModuleTemplateDriven
-	PackageTemplateDriven = ass.PackageTemplateDriven
-)
-
 // Synthesizer
 
 type (
@@ -107,188 +87,252 @@ type (
 	VisitorSynthesizerLike   = syn.VisitorSynthesizerLike
 )
 
-// CLASS CONSTRUCTORS
+// Assembler
 
-// Analyzer/ClassAnalyzer
+type (
+	ClassAssemblerClassLike   = ass.ClassAssemblerClassLike
+	ModuleAssemblerClassLike  = ass.ModuleAssemblerClassLike
+	PackageAssemblerClassLike = ass.PackageAssemblerClassLike
+)
+
+type (
+	ClassAssemblerLike   = ass.ClassAssemblerLike
+	ModuleAssemblerLike  = ass.ModuleAssemblerLike
+	PackageAssemblerLike = ass.PackageAssemblerLike
+)
+
+type (
+	ClassTemplateDriven   = ass.ClassTemplateDriven
+	ModuleTemplateDriven  = ass.ModuleTemplateDriven
+	PackageTemplateDriven = ass.PackageTemplateDriven
+)
+
+// CLASS ACCESSORS
+
+// Analyzer
+
+func ClassAnalyzerClass() ClassAnalyzerClassLike {
+	return ana.ClassAnalyzerClass()
+}
 
 func ClassAnalyzer(
 	model mod.ModelLike,
 	className string,
-) ana.ClassAnalyzerLike {
-	return ana.ClassAnalyzerClass().ClassAnalyzer(
+) ClassAnalyzerLike {
+	return ClassAnalyzerClass().ClassAnalyzer(
 		model,
 		className,
 	)
 }
 
-// Analyzer/PackageAnalyzer
+func PackageAnalyzerClass() PackageAnalyzerClassLike {
+	return ana.PackageAnalyzerClass()
+}
 
 func PackageAnalyzer(
 	model mod.ModelLike,
-) ana.PackageAnalyzerLike {
-	return ana.PackageAnalyzerClass().PackageAnalyzer(
+) PackageAnalyzerLike {
+	return PackageAnalyzerClass().PackageAnalyzer(
 		model,
 	)
 }
 
-// Analyzer/SyntaxAnalyzer
+func SyntaxAnalyzerClass() SyntaxAnalyzerClassLike {
+	return ana.SyntaxAnalyzerClass()
+}
 
 func SyntaxAnalyzer(
 	syntax not.SyntaxLike,
-) ana.SyntaxAnalyzerLike {
-	return ana.SyntaxAnalyzerClass().SyntaxAnalyzer(
+) SyntaxAnalyzerLike {
+	return SyntaxAnalyzerClass().SyntaxAnalyzer(
 		syntax,
 	)
 }
 
-// Assembler/ClassAssembler
+// Synthesizer
 
-func ClassAssembler() ass.ClassAssemblerLike {
-	return ass.ClassAssemblerClass().ClassAssembler()
+func AstSynthesizerClass() AstSynthesizerClassLike {
+	return syn.AstSynthesizerClass()
 }
-
-// Assembler/ModuleAssembler
-
-func ModuleAssembler() ass.ModuleAssemblerLike {
-	return ass.ModuleAssemblerClass().ModuleAssembler()
-}
-
-// Assembler/PackageAssembler
-
-func PackageAssembler() ass.PackageAssemblerLike {
-	return ass.PackageAssemblerClass().PackageAssembler()
-}
-
-// Synthesizer/AstSynthesizer
 
 func AstSynthesizer(
 	syntax not.SyntaxLike,
-) syn.AstSynthesizerLike {
-	return syn.AstSynthesizerClass().AstSynthesizer(
+) AstSynthesizerLike {
+	return AstSynthesizerClass().AstSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/ClassSynthesizer
+func ClassSynthesizerClass() ClassSynthesizerClassLike {
+	return syn.ClassSynthesizerClass()
+}
 
 func ClassSynthesizer(
 	model mod.ModelLike,
 	className string,
-) syn.ClassSynthesizerLike {
-	return syn.ClassSynthesizerClass().ClassSynthesizer(
+) ClassSynthesizerLike {
+	return ClassSynthesizerClass().ClassSynthesizer(
 		model,
 		className,
 	)
 }
 
-// Synthesizer/FormatterSynthesizer
+func FormatterSynthesizerClass() FormatterSynthesizerClassLike {
+	return syn.FormatterSynthesizerClass()
+}
 
 func FormatterSynthesizer(
 	syntax not.SyntaxLike,
-) syn.FormatterSynthesizerLike {
-	return syn.FormatterSynthesizerClass().FormatterSynthesizer(
+) FormatterSynthesizerLike {
+	return FormatterSynthesizerClass().FormatterSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/GrammarSynthesizer
+func GrammarSynthesizerClass() GrammarSynthesizerClassLike {
+	return syn.GrammarSynthesizerClass()
+}
 
 func GrammarSynthesizer(
 	syntax not.SyntaxLike,
-) syn.GrammarSynthesizerLike {
-	return syn.GrammarSynthesizerClass().GrammarSynthesizer(
+) GrammarSynthesizerLike {
+	return GrammarSynthesizerClass().GrammarSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/ModuleSynthesizer
+func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
+	return syn.ModuleSynthesizerClass()
+}
 
 func ModuleSynthesizer(
 	moduleName string,
 	models col.CatalogLike[string, mod.ModelLike],
-) syn.ModuleSynthesizerLike {
-	return syn.ModuleSynthesizerClass().ModuleSynthesizer(
+) ModuleSynthesizerLike {
+	return ModuleSynthesizerClass().ModuleSynthesizer(
 		moduleName,
 		models,
 	)
 }
 
-// Synthesizer/NodeSynthesizer
+func NodeSynthesizerClass() NodeSynthesizerClassLike {
+	return syn.NodeSynthesizerClass()
+}
 
 func NodeSynthesizer(
 	model mod.ModelLike,
 	className string,
-) syn.NodeSynthesizerLike {
-	return syn.NodeSynthesizerClass().NodeSynthesizer(
+) NodeSynthesizerLike {
+	return NodeSynthesizerClass().NodeSynthesizer(
 		model,
 		className,
 	)
 }
 
-// Synthesizer/PackageSynthesizer
-
-func PackageSynthesizer() syn.PackageSynthesizerLike {
-	return syn.PackageSynthesizerClass().PackageSynthesizer()
+func PackageSynthesizerClass() PackageSynthesizerClassLike {
+	return syn.PackageSynthesizerClass()
 }
 
-// Synthesizer/ParserSynthesizer
+func PackageSynthesizer() PackageSynthesizerLike {
+	return PackageSynthesizerClass().PackageSynthesizer()
+}
+
+func ParserSynthesizerClass() ParserSynthesizerClassLike {
+	return syn.ParserSynthesizerClass()
+}
 
 func ParserSynthesizer(
 	syntax not.SyntaxLike,
-) syn.ParserSynthesizerLike {
-	return syn.ParserSynthesizerClass().ParserSynthesizer(
+) ParserSynthesizerLike {
+	return ParserSynthesizerClass().ParserSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/ProcessorSynthesizer
+func ProcessorSynthesizerClass() ProcessorSynthesizerClassLike {
+	return syn.ProcessorSynthesizerClass()
+}
 
 func ProcessorSynthesizer(
 	syntax not.SyntaxLike,
-) syn.ProcessorSynthesizerLike {
-	return syn.ProcessorSynthesizerClass().ProcessorSynthesizer(
+) ProcessorSynthesizerLike {
+	return ProcessorSynthesizerClass().ProcessorSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/ScannerSynthesizer
+func ScannerSynthesizerClass() ScannerSynthesizerClassLike {
+	return syn.ScannerSynthesizerClass()
+}
 
 func ScannerSynthesizer(
 	syntax not.SyntaxLike,
-) syn.ScannerSynthesizerLike {
-	return syn.ScannerSynthesizerClass().ScannerSynthesizer(
+) ScannerSynthesizerLike {
+	return ScannerSynthesizerClass().ScannerSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/TokenSynthesizer
+func TokenSynthesizerClass() TokenSynthesizerClassLike {
+	return syn.TokenSynthesizerClass()
+}
 
 func TokenSynthesizer(
 	syntax not.SyntaxLike,
-) syn.TokenSynthesizerLike {
-	return syn.TokenSynthesizerClass().TokenSynthesizer(
+) TokenSynthesizerLike {
+	return TokenSynthesizerClass().TokenSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/ValidatorSynthesizer
+func ValidatorSynthesizerClass() ValidatorSynthesizerClassLike {
+	return syn.ValidatorSynthesizerClass()
+}
 
 func ValidatorSynthesizer(
 	syntax not.SyntaxLike,
-) syn.ValidatorSynthesizerLike {
-	return syn.ValidatorSynthesizerClass().ValidatorSynthesizer(
+) ValidatorSynthesizerLike {
+	return ValidatorSynthesizerClass().ValidatorSynthesizer(
 		syntax,
 	)
 }
 
-// Synthesizer/VisitorSynthesizer
+func VisitorSynthesizerClass() VisitorSynthesizerClassLike {
+	return syn.VisitorSynthesizerClass()
+}
 
 func VisitorSynthesizer(
 	syntax not.SyntaxLike,
-) syn.VisitorSynthesizerLike {
-	return syn.VisitorSynthesizerClass().VisitorSynthesizer(
+) VisitorSynthesizerLike {
+	return VisitorSynthesizerClass().VisitorSynthesizer(
 		syntax,
 	)
+}
+
+// Assembler
+
+func ClassAssemblerClass() ClassAssemblerClassLike {
+	return ass.ClassAssemblerClass()
+}
+
+func ClassAssembler() ClassAssemblerLike {
+	return ClassAssemblerClass().ClassAssembler()
+}
+
+func ModuleAssemblerClass() ModuleAssemblerClassLike {
+	return ass.ModuleAssemblerClass()
+}
+
+func ModuleAssembler() ModuleAssemblerLike {
+	return ModuleAssemblerClass().ModuleAssembler()
+}
+
+func PackageAssemblerClass() PackageAssemblerClassLike {
+	return ass.PackageAssemblerClass()
+}
+
+func PackageAssembler() PackageAssemblerLike {
+	return PackageAssemblerClass().PackageAssembler()
 }
 
 // GLOBAL FUNCTIONS
