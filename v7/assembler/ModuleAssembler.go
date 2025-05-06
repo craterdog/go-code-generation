@@ -179,8 +179,9 @@ func (c *moduleAssemblerClass_) formatImportedPackages(
 	var imports = c.extractImportedPackages(existing)
 
 	// Add in the generated imported packages.
-	imports = col.CatalogMerge[string, string](
-		imports, c.extractImportedPackages(generated),
+	imports = col.CatalogClass[string, string]().Merge(
+		imports,
+		c.extractImportedPackages(generated),
 	)
 
 	// Sort the imported packages by path rather than name.
