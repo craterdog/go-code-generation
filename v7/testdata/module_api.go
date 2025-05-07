@@ -56,7 +56,9 @@ type (
 	InlineClassLike           = ast.InlineClassLike
 	LimitClassLike            = ast.LimitClassLike
 	LiteralClassLike          = ast.LiteralClassLike
+	LiteralOptionClassLike    = ast.LiteralOptionClassLike
 	MultiexpressionClassLike  = ast.MultiexpressionClassLike
+	MultiliteralClassLike     = ast.MultiliteralClassLike
 	MultiruleClassLike        = ast.MultiruleClassLike
 	NoticeClassLike           = ast.NoticeClassLike
 	OptionClassLike           = ast.OptionClassLike
@@ -89,7 +91,9 @@ type (
 	InlineLike           = ast.InlineLike
 	LimitLike            = ast.LimitLike
 	LiteralLike          = ast.LiteralLike
+	LiteralOptionLike    = ast.LiteralOptionLike
 	MultiexpressionLike  = ast.MultiexpressionLike
+	MultiliteralLike     = ast.MultiliteralLike
 	MultiruleLike        = ast.MultiruleLike
 	NoticeLike           = ast.NoticeLike
 	OptionLike           = ast.OptionLike
@@ -374,6 +378,22 @@ func Literal(
 	)
 }
 
+func LiteralOptionClass() LiteralOptionClassLike {
+	return ast.LiteralOptionClass()
+}
+
+func LiteralOption(
+	newline string,
+	quote string,
+	optionalNote string,
+) LiteralOptionLike {
+	return LiteralOptionClass().LiteralOption(
+		newline,
+		quote,
+		optionalNote,
+	)
+}
+
 func MultiexpressionClass() MultiexpressionClassLike {
 	return ast.MultiexpressionClass()
 }
@@ -383,6 +403,18 @@ func Multiexpression(
 ) MultiexpressionLike {
 	return MultiexpressionClass().Multiexpression(
 		expressionOptions,
+	)
+}
+
+func MultiliteralClass() MultiliteralClassLike {
+	return ast.MultiliteralClass()
+}
+
+func Multiliteral(
+	literalOptions col.Sequential[ast.LiteralOptionLike],
+) MultiliteralLike {
+	return MultiliteralClass().Multiliteral(
+		literalOptions,
 	)
 }
 

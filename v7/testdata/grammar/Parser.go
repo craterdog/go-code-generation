@@ -228,6 +228,15 @@ func (v *parser_) parseDefinition() (
 		return
 	}
 
+	// Attempt to parse a single Multiliteral Definition.
+	var multiliteral ast.MultiliteralLike
+	multiliteral, token, ok = v.parseMultiliteral()
+	if ok {
+		// Found a single Multiliteral Definition.
+		definition = ast.DefinitionClass().Definition(multiliteral)
+		return
+	}
+
 	// Attempt to parse a single Inline Definition.
 	var inline ast.InlineLike
 	inline, token, ok = v.parseInline()
@@ -852,6 +861,67 @@ func (v *parser_) parseLiteral() (
 	return
 }
 
+func (v *parser_) parseLiteralOption() (
+	literalOption ast.LiteralOptionLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse a single newline token.
+	var newline string
+	newline, token, ok = v.parseToken(NewlineToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single newline token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$LiteralOption", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single quote token.
+	var quote string
+	quote, token, ok = v.parseToken(QuoteToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single quote token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$LiteralOption", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok && uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single LiteralOption rule.
+	ok = true
+	v.remove(tokens)
+	literalOption = ast.LiteralOptionClass().LiteralOption(
+		newline,
+		quote,
+		optionalNote,
+	)
+	return
+}
+
 func (v *parser_) parseMultiexpression() (
 	multiexpression ast.MultiexpressionLike,
 	token TokenLike,
@@ -889,6 +959,46 @@ expressionOptionsLoop:
 	ok = true
 	v.remove(tokens)
 	multiexpression = ast.MultiexpressionClass().Multiexpression(expressionOptions)
+	return
+}
+
+func (v *parser_) parseMultiliteral() (
+	multiliteral ast.MultiliteralLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse multiple LiteralOption rules.
+	var literalOptions = col.List[ast.LiteralOptionLike]()
+literalOptionsLoop:
+	for count := 0; count < mat.MaxInt; count++ {
+		var literalOption ast.LiteralOptionLike
+		literalOption, token, ok = v.parseLiteralOption()
+		if !ok {
+			switch {
+			case count >= 1:
+				break literalOptionsLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple LiteralOption rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Multiliteral", token)
+				message += "1 or more LiteralOption rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		literalOptions.AppendValue(literalOption)
+	}
+
+	// Found a single Multiliteral rule.
+	ok = true
+	v.remove(tokens)
+	multiliteral = ast.MultiliteralClass().Multiliteral(literalOptions)
 	return
 }
 
@@ -1771,11 +1881,14 @@ var parserClassReference_ = &parserClass_{
 			"$Definition": `
     Multirule
     Multiexpression
+    Multiliteral
     Inline  ! This must be the last option since it skips newlines.`,
 			"$Multirule":        `RuleOption+`,
 			"$RuleOption":       `newline uppercase note?`,
 			"$Multiexpression":  `ExpressionOption+`,
 			"$ExpressionOption": `newline lowercase note?`,
+			"$Multiliteral":     `LiteralOption+`,
+			"$LiteralOption":    `newline quote note?`,
 			"$Inline":           `Term+ note?`,
 			"$Term": `
     Literal

@@ -156,6 +156,10 @@ func (v *visitor_) visitDefinition(
 		v.processor_.PreprocessMultiexpression(actual)
 		v.visitMultiexpression(actual)
 		v.processor_.PostprocessMultiexpression(actual)
+	case ast.MultiliteralLike:
+		v.processor_.PreprocessMultiliteral(actual)
+		v.visitMultiliteral(actual)
+		v.processor_.PostprocessMultiliteral(actual)
 	case ast.InlineLike:
 		v.processor_.PreprocessInline(actual)
 		v.visitInline(actual)
@@ -395,6 +399,30 @@ func (v *visitor_) visitLiteral(
 	v.processor_.ProcessQuote(quote)
 }
 
+func (v *visitor_) visitLiteralOption(
+	literalOption ast.LiteralOptionLike,
+) {
+	// Visit a single newline token.
+	var newline = literalOption.GetNewline()
+	v.processor_.ProcessNewline(newline)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessLiteralOptionSlot(1)
+
+	// Visit a single quote token.
+	var quote = literalOption.GetQuote()
+	v.processor_.ProcessQuote(quote)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessLiteralOptionSlot(2)
+
+	// Visit an optional note token.
+	var optionalNote = literalOption.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitMultiexpression(
 	multiexpression ast.MultiexpressionLike,
 ) {
@@ -415,6 +443,30 @@ func (v *visitor_) visitMultiexpression(
 			expressionOption,
 			expressionOptionIndex,
 			expressionOptionsSize,
+		)
+	}
+}
+
+func (v *visitor_) visitMultiliteral(
+	multiliteral ast.MultiliteralLike,
+) {
+	// Visit each literalOption rule.
+	var literalOptionIndex uint
+	var literalOptions = multiliteral.GetLiteralOptions().GetIterator()
+	var literalOptionsSize = uint(literalOptions.GetSize())
+	for literalOptions.HasNext() {
+		literalOptionIndex++
+		var literalOption = literalOptions.GetNext()
+		v.processor_.PreprocessLiteralOption(
+			literalOption,
+			literalOptionIndex,
+			literalOptionsSize,
+		)
+		v.visitLiteralOption(literalOption)
+		v.processor_.PostprocessLiteralOption(
+			literalOption,
+			literalOptionIndex,
+			literalOptionsSize,
 		)
 	}
 }

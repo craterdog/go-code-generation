@@ -257,6 +257,20 @@ type LiteralClassLike interface {
 }
 
 /*
+LiteralOptionClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete literal-option-like class.
+*/
+type LiteralOptionClassLike interface {
+	// Constructor Methods
+	LiteralOption(
+		newline string,
+		quote string,
+		optionalNote string,
+	) LiteralOptionLike
+}
+
+/*
 MultiexpressionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete multiexpression-like class.
@@ -266,6 +280,18 @@ type MultiexpressionClassLike interface {
 	Multiexpression(
 		expressionOptions col.Sequential[ExpressionOptionLike],
 	) MultiexpressionLike
+}
+
+/*
+MultiliteralClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete multiliteral-like class.
+*/
+type MultiliteralClassLike interface {
+	// Constructor Methods
+	Multiliteral(
+		literalOptions col.Sequential[LiteralOptionLike],
+	) MultiliteralLike
 }
 
 /*
@@ -655,6 +681,21 @@ type LiteralLike interface {
 }
 
 /*
+LiteralOptionLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete literal-option-like class.
+*/
+type LiteralOptionLike interface {
+	// Principal Methods
+	GetClass() LiteralOptionClassLike
+
+	// Attribute Methods
+	GetNewline() string
+	GetQuote() string
+	GetOptionalNote() string
+}
+
+/*
 MultiexpressionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete multiexpression-like class.
@@ -665,6 +706,19 @@ type MultiexpressionLike interface {
 
 	// Attribute Methods
 	GetExpressionOptions() col.Sequential[ExpressionOptionLike]
+}
+
+/*
+MultiliteralLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete multiliteral-like class.
+*/
+type MultiliteralLike interface {
+	// Principal Methods
+	GetClass() MultiliteralClassLike
+
+	// Attribute Methods
+	GetLiteralOptions() col.Sequential[LiteralOptionLike]
 }
 
 /*

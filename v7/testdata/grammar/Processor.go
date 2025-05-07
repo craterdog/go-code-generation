@@ -386,6 +386,25 @@ func (v *processor_) PostprocessLiteral(
 ) {
 }
 
+func (v *processor_) PreprocessLiteralOption(
+	literalOption ast.LiteralOptionLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessLiteralOptionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessLiteralOption(
+	literalOption ast.LiteralOptionLike,
+	index uint,
+	size uint,
+) {
+}
+
 func (v *processor_) PreprocessMultiexpression(
 	multiexpression ast.MultiexpressionLike,
 ) {
@@ -398,6 +417,21 @@ func (v *processor_) ProcessMultiexpressionSlot(
 
 func (v *processor_) PostprocessMultiexpression(
 	multiexpression ast.MultiexpressionLike,
+) {
+}
+
+func (v *processor_) PreprocessMultiliteral(
+	multiliteral ast.MultiliteralLike,
+) {
+}
+
+func (v *processor_) ProcessMultiliteralSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessMultiliteral(
+	multiliteral ast.MultiliteralLike,
 ) {
 }
 

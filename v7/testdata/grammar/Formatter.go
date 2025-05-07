@@ -90,6 +90,14 @@ func (v *formatter_) ProcessLiteral(
 	v.appendString(literal)
 }
 
+func (v *formatter_) PreprocessLiteralOption(
+	literalOption ast.LiteralOptionLike,
+	index uint,
+	size uint,
+) {
+	v.appendNewline()
+}
+
 func (v *formatter_) ProcessLowercase(
 	lowercase string,
 ) {
@@ -249,6 +257,19 @@ func (v *formatter_) PreprocessMultiexpression(
 
 func (v *formatter_) PostprocessMultiexpression(
 	multiexpression ast.MultiexpressionLike,
+) {
+	v.depth_--
+	v.appendNewline()
+}
+
+func (v *formatter_) PreprocessMultiliteral(
+	multiliteral ast.MultiliteralLike,
+) {
+	v.depth_++
+}
+
+func (v *formatter_) PostprocessMultiliteral(
+	multiliteral ast.MultiliteralLike,
 ) {
 	v.depth_--
 	v.appendNewline()

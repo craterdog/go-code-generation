@@ -32,6 +32,7 @@ $Rule: "$" uppercase ":" Definition
 $Definition:
     Multirule
     Multiexpression
+    Multiliteral
     Inline  ! This must be the last option since it skips newlines.
 
 $Multirule: RuleOption+
@@ -41,6 +42,10 @@ $RuleOption: newline uppercase note?
 $Multiexpression: ExpressionOption+
 
 $ExpressionOption: newline lowercase note?
+
+$Multiliteral: LiteralOption+
+
+$LiteralOption: newline quote note?
 
 $Inline: Term+ note?
 

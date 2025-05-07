@@ -487,6 +487,19 @@ type Methodical interface {
 	PostprocessLiteral(
 		literal ast.LiteralLike,
 	)
+	PreprocessLiteralOption(
+		literalOption ast.LiteralOptionLike,
+		index uint,
+		size uint,
+	)
+	ProcessLiteralOptionSlot(
+		slot uint,
+	)
+	PostprocessLiteralOption(
+		literalOption ast.LiteralOptionLike,
+		index uint,
+		size uint,
+	)
 	PreprocessMultiexpression(
 		multiexpression ast.MultiexpressionLike,
 	)
@@ -495,6 +508,15 @@ type Methodical interface {
 	)
 	PostprocessMultiexpression(
 		multiexpression ast.MultiexpressionLike,
+	)
+	PreprocessMultiliteral(
+		multiliteral ast.MultiliteralLike,
+	)
+	ProcessMultiliteralSlot(
+		slot uint,
+	)
+	PostprocessMultiliteral(
+		multiliteral ast.MultiliteralLike,
 	)
 	PreprocessMultirule(
 		multirule ast.MultiruleLike,
