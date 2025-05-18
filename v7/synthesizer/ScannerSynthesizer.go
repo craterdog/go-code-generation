@@ -164,12 +164,13 @@ func (v *scannerSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
+// NOTE:
+// The found cases must be in the same order as the expressions declared in
+// the syntax file.  But the expressions include patterns that are only used
+// in other expressions and not visible as tokens.  And the token names have
+// been sorted so we must pull out the token names from the catalog of
+// expressions in their declared order.
 func (v *scannerSynthesizer_) createFoundCases() string {
-	// NOTE: The found cases must be in the same order as the expressions
-	// declared in the syntax file.  But the expressions include patterns
-	// that are only used in other expressions and not visible as tokens.
-	// And the token names have been sorted so we must pull out the token
-	// names from the catalog of expressions in their declared order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
 	var tokenNames = v.analyzer_.GetTokens()
@@ -572,14 +573,13 @@ var scannerClassReference_ = &scannerClass_{
 
 // Private Constants
 
-/*
-NOTE:
-These private constants define the regular expression sub-patterns that make up
-the intrinsic types and token types.  Unfortunately there is no way to make them
-private to the scanner class since they must be TRUE Go constants to be used in
-this way.  We append an underscore to each name to lessen the chance of a name
-collision with other private Go class constants in this package.
-*/
+// NOTE:
+// These private constants define the regular expression sub-patterns that make
+// up the intrinsic types and token types.  Unfortunately there is no way to
+// make them private to the scanner class since they must be TRUE Go constants
+// to be used in this way.  We append an underscore to each name to lessen the
+// chance of a name collision with other private Go class constants in this
+// package.
 const (
 	// Define the regular expressions for each intrinsic type.
 	any_     = "." // This does NOT include newline characters.

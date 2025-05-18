@@ -274,14 +274,13 @@ var scannerClassReference_ = &scannerClass_{
 
 // Private Constants
 
-/*
-NOTE:
-These private constants define the regular expression sub-patterns that make up
-the intrinsic types and token types.  Unfortunately there is no way to make them
-private to the scanner class since they must be TRUE Go constants to be used in
-this way.  We append an underscore to each name to lessen the chance of a name
-collision with other private Go class constants in this package.
-*/
+// NOTE:
+// These private constants define the regular expression sub-patterns that make
+// up the intrinsic types and token types.  Unfortunately there is no way to
+// make them private to the scanner class since they must be TRUE Go constants
+// to be used in this way.  We append an underscore to each name to lessen the
+// chance of a name collision with other private Go class constants in this
+// package.
 const (
 	// Define the regular expressions for each intrinsic type.
 	any_     = "." // This does NOT include newline characters.

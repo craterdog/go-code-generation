@@ -1895,11 +1895,13 @@ func (v *parser_) putBack(
 	}
 }
 
+// NOTE:
+// This method does nothing but must exist to satisfy the lint check on the
+// generated parser code.  The generated code must call this method is some
+// cases to make it look that the tokens variable is being used somewhere.
 func (v *parser_) remove(
 	tokens col.Sequential[TokenLike],
 ) {
-	// NOTE: This method does nothing but must exist to satisfy the lint
-	// check on the generated parser code.
 }
 
 // Instance Structure

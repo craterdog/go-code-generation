@@ -131,6 +131,15 @@ type SyntaxAnalyzerLike interface {
 	GetSyntaxName() string
 	GetRules() col.SetLike[string]
 	GetTokens() col.SetLike[string]
+	GetLiteralValues(
+		ruleName string,
+	) col.ListLike[not.LiteralValueLike]
+	GetTokenNames(
+		ruleName string,
+	) col.ListLike[not.TokenNameLike]
+	GetRuleNames(
+		ruleName string,
+	) col.ListLike[not.RuleNameLike]
 	GetRuleTerms(
 		ruleName string,
 	) col.ListLike[not.RuleTermLike]
@@ -140,17 +149,8 @@ type SyntaxAnalyzerLike interface {
 	GetVariableType(
 		component not.ComponentLike,
 	) string
-	GetRuleNames(
-		ruleName string,
-	) col.ListLike[not.RuleNameLike]
-	GetTokenNames(
-		ruleName string,
-	) col.ListLike[not.TokenNameLike]
-	GetLiteralValues(
-		ruleName string,
-	) col.ListLike[not.LiteralValueLike]
-	GetPatterns() col.CatalogLike[string, string]
 	GetDefinitions() col.CatalogLike[string, not.DefinitionLike]
+	GetPatterns() col.CatalogLike[string, string]
 	GetSyntaxMap() string
 
 	// Aspect Interfaces

@@ -53,24 +53,20 @@ func (v *syntaxAnalyzer_) GetClass() SyntaxAnalyzerClassLike {
 	return syntaxAnalyzerClass()
 }
 
-func (v *syntaxAnalyzer_) GetPatterns() col.CatalogLike[string, string] {
-	return v.patterns_
+func (v *syntaxAnalyzer_) GetLegalNotice() string {
+	return v.legalNotice_
 }
 
-func (v *syntaxAnalyzer_) GetDefinitions() col.CatalogLike[string, not.DefinitionLike] {
-	return v.definitions_
+func (v *syntaxAnalyzer_) GetSyntaxName() string {
+	return v.syntaxName_
 }
 
-func (v *syntaxAnalyzer_) GetRuleNames(
-	ruleName string,
-) col.ListLike[not.RuleNameLike] {
-	return v.ruleNames_.GetValue(ruleName)
+func (v *syntaxAnalyzer_) GetRules() col.SetLike[string] {
+	return v.rules_
 }
 
-func (v *syntaxAnalyzer_) GetTokenNames(
-	ruleName string,
-) col.ListLike[not.TokenNameLike] {
-	return v.tokenOptions_.GetValue(ruleName)
+func (v *syntaxAnalyzer_) GetTokens() col.SetLike[string] {
+	return v.tokens_
 }
 
 func (v *syntaxAnalyzer_) GetLiteralValues(
@@ -79,30 +75,22 @@ func (v *syntaxAnalyzer_) GetLiteralValues(
 	return v.literalValues_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetLegalNotice() string {
-	return v.legalNotice_
+func (v *syntaxAnalyzer_) GetTokenNames(
+	ruleName string,
+) col.ListLike[not.TokenNameLike] {
+	return v.tokenNames_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetRules() col.SetLike[string] {
-	return v.rules_
-}
-
-func (v *syntaxAnalyzer_) GetSyntaxMap() string {
-	return v.syntaxMap_
-}
-
-func (v *syntaxAnalyzer_) GetSyntaxName() string {
-	return v.syntaxName_
+func (v *syntaxAnalyzer_) GetRuleNames(
+	ruleName string,
+) col.ListLike[not.RuleNameLike] {
+	return v.ruleNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleTerms(
 	ruleName string,
 ) col.ListLike[not.RuleTermLike] {
-	return v.terms_.GetValue(ruleName)
-}
-
-func (v *syntaxAnalyzer_) GetTokens() col.SetLike[string] {
-	return v.tokens_
+	return v.ruleTerms_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
@@ -125,6 +113,18 @@ func (v *syntaxAnalyzer_) GetVariableType(
 		variableType = componentString + "Like"
 	}
 	return variableType
+}
+
+func (v *syntaxAnalyzer_) GetPatterns() col.CatalogLike[string, string] {
+	return v.patterns_
+}
+
+func (v *syntaxAnalyzer_) GetDefinitions() col.CatalogLike[string, not.DefinitionLike] {
+	return v.definitions_
+}
+
+func (v *syntaxAnalyzer_) GetSyntaxMap() string {
+	return v.syntaxMap_
 }
 
 // not.Methodical Methods
@@ -155,7 +155,7 @@ func (v *syntaxAnalyzer_) ProcessIntrinsic(
 ) {
 	intrinsic = sts.ToLower(intrinsic)
 	if intrinsic == "any" {
-		v.isGreedy_ = false // Turn off "greedy" for expressions containing ANY.
+		v.notGreedy_ = true // Turn off "greedy" for expressions containing ANY.
 	}
 	v.pattern_ += `" + ` + intrinsic + `_ + "`
 }
@@ -163,7 +163,9 @@ func (v *syntaxAnalyzer_) ProcessIntrinsic(
 func (v *syntaxAnalyzer_) ProcessLiteral(
 	literal string,
 ) {
-	v.hasLiteral_ = true
+	// NOTE:
+	// A scanned literal from the syntax notation corresponds to a delimiter in
+	// the generated scanner and parser.
 	var delimiter, err = stc.Unquote(literal) // Remove the double quotes.
 	if err != nil {
 		panic(err)
@@ -171,8 +173,10 @@ func (v *syntaxAnalyzer_) ProcessLiteral(
 	delimiter = v.escapeText(delimiter)
 	switch {
 	case v.inDefinition_:
+		// The literal is part of a rule.
 		v.delimiters_.AddValue(delimiter)
 	case v.inPattern_ > 0:
+		// The literal is part of an expression.
 		v.pattern_ += delimiter
 	}
 }
@@ -182,8 +186,10 @@ func (v *syntaxAnalyzer_) ProcessLowercase(
 ) {
 	switch {
 	case v.inDefinition_:
+		// The token name is part of a rule.
 		v.tokens_.AddValue(lowercase)
 	case v.inPattern_ > 0:
+		// The token name is part of an expression.
 		v.pattern_ += `(?:" + ` + lowercase + `_ + ")`
 	}
 }
@@ -209,9 +215,9 @@ func (v *syntaxAnalyzer_) PostprocessConstrained(
 	index uint,
 	count uint,
 ) {
-	if v.inPattern_ > 0 && !v.isGreedy_ {
-		v.pattern_ += "?"
-		v.isGreedy_ = true // Reset scanning back to "greedy".
+	if v.inPattern_ > 0 && v.notGreedy_ {
+		v.pattern_ += "?"    // Specify non-greedy scanning.
+		v.notGreedy_ = false // Reset scanning back to "greedy" (not notGreedy).
 	}
 }
 
@@ -247,20 +253,6 @@ func (v *syntaxAnalyzer_) PostprocessExpression(
 	v.pattern_ += `)"`
 	var expressionName = expression.GetLowercase()
 	v.patterns_.SetValue(expressionName, v.pattern_)
-}
-
-func (v *syntaxAnalyzer_) PreprocessTokenName(
-	tokenOption not.TokenNameLike,
-	index uint,
-	count uint,
-) {
-	var tokenOptions = v.tokenOptions_.GetValue(v.ruleName_)
-	tokenOptions.AppendValue(tokenOption)
-	v.syntaxMap_ += "\n    " + tokenOption.GetLowercase()
-	var note = tokenOption.GetOptionalNote()
-	if uti.IsDefined(note) {
-		v.syntaxMap_ += "  " + note
-	}
 }
 
 func (v *syntaxAnalyzer_) PreprocessExtent(
@@ -303,17 +295,6 @@ func (v *syntaxAnalyzer_) PostprocessGroup(
 	v.pattern_ += ")"
 }
 
-func (v *syntaxAnalyzer_) PostprocessTermSequence(
-	inline not.TermSequenceLike,
-	index uint,
-	count uint,
-) {
-	var note = inline.GetOptionalNote()
-	if uti.IsDefined(note) {
-		v.syntaxMap_ += "  " + note
-	}
-}
-
 func (v *syntaxAnalyzer_) PreprocessLimit(
 	limit not.LimitLike,
 	index uint,
@@ -331,7 +312,8 @@ func (v *syntaxAnalyzer_) PreprocessLiteralValue(
 ) {
 	var literalValues = v.literalValues_.GetValue(v.ruleName_)
 	literalValues.AppendValue(literalValue)
-	v.syntaxMap_ += "\n    " + literalValue.GetLiteral()
+	var literal = literalValue.GetLiteral()
+	v.syntaxMap_ += "\n    " + literal
 	var note = literalValue.GetOptionalNote()
 	if uti.IsDefined(note) {
 		v.syntaxMap_ += "  " + note
@@ -339,18 +321,20 @@ func (v *syntaxAnalyzer_) PreprocessLiteralValue(
 }
 
 func (v *syntaxAnalyzer_) PreprocessPattern(
-	definition not.PatternLike,
+	pattern not.PatternLike,
 	index uint,
 	count uint,
 ) {
+	// Increase the pattern's nesting level.
 	v.inPattern_++
 }
 
 func (v *syntaxAnalyzer_) PostprocessPattern(
-	definition not.PatternLike,
+	pattern not.PatternLike,
 	index uint,
 	count uint,
 ) {
+	// Decrease the pattern's nesting level.
 	v.inPattern_--
 }
 
@@ -371,9 +355,9 @@ func (v *syntaxAnalyzer_) PostprocessQuantified(
 ) {
 	if v.inPattern_ > 0 {
 		v.pattern_ += "}"
-		if !v.isGreedy_ {
-			v.pattern_ += "?"
-			v.isGreedy_ = true // Reset scanning back to "greedy".
+		if v.notGreedy_ {
+			v.pattern_ += "?"    // Specify non-greedy scanning.
+			v.notGreedy_ = false // Reset scanning back to "greedy" (not notGreedy).
 		}
 	}
 }
@@ -383,7 +367,6 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	index uint,
 	count uint,
 ) {
-	v.hasLiteral_ = false
 	var ruleName = rule.GetUppercase()
 	v.ruleName_ = ruleName
 	v.rules_.AddValue(ruleName)
@@ -394,14 +377,14 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 		var literalValues = col.List[not.LiteralValueLike]()
 		v.literalValues_.SetValue(ruleName, literalValues)
 	case not.TokenAlternativesLike:
-		var tokenOptions = col.List[not.TokenNameLike]()
-		v.tokenOptions_.SetValue(ruleName, tokenOptions)
+		var tokenNames = col.List[not.TokenNameLike]()
+		v.tokenNames_.SetValue(ruleName, tokenNames)
 	case not.RuleAlternativesLike:
 		var ruleNames = col.List[not.RuleNameLike]()
 		v.ruleNames_.SetValue(ruleName, ruleNames)
 	case not.TermSequenceLike:
-		var terms = col.List[not.RuleTermLike]()
-		v.terms_.SetValue(ruleName, terms)
+		var ruleTerms = col.List[not.RuleTermLike]()
+		v.ruleTerms_.SetValue(ruleName, ruleTerms)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
 }
@@ -423,10 +406,50 @@ func (v *syntaxAnalyzer_) PreprocessRuleName(
 ) {
 	var ruleNames = v.ruleNames_.GetValue(v.ruleName_)
 	ruleNames.AppendValue(ruleName)
-	v.syntaxMap_ += "\n    " + ruleName.GetUppercase()
+	var uppercase = ruleName.GetUppercase()
+	v.syntaxMap_ += "\n    " + uppercase
 	var note = ruleName.GetOptionalNote()
 	if uti.IsDefined(note) {
 		v.syntaxMap_ += "  " + note
+	}
+}
+
+func (v *syntaxAnalyzer_) PreprocessRuleTerm(
+	ruleTerm not.RuleTermLike,
+	index uint,
+	count uint,
+) {
+	// Process the term.
+	var ruleTerms = v.ruleTerms_.GetValue(v.ruleName_)
+	ruleTerms.AppendValue(ruleTerm)
+
+	// Process the component.
+	var component = ruleTerm.GetComponent()
+	var componentString = component.GetAny().(string)
+	if index > 1 {
+		v.syntaxMap_ += " "
+	}
+	v.syntaxMap_ += componentString
+
+	// Process the optional cardinality.
+	var cardinality = ruleTerm.GetOptionalCardinality()
+	if uti.IsDefined(cardinality) {
+		v.checkPlurality(componentString, cardinality)
+		switch actual := cardinality.GetAny().(type) {
+		case not.ConstrainedLike:
+			v.syntaxMap_ += actual.GetAny().(string)
+		case not.QuantifiedLike:
+			var first = actual.GetNumber()
+			v.syntaxMap_ += "{" + first
+			var limit = actual.GetOptionalLimit()
+			if uti.IsDefined(limit) {
+				v.syntaxMap_ += ".."
+				var last = limit.GetOptionalNumber()
+				if uti.IsDefined(last) {
+					v.syntaxMap_ += last + "}"
+				}
+			}
+		}
 	}
 }
 
@@ -435,7 +458,7 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	index uint,
 	count uint,
 ) {
-	v.isGreedy_ = true // The default is "greedy" scanning.
+	v.notGreedy_ = false // The default is "greedy" (not notGreedy).
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
 	v.rules_ = col.Set[string]()
@@ -458,10 +481,10 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		`"(?:[ \\t]+)"`,
 	)
 	v.definitions_ = col.Catalog[string, not.DefinitionLike]()
-	v.terms_ = col.Catalog[string, col.ListLike[not.RuleTermLike]]()
+	v.ruleTerms_ = col.Catalog[string, col.ListLike[not.RuleTermLike]]()
 	v.variables_ = col.Catalog[string, col.ListLike[string]]()
 	v.ruleNames_ = col.Catalog[string, col.ListLike[not.RuleNameLike]]()
-	v.tokenOptions_ = col.Catalog[string, col.ListLike[not.TokenNameLike]]()
+	v.tokenNames_ = col.Catalog[string, col.ListLike[not.TokenNameLike]]()
 	v.literalValues_ = col.Catalog[string, col.ListLike[not.LiteralValueLike]]()
 }
 
@@ -483,42 +506,28 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 	v.patterns_.SetValue("delimiter", delimiters)
 }
 
-func (v *syntaxAnalyzer_) PreprocessRuleTerm(
-	term not.RuleTermLike,
+func (v *syntaxAnalyzer_) PostprocessTermSequence(
+	termSequence not.TermSequenceLike,
 	index uint,
 	count uint,
 ) {
-	// Process the term.
-	var terms = v.terms_.GetValue(v.ruleName_)
-	terms.AppendValue(term)
-
-	// Process the component.
-	var component = term.GetComponent()
-	var componentString = component.GetAny().(string)
-	if index > 1 {
-		v.syntaxMap_ += " "
+	var note = termSequence.GetOptionalNote()
+	if uti.IsDefined(note) {
+		v.syntaxMap_ += "  " + note
 	}
-	v.syntaxMap_ += componentString
+}
 
-	// Process the optional cardinality.
-	var cardinality = term.GetOptionalCardinality()
-	if uti.IsDefined(cardinality) {
-		v.checkPlurality(componentString, cardinality)
-		switch actual := cardinality.GetAny().(type) {
-		case not.ConstrainedLike:
-			v.syntaxMap_ += actual.GetAny().(string)
-		case not.QuantifiedLike:
-			var first = actual.GetNumber()
-			v.syntaxMap_ += "{" + first
-			var limit = actual.GetOptionalLimit()
-			if uti.IsDefined(limit) {
-				v.syntaxMap_ += ".."
-				var last = limit.GetOptionalNumber()
-				if uti.IsDefined(last) {
-					v.syntaxMap_ += last + "}"
-				}
-			}
-		}
+func (v *syntaxAnalyzer_) PreprocessTokenName(
+	tokenName not.TokenNameLike,
+	index uint,
+	count uint,
+) {
+	var tokenNames = v.tokenNames_.GetValue(v.ruleName_)
+	tokenNames.AppendValue(tokenName)
+	v.syntaxMap_ += "\n    " + tokenName.GetLowercase()
+	var note = tokenName.GetOptionalNote()
+	if uti.IsDefined(note) {
+		v.syntaxMap_ += "  " + note
 	}
 }
 
@@ -527,17 +536,17 @@ func (v *syntaxAnalyzer_) PreprocessRuleTerm(
 // Private Methods
 
 func (v *syntaxAnalyzer_) checkPlurality(
-	identifierName string,
+	componentString string,
 	cardinality not.CardinalityLike,
 ) {
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
 		switch actual.GetAny().(string) {
 		case "*", "+":
-			v.pluralNames_.AddValue(identifierName)
+			v.pluralNames_.AddValue(componentString)
 		}
 	case not.QuantifiedLike:
-		v.pluralNames_.AddValue(identifierName)
+		v.pluralNames_.AddValue(componentString)
 	}
 }
 
@@ -584,15 +593,15 @@ func (v *syntaxAnalyzer_) extractSyntaxName(
 }
 
 func (v *syntaxAnalyzer_) extractVariableName(
-	term not.RuleTermLike,
+	ruleTerm not.RuleTermLike,
 ) string {
-	var component = term.GetComponent().GetAny().(string)
+	var component = ruleTerm.GetComponent().GetAny().(string)
 	if component[0] == '"' {
 		// A literal string found in a rule definition represents a delimiter.
 		component = "delimiter"
 	}
 	var variableName = uti.MakeLowerCase(component)
-	var cardinality = term.GetOptionalCardinality()
+	var cardinality = ruleTerm.GetOptionalCardinality()
 	if uti.IsDefined(cardinality) {
 		switch actual := cardinality.GetAny().(type) {
 		case not.ConstrainedLike:
@@ -614,21 +623,21 @@ func (v *syntaxAnalyzer_) extractVariables(
 	ruleName string,
 ) {
 	// Only inline rules have variables.
-	var terms col.Sequential[not.RuleTermLike]
+	var ruleTerms col.Sequential[not.RuleTermLike]
 	var definition = v.definitions_.GetValue(ruleName)
 	switch actual := definition.GetAny().(type) {
 	case not.TermSequenceLike:
-		terms = actual.GetRuleTerms()
+		ruleTerms = actual.GetRuleTerms()
 	default:
 		return
 	}
 
 	// Extract the variable names from the inline components.
 	var variables = col.List[string]()
-	var iterator = terms.GetIterator()
+	var iterator = ruleTerms.GetIterator()
 	for iterator.HasNext() {
-		var term = iterator.GetNext()
-		var variable = v.extractVariableName(term)
+		var ruleTerm = iterator.GetNext()
+		var variable = v.extractVariableName(ruleTerm)
 		variables.AppendValue(variable)
 	}
 
@@ -659,11 +668,11 @@ func (v *syntaxAnalyzer_) extractVariables(
 }
 
 func (v *syntaxAnalyzer_) makeOptional(
-	mixedCase string,
+	variableName string,
 ) string {
 	var optional string
-	if len(mixedCase) > 0 {
-		optional = "optional" + uti.MakeUpperCase(mixedCase)
+	if len(variableName) > 0 {
+		optional = "optional" + uti.MakeUpperCase(variableName)
 	}
 	return optional
 }
@@ -673,10 +682,9 @@ func (v *syntaxAnalyzer_) makeOptional(
 type syntaxAnalyzer_ struct {
 	// Declare the instance attributes.
 	visitor_       not.VisitorLike
-	isGreedy_      bool
+	notGreedy_     bool
 	inDefinition_  bool
 	inPattern_     uint8
-	hasLiteral_    bool
 	syntaxMap_     string
 	syntaxName_    string
 	legalNotice_   string
@@ -688,10 +696,10 @@ type syntaxAnalyzer_ struct {
 	delimiters_    col.SetLike[string]
 	patterns_      col.CatalogLike[string, string]
 	definitions_   col.CatalogLike[string, not.DefinitionLike]
-	terms_         col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
+	ruleTerms_     col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
 	variables_     col.CatalogLike[string, col.ListLike[string]]
 	ruleNames_     col.CatalogLike[string, col.ListLike[not.RuleNameLike]]
-	tokenOptions_  col.CatalogLike[string, col.ListLike[not.TokenNameLike]]
+	tokenNames_    col.CatalogLike[string, col.ListLike[not.TokenNameLike]]
 	literalValues_ col.CatalogLike[string, col.ListLike[not.LiteralValueLike]]
 
 	// Declare the inherited aspects.
