@@ -39,77 +39,71 @@ import (
 // Ast
 
 type (
-	AdditionalCharacterClassLike      = ast.AdditionalCharacterClassLike
-	AdditionalRepetitionClassLike     = ast.AdditionalRepetitionClassLike
-	AllowedCharactersClassLike        = ast.AllowedCharactersClassLike
-	AlternativeSequenceClassLike      = ast.AlternativeSequenceClassLike
-	AlternativesClassLike             = ast.AlternativesClassLike
-	CardinalityClassLike              = ast.CardinalityClassLike
-	CharacterClassLike                = ast.CharacterClassLike
-	ComponentClassLike                = ast.ComponentClassLike
-	ConstrainedClassLike              = ast.ConstrainedClassLike
-	DefinitionClassLike               = ast.DefinitionClassLike
-	ElementClassLike                  = ast.ElementClassLike
-	ExplicitClassLike                 = ast.ExplicitClassLike
-	ExpressionClassLike               = ast.ExpressionClassLike
-	ExtentClassLike                   = ast.ExtentClassLike
-	FilterClassLike                   = ast.FilterClassLike
-	GroupClassLike                    = ast.GroupClassLike
-	ImplicitClassLike                 = ast.ImplicitClassLike
-	LimitClassLike                    = ast.LimitClassLike
-	LiteralValueClassLike             = ast.LiteralValueClassLike
-	LiteralValueAlternativesClassLike = ast.LiteralValueAlternativesClassLike
-	NoticeClassLike                   = ast.NoticeClassLike
-	PatternClassLike                  = ast.PatternClassLike
-	QuantifiedClassLike               = ast.QuantifiedClassLike
-	RepetitionClassLike               = ast.RepetitionClassLike
-	RuleClassLike                     = ast.RuleClassLike
-	RuleNameClassLike                 = ast.RuleNameClassLike
-	RuleNameAlternativesClassLike     = ast.RuleNameAlternativesClassLike
-	RuleTermClassLike                 = ast.RuleTermClassLike
-	RuleTermSequenceClassLike         = ast.RuleTermSequenceClassLike
-	SequenceClassLike                 = ast.SequenceClassLike
-	SyntaxClassLike                   = ast.SyntaxClassLike
-	TextClassLike                     = ast.TextClassLike
-	TokenNameClassLike                = ast.TokenNameClassLike
-	TokenNameAlternativesClassLike    = ast.TokenNameAlternativesClassLike
+	AlternativeSequenceClassLike = ast.AlternativeSequenceClassLike
+	AlternativesClassLike        = ast.AlternativesClassLike
+	CardinalityClassLike         = ast.CardinalityClassLike
+	CharacterClassLike           = ast.CharacterClassLike
+	ComponentClassLike           = ast.ComponentClassLike
+	ConstrainedClassLike         = ast.ConstrainedClassLike
+	DefinitionClassLike          = ast.DefinitionClassLike
+	ElementClassLike             = ast.ElementClassLike
+	ExplicitClassLike            = ast.ExplicitClassLike
+	ExpressionClassLike          = ast.ExpressionClassLike
+	ExtentClassLike              = ast.ExtentClassLike
+	FilterClassLike              = ast.FilterClassLike
+	GroupClassLike               = ast.GroupClassLike
+	ImplicitClassLike            = ast.ImplicitClassLike
+	LimitClassLike               = ast.LimitClassLike
+	LiteralAlternativesClassLike = ast.LiteralAlternativesClassLike
+	LiteralValueClassLike        = ast.LiteralValueClassLike
+	NoticeClassLike              = ast.NoticeClassLike
+	PatternClassLike             = ast.PatternClassLike
+	QuantifiedClassLike          = ast.QuantifiedClassLike
+	RepetitionClassLike          = ast.RepetitionClassLike
+	RuleClassLike                = ast.RuleClassLike
+	RuleAlternativesClassLike    = ast.RuleAlternativesClassLike
+	RuleNameClassLike            = ast.RuleNameClassLike
+	RuleTermClassLike            = ast.RuleTermClassLike
+	SequenceClassLike            = ast.SequenceClassLike
+	SyntaxClassLike              = ast.SyntaxClassLike
+	TermSequenceClassLike        = ast.TermSequenceClassLike
+	TextClassLike                = ast.TextClassLike
+	TokenAlternativesClassLike   = ast.TokenAlternativesClassLike
+	TokenNameClassLike           = ast.TokenNameClassLike
 )
 
 type (
-	AdditionalCharacterLike      = ast.AdditionalCharacterLike
-	AdditionalRepetitionLike     = ast.AdditionalRepetitionLike
-	AllowedCharactersLike        = ast.AllowedCharactersLike
-	AlternativeSequenceLike      = ast.AlternativeSequenceLike
-	AlternativesLike             = ast.AlternativesLike
-	CardinalityLike              = ast.CardinalityLike
-	CharacterLike                = ast.CharacterLike
-	ComponentLike                = ast.ComponentLike
-	ConstrainedLike              = ast.ConstrainedLike
-	DefinitionLike               = ast.DefinitionLike
-	ElementLike                  = ast.ElementLike
-	ExplicitLike                 = ast.ExplicitLike
-	ExpressionLike               = ast.ExpressionLike
-	ExtentLike                   = ast.ExtentLike
-	FilterLike                   = ast.FilterLike
-	GroupLike                    = ast.GroupLike
-	ImplicitLike                 = ast.ImplicitLike
-	LimitLike                    = ast.LimitLike
-	LiteralValueLike             = ast.LiteralValueLike
-	LiteralValueAlternativesLike = ast.LiteralValueAlternativesLike
-	NoticeLike                   = ast.NoticeLike
-	PatternLike                  = ast.PatternLike
-	QuantifiedLike               = ast.QuantifiedLike
-	RepetitionLike               = ast.RepetitionLike
-	RuleLike                     = ast.RuleLike
-	RuleNameLike                 = ast.RuleNameLike
-	RuleNameAlternativesLike     = ast.RuleNameAlternativesLike
-	RuleTermLike                 = ast.RuleTermLike
-	RuleTermSequenceLike         = ast.RuleTermSequenceLike
-	SequenceLike                 = ast.SequenceLike
-	SyntaxLike                   = ast.SyntaxLike
-	TextLike                     = ast.TextLike
-	TokenNameLike                = ast.TokenNameLike
-	TokenNameAlternativesLike    = ast.TokenNameAlternativesLike
+	AlternativeSequenceLike = ast.AlternativeSequenceLike
+	AlternativesLike        = ast.AlternativesLike
+	CardinalityLike         = ast.CardinalityLike
+	CharacterLike           = ast.CharacterLike
+	ComponentLike           = ast.ComponentLike
+	ConstrainedLike         = ast.ConstrainedLike
+	DefinitionLike          = ast.DefinitionLike
+	ElementLike             = ast.ElementLike
+	ExplicitLike            = ast.ExplicitLike
+	ExpressionLike          = ast.ExpressionLike
+	ExtentLike              = ast.ExtentLike
+	FilterLike              = ast.FilterLike
+	GroupLike               = ast.GroupLike
+	ImplicitLike            = ast.ImplicitLike
+	LimitLike               = ast.LimitLike
+	LiteralAlternativesLike = ast.LiteralAlternativesLike
+	LiteralValueLike        = ast.LiteralValueLike
+	NoticeLike              = ast.NoticeLike
+	PatternLike             = ast.PatternLike
+	QuantifiedLike          = ast.QuantifiedLike
+	RepetitionLike          = ast.RepetitionLike
+	RuleLike                = ast.RuleLike
+	RuleAlternativesLike    = ast.RuleAlternativesLike
+	RuleNameLike            = ast.RuleNameLike
+	RuleTermLike            = ast.RuleTermLike
+	SequenceLike            = ast.SequenceLike
+	SyntaxLike              = ast.SyntaxLike
+	TermSequenceLike        = ast.TermSequenceLike
+	TextLike                = ast.TextLike
+	TokenAlternativesLike   = ast.TokenAlternativesLike
+	TokenNameLike           = ast.TokenNameLike
 )
 
 // Grammar
@@ -160,44 +154,6 @@ type (
 // CLASS ACCESSORS
 
 // Ast
-
-func AdditionalCharacterClass() AdditionalCharacterClassLike {
-	return ast.AdditionalCharacterClass()
-}
-
-func AdditionalCharacter(
-	character ast.CharacterLike,
-) AdditionalCharacterLike {
-	return AdditionalCharacterClass().AdditionalCharacter(
-		character,
-	)
-}
-
-func AdditionalRepetitionClass() AdditionalRepetitionClassLike {
-	return ast.AdditionalRepetitionClass()
-}
-
-func AdditionalRepetition(
-	repetition ast.RepetitionLike,
-) AdditionalRepetitionLike {
-	return AdditionalRepetitionClass().AdditionalRepetition(
-		repetition,
-	)
-}
-
-func AllowedCharactersClass() AllowedCharactersClassLike {
-	return ast.AllowedCharactersClass()
-}
-
-func AllowedCharacters(
-	character ast.CharacterLike,
-	additionalCharacters col.Sequential[ast.AdditionalCharacterLike],
-) AllowedCharactersLike {
-	return AllowedCharactersClass().AllowedCharacters(
-		character,
-		additionalCharacters,
-	)
-}
 
 func AlternativeSequenceClass() AlternativeSequenceClassLike {
 	return ast.AlternativeSequenceClass()
@@ -352,13 +308,13 @@ func FilterClass() FilterClassLike {
 func Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	allowedCharacters ast.AllowedCharactersLike,
+	characters col.Sequential[ast.CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	return FilterClass().Filter(
 		optionalDelimiter,
 		delimiter1,
-		allowedCharacters,
+		characters,
 		delimiter2,
 	)
 }
@@ -405,6 +361,18 @@ func Limit(
 	)
 }
 
+func LiteralAlternativesClass() LiteralAlternativesClassLike {
+	return ast.LiteralAlternativesClass()
+}
+
+func LiteralAlternatives(
+	literalValues col.Sequential[ast.LiteralValueLike],
+) LiteralAlternativesLike {
+	return LiteralAlternativesClass().LiteralAlternatives(
+		literalValues,
+	)
+}
+
 func LiteralValueClass() LiteralValueClassLike {
 	return ast.LiteralValueClass()
 }
@@ -418,18 +386,6 @@ func LiteralValue(
 		newline,
 		literal,
 		optionalNote,
-	)
-}
-
-func LiteralValueAlternativesClass() LiteralValueAlternativesClassLike {
-	return ast.LiteralValueAlternativesClass()
-}
-
-func LiteralValueAlternatives(
-	literalValues col.Sequential[ast.LiteralValueLike],
-) LiteralValueAlternativesLike {
-	return LiteralValueAlternativesClass().LiteralValueAlternatives(
-		literalValues,
 	)
 }
 
@@ -511,6 +467,18 @@ func Rule(
 	)
 }
 
+func RuleAlternativesClass() RuleAlternativesClassLike {
+	return ast.RuleAlternativesClass()
+}
+
+func RuleAlternatives(
+	ruleNames col.Sequential[ast.RuleNameLike],
+) RuleAlternativesLike {
+	return RuleAlternativesClass().RuleAlternatives(
+		ruleNames,
+	)
+}
+
 func RuleNameClass() RuleNameClassLike {
 	return ast.RuleNameClass()
 }
@@ -524,18 +492,6 @@ func RuleName(
 		newline,
 		uppercase,
 		optionalNote,
-	)
-}
-
-func RuleNameAlternativesClass() RuleNameAlternativesClassLike {
-	return ast.RuleNameAlternativesClass()
-}
-
-func RuleNameAlternatives(
-	ruleNames col.Sequential[ast.RuleNameLike],
-) RuleNameAlternativesLike {
-	return RuleNameAlternativesClass().RuleNameAlternatives(
-		ruleNames,
 	)
 }
 
@@ -553,31 +509,15 @@ func RuleTerm(
 	)
 }
 
-func RuleTermSequenceClass() RuleTermSequenceClassLike {
-	return ast.RuleTermSequenceClass()
-}
-
-func RuleTermSequence(
-	ruleTerms col.Sequential[ast.RuleTermLike],
-	optionalNote string,
-) RuleTermSequenceLike {
-	return RuleTermSequenceClass().RuleTermSequence(
-		ruleTerms,
-		optionalNote,
-	)
-}
-
 func SequenceClass() SequenceClassLike {
 	return ast.SequenceClass()
 }
 
 func Sequence(
-	repetition ast.RepetitionLike,
-	additionalRepetitions col.Sequential[ast.AdditionalRepetitionLike],
+	repetitions col.Sequential[ast.RepetitionLike],
 ) SequenceLike {
 	return SequenceClass().Sequence(
-		repetition,
-		additionalRepetitions,
+		repetitions,
 	)
 }
 
@@ -601,6 +541,20 @@ func Syntax(
 	)
 }
 
+func TermSequenceClass() TermSequenceClassLike {
+	return ast.TermSequenceClass()
+}
+
+func TermSequence(
+	ruleTerms col.Sequential[ast.RuleTermLike],
+	optionalNote string,
+) TermSequenceLike {
+	return TermSequenceClass().TermSequence(
+		ruleTerms,
+		optionalNote,
+	)
+}
+
 func TextClass() TextClassLike {
 	return ast.TextClass()
 }
@@ -610,6 +564,18 @@ func Text(
 ) TextLike {
 	return TextClass().Text(
 		any_,
+	)
+}
+
+func TokenAlternativesClass() TokenAlternativesClassLike {
+	return ast.TokenAlternativesClass()
+}
+
+func TokenAlternatives(
+	tokenNames col.Sequential[ast.TokenNameLike],
+) TokenAlternativesLike {
+	return TokenAlternativesClass().TokenAlternatives(
+		tokenNames,
 	)
 }
 
@@ -626,18 +592,6 @@ func TokenName(
 		newline,
 		lowercase,
 		optionalNote,
-	)
-}
-
-func TokenNameAlternativesClass() TokenNameAlternativesClassLike {
-	return ast.TokenNameAlternativesClass()
-}
-
-func TokenNameAlternatives(
-	tokenNames col.Sequential[ast.TokenNameLike],
-) TokenNameAlternativesLike {
-	return TokenNameAlternativesClass().TokenNameAlternatives(
-		tokenNames,
 	)
 }
 

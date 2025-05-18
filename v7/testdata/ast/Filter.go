@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -36,14 +37,14 @@ func FilterClass() FilterClassLike {
 func (c *filterClass_) Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	allowedCharacters AllowedCharactersLike,
+	characters col.Sequential[CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(allowedCharacters) {
-		panic("The \"allowedCharacters\" attribute is required by this class.")
+	if uti.IsUndefined(characters) {
+		panic("The \"characters\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
@@ -52,7 +53,7 @@ func (c *filterClass_) Filter(
 		// Initialize the instance attributes.
 		optionalDelimiter_: optionalDelimiter,
 		delimiter1_:        delimiter1,
-		allowedCharacters_: allowedCharacters,
+		characters_:        characters,
 		delimiter2_:        delimiter2,
 	}
 	return instance
@@ -76,8 +77,8 @@ func (v *filter_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *filter_) GetAllowedCharacters() AllowedCharactersLike {
-	return v.allowedCharacters_
+func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
+	return v.characters_
 }
 
 func (v *filter_) GetDelimiter2() string {
@@ -92,7 +93,7 @@ type filter_ struct {
 	// Declare the instance attributes.
 	optionalDelimiter_ string
 	delimiter1_        string
-	allowedCharacters_ AllowedCharactersLike
+	characters_        col.Sequential[CharacterLike]
 	delimiter2_        string
 }
 

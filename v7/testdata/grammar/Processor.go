@@ -105,63 +105,6 @@ func (v *processor_) ProcessUppercase(
 ) {
 }
 
-func (v *processor_) PreprocessAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessAdditionalCharacterSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) PreprocessAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessAdditionalRepetitionSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) PreprocessAllowedCharacters(
-	allowedCharacters ast.AllowedCharactersLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessAllowedCharactersSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessAllowedCharacters(
-	allowedCharacters ast.AllowedCharactersLike,
-	index uint,
-	count uint,
-) {
-}
-
 func (v *processor_) PreprocessAlternativeSequence(
 	alternativeSequence ast.AlternativeSequenceLike,
 	index uint,
@@ -447,6 +390,25 @@ func (v *processor_) PostprocessLimit(
 ) {
 }
 
+func (v *processor_) PreprocessLiteralAlternatives(
+	literalAlternatives ast.LiteralAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
+func (v *processor_) ProcessLiteralAlternativesSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessLiteralAlternatives(
+	literalAlternatives ast.LiteralAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
 func (v *processor_) PreprocessLiteralValue(
 	literalValue ast.LiteralValueLike,
 	index uint,
@@ -461,25 +423,6 @@ func (v *processor_) ProcessLiteralValueSlot(
 
 func (v *processor_) PostprocessLiteralValue(
 	literalValue ast.LiteralValueLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) PreprocessLiteralValueAlternatives(
-	literalValueAlternatives ast.LiteralValueAlternativesLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessLiteralValueAlternativesSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessLiteralValueAlternatives(
-	literalValueAlternatives ast.LiteralValueAlternativesLike,
 	index uint,
 	count uint,
 ) {
@@ -580,6 +523,25 @@ func (v *processor_) PostprocessRule(
 ) {
 }
 
+func (v *processor_) PreprocessRuleAlternatives(
+	ruleAlternatives ast.RuleAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
+func (v *processor_) ProcessRuleAlternativesSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessRuleAlternatives(
+	ruleAlternatives ast.RuleAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
 func (v *processor_) PreprocessRuleName(
 	ruleName ast.RuleNameLike,
 	index uint,
@@ -599,25 +561,6 @@ func (v *processor_) PostprocessRuleName(
 ) {
 }
 
-func (v *processor_) PreprocessRuleNameAlternatives(
-	ruleNameAlternatives ast.RuleNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessRuleNameAlternativesSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessRuleNameAlternatives(
-	ruleNameAlternatives ast.RuleNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-}
-
 func (v *processor_) PreprocessRuleTerm(
 	ruleTerm ast.RuleTermLike,
 	index uint,
@@ -632,25 +575,6 @@ func (v *processor_) ProcessRuleTermSlot(
 
 func (v *processor_) PostprocessRuleTerm(
 	ruleTerm ast.RuleTermLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) PreprocessRuleTermSequence(
-	ruleTermSequence ast.RuleTermSequenceLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessRuleTermSequenceSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessRuleTermSequence(
-	ruleTermSequence ast.RuleTermSequenceLike,
 	index uint,
 	count uint,
 ) {
@@ -694,6 +618,25 @@ func (v *processor_) PostprocessSyntax(
 ) {
 }
 
+func (v *processor_) PreprocessTermSequence(
+	termSequence ast.TermSequenceLike,
+	index uint,
+	count uint,
+) {
+}
+
+func (v *processor_) ProcessTermSequenceSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessTermSequence(
+	termSequence ast.TermSequenceLike,
+	index uint,
+	count uint,
+) {
+}
+
 func (v *processor_) PreprocessText(
 	text ast.TextLike,
 	index uint,
@@ -713,6 +656,25 @@ func (v *processor_) PostprocessText(
 ) {
 }
 
+func (v *processor_) PreprocessTokenAlternatives(
+	tokenAlternatives ast.TokenAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
+func (v *processor_) ProcessTokenAlternativesSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessTokenAlternatives(
+	tokenAlternatives ast.TokenAlternativesLike,
+	index uint,
+	count uint,
+) {
+}
+
 func (v *processor_) PreprocessTokenName(
 	tokenName ast.TokenNameLike,
 	index uint,
@@ -727,25 +689,6 @@ func (v *processor_) ProcessTokenNameSlot(
 
 func (v *processor_) PostprocessTokenName(
 	tokenName ast.TokenNameLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) PreprocessTokenNameAlternatives(
-	tokenNameAlternatives ast.TokenNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-}
-
-func (v *processor_) ProcessTokenNameAlternativesSlot(
-	slot uint,
-) {
-}
-
-func (v *processor_) PostprocessTokenNameAlternatives(
-	tokenNameAlternatives ast.TokenNameAlternativesLike,
 	index uint,
 	count uint,
 ) {

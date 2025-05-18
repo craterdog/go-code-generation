@@ -75,78 +75,6 @@ func (v *visitor_) VisitSyntax(
 
 // Private Methods
 
-func (v *visitor_) visitAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
-) {
-	var character = additionalCharacter.GetCharacter()
-	v.processor_.PreprocessCharacter(
-		character,
-		1,
-		1,
-	)
-	v.visitCharacter(character)
-	v.processor_.PostprocessCharacter(
-		character,
-		1,
-		1,
-	)
-}
-
-func (v *visitor_) visitAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
-) {
-	var repetition = additionalRepetition.GetRepetition()
-	v.processor_.PreprocessRepetition(
-		repetition,
-		1,
-		1,
-	)
-	v.visitRepetition(repetition)
-	v.processor_.PostprocessRepetition(
-		repetition,
-		1,
-		1,
-	)
-}
-
-func (v *visitor_) visitAllowedCharacters(
-	allowedCharacters ast.AllowedCharactersLike,
-) {
-	var character = allowedCharacters.GetCharacter()
-	v.processor_.PreprocessCharacter(
-		character,
-		1,
-		1,
-	)
-	v.visitCharacter(character)
-	v.processor_.PostprocessCharacter(
-		character,
-		1,
-		1,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessAllowedCharactersSlot(1)
-
-	var additionalCharactersIndex uint
-	var additionalCharacters = allowedCharacters.GetAdditionalCharacters().GetIterator()
-	var additionalCharactersCount = uint(additionalCharacters.GetSize())
-	for additionalCharacters.HasNext() {
-		additionalCharactersIndex++
-		var rule = additionalCharacters.GetNext()
-		v.processor_.PreprocessAdditionalCharacter(
-			rule,
-			additionalCharactersIndex,
-			additionalCharactersCount,
-		)
-		v.visitAdditionalCharacter(rule)
-		v.processor_.PostprocessAdditionalCharacter(
-			rule,
-			additionalCharactersIndex,
-			additionalCharactersCount,
-		)
-	}
-}
-
 func (v *visitor_) visitAlternativeSequence(
 	alternativeSequence ast.AlternativeSequenceLike,
 ) {
@@ -306,50 +234,50 @@ func (v *visitor_) visitDefinition(
 ) {
 	// Visit the possible definition rule types.
 	switch actual := definition.GetAny().(type) {
-	case ast.LiteralValueAlternativesLike:
-		v.processor_.PreprocessLiteralValueAlternatives(
+	case ast.LiteralAlternativesLike:
+		v.processor_.PreprocessLiteralAlternatives(
 			actual,
 			1,
 			1,
 		)
-		v.visitLiteralValueAlternatives(actual)
-		v.processor_.PostprocessLiteralValueAlternatives(
+		v.visitLiteralAlternatives(actual)
+		v.processor_.PostprocessLiteralAlternatives(
 			actual,
 			1,
 			1,
 		)
-	case ast.TokenNameAlternativesLike:
-		v.processor_.PreprocessTokenNameAlternatives(
+	case ast.TokenAlternativesLike:
+		v.processor_.PreprocessTokenAlternatives(
 			actual,
 			1,
 			1,
 		)
-		v.visitTokenNameAlternatives(actual)
-		v.processor_.PostprocessTokenNameAlternatives(
+		v.visitTokenAlternatives(actual)
+		v.processor_.PostprocessTokenAlternatives(
 			actual,
 			1,
 			1,
 		)
-	case ast.RuleNameAlternativesLike:
-		v.processor_.PreprocessRuleNameAlternatives(
+	case ast.RuleAlternativesLike:
+		v.processor_.PreprocessRuleAlternatives(
 			actual,
 			1,
 			1,
 		)
-		v.visitRuleNameAlternatives(actual)
-		v.processor_.PostprocessRuleNameAlternatives(
+		v.visitRuleAlternatives(actual)
+		v.processor_.PostprocessRuleAlternatives(
 			actual,
 			1,
 			1,
 		)
-	case ast.RuleTermSequenceLike:
-		v.processor_.PreprocessRuleTermSequence(
+	case ast.TermSequenceLike:
+		v.processor_.PreprocessTermSequence(
 			actual,
 			1,
 			1,
 		)
-		v.visitRuleTermSequence(actual)
-		v.processor_.PostprocessRuleTermSequence(
+		v.visitTermSequence(actual)
+		v.processor_.PostprocessTermSequence(
 			actual,
 			1,
 			1,
@@ -484,18 +412,24 @@ func (v *visitor_) visitFilter(
 	// Visit slot 2 between terms.
 	v.processor_.ProcessFilterSlot(2)
 
-	var allowedCharacters = filter.GetAllowedCharacters()
-	v.processor_.PreprocessAllowedCharacters(
-		allowedCharacters,
-		1,
-		1,
-	)
-	v.visitAllowedCharacters(allowedCharacters)
-	v.processor_.PostprocessAllowedCharacters(
-		allowedCharacters,
-		1,
-		1,
-	)
+	var charactersIndex uint
+	var characters = filter.GetCharacters().GetIterator()
+	var charactersCount = uint(characters.GetSize())
+	for characters.HasNext() {
+		charactersIndex++
+		var rule = characters.GetNext()
+		v.processor_.PreprocessCharacter(
+			rule,
+			charactersIndex,
+			charactersCount,
+		)
+		v.visitCharacter(rule)
+		v.processor_.PostprocessCharacter(
+			rule,
+			charactersIndex,
+			charactersCount,
+		)
+	}
 	// Visit slot 3 between terms.
 	v.processor_.ProcessFilterSlot(3)
 
@@ -551,6 +485,29 @@ func (v *visitor_) visitLimit(
 	}
 }
 
+func (v *visitor_) visitLiteralAlternatives(
+	literalAlternatives ast.LiteralAlternativesLike,
+) {
+	var literalValuesIndex uint
+	var literalValues = literalAlternatives.GetLiteralValues().GetIterator()
+	var literalValuesCount = uint(literalValues.GetSize())
+	for literalValues.HasNext() {
+		literalValuesIndex++
+		var rule = literalValues.GetNext()
+		v.processor_.PreprocessLiteralValue(
+			rule,
+			literalValuesIndex,
+			literalValuesCount,
+		)
+		v.visitLiteralValue(rule)
+		v.processor_.PostprocessLiteralValue(
+			rule,
+			literalValuesIndex,
+			literalValuesCount,
+		)
+	}
+}
+
 func (v *visitor_) visitLiteralValue(
 	literalValue ast.LiteralValueLike,
 ) {
@@ -567,29 +524,6 @@ func (v *visitor_) visitLiteralValue(
 	var optionalNote = literalValue.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
 		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitLiteralValueAlternatives(
-	literalValueAlternatives ast.LiteralValueAlternativesLike,
-) {
-	var literalValuesIndex uint
-	var literalValues = literalValueAlternatives.GetLiteralValues().GetIterator()
-	var literalValuesCount = uint(literalValues.GetSize())
-	for literalValues.HasNext() {
-		literalValuesIndex++
-		var rule = literalValues.GetNext()
-		v.processor_.PreprocessLiteralValue(
-			rule,
-			literalValuesIndex,
-			literalValuesCount,
-		)
-		v.visitLiteralValue(rule)
-		v.processor_.PostprocessLiteralValue(
-			rule,
-			literalValuesIndex,
-			literalValuesCount,
-		)
 	}
 }
 
@@ -729,6 +663,29 @@ func (v *visitor_) visitRule(
 	)
 }
 
+func (v *visitor_) visitRuleAlternatives(
+	ruleAlternatives ast.RuleAlternativesLike,
+) {
+	var ruleNamesIndex uint
+	var ruleNames = ruleAlternatives.GetRuleNames().GetIterator()
+	var ruleNamesCount = uint(ruleNames.GetSize())
+	for ruleNames.HasNext() {
+		ruleNamesIndex++
+		var rule = ruleNames.GetNext()
+		v.processor_.PreprocessRuleName(
+			rule,
+			ruleNamesIndex,
+			ruleNamesCount,
+		)
+		v.visitRuleName(rule)
+		v.processor_.PostprocessRuleName(
+			rule,
+			ruleNamesIndex,
+			ruleNamesCount,
+		)
+	}
+}
+
 func (v *visitor_) visitRuleName(
 	ruleName ast.RuleNameLike,
 ) {
@@ -745,29 +702,6 @@ func (v *visitor_) visitRuleName(
 	var optionalNote = ruleName.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
 		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitRuleNameAlternatives(
-	ruleNameAlternatives ast.RuleNameAlternativesLike,
-) {
-	var ruleNamesIndex uint
-	var ruleNames = ruleNameAlternatives.GetRuleNames().GetIterator()
-	var ruleNamesCount = uint(ruleNames.GetSize())
-	for ruleNames.HasNext() {
-		ruleNamesIndex++
-		var rule = ruleNames.GetNext()
-		v.processor_.PreprocessRuleName(
-			rule,
-			ruleNamesIndex,
-			ruleNamesCount,
-		)
-		v.visitRuleName(rule)
-		v.processor_.PostprocessRuleName(
-			rule,
-			ruleNamesIndex,
-			ruleNamesCount,
-		)
 	}
 }
 
@@ -805,70 +739,25 @@ func (v *visitor_) visitRuleTerm(
 	}
 }
 
-func (v *visitor_) visitRuleTermSequence(
-	ruleTermSequence ast.RuleTermSequenceLike,
-) {
-	var ruleTermsIndex uint
-	var ruleTerms = ruleTermSequence.GetRuleTerms().GetIterator()
-	var ruleTermsCount = uint(ruleTerms.GetSize())
-	for ruleTerms.HasNext() {
-		ruleTermsIndex++
-		var rule = ruleTerms.GetNext()
-		v.processor_.PreprocessRuleTerm(
-			rule,
-			ruleTermsIndex,
-			ruleTermsCount,
-		)
-		v.visitRuleTerm(rule)
-		v.processor_.PostprocessRuleTerm(
-			rule,
-			ruleTermsIndex,
-			ruleTermsCount,
-		)
-	}
-	// Visit slot 1 between terms.
-	v.processor_.ProcessRuleTermSequenceSlot(1)
-
-	var optionalNote = ruleTermSequence.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
 func (v *visitor_) visitSequence(
 	sequence ast.SequenceLike,
 ) {
-	var repetition = sequence.GetRepetition()
-	v.processor_.PreprocessRepetition(
-		repetition,
-		1,
-		1,
-	)
-	v.visitRepetition(repetition)
-	v.processor_.PostprocessRepetition(
-		repetition,
-		1,
-		1,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessSequenceSlot(1)
-
-	var additionalRepetitionsIndex uint
-	var additionalRepetitions = sequence.GetAdditionalRepetitions().GetIterator()
-	var additionalRepetitionsCount = uint(additionalRepetitions.GetSize())
-	for additionalRepetitions.HasNext() {
-		additionalRepetitionsIndex++
-		var rule = additionalRepetitions.GetNext()
-		v.processor_.PreprocessAdditionalRepetition(
+	var repetitionsIndex uint
+	var repetitions = sequence.GetRepetitions().GetIterator()
+	var repetitionsCount = uint(repetitions.GetSize())
+	for repetitions.HasNext() {
+		repetitionsIndex++
+		var rule = repetitions.GetNext()
+		v.processor_.PreprocessRepetition(
 			rule,
-			additionalRepetitionsIndex,
-			additionalRepetitionsCount,
+			repetitionsIndex,
+			repetitionsCount,
 		)
-		v.visitAdditionalRepetition(rule)
-		v.processor_.PostprocessAdditionalRepetition(
+		v.visitRepetition(rule)
+		v.processor_.PostprocessRepetition(
 			rule,
-			additionalRepetitionsIndex,
-			additionalRepetitionsCount,
+			repetitionsIndex,
+			repetitionsCount,
 		)
 	}
 }
@@ -942,6 +831,36 @@ func (v *visitor_) visitSyntax(
 	}
 }
 
+func (v *visitor_) visitTermSequence(
+	termSequence ast.TermSequenceLike,
+) {
+	var ruleTermsIndex uint
+	var ruleTerms = termSequence.GetRuleTerms().GetIterator()
+	var ruleTermsCount = uint(ruleTerms.GetSize())
+	for ruleTerms.HasNext() {
+		ruleTermsIndex++
+		var rule = ruleTerms.GetNext()
+		v.processor_.PreprocessRuleTerm(
+			rule,
+			ruleTermsIndex,
+			ruleTermsCount,
+		)
+		v.visitRuleTerm(rule)
+		v.processor_.PostprocessRuleTerm(
+			rule,
+			ruleTermsIndex,
+			ruleTermsCount,
+		)
+	}
+	// Visit slot 1 between terms.
+	v.processor_.ProcessTermSequenceSlot(1)
+
+	var optionalNote = termSequence.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitText(
 	text ast.TextLike,
 ) {
@@ -956,6 +875,29 @@ func (v *visitor_) visitText(
 		v.processor_.ProcessLowercase(actual)
 	case ScannerClass().MatchesType(actual, IntrinsicToken):
 		v.processor_.ProcessIntrinsic(actual)
+	}
+}
+
+func (v *visitor_) visitTokenAlternatives(
+	tokenAlternatives ast.TokenAlternativesLike,
+) {
+	var tokenNamesIndex uint
+	var tokenNames = tokenAlternatives.GetTokenNames().GetIterator()
+	var tokenNamesCount = uint(tokenNames.GetSize())
+	for tokenNames.HasNext() {
+		tokenNamesIndex++
+		var rule = tokenNames.GetNext()
+		v.processor_.PreprocessTokenName(
+			rule,
+			tokenNamesIndex,
+			tokenNamesCount,
+		)
+		v.visitTokenName(rule)
+		v.processor_.PostprocessTokenName(
+			rule,
+			tokenNamesIndex,
+			tokenNamesCount,
+		)
 	}
 }
 
@@ -975,29 +917,6 @@ func (v *visitor_) visitTokenName(
 	var optionalNote = tokenName.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
 		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
-func (v *visitor_) visitTokenNameAlternatives(
-	tokenNameAlternatives ast.TokenNameAlternativesLike,
-) {
-	var tokenNamesIndex uint
-	var tokenNames = tokenNameAlternatives.GetTokenNames().GetIterator()
-	var tokenNamesCount = uint(tokenNames.GetSize())
-	for tokenNames.HasNext() {
-		tokenNamesIndex++
-		var rule = tokenNames.GetNext()
-		v.processor_.PreprocessTokenName(
-			rule,
-			tokenNamesIndex,
-			tokenNamesCount,
-		)
-		v.visitTokenName(rule)
-		v.processor_.PostprocessTokenName(
-			rule,
-			tokenNamesIndex,
-			tokenNamesCount,
-		)
 	}
 }
 

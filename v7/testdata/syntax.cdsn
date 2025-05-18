@@ -30,24 +30,24 @@ $Notice: comment newline
 $Rule: "$" uppercase ":" Definition
 
 $Definition:
-    LiteralValueAlternatives
-    TokenNameAlternatives
-    RuleNameAlternatives
-    RuleTermSequence  ! This must be last since it skips newlines.
+    LiteralAlternatives
+    TokenAlternatives
+    RuleAlternatives
+    TermSequence  ! This must be last since it skips newlines.
 
-$LiteralValueAlternatives: LiteralValue+
+$LiteralAlternatives: LiteralValue+
 
 $LiteralValue: newline literal note?
 
-$TokenNameAlternatives: TokenName+
+$TokenAlternatives: TokenName+
 
 $TokenName: newline lowercase note?
 
-$RuleNameAlternatives: RuleName+
+$RuleAlternatives: RuleName+
 
 $RuleName: newline uppercase note?
 
-$RuleTermSequence: RuleTerm+ note?
+$TermSequence: RuleTerm+ note?
 
 $RuleTerm: Component Cardinality?  ! The default cardinality is one.
 
@@ -77,11 +77,9 @@ $Alternatives: Sequence AlternativeSequence*
 
 $AlternativeSequence: "|" Sequence
 
-$Sequence: Repetition AdditionalRepetition*
+$Sequence: Repetition+
 
-$AdditionalRepetition: Repetition
-
-$Repetition: Element Cardinality?  ! The default cardinality is one.
+$Repetition: Element Cardinality?  ! The default cardinality is exactly one.
 
 $Element:
     Group
@@ -90,11 +88,7 @@ $Element:
 
 $Group: "(" Alternatives ")"
 
-$Filter: "~"? "[" AllowedCharacters "]"
-
-$AllowedCharacters: Character AdditionalCharacter*
-
-$AdditionalCharacter: Character
+$Filter: "~"? "[" Character+ "]"
 
 $Character:
     Implicit

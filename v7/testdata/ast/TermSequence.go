@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,21 +28,23 @@ import (
 
 // Access Function
 
-func AdditionalRepetitionClass() AdditionalRepetitionClassLike {
-	return additionalRepetitionClass()
+func TermSequenceClass() TermSequenceClassLike {
+	return termSequenceClass()
 }
 
 // Constructor Methods
 
-func (c *additionalRepetitionClass_) AdditionalRepetition(
-	repetition RepetitionLike,
-) AdditionalRepetitionLike {
-	if uti.IsUndefined(repetition) {
-		panic("The \"repetition\" attribute is required by this class.")
+func (c *termSequenceClass_) TermSequence(
+	ruleTerms col.Sequential[RuleTermLike],
+	optionalNote string,
+) TermSequenceLike {
+	if uti.IsUndefined(ruleTerms) {
+		panic("The \"ruleTerms\" attribute is required by this class.")
 	}
-	var instance = &additionalRepetition_{
+	var instance = &termSequence_{
 		// Initialize the instance attributes.
-		repetition_: repetition,
+		ruleTerms_:    ruleTerms,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -50,37 +53,42 @@ func (c *additionalRepetitionClass_) AdditionalRepetition(
 
 // Principal Methods
 
-func (v *additionalRepetition_) GetClass() AdditionalRepetitionClassLike {
-	return additionalRepetitionClass()
+func (v *termSequence_) GetClass() TermSequenceClassLike {
+	return termSequenceClass()
 }
 
 // Attribute Methods
 
-func (v *additionalRepetition_) GetRepetition() RepetitionLike {
-	return v.repetition_
+func (v *termSequence_) GetRuleTerms() col.Sequential[RuleTermLike] {
+	return v.ruleTerms_
+}
+
+func (v *termSequence_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type additionalRepetition_ struct {
+type termSequence_ struct {
 	// Declare the instance attributes.
-	repetition_ RepetitionLike
+	ruleTerms_    col.Sequential[RuleTermLike]
+	optionalNote_ string
 }
 
 // Class Structure
 
-type additionalRepetitionClass_ struct {
+type termSequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func additionalRepetitionClass() *additionalRepetitionClass_ {
-	return additionalRepetitionClassReference_
+func termSequenceClass() *termSequenceClass_ {
+	return termSequenceClassReference_
 }
 
-var additionalRepetitionClassReference_ = &additionalRepetitionClass_{
+var termSequenceClassReference_ = &termSequenceClass_{
 	// Initialize the class constants.
 }

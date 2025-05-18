@@ -127,20 +127,24 @@ func (v *formatter_) ProcessUppercase(
 	v.appendString(uppercase)
 }
 
-func (v *formatter_) PreprocessAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
+func (v *formatter_) PreprocessCharacter(
+	character ast.CharacterLike,
 	index uint,
 	count uint,
 ) {
-	v.appendString(" ")
+	if index > 1 {
+		v.appendString(" ")
+	}
 }
 
-func (v *formatter_) PreprocessAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
+func (v *formatter_) PreprocessRepetition(
+	repetition ast.RepetitionLike,
 	index uint,
 	count uint,
 ) {
-	v.appendString(" ")
+	if index > 1 {
+		v.appendString(" ")
+	}
 }
 
 func (v *formatter_) PreprocessAlternativeSequence(

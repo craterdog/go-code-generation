@@ -309,45 +309,6 @@ type Methodical interface {
 	ProcessUppercase(
 		uppercase string,
 	)
-	PreprocessAdditionalCharacter(
-		additionalCharacter ast.AdditionalCharacterLike,
-		index uint,
-		count uint,
-	)
-	ProcessAdditionalCharacterSlot(
-		slot uint,
-	)
-	PostprocessAdditionalCharacter(
-		additionalCharacter ast.AdditionalCharacterLike,
-		index uint,
-		count uint,
-	)
-	PreprocessAdditionalRepetition(
-		additionalRepetition ast.AdditionalRepetitionLike,
-		index uint,
-		count uint,
-	)
-	ProcessAdditionalRepetitionSlot(
-		slot uint,
-	)
-	PostprocessAdditionalRepetition(
-		additionalRepetition ast.AdditionalRepetitionLike,
-		index uint,
-		count uint,
-	)
-	PreprocessAllowedCharacters(
-		allowedCharacters ast.AllowedCharactersLike,
-		index uint,
-		count uint,
-	)
-	ProcessAllowedCharactersSlot(
-		slot uint,
-	)
-	PostprocessAllowedCharacters(
-		allowedCharacters ast.AllowedCharactersLike,
-		index uint,
-		count uint,
-	)
 	PreprocessAlternativeSequence(
 		alternativeSequence ast.AlternativeSequenceLike,
 		index uint,
@@ -543,6 +504,19 @@ type Methodical interface {
 		index uint,
 		count uint,
 	)
+	PreprocessLiteralAlternatives(
+		literalAlternatives ast.LiteralAlternativesLike,
+		index uint,
+		count uint,
+	)
+	ProcessLiteralAlternativesSlot(
+		slot uint,
+	)
+	PostprocessLiteralAlternatives(
+		literalAlternatives ast.LiteralAlternativesLike,
+		index uint,
+		count uint,
+	)
 	PreprocessLiteralValue(
 		literalValue ast.LiteralValueLike,
 		index uint,
@@ -553,19 +527,6 @@ type Methodical interface {
 	)
 	PostprocessLiteralValue(
 		literalValue ast.LiteralValueLike,
-		index uint,
-		count uint,
-	)
-	PreprocessLiteralValueAlternatives(
-		literalValueAlternatives ast.LiteralValueAlternativesLike,
-		index uint,
-		count uint,
-	)
-	ProcessLiteralValueAlternativesSlot(
-		slot uint,
-	)
-	PostprocessLiteralValueAlternatives(
-		literalValueAlternatives ast.LiteralValueAlternativesLike,
 		index uint,
 		count uint,
 	)
@@ -634,6 +595,19 @@ type Methodical interface {
 		index uint,
 		count uint,
 	)
+	PreprocessRuleAlternatives(
+		ruleAlternatives ast.RuleAlternativesLike,
+		index uint,
+		count uint,
+	)
+	ProcessRuleAlternativesSlot(
+		slot uint,
+	)
+	PostprocessRuleAlternatives(
+		ruleAlternatives ast.RuleAlternativesLike,
+		index uint,
+		count uint,
+	)
 	PreprocessRuleName(
 		ruleName ast.RuleNameLike,
 		index uint,
@@ -647,19 +621,6 @@ type Methodical interface {
 		index uint,
 		count uint,
 	)
-	PreprocessRuleNameAlternatives(
-		ruleNameAlternatives ast.RuleNameAlternativesLike,
-		index uint,
-		count uint,
-	)
-	ProcessRuleNameAlternativesSlot(
-		slot uint,
-	)
-	PostprocessRuleNameAlternatives(
-		ruleNameAlternatives ast.RuleNameAlternativesLike,
-		index uint,
-		count uint,
-	)
 	PreprocessRuleTerm(
 		ruleTerm ast.RuleTermLike,
 		index uint,
@@ -670,19 +631,6 @@ type Methodical interface {
 	)
 	PostprocessRuleTerm(
 		ruleTerm ast.RuleTermLike,
-		index uint,
-		count uint,
-	)
-	PreprocessRuleTermSequence(
-		ruleTermSequence ast.RuleTermSequenceLike,
-		index uint,
-		count uint,
-	)
-	ProcessRuleTermSequenceSlot(
-		slot uint,
-	)
-	PostprocessRuleTermSequence(
-		ruleTermSequence ast.RuleTermSequenceLike,
 		index uint,
 		count uint,
 	)
@@ -712,6 +660,19 @@ type Methodical interface {
 		index uint,
 		count uint,
 	)
+	PreprocessTermSequence(
+		termSequence ast.TermSequenceLike,
+		index uint,
+		count uint,
+	)
+	ProcessTermSequenceSlot(
+		slot uint,
+	)
+	PostprocessTermSequence(
+		termSequence ast.TermSequenceLike,
+		index uint,
+		count uint,
+	)
 	PreprocessText(
 		text ast.TextLike,
 		index uint,
@@ -725,6 +686,19 @@ type Methodical interface {
 		index uint,
 		count uint,
 	)
+	PreprocessTokenAlternatives(
+		tokenAlternatives ast.TokenAlternativesLike,
+		index uint,
+		count uint,
+	)
+	ProcessTokenAlternativesSlot(
+		slot uint,
+	)
+	PostprocessTokenAlternatives(
+		tokenAlternatives ast.TokenAlternativesLike,
+		index uint,
+		count uint,
+	)
 	PreprocessTokenName(
 		tokenName ast.TokenNameLike,
 		index uint,
@@ -735,19 +709,6 @@ type Methodical interface {
 	)
 	PostprocessTokenName(
 		tokenName ast.TokenNameLike,
-		index uint,
-		count uint,
-	)
-	PreprocessTokenNameAlternatives(
-		tokenNameAlternatives ast.TokenNameAlternativesLike,
-		index uint,
-		count uint,
-	)
-	ProcessTokenNameAlternativesSlot(
-		slot uint,
-	)
-	PostprocessTokenNameAlternatives(
-		tokenNameAlternatives ast.TokenNameAlternativesLike,
 		index uint,
 		count uint,
 	)

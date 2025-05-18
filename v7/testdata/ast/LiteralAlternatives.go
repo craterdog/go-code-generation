@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,21 +28,21 @@ import (
 
 // Access Function
 
-func AdditionalCharacterClass() AdditionalCharacterClassLike {
-	return additionalCharacterClass()
+func LiteralAlternativesClass() LiteralAlternativesClassLike {
+	return literalAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *additionalCharacterClass_) AdditionalCharacter(
-	character CharacterLike,
-) AdditionalCharacterLike {
-	if uti.IsUndefined(character) {
-		panic("The \"character\" attribute is required by this class.")
+func (c *literalAlternativesClass_) LiteralAlternatives(
+	literalValues col.Sequential[LiteralValueLike],
+) LiteralAlternativesLike {
+	if uti.IsUndefined(literalValues) {
+		panic("The \"literalValues\" attribute is required by this class.")
 	}
-	var instance = &additionalCharacter_{
+	var instance = &literalAlternatives_{
 		// Initialize the instance attributes.
-		character_: character,
+		literalValues_: literalValues,
 	}
 	return instance
 }
@@ -50,37 +51,37 @@ func (c *additionalCharacterClass_) AdditionalCharacter(
 
 // Principal Methods
 
-func (v *additionalCharacter_) GetClass() AdditionalCharacterClassLike {
-	return additionalCharacterClass()
+func (v *literalAlternatives_) GetClass() LiteralAlternativesClassLike {
+	return literalAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *additionalCharacter_) GetCharacter() CharacterLike {
-	return v.character_
+func (v *literalAlternatives_) GetLiteralValues() col.Sequential[LiteralValueLike] {
+	return v.literalValues_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type additionalCharacter_ struct {
+type literalAlternatives_ struct {
 	// Declare the instance attributes.
-	character_ CharacterLike
+	literalValues_ col.Sequential[LiteralValueLike]
 }
 
 // Class Structure
 
-type additionalCharacterClass_ struct {
+type literalAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func additionalCharacterClass() *additionalCharacterClass_ {
-	return additionalCharacterClassReference_
+func literalAlternativesClass() *literalAlternativesClass_ {
+	return literalAlternativesClassReference_
 }
 
-var additionalCharacterClassReference_ = &additionalCharacterClass_{
+var literalAlternativesClassReference_ = &literalAlternativesClass_{
 	// Initialize the class constants.
 }

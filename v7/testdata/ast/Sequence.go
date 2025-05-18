@@ -35,19 +35,14 @@ func SequenceClass() SequenceClassLike {
 // Constructor Methods
 
 func (c *sequenceClass_) Sequence(
-	repetition RepetitionLike,
-	additionalRepetitions col.Sequential[AdditionalRepetitionLike],
+	repetitions col.Sequential[RepetitionLike],
 ) SequenceLike {
-	if uti.IsUndefined(repetition) {
-		panic("The \"repetition\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(additionalRepetitions) {
-		panic("The \"additionalRepetitions\" attribute is required by this class.")
+	if uti.IsUndefined(repetitions) {
+		panic("The \"repetitions\" attribute is required by this class.")
 	}
 	var instance = &sequence_{
 		// Initialize the instance attributes.
-		repetition_:            repetition,
-		additionalRepetitions_: additionalRepetitions,
+		repetitions_: repetitions,
 	}
 	return instance
 }
@@ -62,12 +57,8 @@ func (v *sequence_) GetClass() SequenceClassLike {
 
 // Attribute Methods
 
-func (v *sequence_) GetRepetition() RepetitionLike {
-	return v.repetition_
-}
-
-func (v *sequence_) GetAdditionalRepetitions() col.Sequential[AdditionalRepetitionLike] {
-	return v.additionalRepetitions_
+func (v *sequence_) GetRepetitions() col.Sequential[RepetitionLike] {
+	return v.repetitions_
 }
 
 // PROTECTED INTERFACE
@@ -76,8 +67,7 @@ func (v *sequence_) GetAdditionalRepetitions() col.Sequential[AdditionalRepetiti
 
 type sequence_ struct {
 	// Declare the instance attributes.
-	repetition_            RepetitionLike
-	additionalRepetitions_ col.Sequential[AdditionalRepetitionLike]
+	repetitions_ col.Sequential[RepetitionLike]
 }
 
 // Class Structure

@@ -46,43 +46,6 @@ import (
 // CLASS DECLARATIONS
 
 /*
-AdditionalCharacterClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete additional-character-like class.
-*/
-type AdditionalCharacterClassLike interface {
-	// Constructor Methods
-	AdditionalCharacter(
-		character CharacterLike,
-	) AdditionalCharacterLike
-}
-
-/*
-AdditionalRepetitionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete additional-repetition-like class.
-*/
-type AdditionalRepetitionClassLike interface {
-	// Constructor Methods
-	AdditionalRepetition(
-		repetition RepetitionLike,
-	) AdditionalRepetitionLike
-}
-
-/*
-AllowedCharactersClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete allowed-characters-like class.
-*/
-type AllowedCharactersClassLike interface {
-	// Constructor Methods
-	AllowedCharacters(
-		character CharacterLike,
-		additionalCharacters col.Sequential[AdditionalCharacterLike],
-	) AllowedCharactersLike
-}
-
-/*
 AlternativeSequenceClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete alternative-sequence-like class.
@@ -231,7 +194,7 @@ type FilterClassLike interface {
 	Filter(
 		optionalDelimiter string,
 		delimiter1 string,
-		allowedCharacters AllowedCharactersLike,
+		characters col.Sequential[CharacterLike],
 		delimiter2 string,
 	) FilterLike
 }
@@ -276,6 +239,18 @@ type LimitClassLike interface {
 }
 
 /*
+LiteralAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete literal-alternatives-like class.
+*/
+type LiteralAlternativesClassLike interface {
+	// Constructor Methods
+	LiteralAlternatives(
+		literalValues col.Sequential[LiteralValueLike],
+	) LiteralAlternativesLike
+}
+
+/*
 LiteralValueClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete literal-value-like class.
@@ -287,18 +262,6 @@ type LiteralValueClassLike interface {
 		literal string,
 		optionalNote string,
 	) LiteralValueLike
-}
-
-/*
-LiteralValueAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete literal-value-alternatives-like class.
-*/
-type LiteralValueAlternativesClassLike interface {
-	// Constructor Methods
-	LiteralValueAlternatives(
-		literalValues col.Sequential[LiteralValueLike],
-	) LiteralValueAlternativesLike
 }
 
 /*
@@ -371,6 +334,18 @@ type RuleClassLike interface {
 }
 
 /*
+RuleAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete rule-alternatives-like class.
+*/
+type RuleAlternativesClassLike interface {
+	// Constructor Methods
+	RuleAlternatives(
+		ruleNames col.Sequential[RuleNameLike],
+	) RuleAlternativesLike
+}
+
+/*
 RuleNameClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete rule-name-like class.
@@ -382,18 +357,6 @@ type RuleNameClassLike interface {
 		uppercase string,
 		optionalNote string,
 	) RuleNameLike
-}
-
-/*
-RuleNameAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete rule-name-alternatives-like class.
-*/
-type RuleNameAlternativesClassLike interface {
-	// Constructor Methods
-	RuleNameAlternatives(
-		ruleNames col.Sequential[RuleNameLike],
-	) RuleNameAlternativesLike
 }
 
 /*
@@ -410,19 +373,6 @@ type RuleTermClassLike interface {
 }
 
 /*
-RuleTermSequenceClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete rule-term-sequence-like class.
-*/
-type RuleTermSequenceClassLike interface {
-	// Constructor Methods
-	RuleTermSequence(
-		ruleTerms col.Sequential[RuleTermLike],
-		optionalNote string,
-	) RuleTermSequenceLike
-}
-
-/*
 SequenceClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete sequence-like class.
@@ -430,8 +380,7 @@ supported by each concrete sequence-like class.
 type SequenceClassLike interface {
 	// Constructor Methods
 	Sequence(
-		repetition RepetitionLike,
-		additionalRepetitions col.Sequential[AdditionalRepetitionLike],
+		repetitions col.Sequential[RepetitionLike],
 	) SequenceLike
 }
 
@@ -452,6 +401,19 @@ type SyntaxClassLike interface {
 }
 
 /*
+TermSequenceClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete term-sequence-like class.
+*/
+type TermSequenceClassLike interface {
+	// Constructor Methods
+	TermSequence(
+		ruleTerms col.Sequential[RuleTermLike],
+		optionalNote string,
+	) TermSequenceLike
+}
+
+/*
 TextClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete text-like class.
@@ -461,6 +423,18 @@ type TextClassLike interface {
 	Text(
 		any_ any,
 	) TextLike
+}
+
+/*
+TokenAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete token-alternatives-like class.
+*/
+type TokenAlternativesClassLike interface {
+	// Constructor Methods
+	TokenAlternatives(
+		tokenNames col.Sequential[TokenNameLike],
+	) TokenAlternativesLike
 }
 
 /*
@@ -477,59 +451,7 @@ type TokenNameClassLike interface {
 	) TokenNameLike
 }
 
-/*
-TokenNameAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete token-name-alternatives-like class.
-*/
-type TokenNameAlternativesClassLike interface {
-	// Constructor Methods
-	TokenNameAlternatives(
-		tokenNames col.Sequential[TokenNameLike],
-	) TokenNameAlternativesLike
-}
-
 // INSTANCE DECLARATIONS
-
-/*
-AdditionalCharacterLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete additional-character-like class.
-*/
-type AdditionalCharacterLike interface {
-	// Principal Methods
-	GetClass() AdditionalCharacterClassLike
-
-	// Attribute Methods
-	GetCharacter() CharacterLike
-}
-
-/*
-AdditionalRepetitionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete additional-repetition-like class.
-*/
-type AdditionalRepetitionLike interface {
-	// Principal Methods
-	GetClass() AdditionalRepetitionClassLike
-
-	// Attribute Methods
-	GetRepetition() RepetitionLike
-}
-
-/*
-AllowedCharactersLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete allowed-characters-like class.
-*/
-type AllowedCharactersLike interface {
-	// Principal Methods
-	GetClass() AllowedCharactersClassLike
-
-	// Attribute Methods
-	GetCharacter() CharacterLike
-	GetAdditionalCharacters() col.Sequential[AdditionalCharacterLike]
-}
 
 /*
 AlternativeSequenceLike is an instance interface that declares the
@@ -693,7 +615,7 @@ type FilterLike interface {
 	// Attribute Methods
 	GetOptionalDelimiter() string
 	GetDelimiter1() string
-	GetAllowedCharacters() AllowedCharactersLike
+	GetCharacters() col.Sequential[CharacterLike]
 	GetDelimiter2() string
 }
 
@@ -740,6 +662,19 @@ type LimitLike interface {
 }
 
 /*
+LiteralAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete literal-alternatives-like class.
+*/
+type LiteralAlternativesLike interface {
+	// Principal Methods
+	GetClass() LiteralAlternativesClassLike
+
+	// Attribute Methods
+	GetLiteralValues() col.Sequential[LiteralValueLike]
+}
+
+/*
 LiteralValueLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete literal-value-like class.
@@ -752,19 +687,6 @@ type LiteralValueLike interface {
 	GetNewline() string
 	GetLiteral() string
 	GetOptionalNote() string
-}
-
-/*
-LiteralValueAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete literal-value-alternatives-like class.
-*/
-type LiteralValueAlternativesLike interface {
-	// Principal Methods
-	GetClass() LiteralValueAlternativesClassLike
-
-	// Attribute Methods
-	GetLiteralValues() col.Sequential[LiteralValueLike]
 }
 
 /*
@@ -842,6 +764,19 @@ type RuleLike interface {
 }
 
 /*
+RuleAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete rule-alternatives-like class.
+*/
+type RuleAlternativesLike interface {
+	// Principal Methods
+	GetClass() RuleAlternativesClassLike
+
+	// Attribute Methods
+	GetRuleNames() col.Sequential[RuleNameLike]
+}
+
+/*
 RuleNameLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete rule-name-like class.
@@ -854,19 +789,6 @@ type RuleNameLike interface {
 	GetNewline() string
 	GetUppercase() string
 	GetOptionalNote() string
-}
-
-/*
-RuleNameAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete rule-name-alternatives-like class.
-*/
-type RuleNameAlternativesLike interface {
-	// Principal Methods
-	GetClass() RuleNameAlternativesClassLike
-
-	// Attribute Methods
-	GetRuleNames() col.Sequential[RuleNameLike]
 }
 
 /*
@@ -884,20 +806,6 @@ type RuleTermLike interface {
 }
 
 /*
-RuleTermSequenceLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete rule-term-sequence-like class.
-*/
-type RuleTermSequenceLike interface {
-	// Principal Methods
-	GetClass() RuleTermSequenceClassLike
-
-	// Attribute Methods
-	GetRuleTerms() col.Sequential[RuleTermLike]
-	GetOptionalNote() string
-}
-
-/*
 SequenceLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete sequence-like class.
@@ -907,8 +815,7 @@ type SequenceLike interface {
 	GetClass() SequenceClassLike
 
 	// Attribute Methods
-	GetRepetition() RepetitionLike
-	GetAdditionalRepetitions() col.Sequential[AdditionalRepetitionLike]
+	GetRepetitions() col.Sequential[RepetitionLike]
 }
 
 /*
@@ -929,6 +836,20 @@ type SyntaxLike interface {
 }
 
 /*
+TermSequenceLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete term-sequence-like class.
+*/
+type TermSequenceLike interface {
+	// Principal Methods
+	GetClass() TermSequenceClassLike
+
+	// Attribute Methods
+	GetRuleTerms() col.Sequential[RuleTermLike]
+	GetOptionalNote() string
+}
+
+/*
 TextLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete text-like class.
@@ -939,6 +860,19 @@ type TextLike interface {
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+TokenAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete token-alternatives-like class.
+*/
+type TokenAlternativesLike interface {
+	// Principal Methods
+	GetClass() TokenAlternativesClassLike
+
+	// Attribute Methods
+	GetTokenNames() col.Sequential[TokenNameLike]
 }
 
 /*
@@ -954,19 +888,6 @@ type TokenNameLike interface {
 	GetNewline() string
 	GetLowercase() string
 	GetOptionalNote() string
-}
-
-/*
-TokenNameAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete token-name-alternatives-like class.
-*/
-type TokenNameAlternativesLike interface {
-	// Principal Methods
-	GetClass() TokenNameAlternativesClassLike
-
-	// Attribute Methods
-	GetTokenNames() col.Sequential[TokenNameLike]
 }
 
 // ASPECT DECLARATIONS

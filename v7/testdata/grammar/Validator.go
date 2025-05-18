@@ -121,54 +121,6 @@ func (v *validator_) ProcessUppercase(
 	v.validateToken(uppercase, UppercaseToken)
 }
 
-func (v *validator_) PreprocessAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessAdditionalCharacter(
-	additionalCharacter ast.AdditionalCharacterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessAdditionalRepetition(
-	additionalRepetition ast.AdditionalRepetitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessAllowedCharacters(
-	allowedCharacters ast.AllowedCharactersLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessAllowedCharacters(
-	allowedCharacters ast.AllowedCharactersLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *validator_) PreprocessAlternativeSequence(
 	alternativeSequence ast.AlternativeSequenceLike,
 	index uint,
@@ -409,6 +361,22 @@ func (v *validator_) PostprocessLimit(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessLiteralAlternatives(
+	literalAlternatives ast.LiteralAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessLiteralAlternatives(
+	literalAlternatives ast.LiteralAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessLiteralValue(
 	literalValue ast.LiteralValueLike,
 	index uint,
@@ -419,22 +387,6 @@ func (v *validator_) PreprocessLiteralValue(
 
 func (v *validator_) PostprocessLiteralValue(
 	literalValue ast.LiteralValueLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessLiteralValueAlternatives(
-	literalValueAlternatives ast.LiteralValueAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessLiteralValueAlternatives(
-	literalValueAlternatives ast.LiteralValueAlternativesLike,
 	index uint,
 	count uint,
 ) {
@@ -521,6 +473,22 @@ func (v *validator_) PostprocessRule(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessRuleAlternatives(
+	ruleAlternatives ast.RuleAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessRuleAlternatives(
+	ruleAlternatives ast.RuleAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessRuleName(
 	ruleName ast.RuleNameLike,
 	index uint,
@@ -537,22 +505,6 @@ func (v *validator_) PostprocessRuleName(
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessRuleNameAlternatives(
-	ruleNameAlternatives ast.RuleNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRuleNameAlternatives(
-	ruleNameAlternatives ast.RuleNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *validator_) PreprocessRuleTerm(
 	ruleTerm ast.RuleTermLike,
 	index uint,
@@ -563,22 +515,6 @@ func (v *validator_) PreprocessRuleTerm(
 
 func (v *validator_) PostprocessRuleTerm(
 	ruleTerm ast.RuleTermLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessRuleTermSequence(
-	ruleTermSequence ast.RuleTermSequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRuleTermSequence(
-	ruleTermSequence ast.RuleTermSequenceLike,
 	index uint,
 	count uint,
 ) {
@@ -617,6 +553,22 @@ func (v *validator_) PostprocessSyntax(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessTermSequence(
+	termSequence ast.TermSequenceLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessTermSequence(
+	termSequence ast.TermSequenceLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessText(
 	text ast.TextLike,
 	index uint,
@@ -633,6 +585,22 @@ func (v *validator_) PostprocessText(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessTokenAlternatives(
+	tokenAlternatives ast.TokenAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessTokenAlternatives(
+	tokenAlternatives ast.TokenAlternativesLike,
+	index uint,
+	count uint,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessTokenName(
 	tokenName ast.TokenNameLike,
 	index uint,
@@ -643,22 +611,6 @@ func (v *validator_) PreprocessTokenName(
 
 func (v *validator_) PostprocessTokenName(
 	tokenName ast.TokenNameLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessTokenNameAlternatives(
-	tokenNameAlternatives ast.TokenNameAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessTokenNameAlternatives(
-	tokenNameAlternatives ast.TokenNameAlternativesLike,
 	index uint,
 	count uint,
 ) {

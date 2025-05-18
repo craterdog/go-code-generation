@@ -28,21 +28,21 @@ import (
 
 // Access Function
 
-func RuleNameAlternativesClass() RuleNameAlternativesClassLike {
-	return ruleNameAlternativesClass()
+func TokenAlternativesClass() TokenAlternativesClassLike {
+	return tokenAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *ruleNameAlternativesClass_) RuleNameAlternatives(
-	ruleNames col.Sequential[RuleNameLike],
-) RuleNameAlternativesLike {
-	if uti.IsUndefined(ruleNames) {
-		panic("The \"ruleNames\" attribute is required by this class.")
+func (c *tokenAlternativesClass_) TokenAlternatives(
+	tokenNames col.Sequential[TokenNameLike],
+) TokenAlternativesLike {
+	if uti.IsUndefined(tokenNames) {
+		panic("The \"tokenNames\" attribute is required by this class.")
 	}
-	var instance = &ruleNameAlternatives_{
+	var instance = &tokenAlternatives_{
 		// Initialize the instance attributes.
-		ruleNames_: ruleNames,
+		tokenNames_: tokenNames,
 	}
 	return instance
 }
@@ -51,37 +51,37 @@ func (c *ruleNameAlternativesClass_) RuleNameAlternatives(
 
 // Principal Methods
 
-func (v *ruleNameAlternatives_) GetClass() RuleNameAlternativesClassLike {
-	return ruleNameAlternativesClass()
+func (v *tokenAlternatives_) GetClass() TokenAlternativesClassLike {
+	return tokenAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *ruleNameAlternatives_) GetRuleNames() col.Sequential[RuleNameLike] {
-	return v.ruleNames_
+func (v *tokenAlternatives_) GetTokenNames() col.Sequential[TokenNameLike] {
+	return v.tokenNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type ruleNameAlternatives_ struct {
+type tokenAlternatives_ struct {
 	// Declare the instance attributes.
-	ruleNames_ col.Sequential[RuleNameLike]
+	tokenNames_ col.Sequential[TokenNameLike]
 }
 
 // Class Structure
 
-type ruleNameAlternativesClass_ struct {
+type tokenAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func ruleNameAlternativesClass() *ruleNameAlternativesClass_ {
-	return ruleNameAlternativesClassReference_
+func tokenAlternativesClass() *tokenAlternativesClass_ {
+	return tokenAlternativesClassReference_
 }
 
-var ruleNameAlternativesClassReference_ = &ruleNameAlternativesClass_{
+var tokenAlternativesClassReference_ = &tokenAlternativesClass_{
 	// Initialize the class constants.
 }
