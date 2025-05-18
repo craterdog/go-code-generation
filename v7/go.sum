@@ -4,8 +4,8 @@ github.com/craterdog/go-collection-framework/v7 v7.3.0 h1:roYArLZj7vcJQPyQieX19j
 github.com/craterdog/go-collection-framework/v7 v7.3.0/go.mod h1:FTDbNa7eSu3Dpv5Agd8RDm0QwJOMMH0bR89TKtMb6RY=
 github.com/craterdog/go-missing-utilities/v7 v7.3.0 h1:5wVeDwEDin/H21MjJz9XxMu8fqjT+bpcTHiyjSMKflI=
 github.com/craterdog/go-missing-utilities/v7 v7.3.0/go.mod h1:uEyTYeiSq4hzoJn9dPPZxGUKVjKU90v0xh0WhTnhRVs=
-github.com/craterdog/go-syntax-notation/v7 v7.4.0 h1:HYGbO4qxnlQg1GWSSgUsuKk7DeN/ScYAFk+TJqSc/pU=
-github.com/craterdog/go-syntax-notation/v7 v7.4.0/go.mod h1:6xcljMkXsSispV7EfXvdCQAInYTJMz/4lr3N+1b/isM=
+github.com/craterdog/go-syntax-notation/v7 v7.5.0 h1:dueBNCUTZTyyooPKlb3LDjdQKkleGB5L7jljphLwkgU=
+github.com/craterdog/go-syntax-notation/v7 v7.5.0/go.mod h1:6xcljMkXsSispV7EfXvdCQAInYTJMz/4lr3N+1b/isM=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

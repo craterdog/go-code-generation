@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,21 +28,26 @@ import (
 
 // Access Function
 
-func LiteralClass() LiteralClassLike {
-	return literalClass()
+func AlternativesClass() AlternativesClassLike {
+	return alternativesClass()
 }
 
 // Constructor Methods
 
-func (c *literalClass_) Literal(
-	quote string,
-) LiteralLike {
-	if uti.IsUndefined(quote) {
-		panic("The \"quote\" attribute is required by this class.")
+func (c *alternativesClass_) Alternatives(
+	sequence SequenceLike,
+	alternativeSequences col.Sequential[AlternativeSequenceLike],
+) AlternativesLike {
+	if uti.IsUndefined(sequence) {
+		panic("The \"sequence\" attribute is required by this class.")
 	}
-	var instance = &literal_{
+	if uti.IsUndefined(alternativeSequences) {
+		panic("The \"alternativeSequences\" attribute is required by this class.")
+	}
+	var instance = &alternatives_{
 		// Initialize the instance attributes.
-		quote_: quote,
+		sequence_:             sequence,
+		alternativeSequences_: alternativeSequences,
 	}
 	return instance
 }
@@ -50,37 +56,42 @@ func (c *literalClass_) Literal(
 
 // Principal Methods
 
-func (v *literal_) GetClass() LiteralClassLike {
-	return literalClass()
+func (v *alternatives_) GetClass() AlternativesClassLike {
+	return alternativesClass()
 }
 
 // Attribute Methods
 
-func (v *literal_) GetQuote() string {
-	return v.quote_
+func (v *alternatives_) GetSequence() SequenceLike {
+	return v.sequence_
+}
+
+func (v *alternatives_) GetAlternativeSequences() col.Sequential[AlternativeSequenceLike] {
+	return v.alternativeSequences_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type literal_ struct {
+type alternatives_ struct {
 	// Declare the instance attributes.
-	quote_ string
+	sequence_             SequenceLike
+	alternativeSequences_ col.Sequential[AlternativeSequenceLike]
 }
 
 // Class Structure
 
-type literalClass_ struct {
+type alternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func literalClass() *literalClass_ {
-	return literalClassReference_
+func alternativesClass() *alternativesClass_ {
+	return alternativesClassReference_
 }
 
-var literalClassReference_ = &literalClass_{
+var alternativesClassReference_ = &alternativesClass_{
 	// Initialize the class constants.
 }

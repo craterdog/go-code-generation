@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -28,21 +27,21 @@ import (
 
 // Access Function
 
-func MultiruleClass() MultiruleClassLike {
-	return multiruleClass()
+func ComponentClass() ComponentClassLike {
+	return componentClass()
 }
 
 // Constructor Methods
 
-func (c *multiruleClass_) Multirule(
-	ruleOptions col.Sequential[RuleOptionLike],
-) MultiruleLike {
-	if uti.IsUndefined(ruleOptions) {
-		panic("The \"ruleOptions\" attribute is required by this class.")
+func (c *componentClass_) Component(
+	any_ any,
+) ComponentLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &multirule_{
+	var instance = &component_{
 		// Initialize the instance attributes.
-		ruleOptions_: ruleOptions,
+		any_: any_,
 	}
 	return instance
 }
@@ -51,37 +50,37 @@ func (c *multiruleClass_) Multirule(
 
 // Principal Methods
 
-func (v *multirule_) GetClass() MultiruleClassLike {
-	return multiruleClass()
+func (v *component_) GetClass() ComponentClassLike {
+	return componentClass()
 }
 
 // Attribute Methods
 
-func (v *multirule_) GetRuleOptions() col.Sequential[RuleOptionLike] {
-	return v.ruleOptions_
+func (v *component_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multirule_ struct {
+type component_ struct {
 	// Declare the instance attributes.
-	ruleOptions_ col.Sequential[RuleOptionLike]
+	any_ any
 }
 
 // Class Structure
 
-type multiruleClass_ struct {
+type componentClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiruleClass() *multiruleClass_ {
-	return multiruleClassReference_
+func componentClass() *componentClass_ {
+	return componentClassReference_
 }
 
-var multiruleClassReference_ = &multiruleClass_{
+var componentClassReference_ = &componentClass_{
 	// Initialize the class constants.
 }

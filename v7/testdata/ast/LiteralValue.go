@@ -27,23 +27,28 @@ import (
 
 // Access Function
 
-func ReferenceClass() ReferenceClassLike {
-	return referenceClass()
+func LiteralValueClass() LiteralValueClassLike {
+	return literalValueClass()
 }
 
 // Constructor Methods
 
-func (c *referenceClass_) Reference(
-	identifier IdentifierLike,
-	optionalCardinality CardinalityLike,
-) ReferenceLike {
-	if uti.IsUndefined(identifier) {
-		panic("The \"identifier\" attribute is required by this class.")
+func (c *literalValueClass_) LiteralValue(
+	newline string,
+	literal string,
+	optionalNote string,
+) LiteralValueLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &reference_{
+	if uti.IsUndefined(literal) {
+		panic("The \"literal\" attribute is required by this class.")
+	}
+	var instance = &literalValue_{
 		// Initialize the instance attributes.
-		identifier_:          identifier,
-		optionalCardinality_: optionalCardinality,
+		newline_:      newline,
+		literal_:      literal,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -52,42 +57,47 @@ func (c *referenceClass_) Reference(
 
 // Principal Methods
 
-func (v *reference_) GetClass() ReferenceClassLike {
-	return referenceClass()
+func (v *literalValue_) GetClass() LiteralValueClassLike {
+	return literalValueClass()
 }
 
 // Attribute Methods
 
-func (v *reference_) GetIdentifier() IdentifierLike {
-	return v.identifier_
+func (v *literalValue_) GetNewline() string {
+	return v.newline_
 }
 
-func (v *reference_) GetOptionalCardinality() CardinalityLike {
-	return v.optionalCardinality_
+func (v *literalValue_) GetLiteral() string {
+	return v.literal_
+}
+
+func (v *literalValue_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type reference_ struct {
+type literalValue_ struct {
 	// Declare the instance attributes.
-	identifier_          IdentifierLike
-	optionalCardinality_ CardinalityLike
+	newline_      string
+	literal_      string
+	optionalNote_ string
 }
 
 // Class Structure
 
-type referenceClass_ struct {
+type literalValueClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func referenceClass() *referenceClass_ {
-	return referenceClassReference_
+func literalValueClass() *literalValueClass_ {
+	return literalValueClassReference_
 }
 
-var referenceClassReference_ = &referenceClass_{
+var literalValueClassReference_ = &literalValueClass_{
 	// Initialize the class constants.
 }

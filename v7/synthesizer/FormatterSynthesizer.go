@@ -173,9 +173,6 @@ func (v *formatterSynthesizer_) createProcessRule(
 ) string {
 	var class = formatterSynthesizerClass()
 	var processRule = class.processRule_
-	if v.analyzer_.IsPlural(ruleName) {
-		processRule = class.processIndexedRule_
-	}
 	processRule = uti.ReplaceAll(
 		processRule,
 		"ruleName",
@@ -199,14 +196,8 @@ func (v *formatterSynthesizer_) createProcessToken(
 	tokenName string,
 ) string {
 	var processToken string
-	if tokenName == "delimiter" {
-		return processToken
-	}
 	var class = formatterSynthesizerClass()
 	processToken = class.processToken_
-	if v.analyzer_.IsPlural(tokenName) {
-		processToken = class.processIndexedToken_
-	}
 	if tokenName == "newline" {
 		processToken = class.processNewline_
 	}
@@ -266,21 +257,19 @@ type formatterSynthesizer_ struct {
 
 type formatterSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_      string
-	importedPackages_    string
-	accessFunction_      string
-	constructorMethods_  string
-	principalMethods_    string
-	aspectMethods_       string
-	processToken_        string
-	processNewline_      string
-	processIndexedToken_ string
-	processRule_         string
-	processIndexedRule_  string
-	privateMethods_      string
-	instanceStructure_   string
-	classStructure_      string
-	classReference_      string
+	warningMessage_     string
+	importedPackages_   string
+	accessFunction_     string
+	constructorMethods_ string
+	principalMethods_   string
+	aspectMethods_      string
+	processToken_       string
+	processNewline_     string
+	processRule_        string
+	privateMethods_     string
+	instanceStructure_  string
+	classStructure_     string
+	classReference_     string
 }
 
 // Class Reference
@@ -336,8 +325,8 @@ func (v *formatter_) GetClass() FormatterClassLike {
 	return formatterClass()
 }
 
-func (v *formatter_) Format<~SyntaxName>(<syntaxName_> ast.<~SyntaxName>Like) string {
-	v.visitor_.Visit<~SyntaxName>(<syntaxName_>)
+func (v *formatter_) Format<~SyntaxName>(<~syntaxName> ast.<~SyntaxName>Like) string {
+	v.visitor_.Visit<~SyntaxName>(<~syntaxName>)
 	return v.getResult()
 }
 `,
@@ -357,53 +346,20 @@ func (v *formatter_) Process<~TokenName>(
 `,
 
 	processNewline_: `
-func (v *formatter_) Process<~TokenName>(
-	<tokenName_> string,
+func (v *formatter_) ProcessNewline(
+	newline string,
 ) {
 	v.appendNewline()
-}
-`,
-
-	processIndexedToken_: `
-func (v *formatter_) Process<~TokenName>(
-	<tokenName_> string,
-	index uint,
-	size uint,
-) {
-	v.appendString(<tokenName_>)
 }
 `,
 
 	processRule_: `
 func (v *formatter_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-
-func (v *formatter_) Process<~RuleName>Slot(
-	slot uint,
-) {
-	switch slot {
-	default:
-		v.appendString(" ")
-	}
-}
-
-func (v *formatter_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add formatting of the delimited rule.
-}
-`,
-
-	processIndexedRule_: `
-func (v *formatter_) Preprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add formatting of the rule.
 }
 
 func (v *formatter_) Process<~RuleName>Slot(
@@ -418,9 +374,9 @@ func (v *formatter_) Process<~RuleName>Slot(
 func (v *formatter_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	// TBD - Add formatting of the delimited rule.
+	// TBD - Add formatting of the rule.
 }
 `,
 

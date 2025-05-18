@@ -34,21 +34,29 @@ func ExpressionClass() ExpressionClassLike {
 // Constructor Methods
 
 func (c *expressionClass_) Expression(
+	delimiter1 string,
 	lowercase string,
+	delimiter2 string,
 	pattern PatternLike,
-	optionalNote string,
 ) ExpressionLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
 	if uti.IsUndefined(lowercase) {
 		panic("The \"lowercase\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(pattern) {
 		panic("The \"pattern\" attribute is required by this class.")
 	}
 	var instance = &expression_{
 		// Initialize the instance attributes.
-		lowercase_:    lowercase,
-		pattern_:      pattern,
-		optionalNote_: optionalNote,
+		delimiter1_: delimiter1,
+		lowercase_:  lowercase,
+		delimiter2_: delimiter2,
+		pattern_:    pattern,
 	}
 	return instance
 }
@@ -63,16 +71,20 @@ func (v *expression_) GetClass() ExpressionClassLike {
 
 // Attribute Methods
 
+func (v *expression_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
 func (v *expression_) GetLowercase() string {
 	return v.lowercase_
 }
 
-func (v *expression_) GetPattern() PatternLike {
-	return v.pattern_
+func (v *expression_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
-func (v *expression_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *expression_) GetPattern() PatternLike {
+	return v.pattern_
 }
 
 // PROTECTED INTERFACE
@@ -81,9 +93,10 @@ func (v *expression_) GetOptionalNote() string {
 
 type expression_ struct {
 	// Declare the instance attributes.
-	lowercase_    string
-	pattern_      PatternLike
-	optionalNote_ string
+	delimiter1_ string
+	lowercase_  string
+	delimiter2_ string
+	pattern_    PatternLike
 }
 
 // Class Structure

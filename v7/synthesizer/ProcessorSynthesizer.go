@@ -151,45 +151,12 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *processorSynthesizer_) createProcessRule(
-	ruleName string,
-) string {
-	var class = processorSynthesizerClass()
-	var processRule = class.processRule_
-	if v.analyzer_.IsPlural(ruleName) {
-		processRule = class.processIndexedRule_
-	}
-	processRule = uti.ReplaceAll(
-		processRule,
-		"ruleName",
-		ruleName,
-	)
-	return processRule
-}
-
-func (v *processorSynthesizer_) createProcessRules() string {
-	var processRules string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
-	for ruleNames.HasNext() {
-		var ruleName = ruleNames.GetNext()
-		var processRule = v.createProcessRule(ruleName)
-		processRules += processRule
-	}
-	return processRules
-}
-
 func (v *processorSynthesizer_) createProcessToken(
 	tokenName string,
 ) string {
 	var processToken string
-	if tokenName == "delimiter" {
-		return processToken
-	}
 	var class = processorSynthesizerClass()
 	processToken = class.processToken_
-	if v.analyzer_.IsPlural(tokenName) {
-		processToken = class.processIndexedToken_
-	}
 	processToken = uti.ReplaceAll(
 		processToken,
 		"tokenName",
@@ -209,6 +176,30 @@ func (v *processorSynthesizer_) createProcessTokens() string {
 	return processTokens
 }
 
+func (v *processorSynthesizer_) createProcessRule(
+	ruleName string,
+) string {
+	var class = processorSynthesizerClass()
+	var processRule = class.processRule_
+	processRule = uti.ReplaceAll(
+		processRule,
+		"ruleName",
+		ruleName,
+	)
+	return processRule
+}
+
+func (v *processorSynthesizer_) createProcessRules() string {
+	var processRules string
+	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
+		var processRule = v.createProcessRule(ruleName)
+		processRules += processRule
+	}
+	return processRules
+}
+
 // Instance Structure
 
 type processorSynthesizer_ struct {
@@ -220,20 +211,18 @@ type processorSynthesizer_ struct {
 
 type processorSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_      string
-	importedPackages_    string
-	accessFunction_      string
-	constructorMethods_  string
-	principalMethods_    string
-	aspectMethods_       string
-	processToken_        string
-	processIndexedToken_ string
-	processRule_         string
-	processIndexedRule_  string
-	privateMethods_      string
-	instanceStructure_   string
-	classStructure_      string
-	classReference_      string
+	warningMessage_     string
+	importedPackages_   string
+	accessFunction_     string
+	constructorMethods_ string
+	principalMethods_   string
+	aspectMethods_      string
+	processToken_       string
+	processRule_        string
+	privateMethods_     string
+	instanceStructure_  string
+	classStructure_     string
+	classReference_     string
 }
 
 // Class Reference
@@ -293,37 +282,11 @@ func (v *processor_) Process<~TokenName>(
 }
 `,
 
-	processIndexedToken_: `
-func (v *processor_) Process<~TokenName>(
-	<tokenName_> string,
-	index uint,
-	size uint,
-) {
-}
-`,
-
 	processRule_: `
 func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-) {
-}
-
-func (v *processor_) Process<~RuleName>Slot(
-	slot uint,
-) {
-}
-
-func (v *processor_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-) {
-}
-`,
-
-	processIndexedRule_: `
-func (v *processor_) Preprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
 }
 
@@ -335,7 +298,7 @@ func (v *processor_) Process<~RuleName>Slot(
 func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
 }
 `,

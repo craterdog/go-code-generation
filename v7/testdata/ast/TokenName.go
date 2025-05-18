@@ -27,24 +27,24 @@ import (
 
 // Access Function
 
-func ExpressionOptionClass() ExpressionOptionClassLike {
-	return expressionOptionClass()
+func TokenNameClass() TokenNameClassLike {
+	return tokenNameClass()
 }
 
 // Constructor Methods
 
-func (c *expressionOptionClass_) ExpressionOption(
+func (c *tokenNameClass_) TokenName(
 	newline string,
 	lowercase string,
 	optionalNote string,
-) ExpressionOptionLike {
+) TokenNameLike {
 	if uti.IsUndefined(newline) {
 		panic("The \"newline\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(lowercase) {
 		panic("The \"lowercase\" attribute is required by this class.")
 	}
-	var instance = &expressionOption_{
+	var instance = &tokenName_{
 		// Initialize the instance attributes.
 		newline_:      newline,
 		lowercase_:    lowercase,
@@ -57,21 +57,21 @@ func (c *expressionOptionClass_) ExpressionOption(
 
 // Principal Methods
 
-func (v *expressionOption_) GetClass() ExpressionOptionClassLike {
-	return expressionOptionClass()
+func (v *tokenName_) GetClass() TokenNameClassLike {
+	return tokenNameClass()
 }
 
 // Attribute Methods
 
-func (v *expressionOption_) GetNewline() string {
+func (v *tokenName_) GetNewline() string {
 	return v.newline_
 }
 
-func (v *expressionOption_) GetLowercase() string {
+func (v *tokenName_) GetLowercase() string {
 	return v.lowercase_
 }
 
-func (v *expressionOption_) GetOptionalNote() string {
+func (v *tokenName_) GetOptionalNote() string {
 	return v.optionalNote_
 }
 
@@ -79,7 +79,7 @@ func (v *expressionOption_) GetOptionalNote() string {
 
 // Instance Structure
 
-type expressionOption_ struct {
+type tokenName_ struct {
 	// Declare the instance attributes.
 	newline_      string
 	lowercase_    string
@@ -88,16 +88,16 @@ type expressionOption_ struct {
 
 // Class Structure
 
-type expressionOptionClass_ struct {
+type tokenNameClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func expressionOptionClass() *expressionOptionClass_ {
-	return expressionOptionClassReference_
+func tokenNameClass() *tokenNameClass_ {
+	return tokenNameClassReference_
 }
 
-var expressionOptionClassReference_ = &expressionOptionClass_{
+var tokenNameClassReference_ = &tokenNameClass_{
 	// Initialize the class constants.
 }

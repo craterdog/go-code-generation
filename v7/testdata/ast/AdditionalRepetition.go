@@ -27,28 +27,21 @@ import (
 
 // Access Function
 
-func LiteralOptionClass() LiteralOptionClassLike {
-	return literalOptionClass()
+func AdditionalRepetitionClass() AdditionalRepetitionClassLike {
+	return additionalRepetitionClass()
 }
 
 // Constructor Methods
 
-func (c *literalOptionClass_) LiteralOption(
-	newline string,
-	quote string,
-	optionalNote string,
-) LiteralOptionLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *additionalRepetitionClass_) AdditionalRepetition(
+	repetition RepetitionLike,
+) AdditionalRepetitionLike {
+	if uti.IsUndefined(repetition) {
+		panic("The \"repetition\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(quote) {
-		panic("The \"quote\" attribute is required by this class.")
-	}
-	var instance = &literalOption_{
+	var instance = &additionalRepetition_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		quote_:        quote,
-		optionalNote_: optionalNote,
+		repetition_: repetition,
 	}
 	return instance
 }
@@ -57,47 +50,37 @@ func (c *literalOptionClass_) LiteralOption(
 
 // Principal Methods
 
-func (v *literalOption_) GetClass() LiteralOptionClassLike {
-	return literalOptionClass()
+func (v *additionalRepetition_) GetClass() AdditionalRepetitionClassLike {
+	return additionalRepetitionClass()
 }
 
 // Attribute Methods
 
-func (v *literalOption_) GetNewline() string {
-	return v.newline_
-}
-
-func (v *literalOption_) GetQuote() string {
-	return v.quote_
-}
-
-func (v *literalOption_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *additionalRepetition_) GetRepetition() RepetitionLike {
+	return v.repetition_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type literalOption_ struct {
+type additionalRepetition_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	quote_        string
-	optionalNote_ string
+	repetition_ RepetitionLike
 }
 
 // Class Structure
 
-type literalOptionClass_ struct {
+type additionalRepetitionClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func literalOptionClass() *literalOptionClass_ {
-	return literalOptionClassReference_
+func additionalRepetitionClass() *additionalRepetitionClass_ {
+	return additionalRepetitionClassReference_
 }
 
-var literalOptionClassReference_ = &literalOptionClass_{
+var additionalRepetitionClassReference_ = &additionalRepetitionClass_{
 	// Initialize the class constants.
 }

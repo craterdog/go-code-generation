@@ -121,16 +121,17 @@ func (v *astSynthesizer_) createClassDeclaration(
 	className string,
 ) string {
 	var parameters string
-	var references = v.analyzer_.GetReferences(className)
-	if uti.IsDefined(references) {
+	var terms = v.analyzer_.GetTerms(className)
+	if uti.IsDefined(terms) {
 		// This class represents an inline rule.
-		var references = references.GetIterator()
+		var terms = terms.GetIterator()
 		var variables = v.analyzer_.GetVariables(className).GetIterator()
-		for references.HasNext() && variables.HasNext() {
-			var reference = references.GetNext()
+		for terms.HasNext() && variables.HasNext() {
+			var term = terms.GetNext()
 			var variableName = variables.GetNext()
-			var isPlural = v.isPlural(reference)
-			var variableType = v.analyzer_.GetVariableType(reference)
+			var isPlural = v.isPlural(term)
+			var component = term.GetComponent()
+			var variableType = v.analyzer_.GetVariableType(component)
 			parameters += v.createParameter(
 				isPlural,
 				variableName,
@@ -193,16 +194,17 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 	className string,
 ) string {
 	var getterMethods string
-	var references = v.analyzer_.GetReferences(className)
-	if uti.IsDefined(references) {
+	var terms = v.analyzer_.GetTerms(className)
+	if uti.IsDefined(terms) {
 		// This instance represents an inline rule.
-		var references = references.GetIterator()
+		var terms = terms.GetIterator()
 		var attributes = v.analyzer_.GetVariables(className).GetIterator()
-		for references.HasNext() && attributes.HasNext() {
-			var reference = references.GetNext()
+		for terms.HasNext() && attributes.HasNext() {
+			var term = terms.GetNext()
 			var attributeName = attributes.GetNext()
-			var isPlural = v.isPlural(reference)
-			var attributeType = v.analyzer_.GetVariableType(reference)
+			var isPlural = v.isPlural(term)
+			var component = term.GetComponent()
+			var attributeType = v.analyzer_.GetVariableType(component)
 			getterMethods += v.createGetterMethod(
 				isPlural,
 				attributeName,
@@ -275,8 +277,8 @@ func (v *astSynthesizer_) createParameter(
 	return parameter
 }
 
-func (v *astSynthesizer_) isPlural(reference not.ReferenceLike) bool {
-	var cardinality = reference.GetOptionalCardinality()
+func (v *astSynthesizer_) isPlural(term not.TermLike) bool {
+	var cardinality = term.GetOptionalCardinality()
 	if uti.IsUndefined(cardinality) {
 		return false
 	}

@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,16 +34,26 @@ func FilterClass() FilterClassLike {
 // Constructor Methods
 
 func (c *filterClass_) Filter(
-	optionalExcluded string,
-	characters col.Sequential[CharacterLike],
+	optionalDelimiter string,
+	delimiter1 string,
+	allowedCharacters AllowedCharactersLike,
+	delimiter2 string,
 ) FilterLike {
-	if uti.IsUndefined(characters) {
-		panic("The \"characters\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(allowedCharacters) {
+		panic("The \"allowedCharacters\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
 	var instance = &filter_{
 		// Initialize the instance attributes.
-		optionalExcluded_: optionalExcluded,
-		characters_:       characters,
+		optionalDelimiter_: optionalDelimiter,
+		delimiter1_:        delimiter1,
+		allowedCharacters_: allowedCharacters,
+		delimiter2_:        delimiter2,
 	}
 	return instance
 }
@@ -59,12 +68,20 @@ func (v *filter_) GetClass() FilterClassLike {
 
 // Attribute Methods
 
-func (v *filter_) GetOptionalExcluded() string {
-	return v.optionalExcluded_
+func (v *filter_) GetOptionalDelimiter() string {
+	return v.optionalDelimiter_
 }
 
-func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
-	return v.characters_
+func (v *filter_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *filter_) GetAllowedCharacters() AllowedCharactersLike {
+	return v.allowedCharacters_
+}
+
+func (v *filter_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
@@ -73,8 +90,10 @@ func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
 
 type filter_ struct {
 	// Declare the instance attributes.
-	optionalExcluded_ string
-	characters_       col.Sequential[CharacterLike]
+	optionalDelimiter_ string
+	delimiter1_        string
+	allowedCharacters_ AllowedCharactersLike
+	delimiter2_        string
 }
 
 // Class Structure

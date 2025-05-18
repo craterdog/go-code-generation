@@ -34,14 +34,19 @@ func ExtentClass() ExtentClassLike {
 // Constructor Methods
 
 func (c *extentClass_) Extent(
+	delimiter string,
 	glyph string,
 ) ExtentLike {
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
+	}
 	if uti.IsUndefined(glyph) {
 		panic("The \"glyph\" attribute is required by this class.")
 	}
 	var instance = &extent_{
 		// Initialize the instance attributes.
-		glyph_: glyph,
+		delimiter_: delimiter,
+		glyph_:     glyph,
 	}
 	return instance
 }
@@ -56,6 +61,10 @@ func (v *extent_) GetClass() ExtentClassLike {
 
 // Attribute Methods
 
+func (v *extent_) GetDelimiter() string {
+	return v.delimiter_
+}
+
 func (v *extent_) GetGlyph() string {
 	return v.glyph_
 }
@@ -66,7 +75,8 @@ func (v *extent_) GetGlyph() string {
 
 type extent_ struct {
 	// Declare the instance attributes.
-	glyph_ string
+	delimiter_ string
+	glyph_     string
 }
 
 // Class Structure

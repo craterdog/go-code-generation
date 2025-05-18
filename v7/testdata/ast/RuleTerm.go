@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -28,21 +27,23 @@ import (
 
 // Access Function
 
-func MultiliteralClass() MultiliteralClassLike {
-	return multiliteralClass()
+func RuleTermClass() RuleTermClassLike {
+	return ruleTermClass()
 }
 
 // Constructor Methods
 
-func (c *multiliteralClass_) Multiliteral(
-	literalOptions col.Sequential[LiteralOptionLike],
-) MultiliteralLike {
-	if uti.IsUndefined(literalOptions) {
-		panic("The \"literalOptions\" attribute is required by this class.")
+func (c *ruleTermClass_) RuleTerm(
+	component ComponentLike,
+	optionalCardinality CardinalityLike,
+) RuleTermLike {
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	var instance = &multiliteral_{
+	var instance = &ruleTerm_{
 		// Initialize the instance attributes.
-		literalOptions_: literalOptions,
+		component_:           component,
+		optionalCardinality_: optionalCardinality,
 	}
 	return instance
 }
@@ -51,37 +52,42 @@ func (c *multiliteralClass_) Multiliteral(
 
 // Principal Methods
 
-func (v *multiliteral_) GetClass() MultiliteralClassLike {
-	return multiliteralClass()
+func (v *ruleTerm_) GetClass() RuleTermClassLike {
+	return ruleTermClass()
 }
 
 // Attribute Methods
 
-func (v *multiliteral_) GetLiteralOptions() col.Sequential[LiteralOptionLike] {
-	return v.literalOptions_
+func (v *ruleTerm_) GetComponent() ComponentLike {
+	return v.component_
+}
+
+func (v *ruleTerm_) GetOptionalCardinality() CardinalityLike {
+	return v.optionalCardinality_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multiliteral_ struct {
+type ruleTerm_ struct {
 	// Declare the instance attributes.
-	literalOptions_ col.Sequential[LiteralOptionLike]
+	component_           ComponentLike
+	optionalCardinality_ CardinalityLike
 }
 
 // Class Structure
 
-type multiliteralClass_ struct {
+type ruleTermClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiliteralClass() *multiliteralClass_ {
-	return multiliteralClassReference_
+func ruleTermClass() *ruleTermClass_ {
+	return ruleTermClassReference_
 }
 
-var multiliteralClassReference_ = &multiliteralClass_{
+var ruleTermClassReference_ = &ruleTermClass_{
 	// Initialize the class constants.
 }

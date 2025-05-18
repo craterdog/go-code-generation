@@ -140,9 +140,6 @@ func (v *grammarSynthesizer_) generateProcessRule(
 ) string {
 	var class = grammarSynthesizerClass()
 	var processRule = class.processRule_
-	if v.analyzer_.IsPlural(ruleName) {
-		processRule = class.processIndexedRule_
-	}
 	processRule = uti.ReplaceAll(
 		processRule,
 		"ruleName",
@@ -165,15 +162,8 @@ func (v *grammarSynthesizer_) generateProcessRules() string {
 func (v *grammarSynthesizer_) generateProcessToken(
 	tokenName string,
 ) string {
-	var processToken string
-	if tokenName == "delimiter" {
-		return processToken
-	}
 	var class = grammarSynthesizerClass()
-	processToken = class.processToken_
-	if v.analyzer_.IsPlural(tokenName) {
-		processToken = class.processIndexedToken_
-	}
+	var processToken = class.processToken_
 	processToken = uti.ReplaceAll(
 		processToken,
 		"tokenName",
@@ -230,9 +220,7 @@ type grammarSynthesizerClass_ struct {
 	instanceDeclarations_ string
 	aspectDeclarations_   string
 	processToken_         string
-	processIndexedToken_  string
 	processRule_          string
-	processIndexedRule_   string
 }
 
 // Class Reference
@@ -494,29 +482,11 @@ type Methodical interface {<ProcessTokens><ProcessRules>
 		<tokenName_> string,
 	)`,
 
-	processIndexedToken_: `
-	Process<~TokenName>(
-		<tokenName_> string,
-		index uint,
-		size uint,
-	)`,
-
 	processRule_: `
 	Preprocess<~RuleName>(
 		<ruleName_> ast.<~RuleName>Like,
-	)
-	Process<~RuleName>Slot(
-		slot uint,
-	)
-	Postprocess<~RuleName>(
-		<ruleName_> ast.<~RuleName>Like,
-	)`,
-
-	processIndexedRule_: `
-	Preprocess<~RuleName>(
-		<ruleName_> ast.<~RuleName>Like,
 		index uint,
-		size uint,
+		count uint,
 	)
 	Process<~RuleName>Slot(
 		slot uint,
@@ -524,6 +494,6 @@ type Methodical interface {<ProcessTokens><ProcessRules>
 	Postprocess<~RuleName>(
 		<ruleName_> ast.<~RuleName>Like,
 		index uint,
-		size uint,
+		count uint,
 	)`,
 }

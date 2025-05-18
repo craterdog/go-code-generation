@@ -66,10 +66,10 @@ func (v *formatter_) ProcessComment(
 	v.appendString(comment)
 }
 
-func (v *formatter_) ProcessExcluded(
-	excluded string,
+func (v *formatter_) ProcessDelimiter(
+	delimiter string,
 ) {
-	v.appendString(excluded)
+	v.appendString(delimiter)
 }
 
 func (v *formatter_) ProcessGlyph(
@@ -90,18 +90,16 @@ func (v *formatter_) ProcessLiteral(
 	v.appendString(literal)
 }
 
-func (v *formatter_) PreprocessLiteralOption(
-	literalOption ast.LiteralOptionLike,
-	index uint,
-	size uint,
-) {
-	v.appendNewline()
-}
-
 func (v *formatter_) ProcessLowercase(
 	lowercase string,
 ) {
 	v.appendString(lowercase)
+}
+
+func (v *formatter_) ProcessNewline(
+	newline string,
+) {
+	v.appendNewline()
 }
 
 func (v *formatter_) ProcessNote(
@@ -117,24 +115,6 @@ func (v *formatter_) ProcessNumber(
 	v.appendString(number)
 }
 
-func (v *formatter_) ProcessOptional(
-	optional string,
-) {
-	v.appendString(optional)
-}
-
-func (v *formatter_) ProcessQuote(
-	quote string,
-) {
-	v.appendString(quote)
-}
-
-func (v *formatter_) ProcessRepeated(
-	repeated string,
-) {
-	v.appendString(repeated)
-}
-
 func (v *formatter_) ProcessSpace(
 	space string,
 ) {
@@ -147,220 +127,92 @@ func (v *formatter_) ProcessUppercase(
 	v.appendString(uppercase)
 }
 
-func (v *formatter_) PreprocessAlternative(
-	alternative ast.AlternativeLike,
+func (v *formatter_) PreprocessAdditionalCharacter(
+	additionalCharacter ast.AdditionalCharacterLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	v.appendString(" |")
-	if v.depth_ > 0 {
-		v.appendString(" ")
-	}
+	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessCharacter(
-	character ast.CharacterLike,
+func (v *formatter_) PreprocessAdditionalRepetition(
+	additionalRepetition ast.AdditionalRepetitionLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	if index > 1 {
-		v.appendString(" ")
-	}
+	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessExpression(
-	expression ast.ExpressionLike,
+func (v *formatter_) PreprocessAlternativeSequence(
+	alternativeSequence ast.AlternativeSequenceLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	v.appendString("$")
+	v.appendString(" ")
 }
 
-func (v *formatter_) ProcessExpressionSlot(
+func (v *formatter_) ProcessAlternativeSequenceSlot(
 	slot uint,
 ) {
 	switch slot {
 	case 1:
-		v.appendString(":")
+		v.appendString(" ")
 	}
+}
+
+func (v *formatter_) PreprocessDefinition(
+	definition ast.DefinitionLike,
+	index uint,
+	count uint,
+) {
+	v.depth_++
+}
+
+func (v *formatter_) PostprocessDefinition(
+	definition ast.DefinitionLike,
+	index uint,
+	count uint,
+) {
+	v.depth_--
+	v.appendNewline()
 }
 
 func (v *formatter_) PostprocessExpression(
 	expression ast.ExpressionLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	v.appendNewline()
 	v.appendNewline()
 }
 
-func (v *formatter_) PreprocessExpressionOption(
-	expressionOption ast.ExpressionOptionLike,
+func (v *formatter_) PreprocessPattern(
+	pattern ast.PatternLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	v.appendNewline()
+	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessExtent(
-	extent ast.ExtentLike,
-) {
-	v.appendString("..")
-}
-
-func (v *formatter_) ProcessFilterSlot(
-	slot uint,
-) {
-	switch slot {
-	case 1:
-		v.appendString("[")
-	}
-}
-
-func (v *formatter_) PostprocessFilter(
-	filter ast.FilterLike,
-) {
-	v.appendString("]")
-}
-
-func (v *formatter_) PreprocessGroup(
-	group ast.GroupLike,
-) {
-	v.appendString("(")
-	v.depth_++
-}
-
-func (v *formatter_) PostprocessGroup(
-	group ast.GroupLike,
-) {
-	v.depth_--
-	v.appendString(")")
-}
-
-func (v *formatter_) PostprocessInline(
-	inline ast.InlineLike,
-) {
-	v.appendNewline()
-}
-
-func (v *formatter_) PreprocessLimit(
-	limit ast.LimitLike,
-) {
-	v.appendString("..")
-}
-
-func (v *formatter_) PreprocessMultiexpression(
-	multiexpression ast.MultiexpressionLike,
-) {
-	v.depth_++
-}
-
-func (v *formatter_) PostprocessMultiexpression(
-	multiexpression ast.MultiexpressionLike,
-) {
-	v.depth_--
-	v.appendNewline()
-}
-
-func (v *formatter_) PreprocessMultiliteral(
-	multiliteral ast.MultiliteralLike,
-) {
-	v.depth_++
-}
-
-func (v *formatter_) PostprocessMultiliteral(
-	multiliteral ast.MultiliteralLike,
-) {
-	v.depth_--
-	v.appendNewline()
-}
-
-func (v *formatter_) PreprocessMultirule(
-	multirule ast.MultiruleLike,
-) {
-	v.depth_++
-}
-
-func (v *formatter_) PostprocessMultirule(
-	multirule ast.MultiruleLike,
-) {
-	v.depth_--
-	v.appendNewline()
-}
-
-func (v *formatter_) PostprocessNotice(
-	notice ast.NoticeLike,
-) {
-	v.appendNewline()
-}
-
-func (v *formatter_) PreprocessOption(
-	option ast.OptionLike,
-) {
-	if v.depth_ == 0 {
-		v.appendString(" ")
-	}
-}
-
-func (v *formatter_) PreprocessQuantified(
-	quantified ast.QuantifiedLike,
-) {
-	v.appendString("{")
-}
-
-func (v *formatter_) PostprocessQuantified(
-	quantified ast.QuantifiedLike,
-) {
-	v.appendString("}")
-}
-
-func (v *formatter_) PreprocessRepetition(
-	repetition ast.RepetitionLike,
+func (v *formatter_) PostprocessPattern(
+	pattern ast.PatternLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	if index > 1 {
-		v.appendString(" ")
-	}
-}
-
-func (v *formatter_) PreprocessRule(
-	rule ast.RuleLike,
-	index uint,
-	size uint,
-) {
-	v.appendString("$")
-}
-
-func (v *formatter_) ProcessRuleSlot(
-	slot uint,
-) {
-	switch slot {
-	case 1:
-		v.appendString(":")
-	}
+	v.appendNewline()
 }
 
 func (v *formatter_) PostprocessRule(
 	rule ast.RuleLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.appendNewline()
 }
 
-func (v *formatter_) PreprocessRuleOption(
-	ruleOption ast.RuleOptionLike,
+func (v *formatter_) PreprocessRuleTerm(
+	ruleTerm ast.RuleTermLike,
 	index uint,
-	size uint,
-) {
-	v.appendNewline()
-}
-
-func (v *formatter_) PreprocessTerm(
-	term ast.TermLike,
-	index uint,
-	size uint,
+	count uint,
 ) {
 	v.appendString(" ")
 }

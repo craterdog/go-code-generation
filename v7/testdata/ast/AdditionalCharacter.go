@@ -27,21 +27,21 @@ import (
 
 // Access Function
 
-func IdentifierClass() IdentifierClassLike {
-	return identifierClass()
+func AdditionalCharacterClass() AdditionalCharacterClassLike {
+	return additionalCharacterClass()
 }
 
 // Constructor Methods
 
-func (c *identifierClass_) Identifier(
-	any_ any,
-) IdentifierLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *additionalCharacterClass_) AdditionalCharacter(
+	character CharacterLike,
+) AdditionalCharacterLike {
+	if uti.IsUndefined(character) {
+		panic("The \"character\" attribute is required by this class.")
 	}
-	var instance = &identifier_{
+	var instance = &additionalCharacter_{
 		// Initialize the instance attributes.
-		any_: any_,
+		character_: character,
 	}
 	return instance
 }
@@ -50,37 +50,37 @@ func (c *identifierClass_) Identifier(
 
 // Principal Methods
 
-func (v *identifier_) GetClass() IdentifierClassLike {
-	return identifierClass()
+func (v *additionalCharacter_) GetClass() AdditionalCharacterClassLike {
+	return additionalCharacterClass()
 }
 
 // Attribute Methods
 
-func (v *identifier_) GetAny() any {
-	return v.any_
+func (v *additionalCharacter_) GetCharacter() CharacterLike {
+	return v.character_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type identifier_ struct {
+type additionalCharacter_ struct {
 	// Declare the instance attributes.
-	any_ any
+	character_ CharacterLike
 }
 
 // Class Structure
 
-type identifierClass_ struct {
+type additionalCharacterClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func identifierClass() *identifierClass_ {
-	return identifierClassReference_
+func additionalCharacterClass() *additionalCharacterClass_ {
+	return additionalCharacterClassReference_
 }
 
-var identifierClassReference_ = &identifierClass_{
+var additionalCharacterClassReference_ = &additionalCharacterClass_{
 	// Initialize the class constants.
 }

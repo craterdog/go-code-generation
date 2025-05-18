@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,28 +28,21 @@ import (
 
 // Access Function
 
-func RuleOptionClass() RuleOptionClassLike {
-	return ruleOptionClass()
+func RuleNameAlternativesClass() RuleNameAlternativesClassLike {
+	return ruleNameAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *ruleOptionClass_) RuleOption(
-	newline string,
-	uppercase string,
-	optionalNote string,
-) RuleOptionLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *ruleNameAlternativesClass_) RuleNameAlternatives(
+	ruleNames col.Sequential[RuleNameLike],
+) RuleNameAlternativesLike {
+	if uti.IsUndefined(ruleNames) {
+		panic("The \"ruleNames\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(uppercase) {
-		panic("The \"uppercase\" attribute is required by this class.")
-	}
-	var instance = &ruleOption_{
+	var instance = &ruleNameAlternatives_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		uppercase_:    uppercase,
-		optionalNote_: optionalNote,
+		ruleNames_: ruleNames,
 	}
 	return instance
 }
@@ -57,47 +51,37 @@ func (c *ruleOptionClass_) RuleOption(
 
 // Principal Methods
 
-func (v *ruleOption_) GetClass() RuleOptionClassLike {
-	return ruleOptionClass()
+func (v *ruleNameAlternatives_) GetClass() RuleNameAlternativesClassLike {
+	return ruleNameAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *ruleOption_) GetNewline() string {
-	return v.newline_
-}
-
-func (v *ruleOption_) GetUppercase() string {
-	return v.uppercase_
-}
-
-func (v *ruleOption_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *ruleNameAlternatives_) GetRuleNames() col.Sequential[RuleNameLike] {
+	return v.ruleNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type ruleOption_ struct {
+type ruleNameAlternatives_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	uppercase_    string
-	optionalNote_ string
+	ruleNames_ col.Sequential[RuleNameLike]
 }
 
 // Class Structure
 
-type ruleOptionClass_ struct {
+type ruleNameAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func ruleOptionClass() *ruleOptionClass_ {
-	return ruleOptionClassReference_
+func ruleNameAlternativesClass() *ruleNameAlternativesClass_ {
+	return ruleNameAlternativesClassReference_
 }
 
-var ruleOptionClassReference_ = &ruleOptionClass_{
+var ruleNameAlternativesClassReference_ = &ruleNameAlternativesClass_{
 	// Initialize the class constants.
 }

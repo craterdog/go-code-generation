@@ -28,21 +28,26 @@ import (
 
 // Access Function
 
-func OptionClass() OptionClassLike {
-	return optionClass()
+func SequenceClass() SequenceClassLike {
+	return sequenceClass()
 }
 
 // Constructor Methods
 
-func (c *optionClass_) Option(
-	repetitions col.Sequential[RepetitionLike],
-) OptionLike {
-	if uti.IsUndefined(repetitions) {
-		panic("The \"repetitions\" attribute is required by this class.")
+func (c *sequenceClass_) Sequence(
+	repetition RepetitionLike,
+	additionalRepetitions col.Sequential[AdditionalRepetitionLike],
+) SequenceLike {
+	if uti.IsUndefined(repetition) {
+		panic("The \"repetition\" attribute is required by this class.")
 	}
-	var instance = &option_{
+	if uti.IsUndefined(additionalRepetitions) {
+		panic("The \"additionalRepetitions\" attribute is required by this class.")
+	}
+	var instance = &sequence_{
 		// Initialize the instance attributes.
-		repetitions_: repetitions,
+		repetition_:            repetition,
+		additionalRepetitions_: additionalRepetitions,
 	}
 	return instance
 }
@@ -51,37 +56,42 @@ func (c *optionClass_) Option(
 
 // Principal Methods
 
-func (v *option_) GetClass() OptionClassLike {
-	return optionClass()
+func (v *sequence_) GetClass() SequenceClassLike {
+	return sequenceClass()
 }
 
 // Attribute Methods
 
-func (v *option_) GetRepetitions() col.Sequential[RepetitionLike] {
-	return v.repetitions_
+func (v *sequence_) GetRepetition() RepetitionLike {
+	return v.repetition_
+}
+
+func (v *sequence_) GetAdditionalRepetitions() col.Sequential[AdditionalRepetitionLike] {
+	return v.additionalRepetitions_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type option_ struct {
+type sequence_ struct {
 	// Declare the instance attributes.
-	repetitions_ col.Sequential[RepetitionLike]
+	repetition_            RepetitionLike
+	additionalRepetitions_ col.Sequential[AdditionalRepetitionLike]
 }
 
 // Class Structure
 
-type optionClass_ struct {
+type sequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func optionClass() *optionClass_ {
-	return optionClassReference_
+func sequenceClass() *sequenceClass_ {
+	return sequenceClassReference_
 }
 
-var optionClassReference_ = &optionClass_{
+var sequenceClassReference_ = &sequenceClass_{
 	// Initialize the class constants.
 }

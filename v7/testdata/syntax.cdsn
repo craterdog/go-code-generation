@@ -30,34 +30,29 @@ $Notice: comment newline
 $Rule: "$" uppercase ":" Definition
 
 $Definition:
-    Multirule
-    Multiexpression
-    Multiliteral
-    Inline  ! This must be the last option since it skips newlines.
+    LiteralValueAlternatives
+    TokenNameAlternatives
+    RuleNameAlternatives
+    RuleTermSequence  ! This must be last since it skips newlines.
 
-$Multirule: RuleOption+
+$LiteralValueAlternatives: LiteralValue+
 
-$RuleOption: newline uppercase note?
+$LiteralValue: newline literal note?
 
-$Multiexpression: ExpressionOption+
+$TokenNameAlternatives: TokenName+
 
-$ExpressionOption: newline lowercase note?
+$TokenName: newline lowercase note?
 
-$Multiliteral: LiteralOption+
+$RuleNameAlternatives: RuleName+
 
-$LiteralOption: newline quote note?
+$RuleName: newline uppercase note?
 
-$Inline: Term+ note?
+$RuleTermSequence: RuleTerm+ note?
 
-$Term:
-    Literal
-    Reference
+$RuleTerm: Component Cardinality?  ! The default cardinality is one.
 
-$Literal: quote
-
-$Reference: Identifier Cardinality?  ! The default cardinality is one.
-
-$Identifier:
+$Component:
+    literal
     lowercase
     uppercase
 
@@ -66,20 +61,25 @@ $Cardinality:
     Quantified
 
 $Constrained:
-    optional
-    repeated
+    "?"  ! Zero or one.
+    "*"  ! Zero or more.
+    "+"  ! One or more.
 
-$Quantified: "{" number Limit? "}"
+$Quantified: "{" number Limit? "}"  ! A quantified range of numbers is inclusive.
 
-$Limit: ".." number?  ! The limit of a range of numbers is inclusive.
+$Limit: ".." number?  ! A quantified range may have no upper limit.
 
-$Expression: "$" lowercase ":" Pattern note?
+$Expression: "$" lowercase ":" Pattern
 
-$Pattern: Option Alternative*
+$Pattern: Alternatives note?
 
-$Alternative: "|" Option
+$Alternatives: Sequence AlternativeSequence*
 
-$Option: Repetition+
+$AlternativeSequence: "|" Sequence
+
+$Sequence: Repetition AdditionalRepetition*
+
+$AdditionalRepetition: Repetition
 
 $Repetition: Element Cardinality?  ! The default cardinality is one.
 
@@ -88,9 +88,13 @@ $Element:
     Filter
     Text
 
-$Group: "(" Pattern ")"
+$Group: "(" Alternatives ")"
 
-$Filter: excluded? "[" Character+ "]"
+$Filter: "~"? "[" AllowedCharacters "]"
+
+$AllowedCharacters: Character AdditionalCharacter*
+
+$AdditionalCharacter: Character
 
 $Character:
     Implicit
@@ -98,13 +102,13 @@ $Character:
 
 $Implicit: intrinsic
 
-$Explicit: glyph Extent?
+$Explicit: glyph Extent?  ! An explicit range of glyphs is inclusive.
 
-$Extent: ".." glyph  ! The extent of a range of glyphs is inclusive.
+$Extent: ".." glyph
 
 $Text:
     glyph
-    quote
+    literal
     lowercase
     intrinsic
 
@@ -119,23 +123,17 @@ $comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible ma
 
 $escape: '\' (unicode | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
 
-$excluded: '~'
-
 $glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
 
 $intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
+
+$literal: '"' (escape | ~['"' CONTROL])+ '"'
 
 $lowercase: LOWER (DIGIT | LOWER | UPPER)*
 
 $note: "! " ~[CONTROL]*
 
 $number: DIGIT+
-
-$optional: '?'
-
-$quote: '"' (escape | ~['"' CONTROL])+ '"'
-
-$repeated: '*' | '+'
 
 $unicode: ('x' base16{2}) | ('u' base16{4}) | ('U' base16{8})
 

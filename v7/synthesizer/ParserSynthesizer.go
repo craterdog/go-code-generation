@@ -253,122 +253,136 @@ func (v *parserSynthesizer_) createCardinality(
 	return actualCardinality
 }
 
-func (v *parserSynthesizer_) createDelimiterStep() string {
-	var class = parserSynthesizerClass()
-	var delimiterStep = class.parseDelimiterStep_
-	return delimiterStep
-}
-
-func (v *parserSynthesizer_) isMultiexpression(
+// NOTE:
+// This method is recursive.  It walks the AST to determine if a rule definition
+// contains any inline rule definitions.  If so, the look-ahead token buffer
+// must be turned off.
+func (v *parserSynthesizer_) containsInlineRule(
 	ruleName string,
 ) bool {
-	var result = true
-	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
-	for identifiers.HasNext() {
-		var identifier = identifiers.GetNext().GetAny().(string)
-		switch {
-		case not.MatchesType(identifier, not.LowercaseToken):
-			// Each identifier refers to an expression.
-			return true
-		case uti.IsDefined(v.analyzer_.GetReferences(identifier)):
-			// The identifier refers to an inline rule.
-			return false
-		default:
-			// The identifier refers to a multiline rule.
-			result = result && v.isMultiexpression(identifier)
+	var definitions = v.analyzer_.GetDefinitions()
+	switch definitions.GetValue(ruleName).GetAny().(type) {
+	case not.MultiLiteralLike:
+		// The rule name refers to a multi-literal rule.
+	case not.MultiExpressionLike:
+		// The rule name refers to a multi-expression rule.
+	case not.MultiRuleLike:
+		// The rule name refers to a multi-rule rule.
+		var options = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
+		for options.HasNext() {
+			var option = options.GetNext()
+			var uppercase = option.GetUppercase()
+			if v.containsInlineRule(uppercase) {
+				// Once true, it can never go back to false.
+				return true
+			}
 		}
-
+	case not.InlineRuleLike:
+		// The rule name refers to an inline rule.
+		return true
 	}
-	return result
+	return false
 }
 
-func (v *parserSynthesizer_) createInlineImplementation(
+func (v *parserSynthesizer_) createTerm(
+	term not.TermLike,
+) string {
+	var implementation string
+	var cardinality = term.GetOptionalCardinality()
+	var actual = term.GetComponent().GetAny().(string)
+	switch {
+	case not.MatchesType(actual, not.LiteralToken):
+		implementation = v.createLiteral(actual, cardinality)
+	case not.MatchesType(actual, not.LowercaseToken):
+		implementation = v.createExpression(actual, cardinality)
+	case not.MatchesType(actual, not.UppercaseToken):
+		implementation = v.createRule(actual, cardinality)
+	}
+	return implementation
+}
+
+func (v *parserSynthesizer_) createInlineRule(
 	ruleName string,
 ) string {
-	var parseStep string
 	var class = parserSynthesizerClass()
-	var implementation = class.declarationStep_
+	var implementation = class.declareTokens_
 	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() {
 		var term = terms.GetNext()
-		switch actual := term.GetAny().(type) {
-		case not.LiteralLike:
-			// The term is a delimiter.
-			var delimiter = actual.GetQuote()
-			parseStep = v.createDelimiterStep()
-			parseStep = uti.ReplaceAll(
-				parseStep,
-				"delimiter",
-				delimiter,
-			)
-		case not.ReferenceLike:
-			// The term is a reference to a rule or an expression.
-			var cardinality = actual.GetOptionalCardinality()
-			var identifier = actual.GetIdentifier().GetAny().(string)
-			switch {
-			case not.MatchesType(identifier, not.LowercaseToken):
-				// The identifier refers to an expression.
-				parseStep = v.createExpressionStep(cardinality)
-			case uti.IsUndefined(v.analyzer_.GetReferences(identifier)):
-				// The identifier refers to a multiline rule.
-				if v.isMultiexpression(identifier) {
-					// The identifier refers to nested elements only.
-					parseStep = v.createMultiexpressionStep(cardinality)
-				} else {
-					// The identifier refers to at least one nested inline rule.
-					parseStep = v.createRuleStep(cardinality)
-				}
-			default:
-				// The identifier refers to an inline rule.
-				parseStep = v.createRuleStep(cardinality)
-			}
-			var variableName = variables.GetNext()
-			parseStep = uti.ReplaceAll(
-				parseStep,
-				"variableName",
-				variableName,
-			)
-			parseStep = uti.ReplaceAll(
-				parseStep,
-				"identifier",
-				identifier,
-			)
-		}
-		implementation += parseStep
+		var parseTerm = v.createTerm(term)
+		var variableName = variables.GetNext()
+		parseTerm = uti.ReplaceAll(
+			parseTerm,
+			"variableName",
+			variableName,
+		)
+		implementation += parseTerm
 	}
-	var foundStep = class.parseFoundStep_
+	var found = class.found_
 	var arguments = v.createArguments(ruleName)
 	implementation += uti.ReplaceAll(
-		foundStep,
+		found,
 		"arguments",
 		arguments,
 	)
 	return implementation
 }
 
-func (v *parserSynthesizer_) createMultilineImplementation(
+func (v *parserSynthesizer_) createMultiLiteral(
+	ruleName string,
+) string {
+	var class = parserSynthesizerClass()
+	var implementation = class.declareDelimiter_
+	var literalOptions = v.analyzer_.GetLiteralOptions(ruleName).GetIterator()
+	for literalOptions.HasNext() {
+		var literal = literalOptions.GetNext().GetLiteral()
+		var option = class.literalValue_
+		implementation += uti.ReplaceAll(
+			option,
+			"literal",
+			literal,
+		)
+	}
+	implementation += class.defaultOption_
+	return implementation
+}
+
+func (v *parserSynthesizer_) createMultiExpression(
 	ruleName string,
 ) string {
 	var implementation string
 	var class = parserSynthesizerClass()
-	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
-	for identifiers.HasNext() {
-		var identifier = identifiers.GetNext().GetAny().(string)
-		var parseCase string
-		switch {
-		case not.MatchesType(identifier, not.LowercaseToken):
-			parseCase = class.parseTokenCase_
-		case not.MatchesType(identifier, not.UppercaseToken):
-			parseCase = class.parseRuleCase_
-		}
+	var expressionOptions = v.analyzer_.GetExpressionOptions(ruleName).GetIterator()
+	for expressionOptions.HasNext() {
+		var lowercase = expressionOptions.GetNext().GetLowercase()
+		var parseExpressionName = class.expressionName_
 		implementation += uti.ReplaceAll(
-			parseCase,
-			"identifier",
-			identifier,
+			parseExpressionName,
+			"lowercase",
+			lowercase,
 		)
 	}
-	implementation += class.parseDefaultCase_
+	implementation += class.defaultOption_
+	return implementation
+}
+
+func (v *parserSynthesizer_) createMultiRule(
+	ruleName string,
+) string {
+	var implementation string
+	var class = parserSynthesizerClass()
+	var ruleOptions = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
+	for ruleOptions.HasNext() {
+		var uppercase = ruleOptions.GetNext().GetUppercase()
+		var parseRuleName = class.ruleName_
+		implementation += uti.ReplaceAll(
+			parseRuleName,
+			"uppercase",
+			uppercase,
+		)
+	}
+	implementation += class.defaultOption_
 	return implementation
 }
 
@@ -376,11 +390,17 @@ func (v *parserSynthesizer_) createParseMethod(
 	ruleName string,
 ) string {
 	var methodImplementation string
-	var references = v.analyzer_.GetReferences(ruleName)
-	if uti.IsDefined(references) {
-		methodImplementation = v.createInlineImplementation(ruleName)
-	} else {
-		methodImplementation = v.createMultilineImplementation(ruleName)
+	var definitions = v.analyzer_.GetDefinitions()
+	var definition = definitions.GetValue(ruleName)
+	switch definition.GetAny().(type) {
+	case not.MultiLiteralLike:
+		methodImplementation = v.createMultiLiteral(ruleName)
+	case not.MultiExpressionLike:
+		methodImplementation = v.createMultiExpression(ruleName)
+	case not.MultiRuleLike:
+		methodImplementation = v.createMultiRule(ruleName)
+	case not.InlineRuleLike:
+		methodImplementation = v.createInlineRule(ruleName)
 	}
 	var class = parserSynthesizerClass()
 	var parseMethod = class.parseMethod_
@@ -407,52 +427,75 @@ func (v *parserSynthesizer_) createParseMethods() string {
 	return parseMethods
 }
 
-func (v *parserSynthesizer_) createMultiexpressionStep(
+func (v *parserSynthesizer_) createRule(
+	uppercase string,
 	cardinality not.CardinalityLike,
 ) string {
 	var class = parserSynthesizerClass()
-	var optionalStep = class.parseOptionalMultiexpressionStep_
-	var requiredStep = class.parseRequiredMultiexpressionStep_
-	var repeatedStep = class.parseRepeatedMultiexpressionStep_
-	var ruleStep = v.createCardinality(
+	var required = class.requiredNestedExpression_
+	var optional = class.optionalNestedExpression_
+	var repeated = class.repeatedNestedExpression_
+	if v.containsInlineRule(uppercase) {
+		required = class.requiredRule_
+		optional = class.optionalRule_
+		repeated = class.repeatedRule_
+	}
+	var implementation = v.createCardinality(
 		cardinality,
-		optionalStep,
-		requiredStep,
-		repeatedStep,
+		optional,
+		required,
+		repeated,
 	)
-	return ruleStep
+	implementation = uti.ReplaceAll(
+		implementation,
+		"uppercase",
+		uppercase,
+	)
+	return implementation
 }
 
-func (v *parserSynthesizer_) createRuleStep(
+func (v *parserSynthesizer_) createLiteral(
+	literal string,
 	cardinality not.CardinalityLike,
 ) string {
 	var class = parserSynthesizerClass()
-	var optionalStep = class.parseOptionalRuleStep_
-	var requiredStep = class.parseRequiredRuleStep_
-	var repeatedStep = class.parseRepeatedRuleStep_
-	var ruleStep = v.createCardinality(
+	var optional = class.optionalLiteral_
+	var required = class.requiredLiteral_
+	var repeated = class.repeatedLiteral_
+	var implementation = v.createCardinality(
 		cardinality,
-		optionalStep,
-		requiredStep,
-		repeatedStep,
+		optional,
+		required,
+		repeated,
 	)
-	return ruleStep
+	implementation = uti.ReplaceAll(
+		implementation,
+		"literal",
+		literal,
+	)
+	return implementation
 }
 
-func (v *parserSynthesizer_) createExpressionStep(
+func (v *parserSynthesizer_) createExpression(
+	lowercase string,
 	cardinality not.CardinalityLike,
 ) string {
 	var class = parserSynthesizerClass()
-	var optionalStep = class.parseOptionalExpressionStep_
-	var requiredStep = class.parseRequiredExpressionStep_
-	var repeatedStep = class.parseRepeatedExpressionStep_
-	var tokenStep = v.createCardinality(
+	var optional = class.optionalExpression_
+	var required = class.requiredExpression_
+	var repeated = class.repeatedExpression_
+	var implementation = v.createCardinality(
 		cardinality,
-		optionalStep,
-		requiredStep,
-		repeatedStep,
+		optional,
+		required,
+		repeated,
 	)
-	return tokenStep
+	implementation = uti.ReplaceAll(
+		implementation,
+		"lowercase",
+		lowercase,
+	)
+	return implementation
 }
 
 // Instance Structure
@@ -466,33 +509,35 @@ type parserSynthesizer_ struct {
 
 type parserSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_                   string
-	importedPackages_                 string
-	accessFunction_                   string
-	constructorMethods_               string
-	parseMethod_                      string
-	parseDelimiterStep_               string
-	declarationStep_                  string
-	parseRequiredExpressionStep_      string
-	parseOptionalExpressionStep_      string
-	parseRepeatedExpressionStep_      string
-	parseRequiredMultiexpressionStep_ string
-	parseOptionalMultiexpressionStep_ string
-	parseRepeatedMultiexpressionStep_ string
-	parseRequiredRuleStep_            string
-	parseOptionalRuleStep_            string
-	parseRepeatedRuleStep_            string
-	parseFoundStep_                   string
-	parseTokenCase_                   string
-	parseRuleCase_                    string
-	parseDefaultCase_                 string
-	principalMethods_                 string
-	privateMethods_                   string
-	possibleDelimiter_                string
-	requiredDelimiter_                string
-	instanceStructure_                string
-	classStructure_                   string
-	classReference_                   string
+	warningMessage_           string
+	importedPackages_         string
+	accessFunction_           string
+	constructorMethods_       string
+	parseMethod_              string
+	declareDelimiter_         string
+	declareTokens_            string
+	optionalLiteral_          string
+	requiredLiteral_          string
+	repeatedLiteral_          string
+	optionalExpression_       string
+	requiredExpression_       string
+	repeatedExpression_       string
+	optionalNestedExpression_ string
+	requiredNestedExpression_ string
+	repeatedNestedExpression_ string
+	optionalRule_             string
+	requiredRule_             string
+	repeatedRule_             string
+	found_                    string
+	literalValue_             string
+	expressionName_           string
+	ruleName_                 string
+	defaultOption_            string
+	principalMethods_         string
+	privateMethods_           string
+	instanceStructure_        string
+	classStructure_           string
+	classReference_           string
 }
 
 // Class Reference
@@ -538,250 +583,6 @@ func (c *parserClass_) Parser() ParserLike {
 }
 `,
 
-	parseMethod_: `
-func (v *parser_) parse<~RuleName>() (
-	<ruleName_> ast.<~RuleName>Like,
-	token TokenLike,
-	ok bool,
-) {<MethodImplementation>}
-`,
-
-	parseDelimiterStep_: `
-	// Attempt to parse a single <delimiter> delimiter.
-	_, token, ok = v.parseDelimiter(<delimiter>)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single <~RuleName> rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$<~RuleName>", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-`,
-
-	declarationStep_: `
-	var tokens = col.List[TokenLike]()
-`,
-
-	parseRequiredExpressionStep_: `
-	// Attempt to parse a single <~identifier> token.
-	var <variableName_> string
-	<variableName_>, token, ok = v.parseToken(<~Identifier>Token)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single <~identifier> token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$<~RuleName>", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-`,
-
-	parseOptionalExpressionStep_: `
-	// Attempt to parse an optional <~identifier> token.
-	var <variableName_> string
-	<variableName_>, token, ok = v.parseToken(<~Identifier>Token)
-	if ok && uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-`,
-
-	parseRepeatedExpressionStep_: `
-	// Attempt to parse multiple <~identifier> tokens.
-	var <variableName_> = col.List[string]()
-<~variableName>Loop:
-	for count := 0; count < <last>; count++ {
-		var <identifier_> string
-		<identifier_>, token, ok = v.parseToken(<~Identifier>Token)
-		if !ok {
-			switch {
-			case count >= <first>:
-				break <~variableName>Loop
-			case uti.IsDefined(tokens):
-				// This is not multiple <~identifier> tokens.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$<~RuleName>", token)
-				message += "<first> or more <~identifier> tokens are required."
-				panic(message)
-			}
-		}
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-		<variableName_>.AppendValue(<identifier_>)
-	}
-`,
-
-	parseRequiredMultiexpressionStep_: `
-	// Attempt to parse a single <~Identifier> rule.
-	var <variableName_> ast.<~Identifier>Like
-	<variableName_>, token, ok = v.parse<~Identifier>()
-	switch {
-	case ok:
-		// Found a multiexpression token.
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	case uti.IsDefined(tokens):
-		// This is not a single <~Identifier> rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$<~RuleName>", token)
-		panic(message)
-	}
-`,
-
-	parseOptionalMultiexpressionStep_: `
-	// Attempt to parse an optional <~Identifier> rule.
-	var <variableName_> ast.<~Identifier>Like
-	<variableName_>, _, ok = v.parse<~Identifier>()
-	if ok {
-		// Found a multiexpression token.
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	}
-`,
-
-	parseRepeatedMultiexpressionStep_: `
-	// Attempt to parse multiple <~Identifier> rules.
-	var <variableName_> = col.List[ast.<~Identifier>Like]()
-<~variableName>Loop:
-	for count := 0; count < <last>; count++ {
-		var <identifier_> ast.<~Identifier>Like
-		<identifier_>, token, ok = v.parse<~Identifier>()
-		if !ok {
-			switch {
-			case count >= <first>:
-				break <~variableName>Loop
-			case uti.IsDefined(tokens):
-				// This is not multiple <~Identifier> rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$<~RuleName>", token)
-				message += "<first> or more <~Identifier> rules are required."
-				panic(message)
-			}
-		}
-		// Found a multiexpression token.
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-		<variableName_>.AppendValue(<identifier_>)
-	}
-`,
-
-	parseRequiredRuleStep_: `
-	// Attempt to parse a single <~Identifier> rule.
-	var <variableName_> ast.<~Identifier>Like
-	<variableName_>, token, ok = v.parse<~Identifier>()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single <~Identifier> rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$<~RuleName>", token)
-		panic(message)
-	}
-`,
-
-	parseOptionalRuleStep_: `
-	// Attempt to parse an optional <~Identifier> rule.
-	var <variableName_> ast.<~Identifier>Like
-	<variableName_>, _, ok = v.parse<~Identifier>()
-	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
-	}
-`,
-
-	parseRepeatedRuleStep_: `
-	// Attempt to parse multiple <~Identifier> rules.
-	var <variableName_> = col.List[ast.<~Identifier>Like]()
-<~variableName>Loop:
-	for count := 0; count < <last>; count++ {
-		var <identifier_> ast.<~Identifier>Like
-		<identifier_>, token, ok = v.parse<~Identifier>()
-		if !ok {
-			switch {
-			case count >= <first>:
-				break <~variableName>Loop
-			case uti.IsDefined(tokens):
-				// This is not multiple <~Identifier> rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$<~RuleName>", token)
-				message += "<first> or more <~Identifier> rules are required."
-				panic(message)
-			}
-		}
-		// No additional put backs allowed at this point.
-		tokens = nil
-		<variableName_>.AppendValue(<identifier_>)
-	}
-`,
-
-	parseFoundStep_: `
-	// Found a single <~RuleName> rule.
-	ok = true
-	v.remove(tokens)
-	<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<Arguments>)
-	return
-`,
-
-	parseTokenCase_: `
-	// Attempt to parse a single <~identifier> <~RuleName>.
-	var <identifier_> string
-	<identifier_>, token, ok = v.parseToken(<~Identifier>Token)
-	if ok {
-		// Found a single <~identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<identifier_>)
-		return
-	}
-`,
-
-	parseRuleCase_: `
-	// Attempt to parse a single <~Identifier> <~RuleName>.
-	var <identifier_> ast.<~Identifier>Like
-	<identifier_>, token, ok = v.parse<~Identifier>()
-	if ok {
-		// Found a single <~Identifier> <~RuleName>.
-		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<identifier_>)
-		return
-	}
-`,
-
-	parseDefaultCase_: `
-	// This is not a single <~RuleName> rule.
-	return
-`,
-
 	principalMethods_: `
 // Principal Methods
 
@@ -813,7 +614,7 @@ func (v *parser_) ParseSource(
 // Private Methods
 <ParseMethods>
 func (v *parser_) parseDelimiter(
-	expectedValue string,
+	literal string,
 ) (
 	value string,
 	token TokenLike,
@@ -822,7 +623,7 @@ func (v *parser_) parseDelimiter(
 	// Attempt to parse a single delimiter.
 	value, token, ok = v.parseToken(DelimiterToken)
 	if ok {
-		if value == expectedValue {
+		if value == literal {
 			// Found the desired delimiter.
 			return
 		}
@@ -960,23 +761,309 @@ func (v *parser_) remove(
 }
 `,
 
-	possibleDelimiter_: `
-	// Attempt to parse a single "<delimiter>" delimiter.
-	_, token, ok = v.parseDelimiter("<delimiter>")
-	if !ok {
-		// This is not a single <~RuleName> rule.
-		return <ruleName_>, token, false
+	parseMethod_: `
+func (v *parser_) parse<~RuleName>() (
+	<ruleName_> ast.<~RuleName>Like,
+	token TokenLike,
+	ok bool,
+) {<MethodImplementation>}
+`,
+
+	declareDelimiter_: `
+	var delimiter string
+`,
+
+	declareTokens_: `
+	var tokens = col.List[TokenLike]()
+`,
+
+	optionalLiteral_: `
+	// Attempt to parse an optional <literal> literal.
+	var <variableName_> string
+	<variableName_>, token, ok = v.parseDelimiter(<literal>)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		<variableName_> = "" // Reset this to undefined.
 	}
 `,
 
-	requiredDelimiter_: `
-	// Attempt to parse a single "<delimiter>" delimiter.
-	_, token, ok = v.parseDelimiter("<delimiter>")
+	requiredLiteral_: `
+	// Attempt to parse a single <literal> literal.
+	var <variableName_> string
+	<variableName_>, token, ok = v.parseDelimiter(<literal>)
 	if !ok {
-		// Encountered a syntax error.
+		if uti.IsDefined(tokens) {
+			// This is not a single <~RuleName> rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$<~RuleName>", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+`,
+
+	repeatedLiteral_: `
+	// Attempt to parse multiple <literal> literals.
+	var <variableName_> = col.List[string]()
+<~variableName>Loop:
+	for count := 0; count < <last>; count++ {
+		var literal string
+		literal, token, ok = v.parseDelimiter(<literal>)
+		if !ok {
+			switch {
+			case count >= <first>:
+				break <~variableName>Loop
+			case uti.IsDefined(tokens):
+				// This is not multiple <literal> literals.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$<~RuleName>", token)
+				message += "<first> or more <literal> literals are required."
+				panic(message)
+			}
+		}
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+		<variableName_>.AppendValue(literal)
+	}
+`,
+
+	optionalExpression_: `
+	// Attempt to parse an optional <~lowercase> token.
+	var <variableName_> string
+	<variableName_>, token, ok = v.parseToken(<~Lowercase>Token)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		<variableName_> = "" // Reset this to undefined.
+	}
+`,
+
+	requiredExpression_: `
+	// Attempt to parse a single <~lowercase> token.
+	var <variableName_> string
+	<variableName_>, token, ok = v.parseToken(<~Lowercase>Token)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single <~lowercase> token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$<~RuleName>", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+`,
+
+	repeatedExpression_: `
+	// Attempt to parse multiple <~lowercase> tokens.
+	var <variableName_> = col.List[string]()
+<~variableName>Loop:
+	for count := 0; count < <last>; count++ {
+		var <lowercase_> string
+		<lowercase_>, token, ok = v.parseToken(<~Lowercase>Token)
+		if !ok {
+			switch {
+			case count >= <first>:
+				break <~variableName>Loop
+			case uti.IsDefined(tokens):
+				// This is not multiple <~lowercase> tokens.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$<~RuleName>", token)
+				message += "<first> or more <~lowercase> tokens are required."
+				panic(message)
+			}
+		}
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+		<variableName_>.AppendValue(<lowercase_>)
+	}
+`,
+
+	optionalNestedExpression_: `
+	// Attempt to parse an optional <~Uppercase> rule.
+	var <variableName_> ast.<~Uppercase>Like
+	<variableName_>, token, ok = v.parse<~Uppercase>()
+	if ok {
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	}
+`,
+
+	requiredNestedExpression_: `
+	// Attempt to parse a single <~Uppercase> rule.
+	var <variableName_> ast.<~Uppercase>Like
+	<variableName_>, token, ok = v.parse<~Uppercase>()
+	switch {
+	case ok:
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	case uti.IsDefined(tokens):
+		// This is not a single <~Uppercase> rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
 		var message = v.formatError("$<~RuleName>", token)
 		panic(message)
 	}
+`,
+
+	repeatedNestedExpression_: `
+	// Attempt to parse multiple <~Uppercase> rules.
+	var <variableName_> = col.List[ast.<~Uppercase>Like]()
+<~variableName>Loop:
+	for count := 0; count < <last>; count++ {
+		var <uppercase_> ast.<~Uppercase>Like
+		<uppercase_>, token, ok = v.parse<~Uppercase>()
+		if !ok {
+			switch {
+			case count >= <first>:
+				break <~variableName>Loop
+			case uti.IsDefined(tokens):
+				// This is not multiple <~Uppercase> rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$<~RuleName>", token)
+				message += "<first> or more <~Uppercase> rules are required."
+				panic(message)
+			}
+		}
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+		<variableName_>.AppendValue(<uppercase_>)
+	}
+`,
+
+	optionalRule_: `
+	// Attempt to parse an optional <~Uppercase> rule.
+	var <variableName_> ast.<~Uppercase>Like
+	<variableName_>, _, ok = v.parse<~Uppercase>()
+	if ok {
+		// No additional put backs allowed at this point.
+		tokens = nil
+	}
+`,
+
+	requiredRule_: `
+	// Attempt to parse a single <~Uppercase> rule.
+	var <variableName_> ast.<~Uppercase>Like
+	<variableName_>, token, ok = v.parse<~Uppercase>()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single <~Uppercase> rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$<~RuleName>", token)
+		panic(message)
+	}
+`,
+
+	repeatedRule_: `
+	// Attempt to parse multiple <~Uppercase> rules.
+	var <variableName_> = col.List[ast.<~Uppercase>Like]()
+<~variableName>Loop:
+	for count := 0; count < <last>; count++ {
+		var <uppercase_> ast.<~Uppercase>Like
+		<uppercase_>, token, ok = v.parse<~Uppercase>()
+		if !ok {
+			switch {
+			case count >= <first>:
+				break <~variableName>Loop
+			case uti.IsDefined(tokens):
+				// This is not multiple <~Uppercase> rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$<~RuleName>", token)
+				message += "<first> or more <~Uppercase> rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		<variableName_>.AppendValue(<uppercase_>)
+	}
+`,
+
+	found_: `
+	// Found a single <~RuleName> rule.
+	ok = true
+	v.remove(tokens)
+	<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<Arguments>)
+	return
+`,
+
+	literalValue_: `
+	// Attempt to parse a single <literal> delimiter.
+	delimiter, token, ok = v.parseDelimiter(<literal>)
+	if ok {
+		// Found a single <literal> delimiter.
+		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(delimiter)
+		return
+	}
+`,
+
+	expressionName_: `
+	// Attempt to parse a single <~lowercase> <~RuleName>.
+	var <lowercase_> string
+	<lowercase_>, token, ok = v.parseToken(<~Lowercase>Token)
+	if ok {
+		// Found a single <~lowercase> <~RuleName>.
+		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<lowercase_>)
+		return
+	}
+`,
+
+	ruleName_: `
+	// Attempt to parse a single <~Uppercase> <~RuleName>.
+	var <uppercase_> ast.<~Uppercase>Like
+	<uppercase_>, token, ok = v.parse<~Uppercase>()
+	if ok {
+		// Found a single <~Uppercase> <~RuleName>.
+		<ruleName_> = ast.<~RuleName>Class().<~RuleName>(<uppercase_>)
+		return
+	}
+`,
+
+	defaultOption_: `
+	// This is not a single <~RuleName> rule.
+	return
 `,
 
 	instanceStructure_: `

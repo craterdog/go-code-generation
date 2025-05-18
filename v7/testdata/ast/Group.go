@@ -34,14 +34,24 @@ func GroupClass() GroupClassLike {
 // Constructor Methods
 
 func (c *groupClass_) Group(
-	pattern PatternLike,
+	delimiter1 string,
+	alternatives AlternativesLike,
+	delimiter2 string,
 ) GroupLike {
-	if uti.IsUndefined(pattern) {
-		panic("The \"pattern\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(alternatives) {
+		panic("The \"alternatives\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
 	var instance = &group_{
 		// Initialize the instance attributes.
-		pattern_: pattern,
+		delimiter1_:   delimiter1,
+		alternatives_: alternatives,
+		delimiter2_:   delimiter2,
 	}
 	return instance
 }
@@ -56,8 +66,16 @@ func (v *group_) GetClass() GroupClassLike {
 
 // Attribute Methods
 
-func (v *group_) GetPattern() PatternLike {
-	return v.pattern_
+func (v *group_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *group_) GetAlternatives() AlternativesLike {
+	return v.alternatives_
+}
+
+func (v *group_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
@@ -66,7 +84,9 @@ func (v *group_) GetPattern() PatternLike {
 
 type group_ struct {
 	// Declare the instance attributes.
-	pattern_ PatternLike
+	delimiter1_   string
+	alternatives_ AlternativesLike
+	delimiter2_   string
 }
 
 // Class Structure

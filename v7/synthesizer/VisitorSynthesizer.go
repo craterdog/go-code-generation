@@ -151,71 +151,168 @@ func (v *visitorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *visitorSynthesizer_) createInlineImplementation(
+func (v *visitorSynthesizer_) createInlineRule(
 	ruleName string,
 ) string {
 	var implementation string
-	var references = v.analyzer_.GetReferences(ruleName).GetIterator()
+	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
-	for references.HasNext() && variables.HasNext() {
-		var slot = uint(references.GetSlot())
+	for terms.HasNext() && variables.HasNext() {
+		var slot = uint(terms.GetSlot())
 		if slot > 0 {
 			implementation += v.createInlineSlot(ruleName, slot)
 		}
-		var reference = references.GetNext()
+		var term = terms.GetNext()
 		var variableName = variables.GetNext()
-		implementation += v.createInlineReference(reference, variableName)
-	}
-	if uti.IsUndefined(implementation) {
-		var class = visitorSynthesizerClass()
-		implementation = class.emptyMethod_
+		implementation += v.createInlineTerm(term, variableName)
 	}
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createInlineReference(
-	reference not.ReferenceLike,
+func (v *visitorSynthesizer_) createInlineTerm(
+	term not.TermLike,
 	variableName string,
 ) string {
-	var inlineReference string
-	var identifier = reference.GetIdentifier().GetAny().(string)
+	var implementation string
+	var cardinality = term.GetOptionalCardinality()
+	var actual = term.GetComponent().GetAny().(string)
 	switch {
-	case not.MatchesType(identifier, not.LowercaseToken):
-		inlineReference = v.createInlineToken(reference, variableName)
-	case not.MatchesType(identifier, not.UppercaseToken):
-		inlineReference = v.createInlineRule(reference, variableName)
+	case not.MatchesType(actual, not.LiteralToken):
+		implementation = v.createLiteralTerm(actual, cardinality)
+	case not.MatchesType(actual, not.LowercaseToken):
+		implementation = v.createExpressionTerm(actual, cardinality)
+	case not.MatchesType(actual, not.UppercaseToken):
+		implementation = v.createRuleTerm(actual, cardinality)
 	}
-	return inlineReference
-}
-
-func (v *visitorSynthesizer_) createInlineRule(
-	reference not.ReferenceLike,
-	variableName string,
-) string {
-	var inlineRule string
-	var class = visitorSynthesizerClass()
-	switch v.createPlurality(reference) {
-	case "singular":
-		inlineRule = class.singularRuleBlock_
-	case "optional":
-		inlineRule = class.optionalRuleBlock_
-	case "repeated":
-		inlineRule = class.repeatedRuleBlock_
-	default:
-		inlineRule = class.ruleBlock_
-	}
-	var ruleName = reference.GetIdentifier().GetAny().(string)
-	inlineRule = uti.ReplaceAll(
-		inlineRule,
-		"ruleName",
-		ruleName,
-	)
-	inlineRule = uti.ReplaceAll(
-		inlineRule,
+	implementation = uti.ReplaceAll(
+		implementation,
 		"variableName",
 		variableName,
 	)
-	return inlineRule
+	return implementation
+}
+
+func (v *visitorSynthesizer_) createCardinality(
+	cardinality not.CardinalityLike,
+	optionalCardinality string,
+	requiredCardinality string,
+	repeatedCardinality string,
+) string {
+	var unlimited = "mat.MaxInt"
+	var first string
+	var last = unlimited
+	var actualCardinality = requiredCardinality
+	if uti.IsUndefined(cardinality) {
+		return actualCardinality
+	}
+	switch actual := cardinality.GetAny().(type) {
+	case not.ConstrainedLike:
+		actualCardinality = repeatedCardinality
+		switch actual.GetAny().(string) {
+		case "?":
+			// This is the "{0..1}" case.
+			first = "0"
+			last = "1"
+			actualCardinality = optionalCardinality
+		case "*":
+			// This is the "{0..}" case.
+			first = "0"
+		case "+":
+			// This is the "{1..}" case.
+			first = "1"
+		}
+	case not.QuantifiedLike:
+		first = actual.GetNumber()
+		var limit = actual.GetOptionalLimit()
+		if uti.IsUndefined(limit) {
+			// This is the "{m}" case.
+			last = first
+		} else {
+			last = limit.GetOptionalNumber()
+			if uti.IsUndefined(last) {
+				// This is the "{m..}" case.
+				last = unlimited
+			}
+			// This is the "{m..n}" case.
+		}
+	}
+	actualCardinality = uti.ReplaceAll(
+		actualCardinality,
+		"first",
+		first,
+	)
+	actualCardinality = uti.ReplaceAll(
+		actualCardinality,
+		"last",
+		last,
+	)
+	return actualCardinality
+}
+
+func (v *visitorSynthesizer_) createLiteralTerm(
+	literal string,
+	cardinality not.CardinalityLike,
+) string {
+	var class = visitorSynthesizerClass()
+	var optionalTerm = class.optionalLiteral_
+	var requiredTerm = class.requiredLiteral_
+	var repeatedTerm = class.repeatedLiteral_
+	var implementation = v.createCardinality(
+		cardinality,
+		optionalTerm,
+		requiredTerm,
+		repeatedTerm,
+	)
+	implementation = uti.ReplaceAll(
+		implementation,
+		"literal",
+		literal,
+	)
+	return implementation
+}
+
+func (v *visitorSynthesizer_) createExpressionTerm(
+	lowercase string,
+	cardinality not.CardinalityLike,
+) string {
+	var class = visitorSynthesizerClass()
+	var optionalTerm = class.optionalExpression_
+	var requiredTerm = class.requiredExpression_
+	var repeatedTerm = class.repeatedExpression_
+	var implementation = v.createCardinality(
+		cardinality,
+		optionalTerm,
+		requiredTerm,
+		repeatedTerm,
+	)
+	implementation = uti.ReplaceAll(
+		implementation,
+		"lowercase",
+		lowercase,
+	)
+	return implementation
+}
+
+func (v *visitorSynthesizer_) createRuleTerm(
+	uppercase string,
+	cardinality not.CardinalityLike,
+) string {
+	var class = visitorSynthesizerClass()
+	var optionalTerm = class.optionalRule_
+	var requiredTerm = class.requiredRule_
+	var repeatedTerm = class.repeatedRule_
+	var implementation = v.createCardinality(
+		cardinality,
+		optionalTerm,
+		requiredTerm,
+		repeatedTerm,
+	)
+	implementation = uti.ReplaceAll(
+		implementation,
+		"uppercase",
+		uppercase,
+	)
+	return implementation
 }
 
 func (v *visitorSynthesizer_) createInlineSlot(
@@ -223,7 +320,7 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	slot uint,
 ) string {
 	var class = visitorSynthesizerClass()
-	var inlineSlot = class.slotBlock_
+	var inlineSlot = class.slot_
 	inlineSlot = uti.ReplaceAll(
 		inlineSlot,
 		"slot",
@@ -232,127 +329,82 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	return inlineSlot
 }
 
-func (v *visitorSynthesizer_) createInlineToken(
-	reference not.ReferenceLike,
-	variableName string,
-) string {
-	var inlineToken string
-	var class = visitorSynthesizerClass()
-	switch v.createPlurality(reference) {
-	case "singular":
-		inlineToken = class.singularTokenBlock_
-	case "optional":
-		inlineToken = class.optionalTokenBlock_
-	case "repeated":
-		inlineToken = class.repeatedTokenBlock_
-	default:
-		inlineToken = class.tokenBlock_
-	}
-	var tokenName = reference.GetIdentifier().GetAny().(string)
-	inlineToken = uti.ReplaceAll(
-		inlineToken,
-		"tokenName",
-		tokenName,
-	)
-	inlineToken = uti.ReplaceAll(
-		inlineToken,
-		"variableName",
-		variableName,
-	)
-	return inlineToken
-}
-
-func (v *visitorSynthesizer_) createMultilineImplementation(
+func (v *visitorSynthesizer_) createMultiLiteral(
 	ruleName string,
 ) string {
-	var implementation string
-	var tokenCases, ruleCases string
-	var identifiers = v.analyzer_.GetIdentifiers(ruleName).GetIterator()
-	for identifiers.HasNext() {
-		var identifier = identifiers.GetNext().GetAny().(string)
-		switch {
-		case not.MatchesType(identifier, not.LowercaseToken):
-			tokenCases += v.createMultilineToken(identifier)
-		case not.MatchesType(identifier, not.UppercaseToken):
-			ruleCases += v.createMultilineRule(identifier)
-		}
-	}
 	var class = visitorSynthesizerClass()
-	implementation = class.multilineCases_
+	var implementation = class.multiLiteralOptions_
+	var multiLiteral string
+	var literalOptions = v.analyzer_.GetLiteralOptions(ruleName).GetIterator()
+	for literalOptions.HasNext() {
+		var literalOption = literalOptions.GetNext()
+		var literalValue = literalOption.GetLiteral()
+		var literal = class.literalOption_
+		literal = uti.ReplaceAll(
+			literal,
+			"literalValue",
+			literalValue,
+		)
+		multiLiteral += literal
+	}
 	implementation = uti.ReplaceAll(
 		implementation,
-		"ruleCases",
-		ruleCases,
-	)
-	implementation = uti.ReplaceAll(
-		implementation,
-		"tokenCases",
-		tokenCases,
+		"literalOptions",
+		multiLiteral,
 	)
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createMultilineRule(
+func (v *visitorSynthesizer_) createMultiExpression(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var multilineRule = class.ruleCase_
-	if v.analyzer_.IsPlural(ruleName) {
-		multilineRule = class.singularRuleCase_
+	var implementation = class.multiExpressionOptions_
+	var multiExpression string
+	var expressionOptions = v.analyzer_.GetExpressionOptions(ruleName).GetIterator()
+	for expressionOptions.HasNext() {
+		var expressionOption = expressionOptions.GetNext()
+		var lowercase = expressionOption.GetLowercase()
+		var expression = class.expressionOption_
+		expression = uti.ReplaceAll(
+			expression,
+			"lowercase",
+			lowercase,
+		)
+		multiExpression += expression
 	}
-	multilineRule = uti.ReplaceAll(
-		multilineRule,
-		"ruleName",
-		ruleName,
+	implementation = uti.ReplaceAll(
+		implementation,
+		"expressionOptions",
+		multiExpression,
 	)
-	return multilineRule
+	return implementation
 }
 
-func (v *visitorSynthesizer_) createMultilineToken(
-	tokenName string,
+func (v *visitorSynthesizer_) createMultiRule(
+	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var multilineToken = class.tokenCase_
-	if v.analyzer_.IsPlural(tokenName) {
-		multilineToken = class.singularTokenCase_
+	var implementation = class.multiRuleOptions_
+	var multiRule string
+	var ruleOptions = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
+	for ruleOptions.HasNext() {
+		var ruleOption = ruleOptions.GetNext()
+		var uppercase = ruleOption.GetUppercase()
+		var rule = class.ruleOption_
+		rule = uti.ReplaceAll(
+			rule,
+			"uppercase",
+			uppercase,
+		)
+		multiRule += rule
 	}
-	multilineToken = uti.ReplaceAll(
-		multilineToken,
-		"tokenName",
-		tokenName,
+	implementation = uti.ReplaceAll(
+		implementation,
+		"ruleOptions",
+		multiRule,
 	)
-	return multilineToken
-}
-
-func (v *visitorSynthesizer_) createPlurality(
-	reference not.ReferenceLike,
-) (
-	plurality string,
-) {
-	var name = reference.GetIdentifier().GetAny().(string)
-	var cardinality = reference.GetOptionalCardinality()
-	if uti.IsUndefined(cardinality) {
-		if v.analyzer_.IsPlural(name) {
-			plurality = "singular"
-		}
-		return plurality
-	}
-	switch actual := cardinality.GetAny().(type) {
-	case not.ConstrainedLike:
-		var token = actual.GetAny().(string)
-		switch {
-		case not.MatchesType(token, not.OptionalToken):
-			plurality = "optional"
-			if v.analyzer_.IsPlural(name) {
-				plurality = "singular"
-			}
-		case not.MatchesType(token, not.RepeatedToken):
-			plurality = "repeated"
-		}
-	case not.QuantifiedLike:
-		plurality = "repeated"
-	}
-	return plurality
+	return implementation
 }
 
 func (v *visitorSynthesizer_) createVisitMethods() string {
@@ -370,11 +422,16 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	ruleName string,
 ) string {
 	var methodImplementation string
-	switch {
-	case uti.IsDefined(v.analyzer_.GetIdentifiers(ruleName)):
-		methodImplementation = v.createMultilineImplementation(ruleName)
-	case uti.IsDefined(v.analyzer_.GetReferences(ruleName)):
-		methodImplementation = v.createInlineImplementation(ruleName)
+	var definition = v.analyzer_.GetDefinitions().GetValue(ruleName)
+	switch definition.GetAny().(type) {
+	case not.MultiLiteralLike:
+		methodImplementation = v.createMultiLiteral(ruleName)
+	case not.MultiExpressionLike:
+		methodImplementation = v.createMultiExpression(ruleName)
+	case not.MultiRuleLike:
+		methodImplementation = v.createMultiRule(ruleName)
+	case not.InlineRuleLike:
+		methodImplementation = v.createInlineRule(ruleName)
 	}
 	var class = visitorSynthesizerClass()
 	var visitMethod = class.visitMethod_
@@ -385,7 +442,7 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	)
 	visitMethod = uti.ReplaceAll(
 		visitMethod,
-		"targetName",
+		"ruleName",
 		ruleName,
 	)
 	return visitMethod
@@ -402,31 +459,32 @@ type visitorSynthesizer_ struct {
 
 type visitorSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_     string
-	importedPackages_   string
-	accessFunction_     string
-	constructorMethods_ string
-	principalMethods_   string
-	privateMethods_     string
-	visitMethod_        string
-	emptyMethod_        string
-	multilineCases_     string
-	ruleCase_           string
-	singularRuleCase_   string
-	tokenCase_          string
-	singularTokenCase_  string
-	ruleBlock_          string
-	singularRuleBlock_  string
-	optionalRuleBlock_  string
-	repeatedRuleBlock_  string
-	tokenBlock_         string
-	singularTokenBlock_ string
-	optionalTokenBlock_ string
-	repeatedTokenBlock_ string
-	slotBlock_          string
-	instanceStructure_  string
-	classStructure_     string
-	classReference_     string
+	warningMessage_         string
+	importedPackages_       string
+	accessFunction_         string
+	constructorMethods_     string
+	principalMethods_       string
+	privateMethods_         string
+	visitMethod_            string
+	multiLiteralOptions_    string
+	literalOption_          string
+	multiExpressionOptions_ string
+	expressionOption_       string
+	multiRuleOptions_       string
+	ruleOption_             string
+	optionalLiteral_        string
+	requiredLiteral_        string
+	repeatedLiteral_        string
+	optionalExpression_     string
+	requiredExpression_     string
+	repeatedExpression_     string
+	optionalRule_           string
+	requiredRule_           string
+	repeatedRule_           string
+	slot_                   string
+	instanceStructure_      string
+	classStructure_         string
+	classReference_         string
 }
 
 // Class Reference
@@ -485,9 +543,17 @@ func (v *visitor_) GetClass() VisitorClassLike {
 func (v *visitor_) Visit<~SyntaxName>(
 	<syntaxName_> ast.<~SyntaxName>Like,
 ) {
-	v.processor_.Preprocess<~SyntaxName>(<syntaxName_>)
+	v.processor_.Preprocess<~SyntaxName>(
+		<syntaxName_>,
+		1,
+		1,
+	)
 	v.visit<~SyntaxName>(<syntaxName_>)
-	v.processor_.Postprocess<~SyntaxName>(<syntaxName_>)
+	v.processor_.Postprocess<~SyntaxName>(
+		<syntaxName_>,
+		1,
+		1,
+	)
 }
 `,
 
@@ -496,139 +562,137 @@ func (v *visitor_) Visit<~SyntaxName>(
 <VisitMethods>`,
 
 	visitMethod_: `
-func (v *visitor_) visit<~TargetName>(
-	<targetName_> ast.<~TargetName>Like,
+func (v *visitor_) visit<~RuleName>(
+	<ruleName_> ast.<~RuleName>Like,
 ) {<MethodImplementation>}
 `,
 
-	emptyMethod_: `
-	// This method does not need to process anything.
+	multiLiteralOptions_: `
+	// Visit the possible <~ruleName> literal values.
+	var actual = <~ruleName>.GetAny().(string)
+	switch actual {<LiteralOptions>}
 `,
 
-	multilineCases_: `
-	// Visit the possible <~targetName> types.
-	switch actual := <targetName_>.GetAny().(type) {<RuleCases>
-	case string:
-		switch {<TokenCases>
-		default:
-			panic(fmt.Sprintf("Invalid token: %v", actual))
-		}
-	default:
-		panic(fmt.Sprintf("Invalid rule type: %T", actual))
-	}
+	literalOption_: `
+	case <literalValue>:
+		v.processor_.ProcessDelimiter(<literalValue>)`,
+
+	multiExpressionOptions_: `
+	// Visit the possible <~ruleName> expression types.
+	var actual = <~ruleName>.GetAny().(string)
+	switch {<ExpressionOptions>}
 `,
 
-	ruleCase_: `
-	case ast.<~RuleName>Like:
-		v.processor_.Preprocess<~RuleName>(actual)
-		v.visit<~RuleName>(actual)
-		v.processor_.Postprocess<~RuleName>(actual)`,
+	expressionOption_: `
+	case ScannerClass().MatchesType(actual, <~Lowercase>Token):
+		v.processor_.Process<~Lowercase>(actual)`,
 
-	singularRuleCase_: `
-	case ast.<~RuleName>Like:
-		v.processor_.Preprocess<~RuleName>(actual, 1, 1)
-		v.visit<~RuleName>(actual)
-		v.processor_.Postprocess<~RuleName>(actual, 1, 1)`,
-
-	tokenCase_: `
-		case ScannerClass().MatchesType(actual, <~TokenName>Token):
-			v.processor_.Process<~TokenName>(actual)`,
-
-	singularTokenCase_: `
-	case ClassScanner().MatchesType(actual, <~TokenName>Token):
-			v.processor_.Process<~TokenName>(actual, 1, 1)`,
-
-	ruleBlock_: `
-	// Visit a single <~ruleName> rule.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
-	v.processor_.Preprocess<~RuleName>(<variableName_>)
-	v.visit<~RuleName>(<variableName_>)
-	v.processor_.Postprocess<~RuleName>(<variableName_>)
+	multiRuleOptions_: `
+	// Visit the possible <~ruleName> rule types.
+	switch actual := <~ruleName>.GetAny().(type) {<RuleOptions>}
 `,
 
-	singularRuleBlock_: `
-	// Visit a single <~ruleName> rule.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
+	ruleOption_: `
+	case ast.<~Uppercase>Like:
+		v.processor_.Preprocess<~Uppercase>(
+			actual,
+			1,
+			1,
+		)
+		v.visit<~Uppercase>(actual)
+		v.processor_.Postprocess<~Uppercase>(
+			actual,
+			1,
+			1,
+		)`,
+
+	optionalLiteral_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
 	if uti.IsDefined(<variableName_>) {
-		v.processor_.Preprocess<~RuleName>(<variableName_>, 1, 1)
-		v.visit<~RuleName>(<variableName_>)
-		v.processor_.Postprocess<~RuleName>(<variableName_>, 1, 1)
-	}
-`,
+		v.processor_.ProcessDelimiter(<variableName_>)
+	}`,
 
-	optionalRuleBlock_: `
-	// Visit an optional <~ruleName> rule.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
-	if uti.IsDefined(<variableName_>) {
-		v.processor_.Preprocess<~RuleName>(<variableName_>)
-		v.visit<~RuleName>(<variableName_>)
-		v.processor_.Postprocess<~RuleName>(<variableName_>)
-	}
-`,
+	requiredLiteral_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
+	v.processor_.ProcessDelimiter(<variableName_>)`,
 
-	repeatedRuleBlock_: `
-	// Visit each <~ruleName> rule.
-	var <~ruleName>Index uint
-	var <variableName_> = <targetName_>.Get<~VariableName>().GetIterator()
-	var <variableName>Size = uint(<variableName_>.GetSize())
+	repeatedLiteral_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>().GetIterator()
 	for <variableName_>.HasNext() {
-		<~ruleName>Index++
-		var <ruleName_> = <variableName_>.GetNext()
-		v.processor_.Preprocess<~RuleName>(
-			<ruleName_>,
-			<~ruleName>Index,
-			<variableName>Size,
-		)
-		v.visit<~RuleName>(<ruleName_>)
-		v.processor_.Postprocess<~RuleName>(
-			<ruleName_>,
-			<~ruleName>Index,
-			<variableName>Size,
-		)
-	}
-`,
+		var literal = <variableName_>.GetNext()
+		v.processor_.ProcessDelimiter(literal)
+	}`,
 
-	tokenBlock_: `
-	// Visit a single <~tokenName> token.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
-	v.processor_.Process<~TokenName>(<variableName_>)
-`,
-
-	singularTokenBlock_: `
-	// Visit a single <~tokenName> token.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
+	optionalExpression_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
 	if uti.IsDefined(<variableName_>) {
-		v.processor_.Process<~TokenName>(<variableName_>, 1, 1)
-	}
-`,
+		v.processor_.Process<~Lowercase>(<variableName_>)
+	}`,
 
-	optionalTokenBlock_: `
-	// Visit an optional <~tokenName> token.
-	var <variableName_> = <targetName_>.Get<~VariableName>()
-	if uti.IsDefined(<variableName_>) {
-		v.processor_.Process<~TokenName>(<variableName_>)
-	}
-`,
+	requiredExpression_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
+	v.processor_.Process<~Lowercase>(<variableName_>)`,
 
-	repeatedTokenBlock_: `
-	// Visit each <~tokenName> token.
-	var <~tokenName>Index uint
-	var <variableName_> = <targetName_>.Get<~VariableName>().GetIterator()
-	var <variableName>Size = uint(<variableName_>.GetSize())
+	repeatedExpression_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>().GetIterator()
 	for <variableName_>.HasNext() {
-		<~tokenName>Index++
-		var <tokenName_> = <variableName_>.GetNext()
-		v.processor_.Process<~TokenName>(
-			<tokenName_>,
-			<~tokenName>Index,
-			<variableName>Size,
-		)
-	}
-`,
+		var expression = <variableName_>.GetNext()
+		v.processor_.Process<~Lowercase>(expression)
+	}`,
 
-	slotBlock_: `
-	// Visit slot <Slot> between references.
-	v.processor_.Process<~TargetName>Slot(<Slot>)
+	optionalRule_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
+	if uti.IsDefined(<variableName_>) {
+		v.processor_.Preprocess<~Uppercase>(
+			<variableName_>,
+			1,
+			1,
+		)
+		v.visit<~Uppercase>(<variableName_>)
+		v.processor_.Postprocess<~Uppercase>(
+			<variableName_>,
+			1,
+			1,
+		)
+	}`,
+
+	requiredRule_: `
+	var <variableName_> = <ruleName_>.Get<~VariableName>()
+	v.processor_.Preprocess<~Uppercase>(
+		<variableName_>,
+		1,
+		1,
+	)
+	v.visit<~Uppercase>(<variableName_>)
+	v.processor_.Postprocess<~Uppercase>(
+		<variableName_>,
+		1,
+		1,
+	)`,
+
+	repeatedRule_: `
+	var <~variableName>Index uint
+	var <variableName_> = <ruleName_>.Get<~VariableName>().GetIterator()
+	var <~variableName>Count = uint(<variableName_>.GetSize())
+	for <variableName_>.HasNext() {
+		<~variableName>Index++
+		var rule = <variableName_>.GetNext()
+		v.processor_.Preprocess<~Uppercase>(
+			rule,
+			<~variableName>Index,
+			<~variableName>Count,
+		)
+		v.visit<~Uppercase>(rule)
+		v.processor_.Postprocess<~Uppercase>(
+			rule,
+			<~variableName>Index,
+			<~variableName>Count,
+		)
+	}`,
+
+	slot_: `
+	// Visit slot <slot> between terms.
+	v.processor_.Process<~RuleName>Slot(<slot>)
 `,
 
 	instanceStructure_: `

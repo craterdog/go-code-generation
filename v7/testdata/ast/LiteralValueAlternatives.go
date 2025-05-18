@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,23 +28,21 @@ import (
 
 // Access Function
 
-func PatternClass() PatternClassLike {
-	return patternClass()
+func LiteralValueAlternativesClass() LiteralValueAlternativesClassLike {
+	return literalValueAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *patternClass_) Pattern(
-	alternatives AlternativesLike,
-	optionalNote string,
-) PatternLike {
-	if uti.IsUndefined(alternatives) {
-		panic("The \"alternatives\" attribute is required by this class.")
+func (c *literalValueAlternativesClass_) LiteralValueAlternatives(
+	literalValues col.Sequential[LiteralValueLike],
+) LiteralValueAlternativesLike {
+	if uti.IsUndefined(literalValues) {
+		panic("The \"literalValues\" attribute is required by this class.")
 	}
-	var instance = &pattern_{
+	var instance = &literalValueAlternatives_{
 		// Initialize the instance attributes.
-		alternatives_: alternatives,
-		optionalNote_: optionalNote,
+		literalValues_: literalValues,
 	}
 	return instance
 }
@@ -52,42 +51,37 @@ func (c *patternClass_) Pattern(
 
 // Principal Methods
 
-func (v *pattern_) GetClass() PatternClassLike {
-	return patternClass()
+func (v *literalValueAlternatives_) GetClass() LiteralValueAlternativesClassLike {
+	return literalValueAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *pattern_) GetAlternatives() AlternativesLike {
-	return v.alternatives_
-}
-
-func (v *pattern_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *literalValueAlternatives_) GetLiteralValues() col.Sequential[LiteralValueLike] {
+	return v.literalValues_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type pattern_ struct {
+type literalValueAlternatives_ struct {
 	// Declare the instance attributes.
-	alternatives_ AlternativesLike
-	optionalNote_ string
+	literalValues_ col.Sequential[LiteralValueLike]
 }
 
 // Class Structure
 
-type patternClass_ struct {
+type literalValueAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func patternClass() *patternClass_ {
-	return patternClassReference_
+func literalValueAlternativesClass() *literalValueAlternativesClass_ {
+	return literalValueAlternativesClassReference_
 }
 
-var patternClassReference_ = &patternClass_{
+var literalValueAlternativesClassReference_ = &literalValueAlternativesClass_{
 	// Initialize the class constants.
 }

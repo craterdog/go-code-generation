@@ -129,31 +129,28 @@ type SyntaxAnalyzerLike interface {
 	GetClass() SyntaxAnalyzerClassLike
 	GetLegalNotice() string
 	GetSyntaxName() string
-	HasPlurals() bool
 	GetRuleNames() col.SetLike[string]
 	GetTokenNames() col.SetLike[string]
-	IsDelimited(
-		ruleName string,
-	) bool
 	GetTerms(
 		ruleName string,
 	) col.ListLike[not.TermLike]
-	GetReferences(
-		ruleName string,
-	) col.ListLike[not.ReferenceLike]
 	GetVariables(
 		ruleName string,
 	) col.ListLike[string]
 	GetVariableType(
-		reference not.ReferenceLike,
+		component not.ComponentLike,
 	) string
-	GetIdentifiers(
+	GetRuleOptions(
 		ruleName string,
-	) col.ListLike[not.IdentifierLike]
-	IsPlural(
-		identifierName string,
-	) bool
-	GetExpressions() col.CatalogLike[string, string]
+	) col.ListLike[not.RuleOptionLike]
+	GetExpressionOptions(
+		ruleName string,
+	) col.ListLike[not.ExpressionOptionLike]
+	GetLiteralOptions(
+		ruleName string,
+	) col.ListLike[not.LiteralOptionLike]
+	GetPatterns() col.CatalogLike[string, string]
+	GetDefinitions() col.CatalogLike[string, not.DefinitionLike]
 	GetSyntaxMap() string
 
 	// Aspect Interfaces

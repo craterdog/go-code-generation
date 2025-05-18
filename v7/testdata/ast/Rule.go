@@ -34,18 +34,28 @@ func RuleClass() RuleClassLike {
 // Constructor Methods
 
 func (c *ruleClass_) Rule(
+	delimiter1 string,
 	uppercase string,
+	delimiter2 string,
 	definition DefinitionLike,
 ) RuleLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
 	if uti.IsUndefined(uppercase) {
 		panic("The \"uppercase\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(definition) {
 		panic("The \"definition\" attribute is required by this class.")
 	}
 	var instance = &rule_{
 		// Initialize the instance attributes.
+		delimiter1_: delimiter1,
 		uppercase_:  uppercase,
+		delimiter2_: delimiter2,
 		definition_: definition,
 	}
 	return instance
@@ -61,8 +71,16 @@ func (v *rule_) GetClass() RuleClassLike {
 
 // Attribute Methods
 
+func (v *rule_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
 func (v *rule_) GetUppercase() string {
 	return v.uppercase_
+}
+
+func (v *rule_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 func (v *rule_) GetDefinition() DefinitionLike {
@@ -75,7 +93,9 @@ func (v *rule_) GetDefinition() DefinitionLike {
 
 type rule_ struct {
 	// Declare the instance attributes.
+	delimiter1_ string
 	uppercase_  string
+	delimiter2_ string
 	definition_ DefinitionLike
 }
 

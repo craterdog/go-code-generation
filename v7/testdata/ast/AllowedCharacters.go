@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,23 +28,26 @@ import (
 
 // Access Function
 
-func PatternClass() PatternClassLike {
-	return patternClass()
+func AllowedCharactersClass() AllowedCharactersClassLike {
+	return allowedCharactersClass()
 }
 
 // Constructor Methods
 
-func (c *patternClass_) Pattern(
-	alternatives AlternativesLike,
-	optionalNote string,
-) PatternLike {
-	if uti.IsUndefined(alternatives) {
-		panic("The \"alternatives\" attribute is required by this class.")
+func (c *allowedCharactersClass_) AllowedCharacters(
+	character CharacterLike,
+	additionalCharacters col.Sequential[AdditionalCharacterLike],
+) AllowedCharactersLike {
+	if uti.IsUndefined(character) {
+		panic("The \"character\" attribute is required by this class.")
 	}
-	var instance = &pattern_{
+	if uti.IsUndefined(additionalCharacters) {
+		panic("The \"additionalCharacters\" attribute is required by this class.")
+	}
+	var instance = &allowedCharacters_{
 		// Initialize the instance attributes.
-		alternatives_: alternatives,
-		optionalNote_: optionalNote,
+		character_:            character,
+		additionalCharacters_: additionalCharacters,
 	}
 	return instance
 }
@@ -52,42 +56,42 @@ func (c *patternClass_) Pattern(
 
 // Principal Methods
 
-func (v *pattern_) GetClass() PatternClassLike {
-	return patternClass()
+func (v *allowedCharacters_) GetClass() AllowedCharactersClassLike {
+	return allowedCharactersClass()
 }
 
 // Attribute Methods
 
-func (v *pattern_) GetAlternatives() AlternativesLike {
-	return v.alternatives_
+func (v *allowedCharacters_) GetCharacter() CharacterLike {
+	return v.character_
 }
 
-func (v *pattern_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *allowedCharacters_) GetAdditionalCharacters() col.Sequential[AdditionalCharacterLike] {
+	return v.additionalCharacters_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type pattern_ struct {
+type allowedCharacters_ struct {
 	// Declare the instance attributes.
-	alternatives_ AlternativesLike
-	optionalNote_ string
+	character_            CharacterLike
+	additionalCharacters_ col.Sequential[AdditionalCharacterLike]
 }
 
 // Class Structure
 
-type patternClass_ struct {
+type allowedCharactersClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func patternClass() *patternClass_ {
-	return patternClassReference_
+func allowedCharactersClass() *allowedCharactersClass_ {
+	return allowedCharactersClassReference_
 }
 
-var patternClassReference_ = &patternClass_{
+var allowedCharactersClassReference_ = &allowedCharactersClass_{
 	// Initialize the class constants.
 }

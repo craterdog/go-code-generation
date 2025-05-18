@@ -168,14 +168,39 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
+func (v *validatorSynthesizer_) createProcessToken(
+	expressionName string,
+) string {
+	var processToken string
+	if expressionName == "delimiter" {
+		return processToken
+	}
+	var class = validatorSynthesizerClass()
+	processToken = class.processToken_
+	processToken = uti.ReplaceAll(
+		processToken,
+		"expressionName",
+		expressionName,
+	)
+	return processToken
+}
+
+func (v *validatorSynthesizer_) createProcessTokens() string {
+	var processTokens string
+	var expressionNames = v.analyzer_.GetTokenNames().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var processToken = v.createProcessToken(expressionName)
+		processTokens += processToken
+	}
+	return processTokens
+}
+
 func (v *validatorSynthesizer_) createProcessRule(
 	ruleName string,
 ) string {
 	var class = validatorSynthesizerClass()
 	var processRule = class.processRule_
-	if v.analyzer_.IsPlural(ruleName) {
-		processRule = class.processIndexedRule_
-	}
 	processRule = uti.ReplaceAll(
 		processRule,
 		"ruleName",
@@ -193,37 +218,6 @@ func (v *validatorSynthesizer_) createProcessRules() string {
 		processRules += processRule
 	}
 	return processRules
-}
-
-func (v *validatorSynthesizer_) createProcessToken(
-	tokenName string,
-) string {
-	var processToken string
-	if tokenName == "delimiter" {
-		return processToken
-	}
-	var class = validatorSynthesizerClass()
-	processToken = class.processToken_
-	if v.analyzer_.IsPlural(tokenName) {
-		processToken = class.processIndexedToken_
-	}
-	processToken = uti.ReplaceAll(
-		processToken,
-		"tokenName",
-		tokenName,
-	)
-	return processToken
-}
-
-func (v *validatorSynthesizer_) createProcessTokens() string {
-	var processTokens string
-	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var processToken = v.createProcessToken(tokenName)
-		processTokens += processToken
-	}
-	return processTokens
 }
 
 func (v *validatorSynthesizer_) preserveExistingCode(
@@ -263,20 +257,18 @@ type validatorSynthesizer_ struct {
 
 type validatorSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_      string
-	importedPackages_    string
-	accessFunction_      string
-	constructorMethods_  string
-	principalMethods_    string
-	aspectMethods_       string
-	processToken_        string
-	processIndexedToken_ string
-	processRule_         string
-	processIndexedRule_  string
-	privateMethods_      string
-	instanceStructure_   string
-	classStructure_      string
-	classReference_      string
+	warningMessage_     string
+	importedPackages_   string
+	accessFunction_     string
+	constructorMethods_ string
+	principalMethods_   string
+	aspectMethods_      string
+	processToken_       string
+	processRule_        string
+	privateMethods_     string
+	instanceStructure_  string
+	classStructure_     string
+	classReference_     string
 }
 
 // Class Reference
@@ -344,54 +336,18 @@ func (v *validator_) Validate<~SyntaxName>(
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-func (v *validator_) Process<~TokenName>(
-	<tokenName_> string,
+func (v *validator_) Process<~ExpressionName>(
+	<expressionName_> string,
 ) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
-}
-`,
-
-	processIndexedToken_: `
-func (v *validator_) Process<~TokenName>(
-	<tokenName_> string,
-	index uint,
-	size uint,
-) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
+	v.validateToken(<expressionName_>, <~ExpressionName>Token)
 }
 `,
 
 	processRule_: `
 func (v *validator_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) Process<~RuleName>Slot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add any validation checks.
-}
-`,
-
-	processIndexedRule_: `
-func (v *validator_) Preprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) Process<~RuleName>Slot(
-	slot uint,
+	count uint,
 ) {
 	// TBD - Add any validation checks.
 }
@@ -399,7 +355,7 @@ func (v *validator_) Process<~RuleName>Slot(
 func (v *validator_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	// TBD - Add any validation checks.
 }

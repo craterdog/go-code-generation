@@ -19,7 +19,9 @@
 
 package ast
 
-import ()
+import (
+	uti "github.com/craterdog/go-missing-utilities/v7"
+)
 
 // CLASS INTERFACE
 
@@ -32,10 +34,15 @@ func LimitClass() LimitClassLike {
 // Constructor Methods
 
 func (c *limitClass_) Limit(
+	delimiter string,
 	optionalNumber string,
 ) LimitLike {
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
+	}
 	var instance = &limit_{
 		// Initialize the instance attributes.
+		delimiter_:      delimiter,
 		optionalNumber_: optionalNumber,
 	}
 	return instance
@@ -51,6 +58,10 @@ func (v *limit_) GetClass() LimitClassLike {
 
 // Attribute Methods
 
+func (v *limit_) GetDelimiter() string {
+	return v.delimiter_
+}
+
 func (v *limit_) GetOptionalNumber() string {
 	return v.optionalNumber_
 }
@@ -61,6 +72,7 @@ func (v *limit_) GetOptionalNumber() string {
 
 type limit_ struct {
 	// Declare the instance attributes.
+	delimiter_      string
 	optionalNumber_ string
 }
 

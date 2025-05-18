@@ -34,16 +34,26 @@ func QuantifiedClass() QuantifiedClassLike {
 // Constructor Methods
 
 func (c *quantifiedClass_) Quantified(
+	delimiter1 string,
 	number string,
 	optionalLimit LimitLike,
+	delimiter2 string,
 ) QuantifiedLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
 	if uti.IsUndefined(number) {
 		panic("The \"number\" attribute is required by this class.")
 	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
 	var instance = &quantified_{
 		// Initialize the instance attributes.
+		delimiter1_:    delimiter1,
 		number_:        number,
 		optionalLimit_: optionalLimit,
+		delimiter2_:    delimiter2,
 	}
 	return instance
 }
@@ -58,6 +68,10 @@ func (v *quantified_) GetClass() QuantifiedClassLike {
 
 // Attribute Methods
 
+func (v *quantified_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
 func (v *quantified_) GetNumber() string {
 	return v.number_
 }
@@ -66,14 +80,20 @@ func (v *quantified_) GetOptionalLimit() LimitLike {
 	return v.optionalLimit_
 }
 
+func (v *quantified_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
 // PROTECTED INTERFACE
 
 // Instance Structure
 
 type quantified_ struct {
 	// Declare the instance attributes.
+	delimiter1_    string
 	number_        string
 	optionalLimit_ LimitLike
+	delimiter2_    string
 }
 
 // Class Structure

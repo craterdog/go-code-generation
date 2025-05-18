@@ -144,11 +144,11 @@ func (v *scannerSynthesizer_) CreateClass() string {
 		"tokenMatchers",
 		tokenMatchers,
 	)
-	var regularExpressions = v.createRegularExpressions()
+	var expressions = v.createExpressions()
 	classReference = uti.ReplaceAll(
 		classReference,
-		"regularExpressions",
-		regularExpressions,
+		"expressions",
+		expressions,
 	)
 	return classReference
 }
@@ -169,14 +169,12 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// declared in the syntax file.  But the expressions include patterns
 	// that are only used in other expressions and not visible as tokens.
 	// And the token names have been sorted so we must pull out the token
-	// names from the catalog of expressions in their proper order.
+	// names from the catalog of expressions in their declared order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
-	var tokenNames = col.SetFromSequence[string](
-		v.analyzer_.GetTokenNames(),
-	)
+	var tokenNames = v.analyzer_.GetTokenNames()
 	var expressionNames = col.CatalogFromSequence[string, string](
-		v.analyzer_.GetExpressions(),
+		v.analyzer_.GetPatterns(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
 		var tokenName = expressionNames.GetNext()
@@ -193,38 +191,41 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	return foundCases
 }
 
-func (v *scannerSynthesizer_) createRegularExpressions() string {
-	var regularExpressions string
-	var expressions = v.analyzer_.GetExpressions().GetIterator()
-	for expressions.HasNext() {
-		var association = expressions.GetNext()
+func (v *scannerSynthesizer_) createExpressions() string {
+	var expressions string
+	var patterns = v.analyzer_.GetPatterns().GetIterator()
+	for patterns.HasNext() {
+		var association = patterns.GetNext()
 		var expressionName = association.GetKey()
 		var expressionValue = association.GetValue()
 		var class = scannerSynthesizerClass()
-		var regularExpression = class.regularExpression_
-		regularExpression = uti.ReplaceAll(
-			regularExpression,
+		var expression = class.expression_
+		expression = uti.ReplaceAll(
+			expression,
 			"expressionName",
 			expressionName,
 		)
-		regularExpression = uti.ReplaceAll(
-			regularExpression,
+		expression = uti.ReplaceAll(
+			expression,
 			"expressionValue",
 			expressionValue,
 		)
-		regularExpressions += regularExpression
+		expressions += expression
 	}
-	return regularExpressions
+	return expressions
 }
 
 func (v *scannerSynthesizer_) createTokenIdentifiers() string {
 	var class = scannerSynthesizerClass()
+	// Create the error token identifier.
 	var tokenIdentifiers = class.tokenIdentifier_
 	tokenIdentifiers = uti.ReplaceAll(
 		tokenIdentifiers,
 		"tokenName",
 		"error",
 	)
+
+	// Create the rest of the token identifiers.
 	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
@@ -236,6 +237,7 @@ func (v *scannerSynthesizer_) createTokenIdentifiers() string {
 		)
 		tokenIdentifiers += tokenIdentifier
 	}
+
 	return tokenIdentifiers
 }
 
@@ -267,25 +269,23 @@ type scannerSynthesizer_ struct {
 
 type scannerSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_      string
-	importedPackages_    string
-	accessFunction_      string
-	constructorMethods_  string
-	functionMethods_     string
-	principalMethods_    string
-	methodicalMethods_   string
-	processToken_        string
-	processIndexedToken_ string
-	processRule_         string
-	processIndexedRule_  string
-	privateMethods_      string
-	foundCase_           string
-	instanceStructure_   string
-	classStructure_      string
-	classReference_      string
-	tokenIdentifier_     string
-	tokenMatcher_        string
-	regularExpression_   string
+	warningMessage_     string
+	importedPackages_   string
+	accessFunction_     string
+	constructorMethods_ string
+	functionMethods_    string
+	principalMethods_   string
+	methodicalMethods_  string
+	processToken_       string
+	processRule_        string
+	privateMethods_     string
+	foundCase_          string
+	instanceStructure_  string
+	classStructure_     string
+	classReference_     string
+	tokenIdentifier_    string
+	tokenMatcher_       string
+	expression_         string
 }
 
 // Class Reference
@@ -394,48 +394,18 @@ func (v *scanner_) GetClass() ScannerClassLike {
 <ProcessTokens><ProcessRules>`,
 
 	processToken_: `
-func (v *scanner_) Process<~TokenName>(
-	<tokenName_> string,
+func (v *scanner_) Process<~ExpressionName>(
+	<expressionName_> string,
 ) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
-}
-`,
-
-	processIndexedToken_: `
-func (v *scanner_) Process<~TokenName>(
-	<tokenName_> string,
-	index uint,
-	size uint,
-) {
-	v.validateToken(<tokenName_>, <~TokenName>Token)
+	v.validateExpression(<expressionName_>, <~ExpressionName>Expression)
 }
 `,
 
 	processRule_: `
 func (v *scanner_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *scanner_) Process<~RuleName>Slot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *scanner_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-) {
-	// TBD - Add any validation checks.
-}
-`,
-
-	processIndexedRule_: `
-func (v *scanner_) Preprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	// TBD - Add any validation checks.
 }
@@ -449,7 +419,7 @@ func (v *scanner_) Process<~RuleName>Slot(
 func (v *scanner_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	// TBD - Add any validation checks.
 }
@@ -611,7 +581,7 @@ this way.  We append an underscore to each name to lessen the chance of a name
 collision with other private Go class constants in this package.
 */
 const (
-	// Define the regular expression patterns for each intrinsic type.
+	// Define the regular expressions for each intrinsic type.
 	any_     = "." // This does NOT include newline characters.
 	control_ = "\\p{Cc}"
 	digit_   = "\\p{Nd}"
@@ -619,7 +589,7 @@ const (
 	lower_   = "\\p{Ll}"
 	upper_   = "\\p{Lu}"
 
-	// Define the regular expression patterns for each token type.<RegularExpressions>
+	// Define the regular expressions for each token type.<Expressions>
 )
 `,
 
@@ -629,6 +599,6 @@ const (
 	tokenMatcher_: `
 			<~TokenName>Token: reg.MustCompile("^" + <~tokenName>_),`,
 
-	regularExpression_: `
+	expression_: `
 	<~expressionName>_ = <ExpressionValue>`,
 }

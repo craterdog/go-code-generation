@@ -27,21 +27,26 @@ import (
 
 // Access Function
 
-func TermClass() TermClassLike {
-	return termClass()
+func AlternativeSequenceClass() AlternativeSequenceClassLike {
+	return alternativeSequenceClass()
 }
 
 // Constructor Methods
 
-func (c *termClass_) Term(
-	any_ any,
-) TermLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *alternativeSequenceClass_) AlternativeSequence(
+	delimiter string,
+	sequence SequenceLike,
+) AlternativeSequenceLike {
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	var instance = &term_{
+	if uti.IsUndefined(sequence) {
+		panic("The \"sequence\" attribute is required by this class.")
+	}
+	var instance = &alternativeSequence_{
 		// Initialize the instance attributes.
-		any_: any_,
+		delimiter_: delimiter,
+		sequence_:  sequence,
 	}
 	return instance
 }
@@ -50,37 +55,42 @@ func (c *termClass_) Term(
 
 // Principal Methods
 
-func (v *term_) GetClass() TermClassLike {
-	return termClass()
+func (v *alternativeSequence_) GetClass() AlternativeSequenceClassLike {
+	return alternativeSequenceClass()
 }
 
 // Attribute Methods
 
-func (v *term_) GetAny() any {
-	return v.any_
+func (v *alternativeSequence_) GetDelimiter() string {
+	return v.delimiter_
+}
+
+func (v *alternativeSequence_) GetSequence() SequenceLike {
+	return v.sequence_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type term_ struct {
+type alternativeSequence_ struct {
 	// Declare the instance attributes.
-	any_ any
+	delimiter_ string
+	sequence_  SequenceLike
 }
 
 // Class Structure
 
-type termClass_ struct {
+type alternativeSequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func termClass() *termClass_ {
-	return termClassReference_
+func alternativeSequenceClass() *alternativeSequenceClass_ {
+	return alternativeSequenceClassReference_
 }
 
-var termClassReference_ = &termClass_{
+var alternativeSequenceClassReference_ = &alternativeSequenceClass_{
 	// Initialize the class constants.
 }

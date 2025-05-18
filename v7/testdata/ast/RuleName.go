@@ -27,21 +27,28 @@ import (
 
 // Access Function
 
-func AlternativeClass() AlternativeClassLike {
-	return alternativeClass()
+func RuleNameClass() RuleNameClassLike {
+	return ruleNameClass()
 }
 
 // Constructor Methods
 
-func (c *alternativeClass_) Alternative(
-	option OptionLike,
-) AlternativeLike {
-	if uti.IsUndefined(option) {
-		panic("The \"option\" attribute is required by this class.")
+func (c *ruleNameClass_) RuleName(
+	newline string,
+	uppercase string,
+	optionalNote string,
+) RuleNameLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &alternative_{
+	if uti.IsUndefined(uppercase) {
+		panic("The \"uppercase\" attribute is required by this class.")
+	}
+	var instance = &ruleName_{
 		// Initialize the instance attributes.
-		option_: option,
+		newline_:      newline,
+		uppercase_:    uppercase,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -50,37 +57,47 @@ func (c *alternativeClass_) Alternative(
 
 // Principal Methods
 
-func (v *alternative_) GetClass() AlternativeClassLike {
-	return alternativeClass()
+func (v *ruleName_) GetClass() RuleNameClassLike {
+	return ruleNameClass()
 }
 
 // Attribute Methods
 
-func (v *alternative_) GetOption() OptionLike {
-	return v.option_
+func (v *ruleName_) GetNewline() string {
+	return v.newline_
+}
+
+func (v *ruleName_) GetUppercase() string {
+	return v.uppercase_
+}
+
+func (v *ruleName_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type alternative_ struct {
+type ruleName_ struct {
 	// Declare the instance attributes.
-	option_ OptionLike
+	newline_      string
+	uppercase_    string
+	optionalNote_ string
 }
 
 // Class Structure
 
-type alternativeClass_ struct {
+type ruleNameClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func alternativeClass() *alternativeClass_ {
-	return alternativeClassReference_
+func ruleNameClass() *ruleNameClass_ {
+	return ruleNameClassReference_
 }
 
-var alternativeClassReference_ = &alternativeClass_{
+var ruleNameClassReference_ = &ruleNameClass_{
 	// Initialize the class constants.
 }

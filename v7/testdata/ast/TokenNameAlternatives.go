@@ -28,21 +28,21 @@ import (
 
 // Access Function
 
-func MultiexpressionClass() MultiexpressionClassLike {
-	return multiexpressionClass()
+func TokenNameAlternativesClass() TokenNameAlternativesClassLike {
+	return tokenNameAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *multiexpressionClass_) Multiexpression(
-	expressionOptions col.Sequential[ExpressionOptionLike],
-) MultiexpressionLike {
-	if uti.IsUndefined(expressionOptions) {
-		panic("The \"expressionOptions\" attribute is required by this class.")
+func (c *tokenNameAlternativesClass_) TokenNameAlternatives(
+	tokenNames col.Sequential[TokenNameLike],
+) TokenNameAlternativesLike {
+	if uti.IsUndefined(tokenNames) {
+		panic("The \"tokenNames\" attribute is required by this class.")
 	}
-	var instance = &multiexpression_{
+	var instance = &tokenNameAlternatives_{
 		// Initialize the instance attributes.
-		expressionOptions_: expressionOptions,
+		tokenNames_: tokenNames,
 	}
 	return instance
 }
@@ -51,37 +51,37 @@ func (c *multiexpressionClass_) Multiexpression(
 
 // Principal Methods
 
-func (v *multiexpression_) GetClass() MultiexpressionClassLike {
-	return multiexpressionClass()
+func (v *tokenNameAlternatives_) GetClass() TokenNameAlternativesClassLike {
+	return tokenNameAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *multiexpression_) GetExpressionOptions() col.Sequential[ExpressionOptionLike] {
-	return v.expressionOptions_
+func (v *tokenNameAlternatives_) GetTokenNames() col.Sequential[TokenNameLike] {
+	return v.tokenNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multiexpression_ struct {
+type tokenNameAlternatives_ struct {
 	// Declare the instance attributes.
-	expressionOptions_ col.Sequential[ExpressionOptionLike]
+	tokenNames_ col.Sequential[TokenNameLike]
 }
 
 // Class Structure
 
-type multiexpressionClass_ struct {
+type tokenNameAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiexpressionClass() *multiexpressionClass_ {
-	return multiexpressionClassReference_
+func tokenNameAlternativesClass() *tokenNameAlternativesClass_ {
+	return tokenNameAlternativesClassReference_
 }
 
-var multiexpressionClassReference_ = &multiexpressionClass_{
+var tokenNameAlternativesClassReference_ = &tokenNameAlternativesClass_{
 	// Initialize the class constants.
 }

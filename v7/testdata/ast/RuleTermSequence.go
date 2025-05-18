@@ -28,22 +28,22 @@ import (
 
 // Access Function
 
-func InlineClass() InlineClassLike {
-	return inlineClass()
+func RuleTermSequenceClass() RuleTermSequenceClassLike {
+	return ruleTermSequenceClass()
 }
 
 // Constructor Methods
 
-func (c *inlineClass_) Inline(
-	terms col.Sequential[TermLike],
+func (c *ruleTermSequenceClass_) RuleTermSequence(
+	ruleTerms col.Sequential[RuleTermLike],
 	optionalNote string,
-) InlineLike {
-	if uti.IsUndefined(terms) {
-		panic("The \"terms\" attribute is required by this class.")
+) RuleTermSequenceLike {
+	if uti.IsUndefined(ruleTerms) {
+		panic("The \"ruleTerms\" attribute is required by this class.")
 	}
-	var instance = &inline_{
+	var instance = &ruleTermSequence_{
 		// Initialize the instance attributes.
-		terms_:        terms,
+		ruleTerms_:    ruleTerms,
 		optionalNote_: optionalNote,
 	}
 	return instance
@@ -53,17 +53,17 @@ func (c *inlineClass_) Inline(
 
 // Principal Methods
 
-func (v *inline_) GetClass() InlineClassLike {
-	return inlineClass()
+func (v *ruleTermSequence_) GetClass() RuleTermSequenceClassLike {
+	return ruleTermSequenceClass()
 }
 
 // Attribute Methods
 
-func (v *inline_) GetTerms() col.Sequential[TermLike] {
-	return v.terms_
+func (v *ruleTermSequence_) GetRuleTerms() col.Sequential[RuleTermLike] {
+	return v.ruleTerms_
 }
 
-func (v *inline_) GetOptionalNote() string {
+func (v *ruleTermSequence_) GetOptionalNote() string {
 	return v.optionalNote_
 }
 
@@ -71,24 +71,24 @@ func (v *inline_) GetOptionalNote() string {
 
 // Instance Structure
 
-type inline_ struct {
+type ruleTermSequence_ struct {
 	// Declare the instance attributes.
-	terms_        col.Sequential[TermLike]
+	ruleTerms_    col.Sequential[RuleTermLike]
 	optionalNote_ string
 }
 
 // Class Structure
 
-type inlineClass_ struct {
+type ruleTermSequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func inlineClass() *inlineClass_ {
-	return inlineClassReference_
+func ruleTermSequenceClass() *ruleTermSequenceClass_ {
+	return ruleTermSequenceClassReference_
 }
 
-var inlineClassReference_ = &inlineClass_{
+var ruleTermSequenceClassReference_ = &ruleTermSequenceClass_{
 	// Initialize the class constants.
 }
