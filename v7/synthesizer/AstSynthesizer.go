@@ -83,7 +83,7 @@ func (v *astSynthesizer_) CreateFunctionalDeclarations() string {
 
 func (v *astSynthesizer_) CreateClassDeclarations() string {
 	var classDeclarations string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		classDeclarations += v.createClassDeclaration(ruleName)
@@ -93,7 +93,7 @@ func (v *astSynthesizer_) CreateClassDeclarations() string {
 
 func (v *astSynthesizer_) CreateInstanceDeclarations() string {
 	var instanceDeclarations string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		instanceDeclarations += v.createInstanceDeclaration(ruleName)
@@ -121,7 +121,7 @@ func (v *astSynthesizer_) createClassDeclaration(
 	className string,
 ) string {
 	var parameters string
-	var terms = v.analyzer_.GetTerms(className)
+	var terms = v.analyzer_.GetRuleTerms(className)
 	if uti.IsDefined(terms) {
 		// This class represents an inline rule.
 		var terms = terms.GetIterator()
@@ -194,7 +194,7 @@ func (v *astSynthesizer_) createInstanceDeclaration(
 	className string,
 ) string {
 	var getterMethods string
-	var terms = v.analyzer_.GetTerms(className)
+	var terms = v.analyzer_.GetRuleTerms(className)
 	if uti.IsDefined(terms) {
 		// This instance represents an inline rule.
 		var terms = terms.GetIterator()
@@ -277,7 +277,7 @@ func (v *astSynthesizer_) createParameter(
 	return parameter
 }
 
-func (v *astSynthesizer_) isPlural(term not.TermLike) bool {
+func (v *astSynthesizer_) isPlural(term not.RuleTermLike) bool {
 	var cardinality = term.GetOptionalCardinality()
 	if uti.IsUndefined(cardinality) {
 		return false

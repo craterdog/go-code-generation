@@ -257,35 +257,35 @@ func (v *parserSynthesizer_) createCardinality(
 // This method is recursive.  It walks the AST to determine if a rule definition
 // contains any inline rule definitions.  If so, the look-ahead token buffer
 // must be turned off.
-func (v *parserSynthesizer_) containsInlineRule(
+func (v *parserSynthesizer_) containsTermSequence(
 	ruleName string,
 ) bool {
 	var definitions = v.analyzer_.GetDefinitions()
 	switch definitions.GetValue(ruleName).GetAny().(type) {
-	case not.MultiLiteralLike:
+	case not.LiteralAlternativesLike:
 		// The rule name refers to a multi-literal rule.
-	case not.MultiExpressionLike:
+	case not.TokenAlternativesLike:
 		// The rule name refers to a multi-expression rule.
-	case not.MultiRuleLike:
+	case not.RuleAlternativesLike:
 		// The rule name refers to a multi-rule rule.
-		var options = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
+		var options = v.analyzer_.GetRuleNames(ruleName).GetIterator()
 		for options.HasNext() {
 			var option = options.GetNext()
 			var uppercase = option.GetUppercase()
-			if v.containsInlineRule(uppercase) {
+			if v.containsTermSequence(uppercase) {
 				// Once true, it can never go back to false.
 				return true
 			}
 		}
-	case not.InlineRuleLike:
+	case not.TermSequenceLike:
 		// The rule name refers to an inline rule.
 		return true
 	}
 	return false
 }
 
-func (v *parserSynthesizer_) createTerm(
-	term not.TermLike,
+func (v *parserSynthesizer_) createRuleTerm(
+	term not.RuleTermLike,
 ) string {
 	var implementation string
 	var cardinality = term.GetOptionalCardinality()
@@ -301,23 +301,23 @@ func (v *parserSynthesizer_) createTerm(
 	return implementation
 }
 
-func (v *parserSynthesizer_) createInlineRule(
+func (v *parserSynthesizer_) createTermSequence(
 	ruleName string,
 ) string {
 	var class = parserSynthesizerClass()
 	var implementation = class.declareTokens_
-	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
+	var terms = v.analyzer_.GetRuleTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() {
 		var term = terms.GetNext()
-		var parseTerm = v.createTerm(term)
+		var parseRuleTerm = v.createRuleTerm(term)
 		var variableName = variables.GetNext()
-		parseTerm = uti.ReplaceAll(
-			parseTerm,
+		parseRuleTerm = uti.ReplaceAll(
+			parseRuleTerm,
 			"variableName",
 			variableName,
 		)
-		implementation += parseTerm
+		implementation += parseRuleTerm
 	}
 	var found = class.found_
 	var arguments = v.createArguments(ruleName)
@@ -329,14 +329,14 @@ func (v *parserSynthesizer_) createInlineRule(
 	return implementation
 }
 
-func (v *parserSynthesizer_) createMultiLiteral(
+func (v *parserSynthesizer_) createLiteralAlternatives(
 	ruleName string,
 ) string {
 	var class = parserSynthesizerClass()
 	var implementation = class.declareDelimiter_
-	var literalOptions = v.analyzer_.GetLiteralOptions(ruleName).GetIterator()
-	for literalOptions.HasNext() {
-		var literal = literalOptions.GetNext().GetLiteral()
+	var literalValues = v.analyzer_.GetLiteralValues(ruleName).GetIterator()
+	for literalValues.HasNext() {
+		var literal = literalValues.GetNext().GetLiteral()
 		var option = class.literalValue_
 		implementation += uti.ReplaceAll(
 			option,
@@ -348,14 +348,14 @@ func (v *parserSynthesizer_) createMultiLiteral(
 	return implementation
 }
 
-func (v *parserSynthesizer_) createMultiExpression(
+func (v *parserSynthesizer_) createTokenAlternatives(
 	ruleName string,
 ) string {
 	var implementation string
 	var class = parserSynthesizerClass()
-	var expressionOptions = v.analyzer_.GetExpressionOptions(ruleName).GetIterator()
-	for expressionOptions.HasNext() {
-		var lowercase = expressionOptions.GetNext().GetLowercase()
+	var tokenNames = v.analyzer_.GetTokenNames(ruleName).GetIterator()
+	for tokenNames.HasNext() {
+		var lowercase = tokenNames.GetNext().GetLowercase()
 		var parseExpressionName = class.expressionName_
 		implementation += uti.ReplaceAll(
 			parseExpressionName,
@@ -367,14 +367,14 @@ func (v *parserSynthesizer_) createMultiExpression(
 	return implementation
 }
 
-func (v *parserSynthesizer_) createMultiRule(
+func (v *parserSynthesizer_) createRuleAlternatives(
 	ruleName string,
 ) string {
 	var implementation string
 	var class = parserSynthesizerClass()
-	var ruleOptions = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
-	for ruleOptions.HasNext() {
-		var uppercase = ruleOptions.GetNext().GetUppercase()
+	var ruleNames = v.analyzer_.GetRuleNames(ruleName).GetIterator()
+	for ruleNames.HasNext() {
+		var uppercase = ruleNames.GetNext().GetUppercase()
 		var parseRuleName = class.ruleName_
 		implementation += uti.ReplaceAll(
 			parseRuleName,
@@ -393,14 +393,14 @@ func (v *parserSynthesizer_) createParseMethod(
 	var definitions = v.analyzer_.GetDefinitions()
 	var definition = definitions.GetValue(ruleName)
 	switch definition.GetAny().(type) {
-	case not.MultiLiteralLike:
-		methodImplementation = v.createMultiLiteral(ruleName)
-	case not.MultiExpressionLike:
-		methodImplementation = v.createMultiExpression(ruleName)
-	case not.MultiRuleLike:
-		methodImplementation = v.createMultiRule(ruleName)
-	case not.InlineRuleLike:
-		methodImplementation = v.createInlineRule(ruleName)
+	case not.LiteralAlternativesLike:
+		methodImplementation = v.createLiteralAlternatives(ruleName)
+	case not.TokenAlternativesLike:
+		methodImplementation = v.createTokenAlternatives(ruleName)
+	case not.RuleAlternativesLike:
+		methodImplementation = v.createRuleAlternatives(ruleName)
+	case not.TermSequenceLike:
+		methodImplementation = v.createTermSequence(ruleName)
 	}
 	var class = parserSynthesizerClass()
 	var parseMethod = class.parseMethod_
@@ -419,7 +419,7 @@ func (v *parserSynthesizer_) createParseMethod(
 
 func (v *parserSynthesizer_) createParseMethods() string {
 	var parseMethods string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		parseMethods += v.createParseMethod(ruleName)
@@ -435,7 +435,7 @@ func (v *parserSynthesizer_) createRule(
 	var required = class.requiredNestedExpression_
 	var optional = class.optionalNestedExpression_
 	var repeated = class.repeatedNestedExpression_
-	if v.containsInlineRule(uppercase) {
+	if v.containsTermSequence(uppercase) {
 		required = class.requiredRule_
 		optional = class.optionalRule_
 		repeated = class.repeatedRule_

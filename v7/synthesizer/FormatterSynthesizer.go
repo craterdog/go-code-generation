@@ -183,7 +183,7 @@ func (v *formatterSynthesizer_) createProcessRule(
 
 func (v *formatterSynthesizer_) createProcessRules() string {
 	var processRules string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		var processRule = v.createProcessRule(ruleName)
@@ -211,7 +211,7 @@ func (v *formatterSynthesizer_) createProcessToken(
 
 func (v *formatterSynthesizer_) createProcessTokens() string {
 	var processTokens string
-	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	var tokenNames = v.analyzer_.GetTokens().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var processToken = v.createProcessToken(tokenName)

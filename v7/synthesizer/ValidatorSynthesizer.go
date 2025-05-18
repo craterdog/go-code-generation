@@ -187,7 +187,7 @@ func (v *validatorSynthesizer_) createProcessToken(
 
 func (v *validatorSynthesizer_) createProcessTokens() string {
 	var processTokens string
-	var expressionNames = v.analyzer_.GetTokenNames().GetIterator()
+	var expressionNames = v.analyzer_.GetTokens().GetIterator()
 	for expressionNames.HasNext() {
 		var expressionName = expressionNames.GetNext()
 		var processToken = v.createProcessToken(expressionName)
@@ -211,7 +211,7 @@ func (v *validatorSynthesizer_) createProcessRule(
 
 func (v *validatorSynthesizer_) createProcessRules() string {
 	var processRules string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		var processRule = v.createProcessRule(ruleName)

@@ -61,30 +61,30 @@ func (v *syntaxAnalyzer_) GetDefinitions() col.CatalogLike[string, not.Definitio
 	return v.definitions_
 }
 
-func (v *syntaxAnalyzer_) GetRuleOptions(
+func (v *syntaxAnalyzer_) GetRuleNames(
 	ruleName string,
-) col.ListLike[not.RuleOptionLike] {
-	return v.ruleOptions_.GetValue(ruleName)
+) col.ListLike[not.RuleNameLike] {
+	return v.ruleNames_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetExpressionOptions(
+func (v *syntaxAnalyzer_) GetTokenNames(
 	ruleName string,
-) col.ListLike[not.ExpressionOptionLike] {
+) col.ListLike[not.TokenNameLike] {
 	return v.tokenOptions_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetLiteralOptions(
+func (v *syntaxAnalyzer_) GetLiteralValues(
 	ruleName string,
-) col.ListLike[not.LiteralOptionLike] {
-	return v.literalOptions_.GetValue(ruleName)
+) col.ListLike[not.LiteralValueLike] {
+	return v.literalValues_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *syntaxAnalyzer_) GetRuleNames() col.SetLike[string] {
-	return v.ruleNames_
+func (v *syntaxAnalyzer_) GetRules() col.SetLike[string] {
+	return v.rules_
 }
 
 func (v *syntaxAnalyzer_) GetSyntaxMap() string {
@@ -95,14 +95,14 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 	return v.syntaxName_
 }
 
-func (v *syntaxAnalyzer_) GetTerms(
+func (v *syntaxAnalyzer_) GetRuleTerms(
 	ruleName string,
-) col.ListLike[not.TermLike] {
+) col.ListLike[not.RuleTermLike] {
 	return v.terms_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetTokenNames() col.SetLike[string] {
-	return v.tokenNames_
+func (v *syntaxAnalyzer_) GetTokens() col.SetLike[string] {
+	return v.tokens_
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
@@ -127,22 +127,19 @@ func (v *syntaxAnalyzer_) GetVariableType(
 	return variableType
 }
 
-func (v *syntaxAnalyzer_) MakeOptional(
-	mixedCase string,
-) string {
-	var optional string
-	if len(mixedCase) > 0 {
-		optional = "optional" + uti.MakeUpperCase(mixedCase)
-	}
-	return optional
-}
-
 // not.Methodical Methods
 
-func (v *syntaxAnalyzer_) ProcessExcluded(
-	excluded string,
+func (v *syntaxAnalyzer_) ProcessDelimiter(
+	delimiter string,
 ) {
-	v.pattern_ += "^"
+	switch delimiter {
+	case "~":
+		v.pattern_ += "^"
+	case "?", "*", "+":
+		if v.inPattern_ > 0 {
+			v.pattern_ += delimiter
+		}
+	}
 }
 
 func (v *syntaxAnalyzer_) ProcessGlyph(
@@ -185,7 +182,7 @@ func (v *syntaxAnalyzer_) ProcessLowercase(
 ) {
 	switch {
 	case v.inDefinition_:
-		v.tokenNames_.AddValue(lowercase)
+		v.tokens_.AddValue(lowercase)
 	case v.inPattern_ > 0:
 		v.pattern_ += `(?:" + ` + lowercase + `_ + ")`
 	}
@@ -199,32 +196,18 @@ func (v *syntaxAnalyzer_) ProcessNumber(
 	}
 }
 
-func (v *syntaxAnalyzer_) ProcessOptional(
-	optional string,
-) {
-	if v.inPattern_ > 0 {
-		v.pattern_ += optional
-	}
-}
-
-func (v *syntaxAnalyzer_) ProcessRepeated(
-	repeated string,
-) {
-	if v.inPattern_ > 0 {
-		v.pattern_ += repeated
-	}
-}
-
-func (v *syntaxAnalyzer_) PreprocessAlternative(
-	alternative not.AlternativeLike,
+func (v *syntaxAnalyzer_) PreprocessAlternativeSequence(
+	alternative not.AlternativeSequenceLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.pattern_ += "|"
 }
 
 func (v *syntaxAnalyzer_) PostprocessConstrained(
 	constrained not.ConstrainedLike,
+	index uint,
+	count uint,
 ) {
 	if v.inPattern_ > 0 && !v.isGreedy_ {
 		v.pattern_ += "?"
@@ -234,12 +217,16 @@ func (v *syntaxAnalyzer_) PostprocessConstrained(
 
 func (v *syntaxAnalyzer_) PreprocessDefinition(
 	definition not.DefinitionLike,
+	index uint,
+	count uint,
 ) {
 	v.inDefinition_ = true
 }
 
 func (v *syntaxAnalyzer_) PostprocessDefinition(
 	definition not.DefinitionLike,
+	index uint,
+	count uint,
 ) {
 	v.inDefinition_ = false
 }
@@ -247,7 +234,7 @@ func (v *syntaxAnalyzer_) PostprocessDefinition(
 func (v *syntaxAnalyzer_) PreprocessExpression(
 	expression not.ExpressionLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.pattern_ = `"(?:`
 }
@@ -255,17 +242,17 @@ func (v *syntaxAnalyzer_) PreprocessExpression(
 func (v *syntaxAnalyzer_) PostprocessExpression(
 	expression not.ExpressionLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.pattern_ += `)"`
 	var expressionName = expression.GetLowercase()
 	v.patterns_.SetValue(expressionName, v.pattern_)
 }
 
-func (v *syntaxAnalyzer_) PreprocessExpressionOption(
-	tokenOption not.ExpressionOptionLike,
+func (v *syntaxAnalyzer_) PreprocessTokenName(
+	tokenOption not.TokenNameLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	var tokenOptions = v.tokenOptions_.GetValue(v.ruleName_)
 	tokenOptions.AppendValue(tokenOption)
@@ -278,36 +265,48 @@ func (v *syntaxAnalyzer_) PreprocessExpressionOption(
 
 func (v *syntaxAnalyzer_) PreprocessExtent(
 	extent not.ExtentLike,
+	index uint,
+	count uint,
 ) {
 	v.pattern_ += "-"
 }
 
 func (v *syntaxAnalyzer_) PreprocessFilter(
 	filter not.FilterLike,
+	index uint,
+	count uint,
 ) {
 	v.pattern_ += "["
 }
 
 func (v *syntaxAnalyzer_) PostprocessFilter(
 	filter not.FilterLike,
+	index uint,
+	count uint,
 ) {
 	v.pattern_ += "]"
 }
 
 func (v *syntaxAnalyzer_) PreprocessGroup(
 	group not.GroupLike,
+	index uint,
+	count uint,
 ) {
 	v.pattern_ += "("
 }
 
 func (v *syntaxAnalyzer_) PostprocessGroup(
 	group not.GroupLike,
+	index uint,
+	count uint,
 ) {
 	v.pattern_ += ")"
 }
 
-func (v *syntaxAnalyzer_) PostprocessInlineRule(
-	inline not.InlineRuleLike,
+func (v *syntaxAnalyzer_) PostprocessTermSequence(
+	inline not.TermSequenceLike,
+	index uint,
+	count uint,
 ) {
 	var note = inline.GetOptionalNote()
 	if uti.IsDefined(note) {
@@ -317,21 +316,23 @@ func (v *syntaxAnalyzer_) PostprocessInlineRule(
 
 func (v *syntaxAnalyzer_) PreprocessLimit(
 	limit not.LimitLike,
+	index uint,
+	count uint,
 ) {
 	if v.inPattern_ > 0 {
 		v.pattern_ += ","
 	}
 }
 
-func (v *syntaxAnalyzer_) PreprocessLiteralOption(
-	literalOption not.LiteralOptionLike,
+func (v *syntaxAnalyzer_) PreprocessLiteralValue(
+	literalValue not.LiteralValueLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	var literalOptions = v.literalOptions_.GetValue(v.ruleName_)
-	literalOptions.AppendValue(literalOption)
-	v.syntaxMap_ += "\n    " + literalOption.GetLiteral()
-	var note = literalOption.GetOptionalNote()
+	var literalValues = v.literalValues_.GetValue(v.ruleName_)
+	literalValues.AppendValue(literalValue)
+	v.syntaxMap_ += "\n    " + literalValue.GetLiteral()
+	var note = literalValue.GetOptionalNote()
 	if uti.IsDefined(note) {
 		v.syntaxMap_ += "  " + note
 	}
@@ -339,18 +340,24 @@ func (v *syntaxAnalyzer_) PreprocessLiteralOption(
 
 func (v *syntaxAnalyzer_) PreprocessPattern(
 	definition not.PatternLike,
+	index uint,
+	count uint,
 ) {
 	v.inPattern_++
 }
 
 func (v *syntaxAnalyzer_) PostprocessPattern(
 	definition not.PatternLike,
+	index uint,
+	count uint,
 ) {
 	v.inPattern_--
 }
 
 func (v *syntaxAnalyzer_) PreprocessQuantified(
 	quantified not.QuantifiedLike,
+	index uint,
+	count uint,
 ) {
 	if v.inPattern_ > 0 {
 		v.pattern_ += "{"
@@ -359,6 +366,8 @@ func (v *syntaxAnalyzer_) PreprocessQuantified(
 
 func (v *syntaxAnalyzer_) PostprocessQuantified(
 	quantified not.QuantifiedLike,
+	index uint,
+	count uint,
 ) {
 	if v.inPattern_ > 0 {
 		v.pattern_ += "}"
@@ -372,26 +381,26 @@ func (v *syntaxAnalyzer_) PostprocessQuantified(
 func (v *syntaxAnalyzer_) PreprocessRule(
 	rule not.RuleLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.hasLiteral_ = false
 	var ruleName = rule.GetUppercase()
 	v.ruleName_ = ruleName
-	v.ruleNames_.AddValue(ruleName)
+	v.rules_.AddValue(ruleName)
 	var definition = rule.GetDefinition()
 	v.definitions_.SetValue(ruleName, definition)
 	switch definition.GetAny().(type) {
-	case not.MultiLiteralLike:
-		var literalOptions = col.List[not.LiteralOptionLike]()
-		v.literalOptions_.SetValue(ruleName, literalOptions)
-	case not.MultiExpressionLike:
-		var tokenOptions = col.List[not.ExpressionOptionLike]()
+	case not.LiteralAlternativesLike:
+		var literalValues = col.List[not.LiteralValueLike]()
+		v.literalValues_.SetValue(ruleName, literalValues)
+	case not.TokenAlternativesLike:
+		var tokenOptions = col.List[not.TokenNameLike]()
 		v.tokenOptions_.SetValue(ruleName, tokenOptions)
-	case not.MultiRuleLike:
-		var ruleOptions = col.List[not.RuleOptionLike]()
-		v.ruleOptions_.SetValue(ruleName, ruleOptions)
-	case not.InlineRuleLike:
-		var terms = col.List[not.TermLike]()
+	case not.RuleAlternativesLike:
+		var ruleNames = col.List[not.RuleNameLike]()
+		v.ruleNames_.SetValue(ruleName, ruleNames)
+	case not.TermSequenceLike:
+		var terms = col.List[not.RuleTermLike]()
 		v.terms_.SetValue(ruleName, terms)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
@@ -400,22 +409,22 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 func (v *syntaxAnalyzer_) PostprocessRule(
 	rule not.RuleLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	var ruleName = rule.GetUppercase()
 	v.extractVariables(ruleName)
 	v.syntaxMap_ += "`,"
 }
 
-func (v *syntaxAnalyzer_) PreprocessRuleOption(
-	ruleOption not.RuleOptionLike,
+func (v *syntaxAnalyzer_) PreprocessRuleName(
+	ruleName not.RuleNameLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
-	var ruleOptions = v.ruleOptions_.GetValue(v.ruleName_)
-	ruleOptions.AppendValue(ruleOption)
-	v.syntaxMap_ += "\n    " + ruleOption.GetUppercase()
-	var note = ruleOption.GetOptionalNote()
+	var ruleNames = v.ruleNames_.GetValue(v.ruleName_)
+	ruleNames.AppendValue(ruleName)
+	v.syntaxMap_ += "\n    " + ruleName.GetUppercase()
+	var note = ruleName.GetOptionalNote()
 	if uti.IsDefined(note) {
 		v.syntaxMap_ += "  " + note
 	}
@@ -423,12 +432,14 @@ func (v *syntaxAnalyzer_) PreprocessRuleOption(
 
 func (v *syntaxAnalyzer_) PreprocessSyntax(
 	syntax not.SyntaxLike,
+	index uint,
+	count uint,
 ) {
 	v.isGreedy_ = true // The default is "greedy" scanning.
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
-	v.ruleNames_ = col.Set[string]()
-	v.tokenNames_ = col.SetFromArray[string](
+	v.rules_ = col.Set[string]()
+	v.tokens_ = col.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
 	)
 	v.pluralNames_ = col.Set[string]()
@@ -447,15 +458,17 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		`"(?:[ \\t]+)"`,
 	)
 	v.definitions_ = col.Catalog[string, not.DefinitionLike]()
-	v.terms_ = col.Catalog[string, col.ListLike[not.TermLike]]()
+	v.terms_ = col.Catalog[string, col.ListLike[not.RuleTermLike]]()
 	v.variables_ = col.Catalog[string, col.ListLike[string]]()
-	v.ruleOptions_ = col.Catalog[string, col.ListLike[not.RuleOptionLike]]()
-	v.tokenOptions_ = col.Catalog[string, col.ListLike[not.ExpressionOptionLike]]()
-	v.literalOptions_ = col.Catalog[string, col.ListLike[not.LiteralOptionLike]]()
+	v.ruleNames_ = col.Catalog[string, col.ListLike[not.RuleNameLike]]()
+	v.tokenOptions_ = col.Catalog[string, col.ListLike[not.TokenNameLike]]()
+	v.literalValues_ = col.Catalog[string, col.ListLike[not.LiteralValueLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
 	syntax not.SyntaxLike,
+	index uint,
+	count uint,
 ) {
 	var delimiters = `"(?:`
 	if !v.delimiters_.IsEmpty() {
@@ -470,10 +483,10 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 	v.patterns_.SetValue("delimiter", delimiters)
 }
 
-func (v *syntaxAnalyzer_) PreprocessTerm(
-	term not.TermLike,
+func (v *syntaxAnalyzer_) PreprocessRuleTerm(
+	term not.RuleTermLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	// Process the term.
 	var terms = v.terms_.GetValue(v.ruleName_)
@@ -571,7 +584,7 @@ func (v *syntaxAnalyzer_) extractSyntaxName(
 }
 
 func (v *syntaxAnalyzer_) extractVariableName(
-	term not.TermLike,
+	term not.RuleTermLike,
 ) string {
 	var component = term.GetComponent().GetAny().(string)
 	if component[0] == '"' {
@@ -586,7 +599,7 @@ func (v *syntaxAnalyzer_) extractVariableName(
 			var constrained = actual.GetAny().(string)
 			switch constrained {
 			case "?":
-				variableName = v.MakeOptional(variableName)
+				variableName = v.makeOptional(variableName)
 			case "*", "+":
 				variableName = uti.MakePlural(variableName)
 			}
@@ -601,11 +614,11 @@ func (v *syntaxAnalyzer_) extractVariables(
 	ruleName string,
 ) {
 	// Only inline rules have variables.
-	var terms col.Sequential[not.TermLike]
+	var terms col.Sequential[not.RuleTermLike]
 	var definition = v.definitions_.GetValue(ruleName)
 	switch actual := definition.GetAny().(type) {
-	case not.InlineRuleLike:
-		terms = actual.GetTerms()
+	case not.TermSequenceLike:
+		terms = actual.GetRuleTerms()
 	default:
 		return
 	}
@@ -645,31 +658,41 @@ func (v *syntaxAnalyzer_) extractVariables(
 	v.variables_.SetValue(ruleName, variables)
 }
 
+func (v *syntaxAnalyzer_) makeOptional(
+	mixedCase string,
+) string {
+	var optional string
+	if len(mixedCase) > 0 {
+		optional = "optional" + uti.MakeUpperCase(mixedCase)
+	}
+	return optional
+}
+
 // Instance Structure
 
 type syntaxAnalyzer_ struct {
 	// Declare the instance attributes.
-	visitor_        not.VisitorLike
-	isGreedy_       bool
-	inDefinition_   bool
-	inPattern_      uint8
-	hasLiteral_     bool
-	syntaxMap_      string
-	syntaxName_     string
-	legalNotice_    string
-	ruleName_       string
-	pattern_        string
-	ruleNames_      col.SetLike[string]
-	tokenNames_     col.SetLike[string]
-	pluralNames_    col.SetLike[string]
-	delimiters_     col.SetLike[string]
-	patterns_       col.CatalogLike[string, string]
-	definitions_    col.CatalogLike[string, not.DefinitionLike]
-	terms_          col.CatalogLike[string, col.ListLike[not.TermLike]]
-	variables_      col.CatalogLike[string, col.ListLike[string]]
-	ruleOptions_    col.CatalogLike[string, col.ListLike[not.RuleOptionLike]]
-	tokenOptions_   col.CatalogLike[string, col.ListLike[not.ExpressionOptionLike]]
-	literalOptions_ col.CatalogLike[string, col.ListLike[not.LiteralOptionLike]]
+	visitor_       not.VisitorLike
+	isGreedy_      bool
+	inDefinition_  bool
+	inPattern_     uint8
+	hasLiteral_    bool
+	syntaxMap_     string
+	syntaxName_    string
+	legalNotice_   string
+	ruleName_      string
+	pattern_       string
+	rules_         col.SetLike[string]
+	tokens_        col.SetLike[string]
+	pluralNames_   col.SetLike[string]
+	delimiters_    col.SetLike[string]
+	patterns_      col.CatalogLike[string, string]
+	definitions_   col.CatalogLike[string, not.DefinitionLike]
+	terms_         col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
+	variables_     col.CatalogLike[string, col.ListLike[string]]
+	ruleNames_     col.CatalogLike[string, col.ListLike[not.RuleNameLike]]
+	tokenOptions_  col.CatalogLike[string, col.ListLike[not.TokenNameLike]]
+	literalValues_ col.CatalogLike[string, col.ListLike[not.LiteralValueLike]]
 
 	// Declare the inherited aspects.
 	not.Methodical

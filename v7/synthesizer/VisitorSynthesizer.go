@@ -151,11 +151,11 @@ func (v *visitorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *visitorSynthesizer_) createInlineRule(
+func (v *visitorSynthesizer_) createTermSequence(
 	ruleName string,
 ) string {
 	var implementation string
-	var terms = v.analyzer_.GetTerms(ruleName).GetIterator()
+	var terms = v.analyzer_.GetRuleTerms(ruleName).GetIterator()
 	var variables = v.analyzer_.GetVariables(ruleName).GetIterator()
 	for terms.HasNext() && variables.HasNext() {
 		var slot = uint(terms.GetSlot())
@@ -170,7 +170,7 @@ func (v *visitorSynthesizer_) createInlineRule(
 }
 
 func (v *visitorSynthesizer_) createInlineTerm(
-	term not.TermLike,
+	term not.RuleTermLike,
 	variableName string,
 ) string {
 	var implementation string
@@ -182,7 +182,7 @@ func (v *visitorSynthesizer_) createInlineTerm(
 	case not.MatchesType(actual, not.LowercaseToken):
 		implementation = v.createExpressionTerm(actual, cardinality)
 	case not.MatchesType(actual, not.UppercaseToken):
-		implementation = v.createRuleTerm(actual, cardinality)
+		implementation = v.createRuleName(actual, cardinality)
 	}
 	implementation = uti.ReplaceAll(
 		implementation,
@@ -293,7 +293,7 @@ func (v *visitorSynthesizer_) createExpressionTerm(
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createRuleTerm(
+func (v *visitorSynthesizer_) createRuleName(
 	uppercase string,
 	cardinality not.CardinalityLike,
 ) string {
@@ -329,87 +329,86 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	return inlineSlot
 }
 
-func (v *visitorSynthesizer_) createMultiLiteral(
+func (v *visitorSynthesizer_) createLiteralAlternatives(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var implementation = class.multiLiteralOptions_
-	var multiLiteral string
-	var literalOptions = v.analyzer_.GetLiteralOptions(ruleName).GetIterator()
-	for literalOptions.HasNext() {
-		var literalOption = literalOptions.GetNext()
-		var literalValue = literalOption.GetLiteral()
-		var literal = class.literalOption_
-		literal = uti.ReplaceAll(
-			literal,
-			"literalValue",
+	var literalValues string
+	var iterator = v.analyzer_.GetLiteralValues(ruleName).GetIterator()
+	for iterator.HasNext() {
+		var literal = iterator.GetNext().GetLiteral()
+		var literalValue = class.literalValue_
+		literalValue = uti.ReplaceAll(
 			literalValue,
+			"literal",
+			literal,
 		)
-		multiLiteral += literal
+		literalValues += literalValue
 	}
+	var implementation = class.literalAlternatives_
 	implementation = uti.ReplaceAll(
 		implementation,
-		"literalOptions",
-		multiLiteral,
+		"literalValues",
+		literalValues,
 	)
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createMultiExpression(
+func (v *visitorSynthesizer_) createTokenAlternatives(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var implementation = class.multiExpressionOptions_
-	var multiExpression string
-	var expressionOptions = v.analyzer_.GetExpressionOptions(ruleName).GetIterator()
-	for expressionOptions.HasNext() {
-		var expressionOption = expressionOptions.GetNext()
-		var lowercase = expressionOption.GetLowercase()
-		var expression = class.expressionOption_
+	var implementation = class.tokenAlternatives_
+	var tokenAlternatives string
+	var tokenNames = v.analyzer_.GetTokenNames(ruleName).GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
+		var lowercase = tokenName.GetLowercase()
+		var expression = class.tokenName_
 		expression = uti.ReplaceAll(
 			expression,
 			"lowercase",
 			lowercase,
 		)
-		multiExpression += expression
+		tokenAlternatives += expression
 	}
 	implementation = uti.ReplaceAll(
 		implementation,
-		"expressionOptions",
-		multiExpression,
+		"tokenNames",
+		tokenAlternatives,
 	)
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createMultiRule(
+func (v *visitorSynthesizer_) createRuleAlternatives(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var implementation = class.multiRuleOptions_
-	var multiRule string
-	var ruleOptions = v.analyzer_.GetRuleOptions(ruleName).GetIterator()
-	for ruleOptions.HasNext() {
-		var ruleOption = ruleOptions.GetNext()
-		var uppercase = ruleOption.GetUppercase()
-		var rule = class.ruleOption_
+	var implementation = class.ruleAlternatives_
+	var ruleAlternatives string
+	var ruleNames = v.analyzer_.GetRuleNames(ruleName).GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
+		var uppercase = ruleName.GetUppercase()
+		var rule = class.ruleName_
 		rule = uti.ReplaceAll(
 			rule,
 			"uppercase",
 			uppercase,
 		)
-		multiRule += rule
+		ruleAlternatives += rule
 	}
 	implementation = uti.ReplaceAll(
 		implementation,
-		"ruleOptions",
-		multiRule,
+		"ruleNames",
+		ruleAlternatives,
 	)
 	return implementation
 }
 
 func (v *visitorSynthesizer_) createVisitMethods() string {
 	var visitMethods string
-	var ruleNames = v.analyzer_.GetRuleNames().GetIterator()
+	var ruleNames = v.analyzer_.GetRules().GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
 		var visitMethod = v.createVisitMethod(ruleName)
@@ -424,14 +423,14 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	var methodImplementation string
 	var definition = v.analyzer_.GetDefinitions().GetValue(ruleName)
 	switch definition.GetAny().(type) {
-	case not.MultiLiteralLike:
-		methodImplementation = v.createMultiLiteral(ruleName)
-	case not.MultiExpressionLike:
-		methodImplementation = v.createMultiExpression(ruleName)
-	case not.MultiRuleLike:
-		methodImplementation = v.createMultiRule(ruleName)
-	case not.InlineRuleLike:
-		methodImplementation = v.createInlineRule(ruleName)
+	case not.LiteralAlternativesLike:
+		methodImplementation = v.createLiteralAlternatives(ruleName)
+	case not.TokenAlternativesLike:
+		methodImplementation = v.createTokenAlternatives(ruleName)
+	case not.RuleAlternativesLike:
+		methodImplementation = v.createRuleAlternatives(ruleName)
+	case not.TermSequenceLike:
+		methodImplementation = v.createTermSequence(ruleName)
 	}
 	var class = visitorSynthesizerClass()
 	var visitMethod = class.visitMethod_
@@ -459,32 +458,32 @@ type visitorSynthesizer_ struct {
 
 type visitorSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_         string
-	importedPackages_       string
-	accessFunction_         string
-	constructorMethods_     string
-	principalMethods_       string
-	privateMethods_         string
-	visitMethod_            string
-	multiLiteralOptions_    string
-	literalOption_          string
-	multiExpressionOptions_ string
-	expressionOption_       string
-	multiRuleOptions_       string
-	ruleOption_             string
-	optionalLiteral_        string
-	requiredLiteral_        string
-	repeatedLiteral_        string
-	optionalExpression_     string
-	requiredExpression_     string
-	repeatedExpression_     string
-	optionalRule_           string
-	requiredRule_           string
-	repeatedRule_           string
-	slot_                   string
-	instanceStructure_      string
-	classStructure_         string
-	classReference_         string
+	warningMessage_      string
+	importedPackages_    string
+	accessFunction_      string
+	constructorMethods_  string
+	principalMethods_    string
+	privateMethods_      string
+	visitMethod_         string
+	literalAlternatives_ string
+	literalValue_        string
+	tokenAlternatives_   string
+	tokenName_           string
+	ruleAlternatives_    string
+	ruleName_            string
+	optionalLiteral_     string
+	requiredLiteral_     string
+	repeatedLiteral_     string
+	optionalExpression_  string
+	requiredExpression_  string
+	repeatedExpression_  string
+	optionalRule_        string
+	requiredRule_        string
+	repeatedRule_        string
+	slot_                string
+	instanceStructure_   string
+	classStructure_      string
+	classReference_      string
 }
 
 // Class Reference
@@ -567,32 +566,32 @@ func (v *visitor_) visit<~RuleName>(
 ) {<MethodImplementation>}
 `,
 
-	multiLiteralOptions_: `
+	literalAlternatives_: `
 	// Visit the possible <~ruleName> literal values.
 	var actual = <~ruleName>.GetAny().(string)
-	switch actual {<LiteralOptions>}
+	switch actual {<LiteralValues>}
 `,
 
-	literalOption_: `
-	case <literalValue>:
-		v.processor_.ProcessDelimiter(<literalValue>)`,
+	literalValue_: `
+	case <literal>:
+		v.processor_.ProcessDelimiter(<literal>)`,
 
-	multiExpressionOptions_: `
+	tokenAlternatives_: `
 	// Visit the possible <~ruleName> expression types.
 	var actual = <~ruleName>.GetAny().(string)
-	switch {<ExpressionOptions>}
+	switch {<TokenNames>}
 `,
 
-	expressionOption_: `
+	tokenName_: `
 	case ScannerClass().MatchesType(actual, <~Lowercase>Token):
 		v.processor_.Process<~Lowercase>(actual)`,
 
-	multiRuleOptions_: `
+	ruleAlternatives_: `
 	// Visit the possible <~ruleName> rule types.
-	switch actual := <~ruleName>.GetAny().(type) {<RuleOptions>}
+	switch actual := <~ruleName>.GetAny().(type) {<RuleNames>}
 `,
 
-	ruleOption_: `
+	ruleName_: `
 	case ast.<~Uppercase>Like:
 		v.processor_.Preprocess<~Uppercase>(
 			actual,

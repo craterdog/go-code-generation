@@ -172,7 +172,7 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	// names from the catalog of expressions in their declared order.
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
-	var tokenNames = v.analyzer_.GetTokenNames()
+	var tokenNames = v.analyzer_.GetTokens()
 	var expressionNames = col.CatalogFromSequence[string, string](
 		v.analyzer_.GetPatterns(),
 	).GetKeys().GetIterator()
@@ -226,7 +226,7 @@ func (v *scannerSynthesizer_) createTokenIdentifiers() string {
 	)
 
 	// Create the rest of the token identifiers.
-	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	var tokenNames = v.analyzer_.GetTokens().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var tokenIdentifier = class.tokenIdentifier_
@@ -243,7 +243,7 @@ func (v *scannerSynthesizer_) createTokenIdentifiers() string {
 
 func (v *scannerSynthesizer_) createTokenMatchers() string {
 	var tokenMatchers string
-	var tokenNames = v.analyzer_.GetTokenNames().GetIterator()
+	var tokenNames = v.analyzer_.GetTokens().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var class = scannerSynthesizerClass()

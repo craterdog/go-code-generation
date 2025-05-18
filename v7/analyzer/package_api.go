@@ -129,26 +129,26 @@ type SyntaxAnalyzerLike interface {
 	GetClass() SyntaxAnalyzerClassLike
 	GetLegalNotice() string
 	GetSyntaxName() string
-	GetRuleNames() col.SetLike[string]
-	GetTokenNames() col.SetLike[string]
-	GetTerms(
+	GetRules() col.SetLike[string]
+	GetTokens() col.SetLike[string]
+	GetRuleTerms(
 		ruleName string,
-	) col.ListLike[not.TermLike]
+	) col.ListLike[not.RuleTermLike]
 	GetVariables(
 		ruleName string,
 	) col.ListLike[string]
 	GetVariableType(
 		component not.ComponentLike,
 	) string
-	GetRuleOptions(
+	GetRuleNames(
 		ruleName string,
-	) col.ListLike[not.RuleOptionLike]
-	GetExpressionOptions(
+	) col.ListLike[not.RuleNameLike]
+	GetTokenNames(
 		ruleName string,
-	) col.ListLike[not.ExpressionOptionLike]
-	GetLiteralOptions(
+	) col.ListLike[not.TokenNameLike]
+	GetLiteralValues(
 		ruleName string,
-	) col.ListLike[not.LiteralOptionLike]
+	) col.ListLike[not.LiteralValueLike]
 	GetPatterns() col.CatalogLike[string, string]
 	GetDefinitions() col.CatalogLike[string, not.DefinitionLike]
 	GetSyntaxMap() string
