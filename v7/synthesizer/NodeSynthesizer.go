@@ -264,8 +264,12 @@ func (v *nodeSynthesizer_) createConstructorMethod(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
-	var constructorParameters = constructorMethod.GetParameters()
-	var parameters = v.createParameters(constructorParameters)
+	var parameters string
+	var parameterList = constructorMethod.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		var constructorParameters = parameterList.GetParameters()
+		parameters = v.createParameters(constructorParameters)
+	}
 	var resultType = v.extractType(constructorMethod.GetAbstraction())
 	var instanceInstantiation = v.createInstanceInstantiation(constructorMethod)
 	var class = nodeSynthesizerClass()
@@ -344,11 +348,16 @@ func (v *nodeSynthesizer_) createGetterMethod(
 func (v *nodeSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
-	var constructorParameters = constructorMethod.GetParameters()
-	var attributeChecks = v.createAttributeChecks(constructorParameters)
-	var attributeInitializations = v.createAttributeInitializations(
-		constructorParameters,
-	)
+	var attributeChecks string
+	var attributeInitializations string
+	var parameterList = constructorMethod.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		var constructorParameters = parameterList.GetParameters()
+		attributeChecks = v.createAttributeChecks(constructorParameters)
+		attributeInitializations = v.createAttributeInitializations(
+			constructorParameters,
+		)
+	}
 	var class = nodeSynthesizerClass()
 	var instantiation = class.structureInstantiation_
 	instantiation = uti.ReplaceAll(

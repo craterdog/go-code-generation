@@ -286,7 +286,12 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 	v.importedPackages_ = col.Catalog[string, string]()
 	var packageImports = packageDeclaration.GetPackageImports()
-	var packages = packageImports.GetImportedPackages().GetIterator()
+	var importList = packageImports.GetOptionalImportList()
+	if uti.IsUndefined(importList) {
+		// This package has no imports.
+		return
+	}
+	var packages = importList.GetImportedPackages().GetIterator()
 	for packages.HasNext() {
 		var importedPackage = packages.GetNext()
 		var packagePath = importedPackage.GetPath()
@@ -337,7 +342,12 @@ func (v *classAnalyzer_) analyzePrivateAttributes(
 		// Focus only on constructors that are passed attributes as arguments.
 		if !v.isIntrinsic_ &&
 			(name == className || sts.HasPrefix(name, className+"With")) {
-			var parameters = constructorMethod.GetParameters().GetIterator()
+			var parameterList = constructorMethod.GetOptionalParameterList()
+			if uti.IsUndefined(parameterList) {
+				// This constructor method takes no parameters.
+				continue
+			}
+			var parameters = parameterList.GetParameters().GetIterator()
 			for parameters.HasNext() {
 				var parameter = parameters.GetNext()
 				var attributeName = sts.TrimSuffix(parameter.GetName(), "_")

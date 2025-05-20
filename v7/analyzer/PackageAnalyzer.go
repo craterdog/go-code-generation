@@ -98,7 +98,7 @@ func (v *packageAnalyzer_) GetAspectDeclarations() col.ListLike[mod.AspectDeclar
 func (v *packageAnalyzer_) PreprocessAdditionalValue(
 	additionalValue mod.AdditionalValueLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	var name = additionalValue.GetName()
 	v.enumeratedValues_.AppendValue(name)
@@ -107,7 +107,7 @@ func (v *packageAnalyzer_) PreprocessAdditionalValue(
 func (v *packageAnalyzer_) PreprocessAspectDeclaration(
 	aspectDeclaration mod.AspectDeclarationLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.aspectDeclarations_.AppendValue(aspectDeclaration)
 }
@@ -115,7 +115,7 @@ func (v *packageAnalyzer_) PreprocessAspectDeclaration(
 func (v *packageAnalyzer_) PreprocessClassDeclaration(
 	classDeclaration mod.ClassDeclarationLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.classDeclarations_.AppendValue(classDeclaration)
 }
@@ -123,7 +123,7 @@ func (v *packageAnalyzer_) PreprocessClassDeclaration(
 func (v *packageAnalyzer_) PreprocessFunctionalDeclaration(
 	functionalDeclaration mod.FunctionalDeclarationLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.functionalDeclarations_.AppendValue(functionalDeclaration)
 }
@@ -131,7 +131,7 @@ func (v *packageAnalyzer_) PreprocessFunctionalDeclaration(
 func (v *packageAnalyzer_) PreprocessImportedPackage(
 	importedPackage mod.ImportedPackageLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	var packageAcronym = importedPackage.GetName()
 	var packagePath = importedPackage.GetPath()
@@ -141,19 +141,23 @@ func (v *packageAnalyzer_) PreprocessImportedPackage(
 func (v *packageAnalyzer_) PreprocessInstanceDeclaration(
 	instanceDeclaration mod.InstanceDeclarationLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.instanceDeclarations_.AppendValue(instanceDeclaration)
 }
 
 func (v *packageAnalyzer_) PreprocessPackageDeclaration(
 	packageDeclaration mod.PackageDeclarationLike,
+	index uint,
+	count uint,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 }
 
 func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 	packageDeclaration mod.PackageDeclarationLike,
+	index uint,
+	count uint,
 ) {
 	v.importedPackages_.SetValue(
 		"fmt",
@@ -175,6 +179,8 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 
 func (v *packageAnalyzer_) PreprocessPackageHeader(
 	packageHeader mod.PackageHeaderLike,
+	index uint,
+	count uint,
 ) {
 	v.packageName_ = packageHeader.GetName()
 }
@@ -182,13 +188,15 @@ func (v *packageAnalyzer_) PreprocessPackageHeader(
 func (v *packageAnalyzer_) PreprocessTypeDeclaration(
 	typeDeclaration mod.TypeDeclarationLike,
 	index uint,
-	size uint,
+	count uint,
 ) {
 	v.typeDeclarations_.AppendValue(typeDeclaration)
 }
 
 func (v *packageAnalyzer_) PreprocessValue(
 	value mod.ValueLike,
+	index uint,
+	count uint,
 ) {
 	var name = value.GetName()
 	v.enumeratedValues_.AppendValue(name)

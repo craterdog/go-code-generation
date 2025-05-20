@@ -349,10 +349,16 @@ func (v *classSynthesizer_) createAspectMethod(
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	var methodName = method.GetName()
-	var methodParameters = method.GetParameters()
+	var methodParameters col.Sequential[mod.ParameterLike]
+	var parameterList = method.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		methodParameters = parameterList.GetParameters()
+	} else {
+		methodParameters = col.List[mod.ParameterLike]()
+	}
 	var methodResult = method.GetOptionalResult()
 	if mappings.GetSize() > 0 {
-		methodParameters = v.replaceParameterTypes(method.GetParameters(), mappings)
+		methodParameters = v.replaceParameterTypes(methodParameters, mappings)
 		if uti.IsDefined(methodResult) {
 			methodResult = v.replaceResultType(methodResult, mappings)
 		}
@@ -631,7 +637,13 @@ func (v *classSynthesizer_) createConstructorMethod(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
-	var constructorParameters = constructorMethod.GetParameters()
+	var constructorParameters col.Sequential[mod.ParameterLike]
+	var parameterList = constructorMethod.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		constructorParameters = parameterList.GetParameters()
+	} else {
+		constructorParameters = col.List[mod.ParameterLike]()
+	}
 	var parameters = v.createParameters(constructorParameters)
 	var resultType = v.extractType(constructorMethod.GetAbstraction())
 	var instanceInstantiation = v.createInstanceInstantiation(constructorMethod)
@@ -686,7 +698,14 @@ func (v *classSynthesizer_) createFunctionMethod(
 	functionMethod mod.FunctionMethodLike,
 ) string {
 	var methodName = functionMethod.GetName()
-	var parameters = v.createParameters(functionMethod.GetParameters())
+	var functionParameters col.Sequential[mod.ParameterLike]
+	var parameterList = functionMethod.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		functionParameters = parameterList.GetParameters()
+	} else {
+		functionParameters = col.List[mod.ParameterLike]()
+	}
+	var parameters = v.createParameters(functionParameters)
 	var resultType = v.createResult(functionMethod.GetResult())
 	var class = classSynthesizerClass()
 	var method = class.functionMethod_
@@ -771,7 +790,13 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	} else {
 		if methodName == className || sts.HasPrefix(methodName, className+"With") {
 			instantiation = class.structureInstantiation_
-			var constructorParameters = constructorMethod.GetParameters()
+			var constructorParameters col.Sequential[mod.ParameterLike]
+			var parameterList = constructorMethod.GetOptionalParameterList()
+			if uti.IsDefined(parameterList) {
+				constructorParameters = parameterList.GetParameters()
+			} else {
+				constructorParameters = col.List[mod.ParameterLike]()
+			}
 			var attributeChecks = v.createAttributeChecks(constructorParameters)
 			var attributeInitializations = v.createAttributeInitializations(
 				constructorParameters,
@@ -862,7 +887,14 @@ func (v *classSynthesizer_) createPrincipalMethod(
 	method mod.MethodLike,
 ) string {
 	var methodName = method.GetName()
-	var parameters = v.createParameters(method.GetParameters())
+	var methodParameters col.Sequential[mod.ParameterLike]
+	var parameterList = method.GetOptionalParameterList()
+	if uti.IsDefined(parameterList) {
+		methodParameters = parameterList.GetParameters()
+	} else {
+		methodParameters = col.List[mod.ParameterLike]()
+	}
+	var parameters = v.createParameters(methodParameters)
 	var resultType = v.createResult(method.GetOptionalResult())
 	var class = classSynthesizerClass()
 	var principalMethod = class.instanceMethod_
@@ -929,7 +961,9 @@ func (v *classSynthesizer_) createResult(
 		case mod.AbstractionLike:
 			results = v.extractType(actual)
 		case mod.MultivalueLike:
-			results = "(" + v.createParameters(actual.GetParameters()) + ")"
+			var parameterList = actual.GetParameterList()
+			var parameters = parameterList.GetParameters()
+			results = "(" + v.createParameters(parameters) + ")"
 		}
 	}
 	return results
@@ -1031,12 +1065,20 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 		var additionalArgument = iterator.GetNext()
 		var argument = additionalArgument.GetArgument()
 		argument = v.replaceArgumentType(argument, mappings)
-		additionalArgument = mod.AdditionalArgumentClass().AdditionalArgument(argument)
+		additionalArgument = mod.AdditionalArgumentClass().AdditionalArgument(
+			",",
+			argument,
+		)
 		additionalArguments.AppendValue(additionalArgument)
 	}
 
 	// Construct the updated sequence of arguments.
-	arguments = mod.ArgumentsClass().Arguments(argument, additionalArguments)
+	arguments = mod.ArgumentsClass().Arguments(
+		"[",
+		argument,
+		additionalArguments,
+		"]",
+	)
 	return arguments
 }
 
@@ -1044,9 +1086,15 @@ func (v *classSynthesizer_) replaceMultivalueTypes(
 	parameterized mod.MultivalueLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.MultivalueLike {
-	var parameters = parameterized.GetParameters()
+	var parameterList = parameterized.GetParameterList()
+	var parameters = parameterList.GetParameters()
 	var replacedParameters = v.replaceParameterTypes(parameters, mappings)
-	parameterized = mod.MultivalueClass().Multivalue(replacedParameters)
+	parameterList = mod.ParameterListClass().ParameterList(replacedParameters)
+	parameterized = mod.MultivalueClass().Multivalue(
+		"(",
+		parameterList,
+		")",
+	)
 	return parameterized
 }
 
@@ -1057,7 +1105,11 @@ func (v *classSynthesizer_) replaceParameterType(
 	var parameterName = parameter.GetName()
 	var abstraction = parameter.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
-	parameter = mod.ParameterClass().Parameter(parameterName, abstraction)
+	parameter = mod.ParameterClass().Parameter(
+		parameterName,
+		abstraction,
+		",",
+	)
 	return parameter
 }
 
@@ -1112,7 +1164,12 @@ func (v *classSynthesizer_) replaceWrapperType(
 		var typeName = actual.GetName()
 		var concreteType = mappings.GetValue(typeName)
 		typeName = concreteType.GetName()
-		var map_ = mod.MapClass().Map(typeName)
+		var map_ = mod.MapClass().Map(
+			"map",
+			"[",
+			typeName,
+			"]",
+		)
 		wrapper = mod.WrapperClass().Wrapper(map_)
 	default:
 		// Ignore the rest since they don't contain any generic types.

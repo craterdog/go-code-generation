@@ -479,10 +479,11 @@ func (v *moduleSynthesizer_) extractParameterNames(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var parameterNames string
-	var parameters = constructorMethod.GetParameters().GetIterator()
-	if parameters.IsEmpty() {
+	var parameterList = constructorMethod.GetOptionalParameterList()
+	if uti.IsUndefined(parameterList) {
 		return parameterNames
 	}
+	var parameters = parameterList.GetParameters().GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
@@ -497,7 +498,11 @@ func (v *moduleSynthesizer_) extractParameters(
 	model mod.ModelLike,
 ) string {
 	var methodParameters string
-	var parameters = constructorMethod.GetParameters().GetIterator()
+	var parameterList = constructorMethod.GetOptionalParameterList()
+	if uti.IsUndefined(parameterList) {
+		return methodParameters
+	}
+	var parameters = parameterList.GetParameters().GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
