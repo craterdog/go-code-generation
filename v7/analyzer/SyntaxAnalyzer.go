@@ -642,25 +642,23 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Make any duplicate variable names unique.
-	var left = variables.GetIterator()
-	var right = variables.GetIterator()
-	for left.HasNext() {
-		var leftName = left.GetNext()
-		var slot = left.GetSlot()
-		right.SetSlot(slot)
-		for right.HasNext() {
-			var count = 1
-			var rightName = right.GetNext()
+	var leftIndex col.Index
+	var rightIndex col.Index
+	var size = col.Index(variables.GetSize())
+	for leftIndex = 1; leftIndex <= size; leftIndex++ {
+		var count = 1
+		var leftName = variables.GetValue(leftIndex)
+		for rightIndex = leftIndex + 1; rightIndex <= size; rightIndex++ {
+			var rightName = variables.GetValue(rightIndex)
 			if leftName == rightName {
 				if count == 1 {
-					var uniqueName = leftName + stc.Itoa(count)
-					var index = col.Index(left.GetSlot())
-					variables.SetValue(index, uniqueName)
+					// Add a count suffix of "1" to the first variable.
+					var uniqueName = leftName + "1"
+					variables.SetValue(leftIndex, uniqueName)
 				}
 				count++
-				rightName = rightName + stc.Itoa(count)
-				var index = col.Index(right.GetSlot())
-				variables.SetValue(index, rightName)
+				var uniqueName = rightName + stc.Itoa(count)
+				variables.SetValue(rightIndex, uniqueName)
 			}
 		}
 	}
