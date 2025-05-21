@@ -571,7 +571,7 @@ func (v *syntaxAnalyzer_) escapeText(
 func (v *syntaxAnalyzer_) extractLegalNotice(
 	syntax not.SyntaxLike,
 ) string {
-	var comment = syntax.GetNotice().GetComment()
+	var comment = syntax.GetLegalNotice().GetComment()
 
 	// Strip off the syntax style comment delimiters.
 	comment = comment[2 : len(comment)-3]
