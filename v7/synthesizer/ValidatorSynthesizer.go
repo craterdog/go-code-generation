@@ -224,9 +224,22 @@ func (v *validatorSynthesizer_) preserveExistingCode(
 	existing string,
 	generated string,
 ) string {
-	// Preserve the methodical method implementations.
-	var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+	// Preserve the instance attribute initialization.
+	var pattern = `// Initialize the instance attributes\.(.|\r?\n)+// Initialize the inherited aspects\.`
 	generated = v.replacePattern(pattern, existing, generated)
+
+	// Preserve the ValidateSyntax() method.
+	pattern = `func \(v \*validator_\) ValidateSyntax\((.|\r?\n)+// Methodical Methods`
+	generated = v.replacePattern(pattern, existing, generated)
+
+	// Preserve the methodical method implementations.
+	pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+	generated = v.replacePattern(pattern, existing, generated)
+
+	// Preserve the instance attribute declarations.
+	pattern = `// Declare the instance attributes\.(.|\r?\n)+// Declare the inherited aspects\.`
+	generated = v.replacePattern(pattern, existing, generated)
+
 	return generated
 }
 
@@ -346,16 +359,8 @@ func (v *validator_) Process<~ExpressionName>(
 	processRule_: `
 func (v *validator_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	// TBD - Add any validation checks.
 }

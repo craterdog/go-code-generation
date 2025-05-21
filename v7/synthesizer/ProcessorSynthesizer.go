@@ -285,8 +285,8 @@ func (v *processor_) Process<~TokenName>(
 	processRule_: `
 func (v *processor_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 }
 
@@ -297,8 +297,8 @@ func (v *processor_) Process<~RuleName>Slot(
 
 func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 }
 `,

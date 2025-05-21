@@ -27,26 +27,21 @@ import (
 
 // Access Function
 
-func NoticeClass() NoticeClassLike {
-	return noticeClass()
+func LegalNoticeClass() LegalNoticeClassLike {
+	return legalNoticeClass()
 }
 
 // Constructor Methods
 
-func (c *noticeClass_) Notice(
+func (c *legalNoticeClass_) LegalNotice(
 	comment string,
-	newline string,
-) NoticeLike {
+) LegalNoticeLike {
 	if uti.IsUndefined(comment) {
 		panic("The \"comment\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
-	}
-	var instance = &notice_{
+	var instance = &legalNotice_{
 		// Initialize the instance attributes.
 		comment_: comment,
-		newline_: newline,
 	}
 	return instance
 }
@@ -55,42 +50,37 @@ func (c *noticeClass_) Notice(
 
 // Principal Methods
 
-func (v *notice_) GetClass() NoticeClassLike {
-	return noticeClass()
+func (v *legalNotice_) GetClass() LegalNoticeClassLike {
+	return legalNoticeClass()
 }
 
 // Attribute Methods
 
-func (v *notice_) GetComment() string {
+func (v *legalNotice_) GetComment() string {
 	return v.comment_
-}
-
-func (v *notice_) GetNewline() string {
-	return v.newline_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type notice_ struct {
+type legalNotice_ struct {
 	// Declare the instance attributes.
 	comment_ string
-	newline_ string
 }
 
 // Class Structure
 
-type noticeClass_ struct {
+type legalNoticeClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func noticeClass() *noticeClass_ {
-	return noticeClassReference_
+func legalNoticeClass() *legalNoticeClass_ {
+	return legalNoticeClassReference_
 }
 
-var noticeClassReference_ = &noticeClass_{
+var legalNoticeClassReference_ = &legalNoticeClass_{
 	// Initialize the class constants.
 }

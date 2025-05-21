@@ -816,12 +816,12 @@ func (v *parser_) parse<~RuleName>() (
 	// Attempt to parse multiple <literal> literals.
 	var <variableName_> = col.List[string]()
 <~variableName>Loop:
-	for count := 0; count < <last>; count++ {
+	for count_ := 0; count_ < <last>; count_++ {
 		var literal string
 		literal, token, ok = v.parseDelimiter(<literal>)
 		if !ok {
 			switch {
-			case count >= <first>:
+			case count_ >= <first>:
 				break <~variableName>Loop
 			case uti.IsDefined(tokens):
 				// This is not multiple <literal> literals.
@@ -878,12 +878,12 @@ func (v *parser_) parse<~RuleName>() (
 	// Attempt to parse multiple <~lowercase> tokens.
 	var <variableName_> = col.List[string]()
 <~variableName>Loop:
-	for count := 0; count < <last>; count++ {
+	for count_ := 0; count_ < <last>; count_++ {
 		var <lowercase_> string
 		<lowercase_>, token, ok = v.parseToken(<~Lowercase>Token)
 		if !ok {
 			switch {
-			case count >= <first>:
+			case count_ >= <first>:
 				break <~variableName>Loop
 			case uti.IsDefined(tokens):
 				// This is not multiple <~lowercase> tokens.
@@ -940,12 +940,12 @@ func (v *parser_) parse<~RuleName>() (
 	// Attempt to parse multiple <~Uppercase> rules.
 	var <variableName_> = col.List[ast.<~Uppercase>Like]()
 <~variableName>Loop:
-	for count := 0; count < <last>; count++ {
+	for count_ := 0; count_ < <last>; count_++ {
 		var <uppercase_> ast.<~Uppercase>Like
 		<uppercase_>, token, ok = v.parse<~Uppercase>()
 		if !ok {
 			switch {
-			case count >= <first>:
+			case count_ >= <first>:
 				break <~variableName>Loop
 			case uti.IsDefined(tokens):
 				// This is not multiple <~Uppercase> rules.
@@ -999,12 +999,12 @@ func (v *parser_) parse<~RuleName>() (
 	// Attempt to parse multiple <~Uppercase> rules.
 	var <variableName_> = col.List[ast.<~Uppercase>Like]()
 <~variableName>Loop:
-	for count := 0; count < <last>; count++ {
+	for count_ := 0; count_ < <last>; count_++ {
 		var <uppercase_> ast.<~Uppercase>Like
 		<uppercase_>, token, ok = v.parse<~Uppercase>()
 		if !ok {
 			switch {
-			case count >= <first>:
+			case count_ >= <first>:
 				break <~variableName>Loop
 			case uti.IsDefined(tokens):
 				// This is not multiple <~Uppercase> rules.

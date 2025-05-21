@@ -155,12 +155,12 @@ func (v *parser_) parseAlternatives() (
 	// Attempt to parse multiple AlternativeSequence rules.
 	var alternativeSequences = col.List[ast.AlternativeSequenceLike]()
 alternativeSequencesLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var alternativeSequence ast.AlternativeSequenceLike
 		alternativeSequence, token, ok = v.parseAlternativeSequence()
 		if !ok {
 			switch {
-			case count >= 0:
+			case count_ >= 0:
 				break alternativeSequencesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple AlternativeSequence rules.
@@ -619,12 +619,12 @@ func (v *parser_) parseFilter() (
 	// Attempt to parse multiple Character rules.
 	var characters = col.List[ast.CharacterLike]()
 charactersLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var character ast.CharacterLike
 		character, token, ok = v.parseCharacter()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break charactersLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Character rules.
@@ -775,6 +775,38 @@ func (v *parser_) parseImplicit() (
 	return
 }
 
+func (v *parser_) parseLegalNotice() (
+	legalNotice ast.LegalNoticeLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse a single comment token.
+	var comment string
+	comment, token, ok = v.parseToken(CommentToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single comment token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$LegalNotice", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single LegalNotice rule.
+	ok = true
+	v.remove(tokens)
+	legalNotice = ast.LegalNoticeClass().LegalNotice(comment)
+	return
+}
+
 func (v *parser_) parseLimit() (
 	limit ast.LimitLike,
 	token TokenLike,
@@ -831,12 +863,12 @@ func (v *parser_) parseLiteralAlternatives() (
 	// Attempt to parse multiple LiteralValue rules.
 	var literalValues = col.List[ast.LiteralValueLike]()
 literalValuesLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var literalValue ast.LiteralValueLike
 		literalValue, token, ok = v.parseLiteralValue()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break literalValuesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple LiteralValue rules.
@@ -922,59 +954,6 @@ func (v *parser_) parseLiteralValue() (
 		newline,
 		literal,
 		optionalNote,
-	)
-	return
-}
-
-func (v *parser_) parseNotice() (
-	notice ast.NoticeLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = col.List[TokenLike]()
-
-	// Attempt to parse a single comment token.
-	var comment string
-	comment, token, ok = v.parseToken(CommentToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single comment token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Notice", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single newline token.
-	var newline string
-	newline, token, ok = v.parseToken(NewlineToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single newline token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Notice", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Notice rule.
-	ok = true
-	v.remove(tokens)
-	notice = ast.NoticeClass().Notice(
-		comment,
-		newline,
 	)
 	return
 }
@@ -1247,12 +1226,12 @@ func (v *parser_) parseRuleAlternatives() (
 	// Attempt to parse multiple RuleName rules.
 	var ruleNames = col.List[ast.RuleNameLike]()
 ruleNamesLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var ruleName ast.RuleNameLike
 		ruleName, token, ok = v.parseRuleName()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break ruleNamesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple RuleName rules.
@@ -1396,12 +1375,12 @@ func (v *parser_) parseSequence() (
 	// Attempt to parse multiple Repetition rules.
 	var repetitions = col.List[ast.RepetitionLike]()
 repetitionsLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var repetition ast.RepetitionLike
 		repetition, token, ok = v.parseRepetition()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break repetitionsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Repetition rules.
@@ -1433,15 +1412,15 @@ func (v *parser_) parseSyntax() (
 ) {
 	var tokens = col.List[TokenLike]()
 
-	// Attempt to parse a single Notice rule.
-	var notice ast.NoticeLike
-	notice, token, ok = v.parseNotice()
+	// Attempt to parse a single LegalNotice rule.
+	var legalNotice ast.LegalNoticeLike
+	legalNotice, token, ok = v.parseLegalNotice()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Notice rule.
+		// This is not a single LegalNotice rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1471,12 +1450,12 @@ func (v *parser_) parseSyntax() (
 	// Attempt to parse multiple Rule rules.
 	var rules = col.List[ast.RuleLike]()
 rulesLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var rule ast.RuleLike
 		rule, token, ok = v.parseRule()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break rulesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Rule rules.
@@ -1515,12 +1494,12 @@ rulesLoop:
 	// Attempt to parse multiple Expression rules.
 	var expressions = col.List[ast.ExpressionLike]()
 expressionsLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var expression ast.ExpressionLike
 		expression, token, ok = v.parseExpression()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break expressionsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Expression rules.
@@ -1542,7 +1521,7 @@ expressionsLoop:
 	ok = true
 	v.remove(tokens)
 	syntax = ast.SyntaxClass().Syntax(
-		notice,
+		legalNotice,
 		comment1,
 		rules,
 		comment2,
@@ -1561,12 +1540,12 @@ func (v *parser_) parseTermSequence() (
 	// Attempt to parse multiple RuleTerm rules.
 	var ruleTerms = col.List[ast.RuleTermLike]()
 ruleTermsLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var ruleTerm ast.RuleTermLike
 		ruleTerm, token, ok = v.parseRuleTerm()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break ruleTermsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple RuleTerm rules.
@@ -1660,12 +1639,12 @@ func (v *parser_) parseTokenAlternatives() (
 	// Attempt to parse multiple TokenName rules.
 	var tokenNames = col.List[ast.TokenNameLike]()
 tokenNamesLoop:
-	for count := 0; count < mat.MaxInt; count++ {
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
 		var tokenName ast.TokenNameLike
 		tokenName, token, ok = v.parseTokenName()
 		if !ok {
 			switch {
-			case count >= 1:
+			case count_ >= 1:
 				break tokenNamesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple TokenName rules.
@@ -1930,9 +1909,9 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: col.CatalogFromMap[string, string](
 		map[string]string{
-			"$Syntax": `Notice comment Rule+ comment Expression+`,
-			"$Notice": `comment newline`,
-			"$Rule":   `"$" uppercase ":" Definition`,
+			"$Syntax":      `LegalNotice comment Rule+ comment Expression+`,
+			"$LegalNotice": `comment`,
+			"$Rule":        `"$" uppercase ":" Definition`,
 			"$Definition": `
     LiteralAlternatives
     TokenAlternatives

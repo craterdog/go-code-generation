@@ -21,6 +21,7 @@ package grammar
 
 import (
 	fmt "fmt"
+	col "github.com/craterdog/go-collection-framework/v7"
 	ast "github.com/craterdog/go-syntax-notation/v7/ast"
 )
 
@@ -37,6 +38,10 @@ func ValidatorClass() ValidatorClassLike {
 func (c *validatorClass_) Validator() ValidatorLike {
 	var instance = &validator_{
 		// Initialize the instance attributes.
+		ruleNames_:   col.Set[string](),
+		tokenNames_:  col.Set[string](),
+		rules_:       col.Set[string](),
+		expressions_: col.SetFromArray[string]([]string{"newline"}),
 
 		// Initialize the inherited aspects.
 		Methodical: ProcessorClass().Processor(),
@@ -57,6 +62,28 @@ func (v *validator_) ValidateSyntax(
 	syntax ast.SyntaxLike,
 ) {
 	v.visitor_.VisitSyntax(syntax)
+	var ruleNames = v.ruleNames_.GetIterator()
+	for ruleNames.HasNext() {
+		var ruleName = ruleNames.GetNext()
+		if !v.rules_.ContainsValue(ruleName) {
+			var message = fmt.Sprintf(
+				"The following rule does not have an associated definition: %s",
+				ruleName,
+			)
+			panic(message)
+		}
+	}
+	var tokenNames = v.tokenNames_.GetIterator()
+	for tokenNames.HasNext() {
+		var tokenName = tokenNames.GetNext()
+		if !v.expressions_.ContainsValue(tokenName) {
+			var message = fmt.Sprintf(
+				"The following expression does not have an associated definition: %s",
+				tokenName,
+			)
+			panic(message)
+		}
+	}
 }
 
 // Methodical Methods
@@ -121,500 +148,55 @@ func (v *validator_) ProcessUppercase(
 	v.validateToken(uppercase, UppercaseToken)
 }
 
-func (v *validator_) PreprocessAlternativeSequence(
-	alternativeSequence ast.AlternativeSequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessAlternativeSequence(
-	alternativeSequence ast.AlternativeSequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessAlternatives(
-	alternatives ast.AlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessAlternatives(
-	alternatives ast.AlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessCardinality(
-	cardinality ast.CardinalityLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessCardinality(
-	cardinality ast.CardinalityLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessCharacter(
-	character ast.CharacterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessCharacter(
-	character ast.CharacterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *validator_) PreprocessComponent(
 	component ast.ComponentLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessComponent(
-	component ast.ComponentLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessConstrained(
-	constrained ast.ConstrainedLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessConstrained(
-	constrained ast.ConstrainedLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessDefinition(
-	definition ast.DefinitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessDefinition(
-	definition ast.DefinitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessElement(
-	element ast.ElementLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessElement(
-	element ast.ElementLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessExplicit(
-	explicit ast.ExplicitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessExplicit(
-	explicit ast.ExplicitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
+	var scannerClass = ScannerClass()
+	var actual = component.GetAny().(string)
+	switch {
+	case scannerClass.MatchesType(actual, UppercaseToken):
+		v.ruleNames_.AddValue(actual)
+	case scannerClass.MatchesType(actual, LowercaseToken):
+		v.tokenNames_.AddValue(actual)
+	}
 }
 
 func (v *validator_) PreprocessExpression(
 	expression ast.ExpressionLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessExpression(
-	expression ast.ExpressionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessExtent(
-	extent ast.ExtentLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessExtent(
-	extent ast.ExtentLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessFilter(
-	filter ast.FilterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessFilter(
-	filter ast.FilterLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessGroup(
-	group ast.GroupLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessGroup(
-	group ast.GroupLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessImplicit(
-	implicit ast.ImplicitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessImplicit(
-	implicit ast.ImplicitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessLimit(
-	limit ast.LimitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessLimit(
-	limit ast.LimitLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessLiteralAlternatives(
-	literalAlternatives ast.LiteralAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessLiteralAlternatives(
-	literalAlternatives ast.LiteralAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessLiteralValue(
-	literalValue ast.LiteralValueLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessLiteralValue(
-	literalValue ast.LiteralValueLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessNotice(
-	notice ast.NoticeLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessNotice(
-	notice ast.NoticeLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessPattern(
-	pattern ast.PatternLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessPattern(
-	pattern ast.PatternLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessQuantified(
-	quantified ast.QuantifiedLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessQuantified(
-	quantified ast.QuantifiedLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessRepetition(
-	repetition ast.RepetitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRepetition(
-	repetition ast.RepetitionLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
+	var expressionName = expression.GetLowercase()
+	v.expressions_.AddValue(expressionName)
 }
 
 func (v *validator_) PreprocessRule(
 	rule ast.RuleLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRule(
-	rule ast.RuleLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessRuleAlternatives(
-	ruleAlternatives ast.RuleAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRuleAlternatives(
-	ruleAlternatives ast.RuleAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
+	var ruleName = rule.GetUppercase()
+	v.rules_.AddValue(ruleName)
 }
 
 func (v *validator_) PreprocessRuleName(
 	ruleName ast.RuleNameLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRuleName(
-	ruleName ast.RuleNameLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessRuleTerm(
-	ruleTerm ast.RuleTermLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessRuleTerm(
-	ruleTerm ast.RuleTermLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessSequence(
-	sequence ast.SequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessSequence(
-	sequence ast.SequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessSyntax(
-	syntax ast.SyntaxLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessSyntax(
-	syntax ast.SyntaxLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessTermSequence(
-	termSequence ast.TermSequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessTermSequence(
-	termSequence ast.TermSequenceLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessText(
-	text ast.TextLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessText(
-	text ast.TextLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessTokenAlternatives(
-	tokenAlternatives ast.TokenAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessTokenAlternatives(
-	tokenAlternatives ast.TokenAlternativesLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
+	var uppercase = ruleName.GetUppercase()
+	v.ruleNames_.AddValue(uppercase)
 }
 
 func (v *validator_) PreprocessTokenName(
 	tokenName ast.TokenNameLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessTokenName(
-	tokenName ast.TokenNameLike,
-	index uint,
-	count uint,
-) {
-	// TBD - Add any validation checks.
+	var lowercase = tokenName.GetLowercase()
+	v.tokenNames_.AddValue(lowercase)
 }
 
 // PROTECTED INTERFACE
@@ -640,7 +222,11 @@ func (v *validator_) validateToken(
 
 type validator_ struct {
 	// Declare the instance attributes.
-	visitor_ VisitorLike
+	visitor_     VisitorLike
+	ruleNames_   col.SetLike[string]
+	tokenNames_  col.SetLike[string]
+	rules_       col.SetLike[string]
+	expressions_ col.SetLike[string]
 
 	// Declare the inherited aspects.
 	Methodical

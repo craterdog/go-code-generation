@@ -405,8 +405,8 @@ func (v *scanner_) Process<~ExpressionName>(
 	processRule_: `
 func (v *scanner_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	// TBD - Add any validation checks.
 }
@@ -419,8 +419,8 @@ func (v *scanner_) Process<~RuleName>Slot(
 
 func (v *scanner_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	// TBD - Add any validation checks.
 }

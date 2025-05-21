@@ -485,15 +485,15 @@ type Methodical interface {<ProcessTokens><ProcessRules>
 	processRule_: `
 	Preprocess<~RuleName>(
 		<ruleName_> ast.<~RuleName>Like,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	Process<~RuleName>Slot(
 		slot uint,
 	)
 	Postprocess<~RuleName>(
 		<ruleName_> ast.<~RuleName>Like,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)`,
 }

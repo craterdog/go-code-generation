@@ -356,8 +356,8 @@ func (v *formatter_) ProcessNewline(
 	processRule_: `
 func (v *formatter_) Preprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	// TBD - Add formatting of the rule.
 }
@@ -369,14 +369,6 @@ func (v *formatter_) Process<~RuleName>Slot(
 	default:
 		v.appendString(" ")
 	}
-}
-
-func (v *formatter_) Postprocess<~RuleName>(
-	<ruleName_> ast.<~RuleName>Like,
-	index uint,
-	count uint,
-) {
-	// TBD - Add formatting of the rule.
 }
 `,
 

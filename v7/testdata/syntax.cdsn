@@ -23,9 +23,9 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Syntax: Notice comment Rule+ comment Expression+
+$Syntax: LegalNotice comment Rule+ comment Expression+
 
-$Notice: comment newline
+$LegalNotice: comment
 
 $Rule: "$" uppercase ":" Definition
 

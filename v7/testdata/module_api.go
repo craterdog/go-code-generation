@@ -53,10 +53,10 @@ type (
 	FilterClassLike              = ast.FilterClassLike
 	GroupClassLike               = ast.GroupClassLike
 	ImplicitClassLike            = ast.ImplicitClassLike
+	LegalNoticeClassLike         = ast.LegalNoticeClassLike
 	LimitClassLike               = ast.LimitClassLike
 	LiteralAlternativesClassLike = ast.LiteralAlternativesClassLike
 	LiteralValueClassLike        = ast.LiteralValueClassLike
-	NoticeClassLike              = ast.NoticeClassLike
 	PatternClassLike             = ast.PatternClassLike
 	QuantifiedClassLike          = ast.QuantifiedClassLike
 	RepetitionClassLike          = ast.RepetitionClassLike
@@ -87,10 +87,10 @@ type (
 	FilterLike              = ast.FilterLike
 	GroupLike               = ast.GroupLike
 	ImplicitLike            = ast.ImplicitLike
+	LegalNoticeLike         = ast.LegalNoticeLike
 	LimitLike               = ast.LimitLike
 	LiteralAlternativesLike = ast.LiteralAlternativesLike
 	LiteralValueLike        = ast.LiteralValueLike
-	NoticeLike              = ast.NoticeLike
 	PatternLike             = ast.PatternLike
 	QuantifiedLike          = ast.QuantifiedLike
 	RepetitionLike          = ast.RepetitionLike
@@ -347,6 +347,18 @@ func Implicit(
 	)
 }
 
+func LegalNoticeClass() LegalNoticeClassLike {
+	return ast.LegalNoticeClass()
+}
+
+func LegalNotice(
+	comment string,
+) LegalNoticeLike {
+	return LegalNoticeClass().LegalNotice(
+		comment,
+	)
+}
+
 func LimitClass() LimitClassLike {
 	return ast.LimitClass()
 }
@@ -386,20 +398,6 @@ func LiteralValue(
 		newline,
 		literal,
 		optionalNote,
-	)
-}
-
-func NoticeClass() NoticeClassLike {
-	return ast.NoticeClass()
-}
-
-func Notice(
-	comment string,
-	newline string,
-) NoticeLike {
-	return NoticeClass().Notice(
-		comment,
-		newline,
 	)
 }
 
@@ -526,14 +524,14 @@ func SyntaxClass() SyntaxClassLike {
 }
 
 func Syntax(
-	notice ast.NoticeLike,
+	legalNotice ast.LegalNoticeLike,
 	comment1 string,
 	rules col.Sequential[ast.RuleLike],
 	comment2 string,
 	expressions col.Sequential[ast.ExpressionLike],
 ) SyntaxLike {
 	return SyntaxClass().Syntax(
-		notice,
+		legalNotice,
 		comment1,
 		rules,
 		comment2,

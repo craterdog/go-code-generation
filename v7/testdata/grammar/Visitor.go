@@ -471,6 +471,13 @@ func (v *visitor_) visitImplicit(
 	v.processor_.ProcessIntrinsic(intrinsic)
 }
 
+func (v *visitor_) visitLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+) {
+	var comment = legalNotice.GetComment()
+	v.processor_.ProcessComment(comment)
+}
+
 func (v *visitor_) visitLimit(
 	limit ast.LimitLike,
 ) {
@@ -525,18 +532,6 @@ func (v *visitor_) visitLiteralValue(
 	if uti.IsDefined(optionalNote) {
 		v.processor_.ProcessNote(optionalNote)
 	}
-}
-
-func (v *visitor_) visitNotice(
-	notice ast.NoticeLike,
-) {
-	var comment = notice.GetComment()
-	v.processor_.ProcessComment(comment)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessNoticeSlot(1)
-
-	var newline = notice.GetNewline()
-	v.processor_.ProcessNewline(newline)
 }
 
 func (v *visitor_) visitPattern(
@@ -765,15 +760,15 @@ func (v *visitor_) visitSequence(
 func (v *visitor_) visitSyntax(
 	syntax ast.SyntaxLike,
 ) {
-	var notice = syntax.GetNotice()
-	v.processor_.PreprocessNotice(
-		notice,
+	var legalNotice = syntax.GetLegalNotice()
+	v.processor_.PreprocessLegalNotice(
+		legalNotice,
 		1,
 		1,
 	)
-	v.visitNotice(notice)
-	v.processor_.PostprocessNotice(
-		notice,
+	v.visitLegalNotice(legalNotice)
+	v.processor_.PostprocessLegalNotice(
+		legalNotice,
 		1,
 		1,
 	)

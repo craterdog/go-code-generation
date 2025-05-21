@@ -129,28 +129,28 @@ func (v *formatter_) ProcessUppercase(
 
 func (v *formatter_) PreprocessCharacter(
 	character ast.CharacterLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	if index > 1 {
+	if index_ > 1 {
 		v.appendString(" ")
 	}
 }
 
 func (v *formatter_) PreprocessRepetition(
 	repetition ast.RepetitionLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
-	if index > 1 {
+	if index_ > 1 {
 		v.appendString(" ")
 	}
 }
 
 func (v *formatter_) PreprocessAlternativeSequence(
 	alternativeSequence ast.AlternativeSequenceLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendString(" ")
 }
@@ -166,16 +166,16 @@ func (v *formatter_) ProcessAlternativeSequenceSlot(
 
 func (v *formatter_) PreprocessDefinition(
 	definition ast.DefinitionLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.depth_++
 }
 
 func (v *formatter_) PostprocessDefinition(
 	definition ast.DefinitionLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.depth_--
 	v.appendNewline()
@@ -183,40 +183,48 @@ func (v *formatter_) PostprocessDefinition(
 
 func (v *formatter_) PostprocessExpression(
 	expression ast.ExpressionLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
+) {
+	v.appendNewline()
+}
+
+func (v *formatter_) PostprocessLegalNotice(
+	legalNotice ast.LegalNoticeLike,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendNewline()
 }
 
 func (v *formatter_) PreprocessPattern(
 	pattern ast.PatternLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendString(" ")
 }
 
 func (v *formatter_) PostprocessPattern(
 	pattern ast.PatternLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendNewline()
 }
 
 func (v *formatter_) PostprocessRule(
 	rule ast.RuleLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendNewline()
 }
 
 func (v *formatter_) PreprocessRuleTerm(
 	ruleTerm ast.RuleTermLike,
-	index uint,
-	count uint,
+	index_ uint,
+	count_ uint,
 ) {
 	v.appendString(" ")
 }

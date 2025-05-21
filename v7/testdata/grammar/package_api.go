@@ -311,405 +311,405 @@ type Methodical interface {
 	)
 	PreprocessAlternativeSequence(
 		alternativeSequence ast.AlternativeSequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessAlternativeSequenceSlot(
 		slot uint,
 	)
 	PostprocessAlternativeSequence(
 		alternativeSequence ast.AlternativeSequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessAlternatives(
 		alternatives ast.AlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessAlternativesSlot(
 		slot uint,
 	)
 	PostprocessAlternatives(
 		alternatives ast.AlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessCardinality(
 		cardinality ast.CardinalityLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessCardinalitySlot(
 		slot uint,
 	)
 	PostprocessCardinality(
 		cardinality ast.CardinalityLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessCharacter(
 		character ast.CharacterLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessCharacterSlot(
 		slot uint,
 	)
 	PostprocessCharacter(
 		character ast.CharacterLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessComponent(
 		component ast.ComponentLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessComponentSlot(
 		slot uint,
 	)
 	PostprocessComponent(
 		component ast.ComponentLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessConstrained(
 		constrained ast.ConstrainedLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessConstrainedSlot(
 		slot uint,
 	)
 	PostprocessConstrained(
 		constrained ast.ConstrainedLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessDefinition(
 		definition ast.DefinitionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessDefinitionSlot(
 		slot uint,
 	)
 	PostprocessDefinition(
 		definition ast.DefinitionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessElement(
 		element ast.ElementLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessElementSlot(
 		slot uint,
 	)
 	PostprocessElement(
 		element ast.ElementLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessExplicit(
 		explicit ast.ExplicitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessExplicitSlot(
 		slot uint,
 	)
 	PostprocessExplicit(
 		explicit ast.ExplicitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessExpression(
 		expression ast.ExpressionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessExpressionSlot(
 		slot uint,
 	)
 	PostprocessExpression(
 		expression ast.ExpressionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessExtent(
 		extent ast.ExtentLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessExtentSlot(
 		slot uint,
 	)
 	PostprocessExtent(
 		extent ast.ExtentLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessFilter(
 		filter ast.FilterLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessFilterSlot(
 		slot uint,
 	)
 	PostprocessFilter(
 		filter ast.FilterLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessGroup(
 		group ast.GroupLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessGroupSlot(
 		slot uint,
 	)
 	PostprocessGroup(
 		group ast.GroupLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessImplicit(
 		implicit ast.ImplicitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessImplicitSlot(
 		slot uint,
 	)
 	PostprocessImplicit(
 		implicit ast.ImplicitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
+	)
+	PreprocessLegalNotice(
+		legalNotice ast.LegalNoticeLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessLegalNoticeSlot(
+		slot uint,
+	)
+	PostprocessLegalNotice(
+		legalNotice ast.LegalNoticeLike,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessLimit(
 		limit ast.LimitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessLimitSlot(
 		slot uint,
 	)
 	PostprocessLimit(
 		limit ast.LimitLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessLiteralAlternatives(
 		literalAlternatives ast.LiteralAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessLiteralAlternativesSlot(
 		slot uint,
 	)
 	PostprocessLiteralAlternatives(
 		literalAlternatives ast.LiteralAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessLiteralValue(
 		literalValue ast.LiteralValueLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessLiteralValueSlot(
 		slot uint,
 	)
 	PostprocessLiteralValue(
 		literalValue ast.LiteralValueLike,
-		index uint,
-		count uint,
-	)
-	PreprocessNotice(
-		notice ast.NoticeLike,
-		index uint,
-		count uint,
-	)
-	ProcessNoticeSlot(
-		slot uint,
-	)
-	PostprocessNotice(
-		notice ast.NoticeLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessPattern(
 		pattern ast.PatternLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessPatternSlot(
 		slot uint,
 	)
 	PostprocessPattern(
 		pattern ast.PatternLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessQuantified(
 		quantified ast.QuantifiedLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessQuantifiedSlot(
 		slot uint,
 	)
 	PostprocessQuantified(
 		quantified ast.QuantifiedLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessRepetition(
 		repetition ast.RepetitionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessRepetitionSlot(
 		slot uint,
 	)
 	PostprocessRepetition(
 		repetition ast.RepetitionLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessRule(
 		rule ast.RuleLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessRuleSlot(
 		slot uint,
 	)
 	PostprocessRule(
 		rule ast.RuleLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessRuleAlternatives(
 		ruleAlternatives ast.RuleAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessRuleAlternativesSlot(
 		slot uint,
 	)
 	PostprocessRuleAlternatives(
 		ruleAlternatives ast.RuleAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessRuleName(
 		ruleName ast.RuleNameLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessRuleNameSlot(
 		slot uint,
 	)
 	PostprocessRuleName(
 		ruleName ast.RuleNameLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessRuleTerm(
 		ruleTerm ast.RuleTermLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessRuleTermSlot(
 		slot uint,
 	)
 	PostprocessRuleTerm(
 		ruleTerm ast.RuleTermLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessSequence(
 		sequence ast.SequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessSequenceSlot(
 		slot uint,
 	)
 	PostprocessSequence(
 		sequence ast.SequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessSyntax(
 		syntax ast.SyntaxLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessSyntaxSlot(
 		slot uint,
 	)
 	PostprocessSyntax(
 		syntax ast.SyntaxLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessTermSequence(
 		termSequence ast.TermSequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessTermSequenceSlot(
 		slot uint,
 	)
 	PostprocessTermSequence(
 		termSequence ast.TermSequenceLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessText(
 		text ast.TextLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessTextSlot(
 		slot uint,
 	)
 	PostprocessText(
 		text ast.TextLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessTokenAlternatives(
 		tokenAlternatives ast.TokenAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessTokenAlternativesSlot(
 		slot uint,
 	)
 	PostprocessTokenAlternatives(
 		tokenAlternatives ast.TokenAlternativesLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	PreprocessTokenName(
 		tokenName ast.TokenNameLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 	ProcessTokenNameSlot(
 		slot uint,
 	)
 	PostprocessTokenName(
 		tokenName ast.TokenNameLike,
-		index uint,
-		count uint,
+		index_ uint,
+		count_ uint,
 	)
 }
