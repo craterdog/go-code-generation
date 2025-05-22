@@ -568,7 +568,7 @@ func (v *visitor_) visit<~RuleName>(
 
 	literalAlternatives_: `
 	// Visit the possible <~ruleName> literal values.
-	var actual = <~ruleName>.GetAny().(string)
+	var actual = <ruleName_>.GetAny().(string)
 	switch actual {<LiteralValues>}
 `,
 
@@ -578,7 +578,7 @@ func (v *visitor_) visit<~RuleName>(
 
 	tokenAlternatives_: `
 	// Visit the possible <~ruleName> expression types.
-	var actual = <~ruleName>.GetAny().(string)
+	var actual = <ruleName_>.GetAny().(string)
 	switch {<TokenNames>}
 `,
 
@@ -588,7 +588,7 @@ func (v *visitor_) visit<~RuleName>(
 
 	ruleAlternatives_: `
 	// Visit the possible <~ruleName> rule types.
-	switch actual := <~ruleName>.GetAny().(type) {<RuleNames>}
+	switch actual := <ruleName_>.GetAny().(type) {<RuleNames>}
 `,
 
 	ruleName_: `
