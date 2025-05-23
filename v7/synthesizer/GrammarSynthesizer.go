@@ -488,12 +488,13 @@ type Methodical interface {<ProcessTokens><ProcessRules>
 		index_ uint,
 		count_ uint,
 	)
-	Process<~RuleName>Slot(
-		slot uint,
-	)
 	Postprocess<~RuleName>(
 		<ruleName_> ast.<~RuleName>Like,
 		index_ uint,
 		count_ uint,
+	)
+	Process<~RuleName>Slot(
+		<ruleName_> ast.<~RuleName>Like,
+		slot_ uint,
 	)`,
 }

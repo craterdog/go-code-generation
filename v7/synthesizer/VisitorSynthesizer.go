@@ -323,6 +323,11 @@ func (v *visitorSynthesizer_) createInlineSlot(
 	var inlineSlot = class.slot_
 	inlineSlot = uti.ReplaceAll(
 		inlineSlot,
+		"ruleName",
+		ruleName,
+	)
+	inlineSlot = uti.ReplaceAll(
+		inlineSlot,
 		"slot",
 		stc.Itoa(int(slot)),
 	)
@@ -691,7 +696,10 @@ func (v *visitor_) visit<~RuleName>(
 
 	slot_: `
 	// Visit slot <slot> between terms.
-	v.processor_.Process<~RuleName>Slot(<slot>)
+	v.processor_.Process<~RuleName>Slot(
+		<ruleName_>,
+		<slot>,
+	)
 `,
 
 	instanceStructure_: `

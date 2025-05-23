@@ -411,16 +411,17 @@ func (v *scanner_) Preprocess<~RuleName>(
 	// TBD - Add any validation checks.
 }
 
-func (v *scanner_) Process<~RuleName>Slot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *scanner_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index_ uint,
 	count_ uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *scanner_) Process<~RuleName>Slot(
+	<ruleName_> ast.<~RuleName>Like,
+	slot_ uint,
 ) {
 	// TBD - Add any validation checks.
 }

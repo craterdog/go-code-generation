@@ -81,7 +81,10 @@ func (v *visitor_) visitAlternativeSequence(
 	var delimiter = alternativeSequence.GetDelimiter()
 	v.processor_.ProcessDelimiter(delimiter)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessAlternativeSequenceSlot(1)
+	v.processor_.ProcessAlternativeSequenceSlot(
+		alternativeSequence,
+		1,
+	)
 
 	var sequence = alternativeSequence.GetSequence()
 	v.processor_.PreprocessSequence(
@@ -113,7 +116,10 @@ func (v *visitor_) visitAlternatives(
 		1,
 	)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessAlternativesSlot(1)
+	v.processor_.ProcessAlternativesSlot(
+		alternatives,
+		1,
+	)
 
 	var alternativeSequencesIndex uint
 	var alternativeSequences = alternatives.GetAlternativeSequences().GetIterator()
@@ -335,7 +341,10 @@ func (v *visitor_) visitExplicit(
 	var glyph = explicit.GetGlyph()
 	v.processor_.ProcessGlyph(glyph)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessExplicitSlot(1)
+	v.processor_.ProcessExplicitSlot(
+		explicit,
+		1,
+	)
 
 	var optionalExtent = explicit.GetOptionalExtent()
 	if uti.IsDefined(optionalExtent) {
@@ -359,17 +368,26 @@ func (v *visitor_) visitExpression(
 	var delimiter1 = expression.GetDelimiter1()
 	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessExpressionSlot(1)
+	v.processor_.ProcessExpressionSlot(
+		expression,
+		1,
+	)
 
 	var lowercase = expression.GetLowercase()
 	v.processor_.ProcessLowercase(lowercase)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessExpressionSlot(2)
+	v.processor_.ProcessExpressionSlot(
+		expression,
+		2,
+	)
 
 	var delimiter2 = expression.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
 	// Visit slot 3 between terms.
-	v.processor_.ProcessExpressionSlot(3)
+	v.processor_.ProcessExpressionSlot(
+		expression,
+		3,
+	)
 
 	var pattern = expression.GetPattern()
 	v.processor_.PreprocessPattern(
@@ -391,7 +409,10 @@ func (v *visitor_) visitExtent(
 	var delimiter = extent.GetDelimiter()
 	v.processor_.ProcessDelimiter(delimiter)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessExtentSlot(1)
+	v.processor_.ProcessExtentSlot(
+		extent,
+		1,
+	)
 
 	var glyph = extent.GetGlyph()
 	v.processor_.ProcessGlyph(glyph)
@@ -405,12 +426,18 @@ func (v *visitor_) visitFilter(
 		v.processor_.ProcessDelimiter(optionalDelimiter)
 	}
 	// Visit slot 1 between terms.
-	v.processor_.ProcessFilterSlot(1)
+	v.processor_.ProcessFilterSlot(
+		filter,
+		1,
+	)
 
 	var delimiter1 = filter.GetDelimiter1()
 	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessFilterSlot(2)
+	v.processor_.ProcessFilterSlot(
+		filter,
+		2,
+	)
 
 	var charactersIndex uint
 	var characters = filter.GetCharacters().GetIterator()
@@ -431,7 +458,10 @@ func (v *visitor_) visitFilter(
 		)
 	}
 	// Visit slot 3 between terms.
-	v.processor_.ProcessFilterSlot(3)
+	v.processor_.ProcessFilterSlot(
+		filter,
+		3,
+	)
 
 	var delimiter2 = filter.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
@@ -443,7 +473,10 @@ func (v *visitor_) visitGroup(
 	var delimiter1 = group.GetDelimiter1()
 	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessGroupSlot(1)
+	v.processor_.ProcessGroupSlot(
+		group,
+		1,
+	)
 
 	var alternatives = group.GetAlternatives()
 	v.processor_.PreprocessAlternatives(
@@ -458,7 +491,10 @@ func (v *visitor_) visitGroup(
 		1,
 	)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessGroupSlot(2)
+	v.processor_.ProcessGroupSlot(
+		group,
+		2,
+	)
 
 	var delimiter2 = group.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
@@ -484,7 +520,10 @@ func (v *visitor_) visitLimit(
 	var delimiter = limit.GetDelimiter()
 	v.processor_.ProcessDelimiter(delimiter)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessLimitSlot(1)
+	v.processor_.ProcessLimitSlot(
+		limit,
+		1,
+	)
 
 	var optionalNumber = limit.GetOptionalNumber()
 	if uti.IsDefined(optionalNumber) {
@@ -521,12 +560,18 @@ func (v *visitor_) visitLiteralValue(
 	var newline = literalValue.GetNewline()
 	v.processor_.ProcessNewline(newline)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessLiteralValueSlot(1)
+	v.processor_.ProcessLiteralValueSlot(
+		literalValue,
+		1,
+	)
 
 	var literal = literalValue.GetLiteral()
 	v.processor_.ProcessLiteral(literal)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessLiteralValueSlot(2)
+	v.processor_.ProcessLiteralValueSlot(
+		literalValue,
+		2,
+	)
 
 	var optionalNote = literalValue.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
@@ -550,7 +595,10 @@ func (v *visitor_) visitPattern(
 		1,
 	)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessPatternSlot(1)
+	v.processor_.ProcessPatternSlot(
+		pattern,
+		1,
+	)
 
 	var optionalNote = pattern.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
@@ -564,12 +612,18 @@ func (v *visitor_) visitQuantified(
 	var delimiter1 = quantified.GetDelimiter1()
 	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessQuantifiedSlot(1)
+	v.processor_.ProcessQuantifiedSlot(
+		quantified,
+		1,
+	)
 
 	var number = quantified.GetNumber()
 	v.processor_.ProcessNumber(number)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessQuantifiedSlot(2)
+	v.processor_.ProcessQuantifiedSlot(
+		quantified,
+		2,
+	)
 
 	var optionalLimit = quantified.GetOptionalLimit()
 	if uti.IsDefined(optionalLimit) {
@@ -586,7 +640,10 @@ func (v *visitor_) visitQuantified(
 		)
 	}
 	// Visit slot 3 between terms.
-	v.processor_.ProcessQuantifiedSlot(3)
+	v.processor_.ProcessQuantifiedSlot(
+		quantified,
+		3,
+	)
 
 	var delimiter2 = quantified.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
@@ -608,7 +665,10 @@ func (v *visitor_) visitRepetition(
 		1,
 	)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessRepetitionSlot(1)
+	v.processor_.ProcessRepetitionSlot(
+		repetition,
+		1,
+	)
 
 	var optionalCardinality = repetition.GetOptionalCardinality()
 	if uti.IsDefined(optionalCardinality) {
@@ -632,17 +692,26 @@ func (v *visitor_) visitRule(
 	var delimiter1 = rule.GetDelimiter1()
 	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessRuleSlot(1)
+	v.processor_.ProcessRuleSlot(
+		rule,
+		1,
+	)
 
 	var uppercase = rule.GetUppercase()
 	v.processor_.ProcessUppercase(uppercase)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessRuleSlot(2)
+	v.processor_.ProcessRuleSlot(
+		rule,
+		2,
+	)
 
 	var delimiter2 = rule.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
 	// Visit slot 3 between terms.
-	v.processor_.ProcessRuleSlot(3)
+	v.processor_.ProcessRuleSlot(
+		rule,
+		3,
+	)
 
 	var definition = rule.GetDefinition()
 	v.processor_.PreprocessDefinition(
@@ -687,12 +756,18 @@ func (v *visitor_) visitRuleName(
 	var newline = ruleName.GetNewline()
 	v.processor_.ProcessNewline(newline)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessRuleNameSlot(1)
+	v.processor_.ProcessRuleNameSlot(
+		ruleName,
+		1,
+	)
 
 	var uppercase = ruleName.GetUppercase()
 	v.processor_.ProcessUppercase(uppercase)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessRuleNameSlot(2)
+	v.processor_.ProcessRuleNameSlot(
+		ruleName,
+		2,
+	)
 
 	var optionalNote = ruleName.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
@@ -716,7 +791,10 @@ func (v *visitor_) visitRuleTerm(
 		1,
 	)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessRuleTermSlot(1)
+	v.processor_.ProcessRuleTermSlot(
+		ruleTerm,
+		1,
+	)
 
 	var optionalCardinality = ruleTerm.GetOptionalCardinality()
 	if uti.IsDefined(optionalCardinality) {
@@ -773,12 +851,18 @@ func (v *visitor_) visitSyntax(
 		1,
 	)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessSyntaxSlot(1)
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		1,
+	)
 
 	var comment1 = syntax.GetComment1()
 	v.processor_.ProcessComment(comment1)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessSyntaxSlot(2)
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		2,
+	)
 
 	var rulesIndex uint
 	var rules = syntax.GetRules().GetIterator()
@@ -799,12 +883,18 @@ func (v *visitor_) visitSyntax(
 		)
 	}
 	// Visit slot 3 between terms.
-	v.processor_.ProcessSyntaxSlot(3)
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		3,
+	)
 
 	var comment2 = syntax.GetComment2()
 	v.processor_.ProcessComment(comment2)
 	// Visit slot 4 between terms.
-	v.processor_.ProcessSyntaxSlot(4)
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		4,
+	)
 
 	var expressionsIndex uint
 	var expressions = syntax.GetExpressions().GetIterator()
@@ -848,7 +938,10 @@ func (v *visitor_) visitTermSequence(
 		)
 	}
 	// Visit slot 1 between terms.
-	v.processor_.ProcessTermSequenceSlot(1)
+	v.processor_.ProcessTermSequenceSlot(
+		termSequence,
+		1,
+	)
 
 	var optionalNote = termSequence.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {
@@ -902,12 +995,18 @@ func (v *visitor_) visitTokenName(
 	var newline = tokenName.GetNewline()
 	v.processor_.ProcessNewline(newline)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessTokenNameSlot(1)
+	v.processor_.ProcessTokenNameSlot(
+		tokenName,
+		1,
+	)
 
 	var lowercase = tokenName.GetLowercase()
 	v.processor_.ProcessLowercase(lowercase)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessTokenNameSlot(2)
+	v.processor_.ProcessTokenNameSlot(
+		tokenName,
+		2,
+	)
 
 	var optionalNote = tokenName.GetOptionalNote()
 	if uti.IsDefined(optionalNote) {

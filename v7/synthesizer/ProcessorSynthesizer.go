@@ -290,15 +290,16 @@ func (v *processor_) Preprocess<~RuleName>(
 ) {
 }
 
-func (v *processor_) Process<~RuleName>Slot(
-	slot uint,
-) {
-}
-
 func (v *processor_) Postprocess<~RuleName>(
 	<ruleName_> ast.<~RuleName>Like,
 	index_ uint,
 	count_ uint,
+) {
+}
+
+func (v *processor_) Process<~RuleName>Slot(
+	<ruleName_> ast.<~RuleName>Like,
+	slot_ uint,
 ) {
 }
 `,

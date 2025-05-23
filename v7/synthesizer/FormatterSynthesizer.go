@@ -363,9 +363,10 @@ func (v *formatter_) Preprocess<~RuleName>(
 }
 
 func (v *formatter_) Process<~RuleName>Slot(
-	slot uint,
+	<ruleName_> ast.<~RuleName>Like,
+	slot_ uint,
 ) {
-	switch slot {
+	switch slot_ {
 	default:
 		v.appendString(" ")
 	}
