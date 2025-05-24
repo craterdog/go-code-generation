@@ -156,9 +156,10 @@ func (v *formatter_) PreprocessAlternativeSequence(
 }
 
 func (v *formatter_) ProcessAlternativeSequenceSlot(
-	slot uint,
+	alternativeSequence ast.AlternativeSequenceLike,
+	slot_ uint,
 ) {
-	switch slot {
+	switch slot_ {
 	case 1:
 		v.appendString(" ")
 	}

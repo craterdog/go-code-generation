@@ -35,7 +35,7 @@ func TokenAlternativesClass() TokenAlternativesClassLike {
 // Constructor Methods
 
 func (c *tokenAlternativesClass_) TokenAlternatives(
-	tokenNames col.Sequential[TokenNameLike],
+	tokenNames col.ListLike[TokenNameLike],
 ) TokenAlternativesLike {
 	if uti.IsUndefined(tokenNames) {
 		panic("The \"tokenNames\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *tokenAlternatives_) GetClass() TokenAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *tokenAlternatives_) GetTokenNames() col.Sequential[TokenNameLike] {
+func (v *tokenAlternatives_) GetTokenNames() col.ListLike[TokenNameLike] {
 	return v.tokenNames_
 }
 
@@ -67,7 +67,7 @@ func (v *tokenAlternatives_) GetTokenNames() col.Sequential[TokenNameLike] {
 
 type tokenAlternatives_ struct {
 	// Declare the instance attributes.
-	tokenNames_ col.Sequential[TokenNameLike]
+	tokenNames_ col.ListLike[TokenNameLike]
 }
 
 // Class Structure

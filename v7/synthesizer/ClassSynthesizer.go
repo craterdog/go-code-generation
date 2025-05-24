@@ -290,12 +290,12 @@ func (v *classSynthesizer_) extractType(
 }
 
 func (v *classSynthesizer_) createAspectInterface(
-	sequence col.Sequential[mod.AspectDeclarationLike],
+	list col.ListLike[mod.AspectDeclarationLike],
 	aspectType mod.AbstractionLike,
 ) string {
 	var methods string
-	if uti.IsDefined(sequence) {
-		var aspectDeclarations = sequence.GetIterator()
+	if uti.IsDefined(list) {
+		var aspectDeclarations = list.GetIterator()
 		for aspectDeclarations.HasNext() {
 			var aspectDeclaration = aspectDeclarations.GetNext()
 			var declaration = aspectDeclaration.GetDeclaration()
@@ -328,8 +328,8 @@ func (v *classSynthesizer_) createAspectInterface(
 }
 
 func (v *classSynthesizer_) createAspectInterfaces(
-	declarations col.Sequential[mod.AspectDeclarationLike],
-	interfaces col.Sequential[mod.AspectInterfaceLike],
+	declarations col.ListLike[mod.AspectDeclarationLike],
+	interfaces col.ListLike[mod.AspectInterfaceLike],
 ) string {
 	var aspectInterfaces string
 	if uti.IsDefined(interfaces) {
@@ -349,7 +349,7 @@ func (v *classSynthesizer_) createAspectMethod(
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	var methodName = method.GetName()
-	var methodParameters col.Sequential[mod.ParameterLike]
+	var methodParameters col.ListLike[mod.ParameterLike]
 	var parameterList = method.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
 		methodParameters = parameterList.GetParameters()
@@ -430,10 +430,10 @@ func (v *classSynthesizer_) createAttributeCheck(
 }
 
 func (v *classSynthesizer_) createAttributeChecks(
-	sequence col.Sequential[mod.ParameterLike],
+	list col.ListLike[mod.ParameterLike],
 ) string {
 	var attributeChecks string
-	var parameters = sequence.GetIterator()
+	var parameters = list.GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var attributeCheck = v.createAttributeCheck(parameter)
@@ -467,10 +467,10 @@ func (v *classSynthesizer_) createAttributeDeclarations() string {
 }
 
 func (v *classSynthesizer_) createAttributeInitializations(
-	sequence col.Sequential[mod.ParameterLike],
+	list col.ListLike[mod.ParameterLike],
 ) string {
 	var initializations string
-	var parameters = sequence.GetIterator()
+	var parameters = list.GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
@@ -490,12 +490,12 @@ func (v *classSynthesizer_) createAttributeInitializations(
 }
 
 func (v *classSynthesizer_) createAttributeMethods(
-	sequence col.Sequential[mod.AttributeMethodLike],
+	list col.ListLike[mod.AttributeMethodLike],
 ) string {
 	var methods string
-	if uti.IsDefined(sequence) {
+	if uti.IsDefined(list) {
 		var attributeMethods string
-		var attributes = sequence.GetIterator()
+		var attributes = list.GetIterator()
 		for attributes.HasNext() {
 			var attributeMethod string
 			var attribute = attributes.GetNext()
@@ -612,12 +612,12 @@ func (v *classSynthesizer_) createConstantMethod(
 }
 
 func (v *classSynthesizer_) createConstantMethods(
-	sequence col.Sequential[mod.ConstantMethodLike],
+	list col.ListLike[mod.ConstantMethodLike],
 ) string {
 	var methods string
-	if uti.IsDefined(sequence) {
+	if uti.IsDefined(list) {
 		var constantMethods string
-		var constants = sequence.GetIterator()
+		var constants = list.GetIterator()
 		for constants.HasNext() {
 			var constantMethod = constants.GetNext()
 			constantMethods += v.createConstantMethod(constantMethod)
@@ -637,7 +637,7 @@ func (v *classSynthesizer_) createConstructorMethod(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
-	var constructorParameters col.Sequential[mod.ParameterLike]
+	var constructorParameters col.ListLike[mod.ParameterLike]
 	var parameterList = constructorMethod.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
 		constructorParameters = parameterList.GetParameters()
@@ -673,12 +673,12 @@ func (v *classSynthesizer_) createConstructorMethod(
 }
 
 func (v *classSynthesizer_) createConstructorMethods(
-	sequence col.Sequential[mod.ConstructorMethodLike],
+	list col.ListLike[mod.ConstructorMethodLike],
 ) string {
 	var methods string
-	if uti.IsDefined(sequence) {
+	if uti.IsDefined(list) {
 		var constructorMethods string
-		var constructors = sequence.GetIterator()
+		var constructors = list.GetIterator()
 		for constructors.HasNext() {
 			var constructorMethod = constructors.GetNext()
 			constructorMethods += v.createConstructorMethod(constructorMethod)
@@ -698,7 +698,7 @@ func (v *classSynthesizer_) createFunctionMethod(
 	functionMethod mod.FunctionMethodLike,
 ) string {
 	var methodName = functionMethod.GetName()
-	var functionParameters col.Sequential[mod.ParameterLike]
+	var functionParameters col.ListLike[mod.ParameterLike]
 	var parameterList = functionMethod.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
 		functionParameters = parameterList.GetParameters()
@@ -728,12 +728,12 @@ func (v *classSynthesizer_) createFunctionMethod(
 }
 
 func (v *classSynthesizer_) createFunctionMethods(
-	sequence col.Sequential[mod.FunctionMethodLike],
+	list col.ListLike[mod.FunctionMethodLike],
 ) string {
 	var methods string
-	if uti.IsDefined(sequence) {
+	if uti.IsDefined(list) {
 		var functionMethods string
-		var functions = sequence.GetIterator()
+		var functions = list.GetIterator()
 		for functions.HasNext() {
 			var functionMethod = functions.GetNext()
 			functionMethods += v.createFunctionMethod(functionMethod)
@@ -790,7 +790,7 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	} else {
 		if methodName == className || sts.HasPrefix(methodName, className+"With") {
 			instantiation = class.structureInstantiation_
-			var constructorParameters col.Sequential[mod.ParameterLike]
+			var constructorParameters col.ListLike[mod.ParameterLike]
 			var parameterList = constructorMethod.GetOptionalParameterList()
 			if uti.IsDefined(parameterList) {
 				constructorParameters = parameterList.GetParameters()
@@ -855,10 +855,10 @@ func (v *classSynthesizer_) createIntrinsicMethod() string {
 }
 
 func (v *classSynthesizer_) createParameters(
-	sequence col.Sequential[mod.ParameterLike],
+	list col.ListLike[mod.ParameterLike],
 ) string {
 	var methodParameters string
-	var parameters = sequence.GetIterator()
+	var parameters = list.GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		var parameterName = parameter.GetName()
@@ -887,7 +887,7 @@ func (v *classSynthesizer_) createPrincipalMethod(
 	method mod.MethodLike,
 ) string {
 	var methodName = method.GetName()
-	var methodParameters col.Sequential[mod.ParameterLike]
+	var methodParameters col.ListLike[mod.ParameterLike]
 	var parameterList = method.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
 		methodParameters = parameterList.GetParameters()
@@ -923,10 +923,10 @@ func (v *classSynthesizer_) createPrincipalMethod(
 }
 
 func (v *classSynthesizer_) createPrincipalMethods(
-	sequence col.Sequential[mod.PrincipalMethodLike],
+	list col.ListLike[mod.PrincipalMethodLike],
 ) string {
 	var principalMethods string
-	var methods = sequence.GetIterator()
+	var methods = list.GetIterator()
 	for methods.HasNext() {
 		var method = methods.GetNext().GetMethod()
 		if method.GetName() == "GetClass" ||
@@ -1011,7 +1011,7 @@ func (v *classSynthesizer_) replaceAbstractionType(
 		wrapper = v.replaceWrapperType(wrapper, mappings)
 	}
 
-	// Replace the generic types in a sequence of arguments with concrete types.
+	// Replace the generic types in a list of arguments with concrete types.
 	var arguments = abstraction.GetOptionalArguments()
 	if uti.IsDefined(arguments) {
 		arguments = v.replaceArgumentTypes(arguments, mappings)
@@ -1072,7 +1072,7 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 		additionalArguments.AppendValue(additionalArgument)
 	}
 
-	// Construct the updated sequence of arguments.
+	// Construct the updated list of arguments.
 	arguments = mod.ArgumentsClass().Arguments(
 		"[",
 		argument,
@@ -1114,11 +1114,11 @@ func (v *classSynthesizer_) replaceParameterType(
 }
 
 func (v *classSynthesizer_) replaceParameterTypes(
-	sequence col.Sequential[mod.ParameterLike],
+	list col.ListLike[mod.ParameterLike],
 	mappings col.CatalogLike[string, mod.AbstractionLike],
-) col.Sequential[mod.ParameterLike] {
+) col.ListLike[mod.ParameterLike] {
 	var replacedParameters = col.List[mod.ParameterLike]()
-	var parameters = sequence.GetIterator()
+	var parameters = list.GetIterator()
 	for parameters.HasNext() {
 		var parameter = parameters.GetNext()
 		parameter = v.replaceParameterType(parameter, mappings)

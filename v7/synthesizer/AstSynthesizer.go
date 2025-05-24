@@ -358,11 +358,11 @@ type <~ClassName>ClassLike interface {
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
-		<parameterName_> col.Sequential[<ParameterType>],`,
+		<parameterName_> col.ListLike[<ParameterType>],`,
 	singularTokenParameter_: `
 		<parameterName_> string,`,
 	pluralTokenParameter_: `
-		<parameterName_> col.Sequential[string],`,
+		<parameterName_> col.ListLike[string],`,
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
@@ -381,9 +381,9 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	ruleGetterMethod_: `
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
-	Get<~AttributeName>() col.Sequential[<AttributeType>]`,
+	Get<~AttributeName>() col.ListLike[<AttributeType>]`,
 	tokenGetterMethod_: `
 	Get<~AttributeName>() string`,
 	pluralTokenGetterMethod_: `
-	Get<~AttributeName>() col.Sequential[string]`,
+	Get<~AttributeName>() col.ListLike[string]`,
 }

@@ -67,7 +67,7 @@ type AlternativesClassLike interface {
 	// Constructor Methods
 	Alternatives(
 		sequence SequenceLike,
-		alternativeSequences col.Sequential[AlternativeSequenceLike],
+		alternativeSequences col.ListLike[AlternativeSequenceLike],
 	) AlternativesLike
 }
 
@@ -194,7 +194,7 @@ type FilterClassLike interface {
 	Filter(
 		optionalDelimiter string,
 		delimiter1 string,
-		characters col.Sequential[CharacterLike],
+		characters col.ListLike[CharacterLike],
 		delimiter2 string,
 	) FilterLike
 }
@@ -258,7 +258,7 @@ supported by each concrete literal-alternatives-like class.
 type LiteralAlternativesClassLike interface {
 	// Constructor Methods
 	LiteralAlternatives(
-		literalValues col.Sequential[LiteralValueLike],
+		literalValues col.ListLike[LiteralValueLike],
 	) LiteralAlternativesLike
 }
 
@@ -318,6 +318,18 @@ type RepetitionClassLike interface {
 }
 
 /*
+RuleAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete rule-alternatives-like class.
+*/
+type RuleAlternativesClassLike interface {
+	// Constructor Methods
+	RuleAlternatives(
+		ruleNames col.ListLike[RuleNameLike],
+	) RuleAlternativesLike
+}
+
+/*
 RuleClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete rule-like class.
@@ -330,18 +342,6 @@ type RuleClassLike interface {
 		delimiter2 string,
 		definition DefinitionLike,
 	) RuleLike
-}
-
-/*
-RuleAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete rule-alternatives-like class.
-*/
-type RuleAlternativesClassLike interface {
-	// Constructor Methods
-	RuleAlternatives(
-		ruleNames col.Sequential[RuleNameLike],
-	) RuleAlternativesLike
 }
 
 /*
@@ -379,7 +379,7 @@ supported by each concrete sequence-like class.
 type SequenceClassLike interface {
 	// Constructor Methods
 	Sequence(
-		repetitions col.Sequential[RepetitionLike],
+		repetitions col.ListLike[RepetitionLike],
 	) SequenceLike
 }
 
@@ -393,9 +393,9 @@ type SyntaxClassLike interface {
 	Syntax(
 		legalNotice LegalNoticeLike,
 		comment1 string,
-		rules col.Sequential[RuleLike],
+		rules col.ListLike[RuleLike],
 		comment2 string,
-		expressions col.Sequential[ExpressionLike],
+		expressions col.ListLike[ExpressionLike],
 	) SyntaxLike
 }
 
@@ -407,7 +407,7 @@ supported by each concrete term-sequence-like class.
 type TermSequenceClassLike interface {
 	// Constructor Methods
 	TermSequence(
-		ruleTerms col.Sequential[RuleTermLike],
+		ruleTerms col.ListLike[RuleTermLike],
 		optionalNote string,
 	) TermSequenceLike
 }
@@ -432,7 +432,7 @@ supported by each concrete token-alternatives-like class.
 type TokenAlternativesClassLike interface {
 	// Constructor Methods
 	TokenAlternatives(
-		tokenNames col.Sequential[TokenNameLike],
+		tokenNames col.ListLike[TokenNameLike],
 	) TokenAlternativesLike
 }
 
@@ -477,7 +477,7 @@ type AlternativesLike interface {
 
 	// Attribute Methods
 	GetSequence() SequenceLike
-	GetAlternativeSequences() col.Sequential[AlternativeSequenceLike]
+	GetAlternativeSequences() col.ListLike[AlternativeSequenceLike]
 }
 
 /*
@@ -614,7 +614,7 @@ type FilterLike interface {
 	// Attribute Methods
 	GetOptionalDelimiter() string
 	GetDelimiter1() string
-	GetCharacters() col.Sequential[CharacterLike]
+	GetCharacters() col.ListLike[CharacterLike]
 	GetDelimiter2() string
 }
 
@@ -683,7 +683,7 @@ type LiteralAlternativesLike interface {
 	GetClass() LiteralAlternativesClassLike
 
 	// Attribute Methods
-	GetLiteralValues() col.Sequential[LiteralValueLike]
+	GetLiteralValues() col.ListLike[LiteralValueLike]
 }
 
 /*
@@ -746,6 +746,19 @@ type RepetitionLike interface {
 }
 
 /*
+RuleAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete rule-alternatives-like class.
+*/
+type RuleAlternativesLike interface {
+	// Principal Methods
+	GetClass() RuleAlternativesClassLike
+
+	// Attribute Methods
+	GetRuleNames() col.ListLike[RuleNameLike]
+}
+
+/*
 RuleLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete rule-like class.
@@ -759,19 +772,6 @@ type RuleLike interface {
 	GetUppercase() string
 	GetDelimiter2() string
 	GetDefinition() DefinitionLike
-}
-
-/*
-RuleAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete rule-alternatives-like class.
-*/
-type RuleAlternativesLike interface {
-	// Principal Methods
-	GetClass() RuleAlternativesClassLike
-
-	// Attribute Methods
-	GetRuleNames() col.Sequential[RuleNameLike]
 }
 
 /*
@@ -813,7 +813,7 @@ type SequenceLike interface {
 	GetClass() SequenceClassLike
 
 	// Attribute Methods
-	GetRepetitions() col.Sequential[RepetitionLike]
+	GetRepetitions() col.ListLike[RepetitionLike]
 }
 
 /*
@@ -828,9 +828,9 @@ type SyntaxLike interface {
 	// Attribute Methods
 	GetLegalNotice() LegalNoticeLike
 	GetComment1() string
-	GetRules() col.Sequential[RuleLike]
+	GetRules() col.ListLike[RuleLike]
 	GetComment2() string
-	GetExpressions() col.Sequential[ExpressionLike]
+	GetExpressions() col.ListLike[ExpressionLike]
 }
 
 /*
@@ -843,7 +843,7 @@ type TermSequenceLike interface {
 	GetClass() TermSequenceClassLike
 
 	// Attribute Methods
-	GetRuleTerms() col.Sequential[RuleTermLike]
+	GetRuleTerms() col.ListLike[RuleTermLike]
 	GetOptionalNote() string
 }
 
@@ -870,7 +870,7 @@ type TokenAlternativesLike interface {
 	GetClass() TokenAlternativesClassLike
 
 	// Attribute Methods
-	GetTokenNames() col.Sequential[TokenNameLike]
+	GetTokenNames() col.ListLike[TokenNameLike]
 }
 
 /*

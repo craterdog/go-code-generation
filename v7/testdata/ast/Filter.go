@@ -37,7 +37,7 @@ func FilterClass() FilterClassLike {
 func (c *filterClass_) Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	characters col.Sequential[CharacterLike],
+	characters col.ListLike[CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	if uti.IsUndefined(delimiter1) {
@@ -77,7 +77,7 @@ func (v *filter_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
+func (v *filter_) GetCharacters() col.ListLike[CharacterLike] {
 	return v.characters_
 }
 
@@ -93,7 +93,7 @@ type filter_ struct {
 	// Declare the instance attributes.
 	optionalDelimiter_ string
 	delimiter1_        string
-	characters_        col.Sequential[CharacterLike]
+	characters_        col.ListLike[CharacterLike]
 	delimiter2_        string
 }
 

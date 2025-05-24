@@ -36,7 +36,7 @@ func AlternativesClass() AlternativesClassLike {
 
 func (c *alternativesClass_) Alternatives(
 	sequence SequenceLike,
-	alternativeSequences col.Sequential[AlternativeSequenceLike],
+	alternativeSequences col.ListLike[AlternativeSequenceLike],
 ) AlternativesLike {
 	if uti.IsUndefined(sequence) {
 		panic("The \"sequence\" attribute is required by this class.")
@@ -66,7 +66,7 @@ func (v *alternatives_) GetSequence() SequenceLike {
 	return v.sequence_
 }
 
-func (v *alternatives_) GetAlternativeSequences() col.Sequential[AlternativeSequenceLike] {
+func (v *alternatives_) GetAlternativeSequences() col.ListLike[AlternativeSequenceLike] {
 	return v.alternativeSequences_
 }
 
@@ -77,7 +77,7 @@ func (v *alternatives_) GetAlternativeSequences() col.Sequential[AlternativeSequ
 type alternatives_ struct {
 	// Declare the instance attributes.
 	sequence_             SequenceLike
-	alternativeSequences_ col.Sequential[AlternativeSequenceLike]
+	alternativeSequences_ col.ListLike[AlternativeSequenceLike]
 }
 
 // Class Structure

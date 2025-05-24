@@ -60,8 +60,8 @@ type (
 	PatternClassLike             = ast.PatternClassLike
 	QuantifiedClassLike          = ast.QuantifiedClassLike
 	RepetitionClassLike          = ast.RepetitionClassLike
-	RuleClassLike                = ast.RuleClassLike
 	RuleAlternativesClassLike    = ast.RuleAlternativesClassLike
+	RuleClassLike                = ast.RuleClassLike
 	RuleNameClassLike            = ast.RuleNameClassLike
 	RuleTermClassLike            = ast.RuleTermClassLike
 	SequenceClassLike            = ast.SequenceClassLike
@@ -94,8 +94,8 @@ type (
 	PatternLike             = ast.PatternLike
 	QuantifiedLike          = ast.QuantifiedLike
 	RepetitionLike          = ast.RepetitionLike
-	RuleLike                = ast.RuleLike
 	RuleAlternativesLike    = ast.RuleAlternativesLike
+	RuleLike                = ast.RuleLike
 	RuleNameLike            = ast.RuleNameLike
 	RuleTermLike            = ast.RuleTermLike
 	SequenceLike            = ast.SequenceLike
@@ -175,7 +175,7 @@ func AlternativesClass() AlternativesClassLike {
 
 func Alternatives(
 	sequence ast.SequenceLike,
-	alternativeSequences col.Sequential[ast.AlternativeSequenceLike],
+	alternativeSequences col.ListLike[ast.AlternativeSequenceLike],
 ) AlternativesLike {
 	return AlternativesClass().Alternatives(
 		sequence,
@@ -308,7 +308,7 @@ func FilterClass() FilterClassLike {
 func Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	characters col.Sequential[ast.CharacterLike],
+	characters col.ListLike[ast.CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	return FilterClass().Filter(
@@ -378,7 +378,7 @@ func LiteralAlternativesClass() LiteralAlternativesClassLike {
 }
 
 func LiteralAlternatives(
-	literalValues col.Sequential[ast.LiteralValueLike],
+	literalValues col.ListLike[ast.LiteralValueLike],
 ) LiteralAlternativesLike {
 	return LiteralAlternativesClass().LiteralAlternatives(
 		literalValues,
@@ -447,6 +447,18 @@ func Repetition(
 	)
 }
 
+func RuleAlternativesClass() RuleAlternativesClassLike {
+	return ast.RuleAlternativesClass()
+}
+
+func RuleAlternatives(
+	ruleNames col.ListLike[ast.RuleNameLike],
+) RuleAlternativesLike {
+	return RuleAlternativesClass().RuleAlternatives(
+		ruleNames,
+	)
+}
+
 func RuleClass() RuleClassLike {
 	return ast.RuleClass()
 }
@@ -462,18 +474,6 @@ func Rule(
 		uppercase,
 		delimiter2,
 		definition,
-	)
-}
-
-func RuleAlternativesClass() RuleAlternativesClassLike {
-	return ast.RuleAlternativesClass()
-}
-
-func RuleAlternatives(
-	ruleNames col.Sequential[ast.RuleNameLike],
-) RuleAlternativesLike {
-	return RuleAlternativesClass().RuleAlternatives(
-		ruleNames,
 	)
 }
 
@@ -512,7 +512,7 @@ func SequenceClass() SequenceClassLike {
 }
 
 func Sequence(
-	repetitions col.Sequential[ast.RepetitionLike],
+	repetitions col.ListLike[ast.RepetitionLike],
 ) SequenceLike {
 	return SequenceClass().Sequence(
 		repetitions,
@@ -526,9 +526,9 @@ func SyntaxClass() SyntaxClassLike {
 func Syntax(
 	legalNotice ast.LegalNoticeLike,
 	comment1 string,
-	rules col.Sequential[ast.RuleLike],
+	rules col.ListLike[ast.RuleLike],
 	comment2 string,
-	expressions col.Sequential[ast.ExpressionLike],
+	expressions col.ListLike[ast.ExpressionLike],
 ) SyntaxLike {
 	return SyntaxClass().Syntax(
 		legalNotice,
@@ -544,7 +544,7 @@ func TermSequenceClass() TermSequenceClassLike {
 }
 
 func TermSequence(
-	ruleTerms col.Sequential[ast.RuleTermLike],
+	ruleTerms col.ListLike[ast.RuleTermLike],
 	optionalNote string,
 ) TermSequenceLike {
 	return TermSequenceClass().TermSequence(
@@ -570,7 +570,7 @@ func TokenAlternativesClass() TokenAlternativesClassLike {
 }
 
 func TokenAlternatives(
-	tokenNames col.Sequential[ast.TokenNameLike],
+	tokenNames col.ListLike[ast.TokenNameLike],
 ) TokenAlternativesLike {
 	return TokenAlternativesClass().TokenAlternatives(
 		tokenNames,

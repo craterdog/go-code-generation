@@ -35,7 +35,7 @@ func SequenceClass() SequenceClassLike {
 // Constructor Methods
 
 func (c *sequenceClass_) Sequence(
-	repetitions col.Sequential[RepetitionLike],
+	repetitions col.ListLike[RepetitionLike],
 ) SequenceLike {
 	if uti.IsUndefined(repetitions) {
 		panic("The \"repetitions\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *sequence_) GetClass() SequenceClassLike {
 
 // Attribute Methods
 
-func (v *sequence_) GetRepetitions() col.Sequential[RepetitionLike] {
+func (v *sequence_) GetRepetitions() col.ListLike[RepetitionLike] {
 	return v.repetitions_
 }
 
@@ -67,7 +67,7 @@ func (v *sequence_) GetRepetitions() col.Sequential[RepetitionLike] {
 
 type sequence_ struct {
 	// Declare the instance attributes.
-	repetitions_ col.Sequential[RepetitionLike]
+	repetitions_ col.ListLike[RepetitionLike]
 }
 
 // Class Structure

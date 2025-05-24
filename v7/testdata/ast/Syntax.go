@@ -37,9 +37,9 @@ func SyntaxClass() SyntaxClassLike {
 func (c *syntaxClass_) Syntax(
 	legalNotice LegalNoticeLike,
 	comment1 string,
-	rules col.Sequential[RuleLike],
+	rules col.ListLike[RuleLike],
 	comment2 string,
-	expressions col.Sequential[ExpressionLike],
+	expressions col.ListLike[ExpressionLike],
 ) SyntaxLike {
 	if uti.IsUndefined(legalNotice) {
 		panic("The \"legalNotice\" attribute is required by this class.")
@@ -85,7 +85,7 @@ func (v *syntax_) GetComment1() string {
 	return v.comment1_
 }
 
-func (v *syntax_) GetRules() col.Sequential[RuleLike] {
+func (v *syntax_) GetRules() col.ListLike[RuleLike] {
 	return v.rules_
 }
 
@@ -93,7 +93,7 @@ func (v *syntax_) GetComment2() string {
 	return v.comment2_
 }
 
-func (v *syntax_) GetExpressions() col.Sequential[ExpressionLike] {
+func (v *syntax_) GetExpressions() col.ListLike[ExpressionLike] {
 	return v.expressions_
 }
 
@@ -105,9 +105,9 @@ type syntax_ struct {
 	// Declare the instance attributes.
 	legalNotice_ LegalNoticeLike
 	comment1_    string
-	rules_       col.Sequential[RuleLike]
+	rules_       col.ListLike[RuleLike]
 	comment2_    string
-	expressions_ col.Sequential[ExpressionLike]
+	expressions_ col.ListLike[ExpressionLike]
 }
 
 // Class Structure
