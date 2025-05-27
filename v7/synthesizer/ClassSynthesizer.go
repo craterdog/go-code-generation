@@ -1027,16 +1027,12 @@ func (v *classSynthesizer_) replaceAbstractionType(
 	abstraction mod.AbstractionLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.AbstractionLike {
-	// Check for external abstraction type.
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		// The mappings cannot include mappings from external packages.
-		return abstraction
-	}
-
 	// Check for wrapper mapping.
 	var wrapper = abstraction.GetOptionalWrapper()
 	wrapper = v.replaceWrapperType(wrapper, mappings)
+
+	// Check for external type prefix (no mapping).
+	var prefix = abstraction.GetOptionalPrefix()
 
 	// Check for name mapping.
 	var name = abstraction.GetName()
