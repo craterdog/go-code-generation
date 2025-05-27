@@ -123,7 +123,7 @@ type ClassTemplateDriven interface {
 	CreateFunctionMethods() string
 	CreatePrincipalMethods() string
 	CreateAttributeMethods() string
-	CreateAspectMethods() string
+	CreateAspectInterfaces() string
 	CreatePrivateMethods() string
 	CreateInstanceStructure() string
 	CreateClassStructure() string

@@ -127,12 +127,12 @@ func (v *classAssembler_) AssembleClass(
 		attributeMethods,
 	)
 
-	// Create the aspect methods.
-	var aspectMethods = synthesizer.CreateAspectMethods()
+	// Create the aspect interface methods.
+	var aspectInterfaces = synthesizer.CreateAspectInterfaces()
 	generated = uti.ReplaceAll(
 		generated,
-		"aspectMethods",
-		aspectMethods,
+		"aspectInterfaces",
+		aspectInterfaces,
 	)
 
 	// Create the private methods.
@@ -229,7 +229,7 @@ import (<ImportedPackages>)
 // CLASS INTERFACE
 <AccessFunction><ConstructorMethods><ConstantMethods><FunctionMethods>
 // INSTANCE INTERFACE
-<PrincipalMethods><AttributeMethods><AspectMethods>
+<PrincipalMethods><AttributeMethods><AspectInterfaces>
 // PROTECTED INTERFACE
 <PrivateMethods><InstanceStructure><ClassStructure><ClassReference>`,
 

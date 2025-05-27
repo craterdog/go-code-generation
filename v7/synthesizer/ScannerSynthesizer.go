@@ -100,9 +100,9 @@ func (v *scannerSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *scannerSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods string
-	return aspectMethods
+func (v *scannerSynthesizer_) CreateAspectInterfaces() string {
+	var aspectInterfaces string
+	return aspectInterfaces
 }
 
 func (v *scannerSynthesizer_) CreatePrivateMethods() string {

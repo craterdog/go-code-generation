@@ -122,10 +122,7 @@ func (v *classAnalyzer_) analyzeAspectDeclarations(
 	interfaceDeclarations ast.InterfaceDeclarationsLike,
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
-	var aspectDeclarations = aspectSection.GetAspectDeclarations()
-	v.aspectDeclarations_ = col.ListFromSequence[ast.AspectDeclarationLike](
-		aspectDeclarations,
-	)
+	v.aspectDeclarations_ = aspectSection.GetAspectDeclarations()
 }
 
 func (v *classAnalyzer_) analyzeAspectInterfaces(
@@ -134,10 +131,7 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
 	if uti.IsDefined(aspectSubsection) {
-		var aspectInterfaces = aspectSubsection.GetAspectInterfaces()
-		v.aspectInterfaces_ = col.ListFromSequence[ast.AspectInterfaceLike](
-			aspectInterfaces,
-		)
+		v.aspectInterfaces_ = aspectSubsection.GetAspectInterfaces()
 	}
 }
 
@@ -231,7 +225,7 @@ func (v *classAnalyzer_) analyzeClassStructure(
 		var methodName = method.GetName()
 		if methodName == "GetIntrinsic" {
 			v.isIntrinsic_ = true
-			var result = method.GetOptionalResult()
+			var result = method.GetResult()
 			v.intrinsicType_ = result.GetAny().(ast.AbstractionLike)
 		}
 	}

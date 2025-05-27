@@ -112,22 +112,22 @@ func (v *formatterSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *formatterSynthesizer_) CreateAspectMethods() string {
+func (v *formatterSynthesizer_) CreateAspectInterfaces() string {
 	var class = formatterSynthesizerClass()
-	var aspectMethods = class.aspectMethods_
+	var aspectInterfaces = class.aspectInterfaces_
 	var processTokens = v.createProcessTokens()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processTokens",
 		processTokens,
 	)
 	var processRules = v.createProcessRules()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processRules",
 		processRules,
 	)
-	return aspectMethods
+	return aspectInterfaces
 }
 
 func (v *formatterSynthesizer_) CreatePrivateMethods() string {
@@ -262,7 +262,7 @@ type formatterSynthesizerClass_ struct {
 	accessFunction_     string
 	constructorMethods_ string
 	principalMethods_   string
-	aspectMethods_      string
+	aspectInterfaces_   string
 	processToken_       string
 	processNewline_     string
 	processRule_        string
@@ -331,7 +331,7 @@ func (v *formatter_) Format<~SyntaxName>(<~syntaxName> ast.<~SyntaxName>Like) st
 }
 `,
 
-	aspectMethods_: `
+	aspectInterfaces_: `
 // Methodical Methods
 <ProcessTokens><ProcessRules>
 const _indentation = "\t"

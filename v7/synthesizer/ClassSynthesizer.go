@@ -125,11 +125,11 @@ func (v *classSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *classSynthesizer_) CreateAspectMethods() string {
+func (v *classSynthesizer_) CreateAspectInterfaces() string {
 	var declarations = v.packageAnalyzer_.GetAspectDeclarations()
 	var interfaces = v.classAnalyzer_.GetAspectInterfaces()
-	var aspectMethods = v.createAspectInterfaces(declarations, interfaces)
-	return aspectMethods
+	var aspectInterfaces = v.createAspectInterfaces(declarations, interfaces)
+	return aspectInterfaces
 }
 
 func (v *classSynthesizer_) CreatePrivateMethods() string {
@@ -222,7 +222,7 @@ func (v *classSynthesizer_) extractAttributeName(
 	return attributeName
 }
 
-func (v *classSynthesizer_) extractConcreteMappings(
+func (v *classSynthesizer_) extractMappings(
 	constraints mod.ConstraintsLike,
 	arguments mod.ArgumentsLike,
 ) col.CatalogLike[string, mod.AbstractionLike] {
@@ -232,22 +232,22 @@ func (v *classSynthesizer_) extractConcreteMappings(
 		return mappings
 	}
 
-	// Map the name of the first constraint to its concrete type.
+	// Map the name of the first constraint to its mapped type.
 	var constraint = constraints.GetConstraint()
 	var constraintName = constraint.GetName()
 	var argument = arguments.GetArgument()
-	var concreteType = argument.GetAbstraction()
-	mappings.SetValue(constraintName, concreteType)
+	var mappedType = argument.GetAbstraction()
+	mappings.SetValue(constraintName, mappedType)
 
-	// Map the name of the additional constraints to their concrete types.
+	// Map the name of the additional constraints to their mapped types.
 	var additionalConstraints = constraints.GetAdditionalConstraints().GetIterator()
 	var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
 	for additionalConstraints.HasNext() {
 		constraint = additionalConstraints.GetNext().GetConstraint()
 		constraintName = constraint.GetName()
 		argument = additionalArguments.GetNext().GetArgument()
-		concreteType = argument.GetAbstraction()
-		mappings.SetValue(constraintName, concreteType)
+		mappedType = argument.GetAbstraction()
+		mappings.SetValue(constraintName, mappedType)
 	}
 
 	return mappings
@@ -290,28 +290,9 @@ func (v *classSynthesizer_) extractType(
 }
 
 func (v *classSynthesizer_) createAspectInterface(
-	list col.ListLike[mod.AspectDeclarationLike],
+	aspectDeclarations col.ListLike[mod.AspectDeclarationLike],
 	aspectType mod.AbstractionLike,
 ) string {
-	var methods string
-	if uti.IsDefined(list) {
-		var aspectDeclarations = list.GetIterator()
-		for aspectDeclarations.HasNext() {
-			var aspectDeclaration = aspectDeclarations.GetNext()
-			var declaration = aspectDeclaration.GetDeclaration()
-			var constraints = declaration.GetOptionalConstraints()
-			var arguments = aspectType.GetOptionalArguments()
-			if uti.IsUndefined(aspectType.GetOptionalPrefix()) &&
-				declaration.GetName() == aspectType.GetName() {
-				var mappings = v.extractConcreteMappings(constraints, arguments)
-				methods = v.createAspectMethods(
-					aspectType,
-					aspectDeclaration,
-					mappings,
-				)
-			}
-		}
-	}
 	var class = classSynthesizerClass()
 	var aspectInterface = class.aspectInterface_
 	aspectInterface = uti.ReplaceAll(
@@ -319,10 +300,35 @@ func (v *classSynthesizer_) createAspectInterface(
 		"aspectType",
 		v.extractType(aspectType),
 	)
+	var aspectMethods string
+	if uti.IsDefined(aspectType.GetOptionalPrefix()) {
+		// Ignore the methods for aspect types defined in other packages.
+		aspectInterface = uti.ReplaceAll(
+			aspectInterface,
+			"aspectMethods",
+			aspectMethods,
+		)
+		return aspectInterface
+	}
+	var iterator = aspectDeclarations.GetIterator()
+	for iterator.HasNext() {
+		var aspectDeclaration = iterator.GetNext()
+		var declaration = aspectDeclaration.GetDeclaration()
+		var constraints = declaration.GetOptionalConstraints()
+		var arguments = aspectType.GetOptionalArguments()
+		if declaration.GetName() == aspectType.GetName() {
+			var mappings = v.extractMappings(constraints, arguments)
+			aspectMethods = v.createAspectMethods(
+				aspectDeclaration,
+				mappings,
+			)
+			break
+		}
+	}
 	aspectInterface = uti.ReplaceAll(
 		aspectInterface,
 		"aspectMethods",
-		methods,
+		aspectMethods,
 	)
 	return aspectInterface
 }
@@ -344,11 +350,10 @@ func (v *classSynthesizer_) createAspectInterfaces(
 }
 
 func (v *classSynthesizer_) createAspectMethod(
-	aspectType mod.AbstractionLike,
 	method mod.MethodLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) string {
-	var methodName = method.GetName()
+	// Determine any instance method parameters.
 	var methodParameters col.ListLike[mod.ParameterLike]
 	var parameterList = method.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
@@ -356,53 +361,61 @@ func (v *classSynthesizer_) createAspectMethod(
 	} else {
 		methodParameters = col.List[mod.ParameterLike]()
 	}
-	var methodResult = method.GetOptionalResult()
+
+	// Determine the type of method template based on its result type.
+	var aspectMethod string
+	var methodResult = method.GetResult()
+	var class = classSynthesizerClass()
+	switch methodResult.GetAny().(type) {
+	case mod.NoneLike:
+		// The method return has no value.
+		aspectMethod = class.instanceMethod_
+	case mod.AbstractionLike:
+		// The method returns a single value.
+		aspectMethod = class.instanceFunction_
+	case mod.MultivalueLike:
+		// The method returns multiple values by name.
+		aspectMethod = class.instanceMultiFunction_
+	}
+
+	// Replace any generic types with their corresponding mapped types.
 	if mappings.GetSize() > 0 {
 		methodParameters = v.replaceParameterTypes(methodParameters, mappings)
-		if uti.IsDefined(methodResult) {
-			methodResult = v.replaceResultType(methodResult, mappings)
-		}
+		methodResult = v.replaceResultType(methodResult, mappings)
 	}
-	var parameters = v.createParameters(methodParameters)
-	var resultType = v.createResult(methodResult)
-	var class = classSynthesizerClass()
-	var aspectMethod = class.instanceMethod_
-	if uti.IsDefined(resultType) {
-		aspectMethod = class.instanceFunction_
-		if sts.HasPrefix(resultType, "(") {
-			aspectMethod = class.instanceMultiFunction_
-		}
-		aspectMethod = uti.ReplaceAll(
-			aspectMethod,
-			"resultType",
-			resultType,
-		)
-	}
+
+	// Plug the values determined above into the code template.
+	var methodName = method.GetName()
 	aspectMethod = uti.ReplaceAll(
 		aspectMethod,
 		"methodName",
 		methodName,
 	)
+	var parameters = v.createParameters(methodParameters)
 	aspectMethod = uti.ReplaceAll(
 		aspectMethod,
 		"parameters",
 		parameters,
 	)
+	var resultType = v.createResult(methodResult)
+	aspectMethod = uti.ReplaceAll(
+		aspectMethod,
+		"resultType",
+		resultType,
+	)
 	return aspectMethod
 }
 
 func (v *classSynthesizer_) createAspectMethods(
-	aspectType mod.AbstractionLike,
 	aspectDeclaration mod.AspectDeclarationLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	var aspectMethods string
-	var methods = aspectDeclaration.GetAspectMethods().GetIterator()
-	for methods.HasNext() {
-		var aspectMethod = methods.GetNext()
+	var iterator = aspectDeclaration.GetAspectMethods().GetIterator()
+	for iterator.HasNext() {
+		var aspectMethod = iterator.GetNext()
 		var method = aspectMethod.GetMethod()
 		aspectMethods += v.createAspectMethod(
-			aspectType,
 			method,
 			mappings,
 		)
@@ -695,36 +708,36 @@ func (v *classSynthesizer_) createConstructorMethods(
 }
 
 func (v *classSynthesizer_) createFunctionMethod(
-	functionMethod mod.FunctionMethodLike,
+	method mod.FunctionMethodLike,
 ) string {
-	var methodName = functionMethod.GetName()
 	var functionParameters col.ListLike[mod.ParameterLike]
-	var parameterList = functionMethod.GetOptionalParameterList()
+	var parameterList = method.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
 		functionParameters = parameterList.GetParameters()
 	} else {
 		functionParameters = col.List[mod.ParameterLike]()
 	}
-	var parameters = v.createParameters(functionParameters)
-	var resultType = v.createResult(functionMethod.GetResult())
 	var class = classSynthesizerClass()
-	var method = class.functionMethod_
-	method = uti.ReplaceAll(
-		method,
+	var functionMethod = class.functionMethod_
+	var methodName = method.GetName()
+	functionMethod = uti.ReplaceAll(
+		functionMethod,
 		"methodName",
 		methodName,
 	)
-	method = uti.ReplaceAll(
-		method,
+	var parameters = v.createParameters(functionParameters)
+	functionMethod = uti.ReplaceAll(
+		functionMethod,
 		"parameters",
 		parameters,
 	)
-	method = uti.ReplaceAll(
-		method,
+	var resultType = v.createResult(method.GetResult())
+	functionMethod = uti.ReplaceAll(
+		functionMethod,
 		"resultType",
 		resultType,
 	)
-	return method
+	return functionMethod
 }
 
 func (v *classSynthesizer_) createFunctionMethods(
@@ -886,7 +899,7 @@ func (v *classSynthesizer_) createParameters(
 func (v *classSynthesizer_) createPrincipalMethod(
 	method mod.MethodLike,
 ) string {
-	var methodName = method.GetName()
+	// Determine any instance method parameters.
 	var methodParameters col.ListLike[mod.ParameterLike]
 	var parameterList = method.GetOptionalParameterList()
 	if uti.IsDefined(parameterList) {
@@ -894,30 +907,41 @@ func (v *classSynthesizer_) createPrincipalMethod(
 	} else {
 		methodParameters = col.List[mod.ParameterLike]()
 	}
-	var parameters = v.createParameters(methodParameters)
-	var resultType = v.createResult(method.GetOptionalResult())
+
+	// Determine the type of method template based on its result type.
+	var principalMethod string
+	var methodResult = method.GetResult()
 	var class = classSynthesizerClass()
-	var principalMethod = class.instanceMethod_
-	if uti.IsDefined(resultType) {
+	switch methodResult.GetAny().(type) {
+	case mod.NoneLike:
+		// The method return has no value.
+		principalMethod = class.instanceMethod_
+	case mod.AbstractionLike:
+		// The method returns a single value.
 		principalMethod = class.instanceFunction_
-		if sts.HasPrefix(resultType, "(") {
-			principalMethod = class.instanceMultiFunction_
-		}
-		principalMethod = uti.ReplaceAll(
-			principalMethod,
-			"resultType",
-			resultType,
-		)
+	case mod.MultivalueLike:
+		// The method returns multiple values by name.
+		principalMethod = class.instanceMultiFunction_
 	}
+
+	// Plug the values determined above into the code template.
+	var methodName = method.GetName()
 	principalMethod = uti.ReplaceAll(
 		principalMethod,
 		"methodName",
 		methodName,
 	)
+	var parameters = v.createParameters(methodParameters)
 	principalMethod = uti.ReplaceAll(
 		principalMethod,
 		"parameters",
 		parameters,
+	)
+	var resultType = v.createResult(methodResult)
+	principalMethod = uti.ReplaceAll(
+		principalMethod,
+		"resultType",
+		resultType,
 	)
 	return principalMethod
 }
@@ -956,15 +980,13 @@ func (v *classSynthesizer_) createResult(
 	result mod.ResultLike,
 ) string {
 	var results string
-	if uti.IsDefined(result) {
-		switch actual := result.GetAny().(type) {
-		case mod.AbstractionLike:
-			results = v.extractType(actual)
-		case mod.MultivalueLike:
-			var parameterList = actual.GetParameterList()
-			var parameters = parameterList.GetParameters()
-			results = "(" + v.createParameters(parameters) + ")"
-		}
+	switch actual := result.GetAny().(type) {
+	case mod.AbstractionLike:
+		results = v.extractType(actual)
+	case mod.MultivalueLike:
+		var parameterList = actual.GetParameterList()
+		var parameters = parameterList.GetParameters()
+		results = "(" + v.createParameters(parameters) + ")"
 	}
 	return results
 }
@@ -1005,29 +1027,24 @@ func (v *classSynthesizer_) replaceAbstractionType(
 	abstraction mod.AbstractionLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.AbstractionLike {
-	// Replace the generic type in a wrapper with the concrete type.
-	var wrapper = abstraction.GetOptionalWrapper()
-	if uti.IsDefined(wrapper) {
-		wrapper = v.replaceWrapperType(wrapper, mappings)
-	}
-
-	// Replace the generic types in a list of arguments with concrete types.
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		arguments = v.replaceArgumentTypes(arguments, mappings)
-	}
-
-	// Replace a non-prefixed generic type with its concrete type.
-	var name = abstraction.GetName()
+	// Check for external abstraction type.
 	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsUndefined(prefix) {
-		var concreteType = mappings.GetValue(name)
-		if uti.IsDefined(concreteType) {
-			prefix = concreteType.GetOptionalPrefix()
-			name = concreteType.GetName()
-			arguments = concreteType.GetOptionalArguments()
-		}
+	if uti.IsDefined(prefix) {
+		// The mappings cannot include mappings from external packages.
+		return abstraction
 	}
+
+	// Check for wrapper mapping.
+	var wrapper = abstraction.GetOptionalWrapper()
+	wrapper = v.replaceWrapperType(wrapper, mappings)
+
+	// Check for name mapping.
+	var name = abstraction.GetName()
+	name = v.replaceNameType(name, mappings)
+
+	// Check for argument type mappings.
+	var arguments = abstraction.GetOptionalArguments()
+	arguments = v.replaceArgumentTypes(arguments, mappings)
 
 	// Recreate the abstraction using its updated types.
 	abstraction = mod.AbstractionClass().Abstraction(
@@ -1036,7 +1053,6 @@ func (v *classSynthesizer_) replaceAbstractionType(
 		name,
 		arguments,
 	)
-
 	return abstraction
 }
 
@@ -1054,11 +1070,16 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 	arguments mod.ArgumentsLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.ArgumentsLike {
-	// Replace the generic type of the first argument with its concrete type.
+	// Check for arguments.
+	if uti.IsUndefined(arguments) {
+		return arguments
+	}
+
+	// Replace the generic type of the first argument with its mapped type.
 	var argument = arguments.GetArgument()
 	argument = v.replaceArgumentType(argument, mappings)
 
-	// Replace the generic types of any additional arguments with concrete types.
+	// Replace the generic types of any additional arguments with mapped types.
 	var additionalArguments = col.List[mod.AdditionalArgumentLike]()
 	var iterator = arguments.GetAdditionalArguments().GetIterator()
 	for iterator.HasNext() {
@@ -1131,9 +1152,6 @@ func (v *classSynthesizer_) replaceResultType(
 	result mod.ResultLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.ResultLike {
-	if uti.IsUndefined(result) {
-		return result
-	}
 	switch actual := result.GetAny().(type) {
 	case mod.NoneLike:
 	case mod.AbstractionLike:
@@ -1154,25 +1172,43 @@ func (v *classSynthesizer_) replaceResultType(
 	return result
 }
 
+func (v *classSynthesizer_) replaceNameType(
+	name string,
+	mappings col.CatalogLike[string, mod.AbstractionLike],
+) string {
+	var mappedType = mappings.GetValue(name)
+	if uti.IsDefined(mappedType) {
+		name = v.extractType(mappedType)
+	}
+	return name
+}
+
 func (v *classSynthesizer_) replaceWrapperType(
 	wrapper mod.WrapperLike,
 	mappings col.CatalogLike[string, mod.AbstractionLike],
 ) mod.WrapperLike {
+	if uti.IsUndefined(wrapper) {
+		return wrapper
+	}
 	switch actual := wrapper.GetAny().(type) {
+	case mod.ArrayLike:
+		// Example: [] -> []
 	case mod.MapLike:
-		// eg. map[K]V -> map[string]int
+		// Example: map[K] -> map[string]
 		var typeName = actual.GetName()
-		var concreteType = mappings.GetValue(typeName)
-		typeName = concreteType.GetName()
-		var map_ = mod.MapClass().Map(
-			"map",
-			"[",
-			typeName,
-			"]",
-		)
-		wrapper = mod.WrapperClass().Wrapper(map_)
-	default:
-		// Ignore the rest since they don't contain any generic types.
+		var mappedType = mappings.GetValue(typeName)
+		if uti.IsDefined(mappedType) {
+			typeName = mappedType.GetName()
+			var map_ = mod.MapClass().Map(
+				"map",
+				"[",
+				typeName,
+				"]",
+			)
+			wrapper = mod.WrapperClass().Wrapper(map_)
+		}
+	case mod.ChannelLike:
+		// Example: chan -> chan
 	}
 	return wrapper
 }

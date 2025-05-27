@@ -98,22 +98,22 @@ func (v *processorSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *processorSynthesizer_) CreateAspectMethods() string {
+func (v *processorSynthesizer_) CreateAspectInterfaces() string {
 	var class = processorSynthesizerClass()
-	var aspectMethods = class.aspectMethods_
+	var aspectInterfaces = class.aspectInterfaces_
 	var processTokens = v.createProcessTokens()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processTokens",
 		processTokens,
 	)
 	var processRules = v.createProcessRules()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processRules",
 		processRules,
 	)
-	return aspectMethods
+	return aspectInterfaces
 }
 
 func (v *processorSynthesizer_) CreatePrivateMethods() string {
@@ -216,7 +216,7 @@ type processorSynthesizerClass_ struct {
 	accessFunction_     string
 	constructorMethods_ string
 	principalMethods_   string
-	aspectMethods_      string
+	aspectInterfaces_   string
 	processToken_       string
 	processRule_        string
 	privateMethods_     string
@@ -271,7 +271,7 @@ func (v *processor_) GetClass() ProcessorClassLike {
 }
 `,
 
-	aspectMethods_: `
+	aspectInterfaces_: `
 // Methodical Methods
 <ProcessTokens><ProcessRules>`,
 

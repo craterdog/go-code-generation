@@ -98,9 +98,9 @@ func (v *parserSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *parserSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods string
-	return aspectMethods
+func (v *parserSynthesizer_) CreateAspectInterfaces() string {
+	var aspectInterfaces string
+	return aspectInterfaces
 }
 
 func (v *parserSynthesizer_) CreatePrivateMethods() string {

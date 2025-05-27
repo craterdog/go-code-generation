@@ -77,8 +77,8 @@ func (v *nodeSynthesizer_) CreateAccessFunction() string {
 }
 
 func (v *nodeSynthesizer_) CreateConstantMethods() string {
-	// AST nodes do not define any class constants.
-	return ""
+	var constantMethods string
+	return constantMethods
 }
 
 func (v *nodeSynthesizer_) CreateConstructorMethods() string {
@@ -88,8 +88,8 @@ func (v *nodeSynthesizer_) CreateConstructorMethods() string {
 }
 
 func (v *nodeSynthesizer_) CreateFunctionMethods() string {
-	// AST nodes do not define any class functions.
-	return ""
+	var functionMethods string
+	return functionMethods
 }
 
 func (v *nodeSynthesizer_) CreatePrincipalMethods() string {
@@ -104,14 +104,14 @@ func (v *nodeSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *nodeSynthesizer_) CreateAspectMethods() string {
-	// AST nodes do not define any aspect interfaces.
-	return ""
+func (v *nodeSynthesizer_) CreateAspectInterfaces() string {
+	var aspectInterfaces string
+	return aspectInterfaces
 }
 
 func (v *nodeSynthesizer_) CreatePrivateMethods() string {
-	// AST nodes do not define any private methods.
-	return ""
+	var privateMethods string
+	return privateMethods
 }
 
 func (v *nodeSynthesizer_) CreateInstanceStructure() string {

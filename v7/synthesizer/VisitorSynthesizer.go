@@ -99,9 +99,9 @@ func (v *visitorSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *visitorSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods string
-	return aspectMethods
+func (v *visitorSynthesizer_) CreateAspectInterfaces() string {
+	var aspectInterfaces string
+	return aspectInterfaces
 }
 
 func (v *visitorSynthesizer_) CreatePrivateMethods() string {

@@ -98,9 +98,9 @@ func (v *tokenSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *tokenSynthesizer_) CreateAspectMethods() string {
-	var aspectMethods string
-	return aspectMethods
+func (v *tokenSynthesizer_) CreateAspectInterfaces() string {
+	var aspectInterfaces string
+	return aspectInterfaces
 }
 
 func (v *tokenSynthesizer_) CreatePrivateMethods() string {

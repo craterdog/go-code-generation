@@ -112,22 +112,22 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 	return attributeMethods
 }
 
-func (v *validatorSynthesizer_) CreateAspectMethods() string {
+func (v *validatorSynthesizer_) CreateAspectInterfaces() string {
 	var class = validatorSynthesizerClass()
-	var aspectMethods = class.aspectMethods_
+	var aspectInterfaces = class.aspectInterfaces_
 	var processTokens = v.createProcessTokens()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processTokens",
 		processTokens,
 	)
 	var processRules = v.createProcessRules()
-	aspectMethods = uti.ReplaceAll(
-		aspectMethods,
+	aspectInterfaces = uti.ReplaceAll(
+		aspectInterfaces,
 		"processRules",
 		processRules,
 	)
-	return aspectMethods
+	return aspectInterfaces
 }
 
 func (v *validatorSynthesizer_) CreatePrivateMethods() string {
@@ -275,7 +275,7 @@ type validatorSynthesizerClass_ struct {
 	accessFunction_     string
 	constructorMethods_ string
 	principalMethods_   string
-	aspectMethods_      string
+	aspectInterfaces_   string
 	processToken_       string
 	processRule_        string
 	privateMethods_     string
@@ -344,7 +344,7 @@ func (v *validator_) Validate<~SyntaxName>(
 }
 `,
 
-	aspectMethods_: `
+	aspectInterfaces_: `
 // Methodical Methods
 <ProcessTokens><ProcessRules>`,
 
