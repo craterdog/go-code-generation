@@ -92,6 +92,12 @@ func (v *catalog_[V]) GetClass() CatalogClassLike[V] {
 	return catalogClass[V]()
 }
 
+func (v *catalog_[V]) AsMap() map[Identifier]V {
+	var result_ map[Identifier]V
+	// TBD - Add the method implementation.
+	return result_
+}
+
 func (v *catalog_[V]) SortValues() {
 	// TBD - Add the method implementation.
 }
@@ -137,6 +143,12 @@ func (v *catalog_[V]) GetSize() Ordinal {
 
 func (v *catalog_[V]) AsArray() []AssociationLike[Identifier, V] {
 	var result_ []AssociationLike[Identifier, V]
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v *catalog_[V]) GetIterator() IteratorLike[AssociationLike[Identifier, V]] {
+	var result_ IteratorLike[AssociationLike[Identifier, V]]
 	// TBD - Add the method implementation.
 	return result_
 }

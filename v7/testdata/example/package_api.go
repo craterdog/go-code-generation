@@ -57,6 +57,16 @@ const (
 )
 
 /*
+Size is a constrained type representing the size or capacity of something.
+*/
+type Size uint
+
+/*
+Slot is a constrained type representing a slot between values in a sequence.
+*/
+type Slot uint
+
+/*
 Units is a constrained type representing the possible units for an angle.
 */
 type Units uint8
@@ -211,6 +221,36 @@ type CatalogClassLike[V any] interface {
 	) CatalogLike[V]
 }
 
+/*
+IteratorClassLike[V any] is a class interface that declares the complete set
+of class constructors, constants and functions that must be supported by each
+concrete iterator-like class.
+
+An iterator-like class can be used to move forward and backward over the values
+in an array.  It implements the Gang of Four (GoF) Iterator Design Pattern:
+  - https://en.wikipedia.org/wiki/Iterator_pattern
+
+An iterator agent locks into the slots that reside between each value in the
+sequence:
+
+	  . [value 1] . [value 2] . [value 3] ... [value N] .
+	  ^           ^           ^                         ^
+	slot 0      slot 1      slot 2                    slot N
+
+It moves from slot to slot and has access to the values (if they exist) on each
+side of the slot.  At each slot an iterator has access to the previous value
+and next value in the array (assuming they exist). The slot at the start of
+the array has no PREVIOUS value, and the slot at the end of the array has no
+NEXT value.  The size of the array is static so that its values can be modified
+during iteration.
+*/
+type IteratorClassLike[V any] interface {
+	// Constructor Methods
+	Iterator(
+		array []V,
+	) IteratorLike[V]
+}
+
 // INSTANCE DECLARATIONS
 
 /*
@@ -272,11 +312,36 @@ instance of a concrete catalog-like class.
 type CatalogLike[V any] interface {
 	// Principal Methods
 	GetClass() CatalogClassLike[V]
+	AsMap() map[Identifier]V
 	SortValues()
 
 	// Aspect Interfaces
 	Associative[Identifier, V]
 	Sequential[AssociationLike[Identifier, V]]
+}
+
+/*
+IteratorLike[V any] is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete iterator-like class.
+*/
+type IteratorLike[V any] interface {
+	// Principal Methods
+	GetClass() IteratorClassLike[V]
+	IsEmpty() bool
+	ToStart()
+	ToEnd()
+	HasPrevious() bool
+	GetPrevious() V
+	HasNext() bool
+	GetNext() V
+
+	// Attribute Methods
+	GetSize() Size
+	GetSlot() Slot
+	SetSlot(
+		slot Slot,
+	)
 }
 
 // ASPECT DECLARATIONS
@@ -353,6 +418,7 @@ type Sequential[V any] interface {
 	IsEmpty() bool
 	GetSize() Ordinal
 	AsArray() []V
+	GetIterator() IteratorLike[V]
 }
 
 /*

@@ -122,6 +122,12 @@ func (v array_[V]) AsArray() []V {
 	return result_
 }
 
+func (v array_[V]) GetIterator() IteratorLike[V] {
+	var result_ IteratorLike[V]
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Updatable[V] Methods
 
 func (v array_[V]) SetValue(
