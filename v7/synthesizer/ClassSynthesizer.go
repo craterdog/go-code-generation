@@ -791,40 +791,13 @@ func (v *classSynthesizer_) createGetterMethod(
 func (v *classSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
-	var methodName = constructorMethod.GetName()
+	var instantiation string
 	var className = constructorMethod.GetAbstraction().GetName()
 	className = sts.TrimSuffix(className, "Like")
-	var class = classSynthesizerClass()
-	var instantiation = class.instanceInstantiation_
 	if v.classAnalyzer_.IsIntrinsic() {
-		if methodName == className {
-			instantiation = class.intrinsicInstantiation_
-		}
+		instantiation = v.createIntrinsicInstantiation(className, constructorMethod)
 	} else {
-		if methodName == className || sts.HasPrefix(methodName, className+"With") {
-			instantiation = class.structureInstantiation_
-			var constructorParameters col.ListLike[mod.ParameterLike]
-			var parameterList = constructorMethod.GetOptionalParameterList()
-			if uti.IsDefined(parameterList) {
-				constructorParameters = parameterList.GetParameters()
-			} else {
-				constructorParameters = col.List[mod.ParameterLike]()
-			}
-			var attributeChecks = v.createAttributeChecks(constructorParameters)
-			var attributeInitializations = v.createAttributeInitializations(
-				constructorParameters,
-			)
-			instantiation = uti.ReplaceAll(
-				instantiation,
-				"attributeChecks",
-				attributeChecks,
-			)
-			instantiation = uti.ReplaceAll(
-				instantiation,
-				"attributeInitializations",
-				attributeInitializations,
-			)
-		}
+		instantiation = v.createStructuredInstantiation(className, constructorMethod)
 	}
 	return instantiation
 }
@@ -850,6 +823,34 @@ func (v *classSynthesizer_) createInstanceStructure() string {
 		)
 	}
 	return structure
+}
+
+func (v *classSynthesizer_) createIntrinsicInstantiation(
+	className string,
+	constructorMethod mod.ConstructorMethodLike,
+) string {
+	var class = classSynthesizerClass()
+	var instantiation = class.instanceInstantiation_
+	var methodName = constructorMethod.GetName()
+	if className == methodName {
+		// This is the default constructor.
+		var parameterList = constructorMethod.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			var parameters = parameterList.GetParameters()
+			if parameters.GetSize() == 1 {
+				// The single parameter is assumed to be the intrinsic type.
+				var parameter = parameters.GetValue(1)
+				var parameterName = parameter.GetName()
+				instantiation = class.intrinsicInstantiation_
+				instantiation = uti.ReplaceAll(
+					instantiation,
+					"parameterName",
+					parameterName,
+				)
+			}
+		}
+	}
+	return instantiation
 }
 
 func (v *classSynthesizer_) createIntrinsicMethod() string {
@@ -1021,6 +1022,41 @@ func (v *classSynthesizer_) createSetterMethod(
 		attributeCheck,
 	)
 	return method
+}
+
+func (v *classSynthesizer_) createStructuredInstantiation(
+	className string,
+	constructorMethod mod.ConstructorMethodLike,
+) string {
+	var class = classSynthesizerClass()
+	var instantiation = class.instanceInstantiation_
+	var methodName = constructorMethod.GetName()
+	if methodName == className || sts.HasPrefix(methodName, className+"With") {
+		// The constructor is assumed to be initializing its attributes.
+		instantiation = class.structureInstantiation_
+		var constructorParameters col.ListLike[mod.ParameterLike]
+		var parameterList = constructorMethod.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			constructorParameters = parameterList.GetParameters()
+		} else {
+			constructorParameters = col.List[mod.ParameterLike]()
+		}
+		var attributeChecks = v.createAttributeChecks(constructorParameters)
+		var attributeInitializations = v.createAttributeInitializations(
+			constructorParameters,
+		)
+		instantiation = uti.ReplaceAll(
+			instantiation,
+			"attributeChecks",
+			attributeChecks,
+		)
+		instantiation = uti.ReplaceAll(
+			instantiation,
+			"attributeInitializations",
+			attributeInitializations,
+		)
+	}
+	return instantiation
 }
 
 func (v *classSynthesizer_) replaceAbstractionType(
@@ -1297,7 +1333,7 @@ func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>L
 `,
 
 	intrinsicInstantiation_: `
-	var instance = <~className>_<Arguments>(intrinsic)
+	var instance = <~className>_<Arguments>(<~parameterName>)
 	return instance
 `,
 

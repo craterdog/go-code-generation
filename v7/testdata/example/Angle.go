@@ -25,9 +25,9 @@ func AngleClass() AngleClassLike {
 // Constructor Methods
 
 func (c *angleClass_) Angle(
-	intrinsic float64,
+	radians float64,
 ) AngleLike {
-	var instance = angle_(intrinsic)
+	var instance = angle_(radians)
 	return instance
 }
 

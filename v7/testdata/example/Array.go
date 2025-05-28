@@ -28,9 +28,9 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 // Constructor Methods
 
 func (c *arrayClass_[V]) Array(
-	intrinsic []V,
+	array []V,
 ) ArrayLike[V] {
-	var instance = array_[V](intrinsic)
+	var instance = array_[V](array)
 	return instance
 }
 

@@ -109,7 +109,7 @@ Tangent() returns the mathematical ratio of y/x for the angle.
 type AngleClassLike interface {
 	// Constructor Methods
 	Angle(
-		intrinsic float64,
+		radians float64,
 	) AngleLike
 	AngleFromString(
 		value string,
@@ -149,7 +149,7 @@ specified arrays in the order that they appear in each array.
 type ArrayClassLike[V any] interface {
 	// Constructor Methods
 	Array(
-		intrinsic []V,
+		array []V,
 	) ArrayLike[V]
 	ArrayWithSize(
 		size Ordinal,
