@@ -27,8 +27,7 @@ func AngleClass() AngleClassLike {
 func (c *angleClass_) Angle(
 	radians float64,
 ) AngleLike {
-	var instance = angle_(radians)
-	return instance
+	return angle_(radians)
 }
 
 func (c *angleClass_) AngleFromString(

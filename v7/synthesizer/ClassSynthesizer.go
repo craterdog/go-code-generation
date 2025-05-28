@@ -1333,8 +1333,7 @@ func (c *<~className>Class_<Arguments>) <MethodName>(<Parameters>) <~ClassName>L
 `,
 
 	intrinsicInstantiation_: `
-	var instance = <~className>_<Arguments>(<~parameterName>)
-	return instance
+	return <~className>_<Arguments>(<~parameterName>)
 `,
 
 	structureInstantiation_: `<AttributeChecks>
