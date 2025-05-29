@@ -194,6 +194,7 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 
 func (v *scannerSynthesizer_) createExpressions() string {
 	var expressions string
+	var set = col.Set[string]()
 	var patterns = v.analyzer_.GetPatterns().GetIterator()
 	for patterns.HasNext() {
 		var association = patterns.GetNext()
@@ -211,6 +212,11 @@ func (v *scannerSynthesizer_) createExpressions() string {
 			"expressionValue",
 			expressionValue,
 		)
+		set.AddValue(expression)
+	}
+	var iterator = set.GetIterator()
+	for iterator.HasNext() {
+		var expression = iterator.GetNext()
 		expressions += expression
 	}
 	return expressions
@@ -472,11 +478,11 @@ func (v *scanner_) foundToken(
 		return false
 	}
 
-	// Check for false delimiter matches.
+	// Check for partial identifier matches.
 	var token = []rune(match)
 	var length = uint(len(token))
 	var previous = token[length-1]
-	if tokenType == DelimiterToken && uint(len(v.runes_)) > v.next_+length {
+	if uint(len(v.runes_)) > v.next_+length {
 		var next = v.runes_[v.next_+length]
 		if (uni.IsLetter(previous) || uni.IsNumber(previous)) &&
 			(uni.IsLetter(next) || uni.IsNumber(next) || next == '_') {

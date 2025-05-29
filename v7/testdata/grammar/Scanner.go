@@ -147,11 +147,11 @@ func (v *scanner_) foundToken(
 		return false
 	}
 
-	// Check for false delimiter matches.
+	// Check for partial identifier matches.
 	var token = []rune(match)
 	var length = uint(len(token))
 	var previous = token[length-1]
-	if tokenType == DelimiterToken && uint(len(v.runes_)) > v.next_+length {
+	if uint(len(v.runes_)) > v.next_+length {
 		var next = v.runes_[v.next_+length]
 		if (uni.IsLetter(previous) || uni.IsNumber(previous)) &&
 			(uni.IsLetter(next) || uni.IsNumber(next) || next == '_') {
@@ -291,18 +291,18 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expressions for each token type.
-	delimiter_ = "(?:~|\\}|\\||\\{|\\]|\\[|\\?|\\.\\.|\\+|\\*|\\)|\\(|\\$|:)"
-	newline_   = "(?:" + eol_ + ")"
-	space_     = "(?:[ \\t]+)"
 	base16_    = "(?:[0-9a-f])"
 	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"
+	delimiter_ = "(?:~|\\}|\\||\\{|\\]|\\[|\\?|\\.\\.|\\+|\\*|\\)|\\(|\\$|:)"
 	escape_    = "(?:\\\\((?:" + unicode_ + ")|[abfnrtv\"\\\\]))"
 	glyph_     = "(?:'[^" + control_ + "]')"
 	intrinsic_ = "(?:ANY|CONTROL|DIGIT|EOL|LOWER|UPPER)"
 	literal_   = "(?:\"((?:" + escape_ + ")|[^\"" + control_ + "])+\")"
 	lowercase_ = "(?:" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	newline_   = "(?:" + eol_ + ")"
 	note_      = "(?:! [^" + control_ + "]*)"
 	number_    = "(?:" + digit_ + "+)"
+	space_     = "(?:[ \\t]+)"
 	unicode_   = "(?:(x(?:" + base16_ + "){2})|(u(?:" + base16_ + "){4})|(U(?:" + base16_ + "){8}))"
 	uppercase_ = "(?:" + upper_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
 )
