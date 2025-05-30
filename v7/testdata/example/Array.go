@@ -30,7 +30,9 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 func (c *arrayClass_[V]) Array(
 	array []V,
 ) ArrayLike[V] {
-	return array_[V](array)
+	var instance ArrayLike[V]
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 func (c *arrayClass_[V]) ArrayWithSize(
