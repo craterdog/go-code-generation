@@ -14,6 +14,7 @@ package example
 
 import (
 	fmt "fmt"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	syn "sync"
 )
 
@@ -30,16 +31,18 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 func (c *arrayClass_[V]) Array(
 	array []V,
 ) ArrayLike[V] {
-	var instance ArrayLike[V]
-	// TBD - Add the constructor implementation.
-	return instance
+	return array_[V](array)
 }
 
 func (c *arrayClass_[V]) ArrayWithSize(
 	size Ordinal,
 ) ArrayLike[V] {
-	var instance ArrayLike[V]
-	// TBD - Add the constructor implementation.
+	if uti.IsUndefined(size) {
+		panic("The \"size\" attribute is required by this class.")
+	}
+	var instance = &array_[V]{
+		// Initialize the instance attributes.
+	}
 	return instance
 }
 

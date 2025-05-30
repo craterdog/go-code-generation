@@ -1,5 +1,5 @@
-github.com/craterdog/go-class-model/v7 v7.9.0 h1:eoJvuvSJKF6Ks4RCcCQ+S154Npo1ve6LGwfKjrUbwMs=
-github.com/craterdog/go-class-model/v7 v7.9.0/go.mod h1:g5fSKI84Fh3q33DsJzSDLrXCHnvjM9U+CiL/nUu96g8=
+github.com/craterdog/go-class-model/v7 v7.10.0 h1:LL9y1HUzW3Y0OZAErCn80/lLNJNdmpycUg8S7mx4CMA=
+github.com/craterdog/go-class-model/v7 v7.10.0/go.mod h1:g5fSKI84Fh3q33DsJzSDLrXCHnvjM9U+CiL/nUu96g8=
 github.com/craterdog/go-collection-framework/v7 v7.3.0 h1:roYArLZj7vcJQPyQieX19jK3udCuvUTZACp4PO7y6KY=
 github.com/craterdog/go-collection-framework/v7 v7.3.0/go.mod h1:FTDbNa7eSu3Dpv5Agd8RDm0QwJOMMH0bR89TKtMb6RY=
 github.com/craterdog/go-missing-utilities/v7 v7.3.0 h1:5wVeDwEDin/H21MjJz9XxMu8fqjT+bpcTHiyjSMKflI=

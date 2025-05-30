@@ -60,8 +60,8 @@ type (
 	PatternClassLike             = ast.PatternClassLike
 	QuantifiedClassLike          = ast.QuantifiedClassLike
 	RepetitionClassLike          = ast.RepetitionClassLike
-	RuleAlternativesClassLike    = ast.RuleAlternativesClassLike
 	RuleClassLike                = ast.RuleClassLike
+	RuleAlternativesClassLike    = ast.RuleAlternativesClassLike
 	RuleNameClassLike            = ast.RuleNameClassLike
 	RuleTermClassLike            = ast.RuleTermClassLike
 	SequenceClassLike            = ast.SequenceClassLike
@@ -94,8 +94,8 @@ type (
 	PatternLike             = ast.PatternLike
 	QuantifiedLike          = ast.QuantifiedLike
 	RepetitionLike          = ast.RepetitionLike
-	RuleAlternativesLike    = ast.RuleAlternativesLike
 	RuleLike                = ast.RuleLike
+	RuleAlternativesLike    = ast.RuleAlternativesLike
 	RuleNameLike            = ast.RuleNameLike
 	RuleTermLike            = ast.RuleTermLike
 	SequenceLike            = ast.SequenceLike
@@ -447,18 +447,6 @@ func Repetition(
 	)
 }
 
-func RuleAlternativesClass() RuleAlternativesClassLike {
-	return ast.RuleAlternativesClass()
-}
-
-func RuleAlternatives(
-	ruleNames col.ListLike[ast.RuleNameLike],
-) RuleAlternativesLike {
-	return RuleAlternativesClass().RuleAlternatives(
-		ruleNames,
-	)
-}
-
 func RuleClass() RuleClassLike {
 	return ast.RuleClass()
 }
@@ -474,6 +462,18 @@ func Rule(
 		uppercase,
 		delimiter2,
 		definition,
+	)
+}
+
+func RuleAlternativesClass() RuleAlternativesClassLike {
+	return ast.RuleAlternativesClass()
+}
+
+func RuleAlternatives(
+	ruleNames col.ListLike[ast.RuleNameLike],
+) RuleAlternativesLike {
+	return RuleAlternativesClass().RuleAlternatives(
+		ruleNames,
 	)
 }
 

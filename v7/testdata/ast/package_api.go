@@ -318,18 +318,6 @@ type RepetitionClassLike interface {
 }
 
 /*
-RuleAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete rule-alternatives-like class.
-*/
-type RuleAlternativesClassLike interface {
-	// Constructor Methods
-	RuleAlternatives(
-		ruleNames col.ListLike[RuleNameLike],
-	) RuleAlternativesLike
-}
-
-/*
 RuleClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete rule-like class.
@@ -342,6 +330,18 @@ type RuleClassLike interface {
 		delimiter2 string,
 		definition DefinitionLike,
 	) RuleLike
+}
+
+/*
+RuleAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete rule-alternatives-like class.
+*/
+type RuleAlternativesClassLike interface {
+	// Constructor Methods
+	RuleAlternatives(
+		ruleNames col.ListLike[RuleNameLike],
+	) RuleAlternativesLike
 }
 
 /*
@@ -746,19 +746,6 @@ type RepetitionLike interface {
 }
 
 /*
-RuleAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete rule-alternatives-like class.
-*/
-type RuleAlternativesLike interface {
-	// Principal Methods
-	GetClass() RuleAlternativesClassLike
-
-	// Attribute Methods
-	GetRuleNames() col.ListLike[RuleNameLike]
-}
-
-/*
 RuleLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete rule-like class.
@@ -772,6 +759,19 @@ type RuleLike interface {
 	GetUppercase() string
 	GetDelimiter2() string
 	GetDefinition() DefinitionLike
+}
+
+/*
+RuleAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete rule-alternatives-like class.
+*/
+type RuleAlternativesLike interface {
+	// Principal Methods
+	GetClass() RuleAlternativesClassLike
+
+	// Attribute Methods
+	GetRuleNames() col.ListLike[RuleNameLike]
 }
 
 /*
