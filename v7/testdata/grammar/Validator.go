@@ -68,9 +68,6 @@ func (v *validator_) ValidateSyntax(
 	syntax ast.SyntaxLike,
 ) {
 	v.visitor_.VisitSyntax(syntax)
-	fmt.Println("Rule Names:", v.ruleNames_)
-	fmt.Println("Expression Names:", v.expressionNames_)
-	fmt.Println("Fragment Names:", v.fragmentNames_)
 	var ruleNames = v.ruleNames_.GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
