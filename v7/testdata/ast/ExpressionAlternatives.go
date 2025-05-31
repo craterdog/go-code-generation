@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,28 +28,21 @@ import (
 
 // Access Function
 
-func TokenNameClass() TokenNameClassLike {
-	return tokenNameClass()
+func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
+	return expressionAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *tokenNameClass_) TokenName(
-	newline string,
-	lowercase string,
-	optionalNote string,
-) TokenNameLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *expressionAlternativesClass_) ExpressionAlternatives(
+	expressionNames col.ListLike[ExpressionNameLike],
+) ExpressionAlternativesLike {
+	if uti.IsUndefined(expressionNames) {
+		panic("The \"expressionNames\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(lowercase) {
-		panic("The \"lowercase\" attribute is required by this class.")
-	}
-	var instance = &tokenName_{
+	var instance = &expressionAlternatives_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		lowercase_:    lowercase,
-		optionalNote_: optionalNote,
+		expressionNames_: expressionNames,
 	}
 	return instance
 }
@@ -57,47 +51,37 @@ func (c *tokenNameClass_) TokenName(
 
 // Principal Methods
 
-func (v *tokenName_) GetClass() TokenNameClassLike {
-	return tokenNameClass()
+func (v *expressionAlternatives_) GetClass() ExpressionAlternativesClassLike {
+	return expressionAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *tokenName_) GetNewline() string {
-	return v.newline_
-}
-
-func (v *tokenName_) GetLowercase() string {
-	return v.lowercase_
-}
-
-func (v *tokenName_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *expressionAlternatives_) GetExpressionNames() col.ListLike[ExpressionNameLike] {
+	return v.expressionNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type tokenName_ struct {
+type expressionAlternatives_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	lowercase_    string
-	optionalNote_ string
+	expressionNames_ col.ListLike[ExpressionNameLike]
 }
 
 // Class Structure
 
-type tokenNameClass_ struct {
+type expressionAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func tokenNameClass() *tokenNameClass_ {
-	return tokenNameClassReference_
+func expressionAlternativesClass() *expressionAlternativesClass_ {
+	return expressionAlternativesClassReference_
 }
 
-var tokenNameClassReference_ = &tokenNameClass_{
+var expressionAlternativesClassReference_ = &expressionAlternativesClass_{
 	// Initialize the class constants.
 }

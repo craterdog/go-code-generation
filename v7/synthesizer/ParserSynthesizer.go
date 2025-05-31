@@ -264,7 +264,7 @@ func (v *parserSynthesizer_) containsTermSequence(
 	switch definitions.GetValue(ruleName).GetAny().(type) {
 	case not.LiteralAlternativesLike:
 		// The rule name refers to a multi-literal rule.
-	case not.TokenAlternativesLike:
+	case not.ExpressionAlternativesLike:
 		// The rule name refers to a multi-expression rule.
 	case not.RuleAlternativesLike:
 		// The rule name refers to a multi-rule rule.
@@ -348,12 +348,12 @@ func (v *parserSynthesizer_) createLiteralAlternatives(
 	return implementation
 }
 
-func (v *parserSynthesizer_) createTokenAlternatives(
+func (v *parserSynthesizer_) createExpressionAlternatives(
 	ruleName string,
 ) string {
 	var implementation string
 	var class = parserSynthesizerClass()
-	var tokenNames = v.analyzer_.GetTokenNames(ruleName).GetIterator()
+	var tokenNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
 	for tokenNames.HasNext() {
 		var lowercase = tokenNames.GetNext().GetLowercase()
 		var parseExpressionName = class.expressionName_
@@ -395,8 +395,8 @@ func (v *parserSynthesizer_) createParseMethod(
 	switch definition.GetAny().(type) {
 	case not.LiteralAlternativesLike:
 		methodImplementation = v.createLiteralAlternatives(ruleName)
-	case not.TokenAlternativesLike:
-		methodImplementation = v.createTokenAlternatives(ruleName)
+	case not.ExpressionAlternativesLike:
+		methodImplementation = v.createExpressionAlternatives(ruleName)
 	case not.RuleAlternativesLike:
 		methodImplementation = v.createRuleAlternatives(ruleName)
 	case not.TermSequenceLike:

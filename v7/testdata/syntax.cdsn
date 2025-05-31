@@ -23,7 +23,7 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Syntax: LegalNotice comment Rule+ comment Expression+
+$Syntax: LegalNotice comment Rule+ comment Expression+ comment Fragment+
 
 $LegalNotice: comment
 
@@ -31,7 +31,7 @@ $Rule: "$" uppercase ":" Definition
 
 $Definition:
     LiteralAlternatives
-    TokenAlternatives
+    ExpressionAlternatives
     RuleAlternatives
     TermSequence  ! This must be last since it skips newlines.
 
@@ -39,9 +39,9 @@ $LiteralAlternatives: LiteralValue+
 
 $LiteralValue: newline literal note?
 
-$TokenAlternatives: TokenName+
+$ExpressionAlternatives: ExpressionName+
 
-$TokenName: newline lowercase note?
+$ExpressionName: newline lowercase note?
 
 $RuleAlternatives: RuleName+
 
@@ -70,6 +70,8 @@ $Quantified: "{" number Limit? "}"  ! A quantified range of numbers is inclusive
 $Limit: ".." number?  ! A quantified range may have no upper limit.
 
 $Expression: "$" lowercase ":" Pattern
+
+$Fragment: "$" allcaps ":" Pattern
 
 $Pattern: Alternatives note?
 
@@ -103,25 +105,24 @@ $Extent: ".." glyph
 $Text:
     glyph
     literal
-    lowercase
     intrinsic
+    lowercase
+    allcaps
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                            EXPRESSION DEFINITIONS                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$base16: ['0'..'9' 'a'..'f']
+$intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
+
+$allcaps: UPPER{2} (DIGIT | UPPER)*
 
 $comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible match.
 
-$escape: '\' (unicode | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
-
 $glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
 
-$intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
-
-$literal: '"' (escape | ~['"' CONTROL])+ '"'
+$literal: '"' (ESCAPE | ~['"' CONTROL])+ '"'
 
 $lowercase: LOWER (DIGIT | LOWER | UPPER)*
 
@@ -129,7 +130,16 @@ $note: "! " ~[CONTROL]*
 
 $number: DIGIT+
 
-$unicode: ('x' base16{2}) | ('u' base16{4}) | ('U' base16{8})
+$uppercase: UPPER LOWER (DIGIT | LOWER | UPPER)*
 
-$uppercase: UPPER (DIGIT | LOWER | UPPER)*
+!>
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                             FRAGMENT DEFINITIONS                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+<!
+$BASE16: ['0'..'9' 'a'..'f']
+
+$ESCAPE: '\' (UNICODE | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
+
+$UNICODE: ('x' BASE16{2}) | ('u' BASE16{4}) | ('U' BASE16{8})
 

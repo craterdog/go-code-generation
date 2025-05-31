@@ -60,6 +60,12 @@ func (v *formatter_) FormatSyntax(syntax ast.SyntaxLike) string {
 
 // Methodical Methods
 
+func (v *formatter_) ProcessAllcaps(
+	allcaps string,
+) {
+	v.appendString(allcaps)
+}
+
 func (v *formatter_) ProcessComment(
 	comment string,
 ) {
@@ -184,6 +190,14 @@ func (v *formatter_) PostprocessDefinition(
 
 func (v *formatter_) PostprocessExpression(
 	expression ast.ExpressionLike,
+	index_ uint,
+	count_ uint,
+) {
+	v.appendNewline()
+}
+
+func (v *formatter_) PostprocessFragment(
+	fragment ast.FragmentLike,
 	index_ uint,
 	count_ uint,
 ) {

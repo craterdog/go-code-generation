@@ -187,7 +187,7 @@ func (v *validatorSynthesizer_) createProcessToken(
 
 func (v *validatorSynthesizer_) createProcessTokens() string {
 	var processTokens string
-	var expressionNames = v.analyzer_.GetTokens().GetIterator()
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
 	for expressionNames.HasNext() {
 		var expressionName = expressionNames.GetNext()
 		var processToken = v.createProcessToken(expressionName)

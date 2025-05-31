@@ -65,8 +65,12 @@ func (v *syntaxAnalyzer_) GetRules() col.SetLike[string] {
 	return v.rules_
 }
 
-func (v *syntaxAnalyzer_) GetTokens() col.SetLike[string] {
-	return v.tokens_
+func (v *syntaxAnalyzer_) GetExpressions() col.SetLike[string] {
+	return v.expressions_
+}
+
+func (v *syntaxAnalyzer_) GetFragments() col.SetLike[string] {
+	return v.fragments_
 }
 
 func (v *syntaxAnalyzer_) GetLiteralValues(
@@ -75,10 +79,10 @@ func (v *syntaxAnalyzer_) GetLiteralValues(
 	return v.literalValues_.GetValue(ruleName)
 }
 
-func (v *syntaxAnalyzer_) GetTokenNames(
+func (v *syntaxAnalyzer_) GetExpressionNames(
 	ruleName string,
-) col.ListLike[not.TokenNameLike] {
-	return v.tokenNames_.GetValue(ruleName)
+) col.ListLike[not.ExpressionNameLike] {
+	return v.expressionNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleNames(
@@ -128,6 +132,20 @@ func (v *syntaxAnalyzer_) GetSyntaxMap() string {
 }
 
 // not.Methodical Methods
+
+func (v *syntaxAnalyzer_) ProcessAllcaps(
+	allcaps string,
+) {
+	switch {
+	case v.inPattern_ > 0:
+		// The fragment name is part of a fragment pattern.
+		var lowercase = sts.ToLower(allcaps)
+		v.pattern_ += `(?:" + ` + lowercase + `_ + ")`
+	default:
+		// The fragment name is part of a fragment definition.
+		v.fragments_.AddValue(allcaps)
+	}
+}
 
 func (v *syntaxAnalyzer_) ProcessDelimiter(
 	delimiter string,
@@ -186,10 +204,10 @@ func (v *syntaxAnalyzer_) ProcessLowercase(
 ) {
 	switch {
 	case v.inDefinition_:
-		// The token name is part of a rule.
-		v.tokens_.AddValue(lowercase)
+		// The expression name is part of a rule definition.
+		v.expressions_.AddValue(lowercase)
 	case v.inPattern_ > 0:
-		// The token name is part of an expression.
+		// The expression name is part of an expression pattern.
 		v.pattern_ += `(?:" + ` + lowercase + `_ + ")`
 	}
 }
@@ -277,6 +295,25 @@ func (v *syntaxAnalyzer_) PostprocessFilter(
 	count uint,
 ) {
 	v.pattern_ += "]"
+}
+
+func (v *syntaxAnalyzer_) PreprocessFragment(
+	fragment not.FragmentLike,
+	index uint,
+	count uint,
+) {
+	v.pattern_ = `"(?:`
+}
+
+func (v *syntaxAnalyzer_) PostprocessFragment(
+	fragment not.FragmentLike,
+	index uint,
+	count uint,
+) {
+	v.pattern_ += `)"`
+	var allcaps = fragment.GetAllcaps()
+	var lowercase = sts.ToLower(allcaps)
+	v.patterns_.SetValue(lowercase, v.pattern_)
 }
 
 func (v *syntaxAnalyzer_) PreprocessGroup(
@@ -376,9 +413,9 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	case not.LiteralAlternativesLike:
 		var literalValues = col.List[not.LiteralValueLike]()
 		v.literalValues_.SetValue(ruleName, literalValues)
-	case not.TokenAlternativesLike:
-		var tokenNames = col.List[not.TokenNameLike]()
-		v.tokenNames_.SetValue(ruleName, tokenNames)
+	case not.ExpressionAlternativesLike:
+		var expressionNames = col.List[not.ExpressionNameLike]()
+		v.expressionNames_.SetValue(ruleName, expressionNames)
 	case not.RuleAlternativesLike:
 		var ruleNames = col.List[not.RuleNameLike]()
 		v.ruleNames_.SetValue(ruleName, ruleNames)
@@ -462,8 +499,11 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
 	v.rules_ = col.Set[string]()
-	v.tokens_ = col.SetFromArray[string](
+	v.expressions_ = col.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
+	)
+	v.fragments_ = col.SetFromArray[string](
+		[]string{"ANY", "CONTROL", "DIGIT", "EOL", "LOWER", "UPPER"},
 	)
 	v.pluralNames_ = col.Set[string]()
 	v.delimiters_ = col.Set[string]()
@@ -484,7 +524,7 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.ruleTerms_ = col.Catalog[string, col.ListLike[not.RuleTermLike]]()
 	v.variables_ = col.Catalog[string, col.ListLike[string]]()
 	v.ruleNames_ = col.Catalog[string, col.ListLike[not.RuleNameLike]]()
-	v.tokenNames_ = col.Catalog[string, col.ListLike[not.TokenNameLike]]()
+	v.expressionNames_ = col.Catalog[string, col.ListLike[not.ExpressionNameLike]]()
 	v.literalValues_ = col.Catalog[string, col.ListLike[not.LiteralValueLike]]()
 }
 
@@ -517,15 +557,15 @@ func (v *syntaxAnalyzer_) PostprocessTermSequence(
 	}
 }
 
-func (v *syntaxAnalyzer_) PreprocessTokenName(
-	tokenName not.TokenNameLike,
+func (v *syntaxAnalyzer_) PreprocessExpressionName(
+	expressionName not.ExpressionNameLike,
 	index uint,
 	count uint,
 ) {
-	var tokenNames = v.tokenNames_.GetValue(v.ruleName_)
-	tokenNames.AppendValue(tokenName)
-	v.syntaxMap_ += "\n    " + tokenName.GetLowercase()
-	var note = tokenName.GetOptionalNote()
+	var expressionNames = v.expressionNames_.GetValue(v.ruleName_)
+	expressionNames.AppendValue(expressionName)
+	v.syntaxMap_ += "\n    " + expressionName.GetLowercase()
+	var note = expressionName.GetOptionalNote()
 	if uti.IsDefined(note) {
 		v.syntaxMap_ += "  " + note
 	}
@@ -679,26 +719,27 @@ func (v *syntaxAnalyzer_) makeOptional(
 
 type syntaxAnalyzer_ struct {
 	// Declare the instance attributes.
-	visitor_       not.VisitorLike
-	notGreedy_     bool
-	inDefinition_  bool
-	inPattern_     uint8
-	syntaxMap_     string
-	syntaxName_    string
-	legalNotice_   string
-	ruleName_      string
-	pattern_       string
-	rules_         col.SetLike[string]
-	tokens_        col.SetLike[string]
-	pluralNames_   col.SetLike[string]
-	delimiters_    col.SetLike[string]
-	patterns_      col.CatalogLike[string, string]
-	definitions_   col.CatalogLike[string, not.DefinitionLike]
-	ruleTerms_     col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
-	variables_     col.CatalogLike[string, col.ListLike[string]]
-	ruleNames_     col.CatalogLike[string, col.ListLike[not.RuleNameLike]]
-	tokenNames_    col.CatalogLike[string, col.ListLike[not.TokenNameLike]]
-	literalValues_ col.CatalogLike[string, col.ListLike[not.LiteralValueLike]]
+	visitor_         not.VisitorLike
+	notGreedy_       bool
+	inDefinition_    bool
+	inPattern_       uint8
+	syntaxMap_       string
+	syntaxName_      string
+	legalNotice_     string
+	ruleName_        string
+	pattern_         string
+	rules_           col.SetLike[string]
+	expressions_     col.SetLike[string]
+	fragments_       col.SetLike[string]
+	pluralNames_     col.SetLike[string]
+	delimiters_      col.SetLike[string]
+	patterns_        col.CatalogLike[string, string]
+	definitions_     col.CatalogLike[string, not.DefinitionLike]
+	ruleTerms_       col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
+	variables_       col.CatalogLike[string, col.ListLike[string]]
+	ruleNames_       col.CatalogLike[string, col.ListLike[not.RuleNameLike]]
+	expressionNames_ col.CatalogLike[string, col.ListLike[not.ExpressionNameLike]]
+	literalValues_   col.CatalogLike[string, col.ListLike[not.LiteralValueLike]]
 
 	// Declare the inherited aspects.
 	not.Methodical

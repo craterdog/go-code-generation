@@ -211,7 +211,7 @@ func (v *formatterSynthesizer_) createProcessToken(
 
 func (v *formatterSynthesizer_) createProcessTokens() string {
 	var processTokens string
-	var tokenNames = v.analyzer_.GetTokens().GetIterator()
+	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var processToken = v.createProcessToken(tokenName)

@@ -193,9 +193,10 @@ loop:
 		case v.foundToken(DelimiterToken):
 		case v.foundToken(NewlineToken):
 		case v.foundToken(SpaceToken):
+		case v.foundToken(IntrinsicToken):
+		case v.foundToken(AllcapsToken):
 		case v.foundToken(CommentToken):
 		case v.foundToken(GlyphToken):
-		case v.foundToken(IntrinsicToken):
 		case v.foundToken(LiteralToken):
 		case v.foundToken(LowercaseToken):
 		case v.foundToken(NoteToken):
@@ -241,6 +242,7 @@ var scannerClassReference_ = &scannerClass_{
 		map[TokenType]string{
 			// Define identifiers for each type of token.
 			ErrorToken:     "error",
+			AllcapsToken:   "allcaps",
 			CommentToken:   "comment",
 			DelimiterToken: "delimiter",
 			GlyphToken:     "glyph",
@@ -257,6 +259,7 @@ var scannerClassReference_ = &scannerClass_{
 	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of token.
+			AllcapsToken:   reg.MustCompile("^" + allcaps_),
 			CommentToken:   reg.MustCompile("^" + comment_),
 			DelimiterToken: reg.MustCompile("^" + delimiter_),
 			GlyphToken:     reg.MustCompile("^" + glyph_),
@@ -291,6 +294,7 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expressions for each token type.
+	allcaps_   = "(?:" + upper_ + "{2}(" + digit_ + "|" + upper_ + ")*)"
 	base16_    = "(?:[0-9a-f])"
 	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"
 	delimiter_ = "(?:~|\\}|\\||\\{|\\]|\\[|\\?|\\.\\.|\\+|\\*|\\)|\\(|\\$|:)"
@@ -304,5 +308,5 @@ const (
 	number_    = "(?:" + digit_ + "+)"
 	space_     = "(?:[ \\t]+)"
 	unicode_   = "(?:(x(?:" + base16_ + "){2})|(u(?:" + base16_ + "){4})|(U(?:" + base16_ + "){8}))"
-	uppercase_ = "(?:" + upper_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	uppercase_ = "(?:" + upper_ + "" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
 )

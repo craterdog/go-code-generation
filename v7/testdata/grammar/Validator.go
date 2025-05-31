@@ -38,10 +38,16 @@ func ValidatorClass() ValidatorClassLike {
 func (c *validatorClass_) Validator() ValidatorLike {
 	var instance = &validator_{
 		// Initialize the instance attributes.
-		ruleNames_:   col.Set[string](),
-		tokenNames_:  col.Set[string](),
-		rules_:       col.Set[string](),
-		expressions_: col.SetFromArray[string]([]string{"newline"}),
+		ruleNames_:       col.Set[string](),
+		expressionNames_: col.Set[string](),
+		fragmentNames_:   col.Set[string](),
+		rules_:           col.Set[string](),
+		expressions_: col.SetFromArray[string](
+			[]string{"newline"},
+		),
+		fragments_: col.SetFromArray[string](
+			[]string{"ANY", "CONTROL", "DIGIT", "EOL", "LOWER", "UPPER"},
+		),
 
 		// Initialize the inherited aspects.
 		Methodical: ProcessorClass().Processor(),
@@ -62,6 +68,9 @@ func (v *validator_) ValidateSyntax(
 	syntax ast.SyntaxLike,
 ) {
 	v.visitor_.VisitSyntax(syntax)
+	fmt.Println("Rule Names:", v.ruleNames_)
+	fmt.Println("Expression Names:", v.expressionNames_)
+	fmt.Println("Fragment Names:", v.fragmentNames_)
 	var ruleNames = v.ruleNames_.GetIterator()
 	for ruleNames.HasNext() {
 		var ruleName = ruleNames.GetNext()
@@ -73,13 +82,24 @@ func (v *validator_) ValidateSyntax(
 			panic(message)
 		}
 	}
-	var tokenNames = v.tokenNames_.GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		if !v.expressions_.ContainsValue(tokenName) {
+	var expressionNames = v.expressionNames_.GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		if !v.expressions_.ContainsValue(expressionName) {
 			var message = fmt.Sprintf(
 				"The following expression does not have an associated definition: %s",
-				tokenName,
+				expressionName,
+			)
+			panic(message)
+		}
+	}
+	var fragmentNames = v.fragmentNames_.GetIterator()
+	for fragmentNames.HasNext() {
+		var fragmentName = fragmentNames.GetNext()
+		if !v.fragments_.ContainsValue(fragmentName) {
+			var message = fmt.Sprintf(
+				"The following fragment does not have an associated definition: %s",
+				fragmentName,
 			)
 			panic(message)
 		}
@@ -87,6 +107,12 @@ func (v *validator_) ValidateSyntax(
 }
 
 // Methodical Methods
+
+func (v *validator_) ProcessAllcaps(
+	allcaps string,
+) {
+	v.validateToken(allcaps, AllcapsToken)
+}
 
 func (v *validator_) ProcessComment(
 	comment string,
@@ -159,7 +185,7 @@ func (v *validator_) PreprocessComponent(
 	case scannerClass.MatchesType(actual, UppercaseToken):
 		v.ruleNames_.AddValue(actual)
 	case scannerClass.MatchesType(actual, LowercaseToken):
-		v.tokenNames_.AddValue(actual)
+		v.expressionNames_.AddValue(actual)
 	}
 }
 
@@ -170,6 +196,24 @@ func (v *validator_) PreprocessExpression(
 ) {
 	var expressionName = expression.GetLowercase()
 	v.expressions_.AddValue(expressionName)
+}
+
+func (v *validator_) PreprocessExpressionName(
+	expressionName ast.ExpressionNameLike,
+	index_ uint,
+	count_ uint,
+) {
+	var lowercase = expressionName.GetLowercase()
+	v.expressionNames_.AddValue(lowercase)
+}
+
+func (v *validator_) PreprocessFragment(
+	fragment ast.FragmentLike,
+	index_ uint,
+	count_ uint,
+) {
+	var allcaps = fragment.GetAllcaps()
+	v.fragments_.AddValue(allcaps)
 }
 
 func (v *validator_) PreprocessRule(
@@ -190,13 +234,19 @@ func (v *validator_) PreprocessRuleName(
 	v.ruleNames_.AddValue(uppercase)
 }
 
-func (v *validator_) PreprocessTokenName(
-	tokenName ast.TokenNameLike,
+func (v *validator_) PreprocessText(
+	text ast.TextLike,
 	index_ uint,
 	count_ uint,
 ) {
-	var lowercase = tokenName.GetLowercase()
-	v.tokenNames_.AddValue(lowercase)
+	var scannerClass = ScannerClass()
+	var actual = text.GetAny().(string)
+	switch {
+	case scannerClass.MatchesType(actual, LowercaseToken):
+		v.expressionNames_.AddValue(actual)
+	case scannerClass.MatchesType(actual, AllcapsToken):
+		v.fragmentNames_.AddValue(actual)
+	}
 }
 
 // PROTECTED INTERFACE
@@ -222,11 +272,13 @@ func (v *validator_) validateToken(
 
 type validator_ struct {
 	// Declare the instance attributes.
-	visitor_     VisitorLike
-	ruleNames_   col.SetLike[string]
-	tokenNames_  col.SetLike[string]
-	rules_       col.SetLike[string]
-	expressions_ col.SetLike[string]
+	visitor_         VisitorLike
+	ruleNames_       col.SetLike[string]
+	expressionNames_ col.SetLike[string]
+	fragmentNames_   col.SetLike[string]
+	rules_           col.SetLike[string]
+	expressions_     col.SetLike[string]
+	fragments_       col.SetLike[string]
 
 	// Declare the inherited aspects.
 	Methodical

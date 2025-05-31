@@ -130,13 +130,13 @@ type SyntaxAnalyzerLike interface {
 	GetLegalNotice() string
 	GetSyntaxName() string
 	GetRules() col.SetLike[string]
-	GetTokens() col.SetLike[string]
+	GetExpressions() col.SetLike[string]
 	GetLiteralValues(
 		ruleName string,
 	) col.ListLike[not.LiteralValueLike]
-	GetTokenNames(
+	GetExpressionNames(
 		ruleName string,
-	) col.ListLike[not.TokenNameLike]
+	) col.ListLike[not.ExpressionNameLike]
 	GetRuleNames(
 		ruleName string,
 	) col.ListLike[not.RuleNameLike]

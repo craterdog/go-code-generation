@@ -359,13 +359,13 @@ func (v *visitorSynthesizer_) createLiteralAlternatives(
 	return implementation
 }
 
-func (v *visitorSynthesizer_) createTokenAlternatives(
+func (v *visitorSynthesizer_) createExpressionAlternatives(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
 	var implementation = class.tokenAlternatives_
 	var tokenAlternatives string
-	var tokenNames = v.analyzer_.GetTokenNames(ruleName).GetIterator()
+	var tokenNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
 	for tokenNames.HasNext() {
 		var tokenName = tokenNames.GetNext()
 		var lowercase = tokenName.GetLowercase()
@@ -430,8 +430,8 @@ func (v *visitorSynthesizer_) createVisitMethod(
 	switch definition.GetAny().(type) {
 	case not.LiteralAlternativesLike:
 		methodImplementation = v.createLiteralAlternatives(ruleName)
-	case not.TokenAlternativesLike:
-		methodImplementation = v.createTokenAlternatives(ruleName)
+	case not.ExpressionAlternativesLike:
+		methodImplementation = v.createExpressionAlternatives(ruleName)
 	case not.RuleAlternativesLike:
 		methodImplementation = v.createRuleAlternatives(ruleName)
 	case not.TermSequenceLike:

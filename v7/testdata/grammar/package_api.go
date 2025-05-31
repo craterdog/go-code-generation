@@ -55,6 +55,7 @@ type TokenType uint8
 
 const (
 	ErrorToken TokenType = iota
+	AllcapsToken
 	CommentToken
 	DelimiterToken
 	GlyphToken
@@ -276,6 +277,9 @@ Methodical declares the set of method signatures that must be supported by
 all methodical processors.
 */
 type Methodical interface {
+	ProcessAllcaps(
+		allcaps string,
+	)
 	ProcessComment(
 		comment string,
 	)
@@ -449,6 +453,34 @@ type Methodical interface {
 		expression ast.ExpressionLike,
 		slot_ uint,
 	)
+	PreprocessExpressionAlternatives(
+		expressionAlternatives ast.ExpressionAlternativesLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessExpressionAlternatives(
+		expressionAlternatives ast.ExpressionAlternativesLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessExpressionAlternativesSlot(
+		expressionAlternatives ast.ExpressionAlternativesLike,
+		slot_ uint,
+	)
+	PreprocessExpressionName(
+		expressionName ast.ExpressionNameLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessExpressionName(
+		expressionName ast.ExpressionNameLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessExpressionNameSlot(
+		expressionName ast.ExpressionNameLike,
+		slot_ uint,
+	)
 	PreprocessExtent(
 		extent ast.ExtentLike,
 		index_ uint,
@@ -475,6 +507,20 @@ type Methodical interface {
 	)
 	ProcessFilterSlot(
 		filter ast.FilterLike,
+		slot_ uint,
+	)
+	PreprocessFragment(
+		fragment ast.FragmentLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessFragment(
+		fragment ast.FragmentLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessFragmentSlot(
+		fragment ast.FragmentLike,
 		slot_ uint,
 	)
 	PreprocessGroup(
@@ -713,34 +759,6 @@ type Methodical interface {
 	)
 	ProcessTextSlot(
 		text ast.TextLike,
-		slot_ uint,
-	)
-	PreprocessTokenAlternatives(
-		tokenAlternatives ast.TokenAlternativesLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessTokenAlternatives(
-		tokenAlternatives ast.TokenAlternativesLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessTokenAlternativesSlot(
-		tokenAlternatives ast.TokenAlternativesLike,
-		slot_ uint,
-	)
-	PreprocessTokenName(
-		tokenName ast.TokenNameLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessTokenName(
-		tokenName ast.TokenNameLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessTokenNameSlot(
-		tokenName ast.TokenNameLike,
 		slot_ uint,
 	)
 }

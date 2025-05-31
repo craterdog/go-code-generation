@@ -50,6 +50,11 @@ func (v *processor_) GetClass() ProcessorClassLike {
 
 // Methodical Methods
 
+func (v *processor_) ProcessAllcaps(
+	allcaps string,
+) {
+}
+
 func (v *processor_) ProcessComment(
 	comment string,
 ) {
@@ -305,6 +310,46 @@ func (v *processor_) ProcessExpressionSlot(
 ) {
 }
 
+func (v *processor_) PreprocessExpressionAlternatives(
+	expressionAlternatives ast.ExpressionAlternativesLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessExpressionAlternatives(
+	expressionAlternatives ast.ExpressionAlternativesLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessExpressionAlternativesSlot(
+	expressionAlternatives ast.ExpressionAlternativesLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessExpressionName(
+	expressionName ast.ExpressionNameLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessExpressionName(
+	expressionName ast.ExpressionNameLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessExpressionNameSlot(
+	expressionName ast.ExpressionNameLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessExtent(
 	extent ast.ExtentLike,
 	index_ uint,
@@ -341,6 +386,26 @@ func (v *processor_) PostprocessFilter(
 
 func (v *processor_) ProcessFilterSlot(
 	filter ast.FilterLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessFragment(
+	fragment ast.FragmentLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessFragment(
+	fragment ast.FragmentLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessFragmentSlot(
+	fragment ast.FragmentLike,
 	slot_ uint,
 ) {
 }
@@ -681,46 +746,6 @@ func (v *processor_) PostprocessText(
 
 func (v *processor_) ProcessTextSlot(
 	text ast.TextLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessTokenAlternatives(
-	tokenAlternatives ast.TokenAlternativesLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessTokenAlternatives(
-	tokenAlternatives ast.TokenAlternativesLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessTokenAlternativesSlot(
-	tokenAlternatives ast.TokenAlternativesLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessTokenName(
-	tokenName ast.TokenNameLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessTokenName(
-	tokenName ast.TokenNameLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessTokenNameSlot(
-	tokenName ast.TokenNameLike,
 	slot_ uint,
 ) {
 }

@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -28,21 +27,36 @@ import (
 
 // Access Function
 
-func TokenAlternativesClass() TokenAlternativesClassLike {
-	return tokenAlternativesClass()
+func FragmentClass() FragmentClassLike {
+	return fragmentClass()
 }
 
 // Constructor Methods
 
-func (c *tokenAlternativesClass_) TokenAlternatives(
-	tokenNames col.ListLike[TokenNameLike],
-) TokenAlternativesLike {
-	if uti.IsUndefined(tokenNames) {
-		panic("The \"tokenNames\" attribute is required by this class.")
+func (c *fragmentClass_) Fragment(
+	delimiter1 string,
+	allcaps string,
+	delimiter2 string,
+	pattern PatternLike,
+) FragmentLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	var instance = &tokenAlternatives_{
+	if uti.IsUndefined(allcaps) {
+		panic("The \"allcaps\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(pattern) {
+		panic("The \"pattern\" attribute is required by this class.")
+	}
+	var instance = &fragment_{
 		// Initialize the instance attributes.
-		tokenNames_: tokenNames,
+		delimiter1_: delimiter1,
+		allcaps_:    allcaps,
+		delimiter2_: delimiter2,
+		pattern_:    pattern,
 	}
 	return instance
 }
@@ -51,37 +65,52 @@ func (c *tokenAlternativesClass_) TokenAlternatives(
 
 // Principal Methods
 
-func (v *tokenAlternatives_) GetClass() TokenAlternativesClassLike {
-	return tokenAlternativesClass()
+func (v *fragment_) GetClass() FragmentClassLike {
+	return fragmentClass()
 }
 
 // Attribute Methods
 
-func (v *tokenAlternatives_) GetTokenNames() col.ListLike[TokenNameLike] {
-	return v.tokenNames_
+func (v *fragment_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *fragment_) GetAllcaps() string {
+	return v.allcaps_
+}
+
+func (v *fragment_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
+func (v *fragment_) GetPattern() PatternLike {
+	return v.pattern_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type tokenAlternatives_ struct {
+type fragment_ struct {
 	// Declare the instance attributes.
-	tokenNames_ col.ListLike[TokenNameLike]
+	delimiter1_ string
+	allcaps_    string
+	delimiter2_ string
+	pattern_    PatternLike
 }
 
 // Class Structure
 
-type tokenAlternativesClass_ struct {
+type fragmentClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func tokenAlternativesClass() *tokenAlternativesClass_ {
-	return tokenAlternativesClassReference_
+func fragmentClass() *fragmentClass_ {
+	return fragmentClassReference_
 }
 
-var tokenAlternativesClassReference_ = &tokenAlternativesClass_{
+var fragmentClassReference_ = &fragmentClass_{
 	// Initialize the class constants.
 }

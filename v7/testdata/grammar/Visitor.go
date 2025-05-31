@@ -252,14 +252,14 @@ func (v *visitor_) visitDefinition(
 			1,
 			1,
 		)
-	case ast.TokenAlternativesLike:
-		v.processor_.PreprocessTokenAlternatives(
+	case ast.ExpressionAlternativesLike:
+		v.processor_.PreprocessExpressionAlternatives(
 			actual,
 			1,
 			1,
 		)
-		v.visitTokenAlternatives(actual)
-		v.processor_.PostprocessTokenAlternatives(
+		v.visitExpressionAlternatives(actual)
+		v.processor_.PostprocessExpressionAlternatives(
 			actual,
 			1,
 			1,
@@ -403,6 +403,54 @@ func (v *visitor_) visitExpression(
 	)
 }
 
+func (v *visitor_) visitExpressionAlternatives(
+	expressionAlternatives ast.ExpressionAlternativesLike,
+) {
+	var expressionNamesIndex uint
+	var expressionNames = expressionAlternatives.GetExpressionNames().GetIterator()
+	var expressionNamesCount = uint(expressionNames.GetSize())
+	for expressionNames.HasNext() {
+		expressionNamesIndex++
+		var rule = expressionNames.GetNext()
+		v.processor_.PreprocessExpressionName(
+			rule,
+			expressionNamesIndex,
+			expressionNamesCount,
+		)
+		v.visitExpressionName(rule)
+		v.processor_.PostprocessExpressionName(
+			rule,
+			expressionNamesIndex,
+			expressionNamesCount,
+		)
+	}
+}
+
+func (v *visitor_) visitExpressionName(
+	expressionName ast.ExpressionNameLike,
+) {
+	var newline = expressionName.GetNewline()
+	v.processor_.ProcessNewline(newline)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessExpressionNameSlot(
+		expressionName,
+		1,
+	)
+
+	var lowercase = expressionName.GetLowercase()
+	v.processor_.ProcessLowercase(lowercase)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessExpressionNameSlot(
+		expressionName,
+		2,
+	)
+
+	var optionalNote = expressionName.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitExtent(
 	extent ast.ExtentLike,
 ) {
@@ -465,6 +513,47 @@ func (v *visitor_) visitFilter(
 
 	var delimiter2 = filter.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
+}
+
+func (v *visitor_) visitFragment(
+	fragment ast.FragmentLike,
+) {
+	var delimiter1 = fragment.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessFragmentSlot(
+		fragment,
+		1,
+	)
+
+	var allcaps = fragment.GetAllcaps()
+	v.processor_.ProcessAllcaps(allcaps)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessFragmentSlot(
+		fragment,
+		2,
+	)
+
+	var delimiter2 = fragment.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessFragmentSlot(
+		fragment,
+		3,
+	)
+
+	var pattern = fragment.GetPattern()
+	v.processor_.PreprocessPattern(
+		pattern,
+		1,
+		1,
+	)
+	v.visitPattern(pattern)
+	v.processor_.PostprocessPattern(
+		pattern,
+		1,
+		1,
+	)
 }
 
 func (v *visitor_) visitGroup(
@@ -914,6 +1003,38 @@ func (v *visitor_) visitSyntax(
 			expressionsCount,
 		)
 	}
+	// Visit slot 5 between terms.
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		5,
+	)
+
+	var comment3 = syntax.GetComment3()
+	v.processor_.ProcessComment(comment3)
+	// Visit slot 6 between terms.
+	v.processor_.ProcessSyntaxSlot(
+		syntax,
+		6,
+	)
+
+	var fragmentsIndex uint
+	var fragments = syntax.GetFragments().GetIterator()
+	var fragmentsCount = uint(fragments.GetSize())
+	for fragments.HasNext() {
+		fragmentsIndex++
+		var rule = fragments.GetNext()
+		v.processor_.PreprocessFragment(
+			rule,
+			fragmentsIndex,
+			fragmentsCount,
+		)
+		v.visitFragment(rule)
+		v.processor_.PostprocessFragment(
+			rule,
+			fragmentsIndex,
+			fragmentsCount,
+		)
+	}
 }
 
 func (v *visitor_) visitTermSequence(
@@ -959,58 +1080,12 @@ func (v *visitor_) visitText(
 		v.processor_.ProcessGlyph(actual)
 	case ScannerClass().MatchesType(actual, LiteralToken):
 		v.processor_.ProcessLiteral(actual)
-	case ScannerClass().MatchesType(actual, LowercaseToken):
-		v.processor_.ProcessLowercase(actual)
 	case ScannerClass().MatchesType(actual, IntrinsicToken):
 		v.processor_.ProcessIntrinsic(actual)
-	}
-}
-
-func (v *visitor_) visitTokenAlternatives(
-	tokenAlternatives ast.TokenAlternativesLike,
-) {
-	var tokenNamesIndex uint
-	var tokenNames = tokenAlternatives.GetTokenNames().GetIterator()
-	var tokenNamesCount = uint(tokenNames.GetSize())
-	for tokenNames.HasNext() {
-		tokenNamesIndex++
-		var rule = tokenNames.GetNext()
-		v.processor_.PreprocessTokenName(
-			rule,
-			tokenNamesIndex,
-			tokenNamesCount,
-		)
-		v.visitTokenName(rule)
-		v.processor_.PostprocessTokenName(
-			rule,
-			tokenNamesIndex,
-			tokenNamesCount,
-		)
-	}
-}
-
-func (v *visitor_) visitTokenName(
-	tokenName ast.TokenNameLike,
-) {
-	var newline = tokenName.GetNewline()
-	v.processor_.ProcessNewline(newline)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessTokenNameSlot(
-		tokenName,
-		1,
-	)
-
-	var lowercase = tokenName.GetLowercase()
-	v.processor_.ProcessLowercase(lowercase)
-	// Visit slot 2 between terms.
-	v.processor_.ProcessTokenNameSlot(
-		tokenName,
-		2,
-	)
-
-	var optionalNote = tokenName.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
+	case ScannerClass().MatchesType(actual, LowercaseToken):
+		v.processor_.ProcessLowercase(actual)
+	case ScannerClass().MatchesType(actual, AllcapsToken):
+		v.processor_.ProcessAllcaps(actual)
 	}
 }
 

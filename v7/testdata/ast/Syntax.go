@@ -40,6 +40,8 @@ func (c *syntaxClass_) Syntax(
 	rules col.ListLike[RuleLike],
 	comment2 string,
 	expressions col.ListLike[ExpressionLike],
+	comment3 string,
+	fragments col.ListLike[FragmentLike],
 ) SyntaxLike {
 	if uti.IsUndefined(legalNotice) {
 		panic("The \"legalNotice\" attribute is required by this class.")
@@ -56,6 +58,12 @@ func (c *syntaxClass_) Syntax(
 	if uti.IsUndefined(expressions) {
 		panic("The \"expressions\" attribute is required by this class.")
 	}
+	if uti.IsUndefined(comment3) {
+		panic("The \"comment3\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(fragments) {
+		panic("The \"fragments\" attribute is required by this class.")
+	}
 	var instance = &syntax_{
 		// Initialize the instance attributes.
 		legalNotice_: legalNotice,
@@ -63,6 +71,8 @@ func (c *syntaxClass_) Syntax(
 		rules_:       rules,
 		comment2_:    comment2,
 		expressions_: expressions,
+		comment3_:    comment3,
+		fragments_:   fragments,
 	}
 	return instance
 }
@@ -97,6 +107,14 @@ func (v *syntax_) GetExpressions() col.ListLike[ExpressionLike] {
 	return v.expressions_
 }
 
+func (v *syntax_) GetComment3() string {
+	return v.comment3_
+}
+
+func (v *syntax_) GetFragments() col.ListLike[FragmentLike] {
+	return v.fragments_
+}
+
 // PROTECTED INTERFACE
 
 // Instance Structure
@@ -108,6 +126,8 @@ type syntax_ struct {
 	rules_       col.ListLike[RuleLike]
 	comment2_    string
 	expressions_ col.ListLike[ExpressionLike]
+	comment3_    string
+	fragments_   col.ListLike[FragmentLike]
 }
 
 // Class Structure

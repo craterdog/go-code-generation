@@ -327,12 +327,12 @@ func (v *parser_) parseDefinition() (
 		return
 	}
 
-	// Attempt to parse a single TokenAlternatives Definition.
-	var tokenAlternatives ast.TokenAlternativesLike
-	tokenAlternatives, token, ok = v.parseTokenAlternatives()
+	// Attempt to parse a single ExpressionAlternatives Definition.
+	var expressionAlternatives ast.ExpressionAlternativesLike
+	expressionAlternatives, token, ok = v.parseExpressionAlternatives()
 	if ok {
-		// Found a single TokenAlternatives Definition.
-		definition = ast.DefinitionClass().Definition(tokenAlternatives)
+		// Found a single ExpressionAlternatives Definition.
+		definition = ast.DefinitionClass().Definition(expressionAlternatives)
 		return
 	}
 
@@ -527,6 +527,111 @@ func (v *parser_) parseExpression() (
 	return
 }
 
+func (v *parser_) parseExpressionAlternatives() (
+	expressionAlternatives ast.ExpressionAlternativesLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse multiple ExpressionName rules.
+	var expressionNames = col.List[ast.ExpressionNameLike]()
+expressionNamesLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var expressionName ast.ExpressionNameLike
+		expressionName, token, ok = v.parseExpressionName()
+		if !ok {
+			switch {
+			case count_ >= 1:
+				break expressionNamesLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple ExpressionName rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$ExpressionAlternatives", token)
+				message += "1 or more ExpressionName rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		expressionNames.AppendValue(expressionName)
+	}
+
+	// Found a single ExpressionAlternatives rule.
+	ok = true
+	v.remove(tokens)
+	expressionAlternatives = ast.ExpressionAlternativesClass().ExpressionAlternatives(expressionNames)
+	return
+}
+
+func (v *parser_) parseExpressionName() (
+	expressionName ast.ExpressionNameLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse a single newline token.
+	var newline string
+	newline, token, ok = v.parseToken(NewlineToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single newline token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$ExpressionName", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single lowercase token.
+	var lowercase string
+	lowercase, token, ok = v.parseToken(LowercaseToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single lowercase token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$ExpressionName", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalNote = "" // Reset this to undefined.
+	}
+
+	// Found a single ExpressionName rule.
+	ok = true
+	v.remove(tokens)
+	expressionName = ast.ExpressionNameClass().ExpressionName(
+		newline,
+		lowercase,
+		optionalNote,
+	)
+	return
+}
+
 func (v *parser_) parseExtent() (
 	extent ast.ExtentLike,
 	token TokenLike,
@@ -668,6 +773,96 @@ charactersLoop:
 		delimiter1,
 		characters,
 		delimiter2,
+	)
+	return
+}
+
+func (v *parser_) parseFragment() (
+	fragment ast.FragmentLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = col.List[TokenLike]()
+
+	// Attempt to parse a single "$" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("$")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Fragment rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Fragment", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single allcaps token.
+	var allcaps string
+	allcaps, token, ok = v.parseToken(AllcapsToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single allcaps token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Fragment", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single ":" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter(":")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Fragment rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Fragment", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Pattern rule.
+	var pattern ast.PatternLike
+	pattern, token, ok = v.parsePattern()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Pattern rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Fragment", token)
+		panic(message)
+	}
+
+	// Found a single Fragment rule.
+	ok = true
+	v.remove(tokens)
+	fragment = ast.FragmentClass().Fragment(
+		delimiter1,
+		allcaps,
+		delimiter2,
+		pattern,
 	)
 	return
 }
@@ -1517,6 +1712,50 @@ expressionsLoop:
 		expressions.AppendValue(expression)
 	}
 
+	// Attempt to parse a single comment token.
+	var comment3 string
+	comment3, token, ok = v.parseToken(CommentToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single comment token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Syntax", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse multiple Fragment rules.
+	var fragments = col.List[ast.FragmentLike]()
+fragmentsLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var fragment ast.FragmentLike
+		fragment, token, ok = v.parseFragment()
+		if !ok {
+			switch {
+			case count_ >= 1:
+				break fragmentsLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple Fragment rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Syntax", token)
+				message += "1 or more Fragment rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		fragments.AppendValue(fragment)
+	}
+
 	// Found a single Syntax rule.
 	ok = true
 	v.remove(tokens)
@@ -1526,6 +1765,8 @@ expressionsLoop:
 		rules,
 		comment2,
 		expressions,
+		comment3,
+		fragments,
 	)
 	return
 }
@@ -1607,15 +1848,6 @@ func (v *parser_) parseText() (
 		return
 	}
 
-	// Attempt to parse a single lowercase Text.
-	var lowercase string
-	lowercase, token, ok = v.parseToken(LowercaseToken)
-	if ok {
-		// Found a single lowercase Text.
-		text = ast.TextClass().Text(lowercase)
-		return
-	}
-
 	// Attempt to parse a single intrinsic Text.
 	var intrinsic string
 	intrinsic, token, ok = v.parseToken(IntrinsicToken)
@@ -1625,112 +1857,25 @@ func (v *parser_) parseText() (
 		return
 	}
 
-	// This is not a single Text rule.
-	return
-}
-
-func (v *parser_) parseTokenAlternatives() (
-	tokenAlternatives ast.TokenAlternativesLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = col.List[TokenLike]()
-
-	// Attempt to parse multiple TokenName rules.
-	var tokenNames = col.List[ast.TokenNameLike]()
-tokenNamesLoop:
-	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var tokenName ast.TokenNameLike
-		tokenName, token, ok = v.parseTokenName()
-		if !ok {
-			switch {
-			case count_ >= 1:
-				break tokenNamesLoop
-			case uti.IsDefined(tokens):
-				// This is not multiple TokenName rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$TokenAlternatives", token)
-				message += "1 or more TokenName rules are required."
-				panic(message)
-			}
-		}
-		// No additional put backs allowed at this point.
-		tokens = nil
-		tokenNames.AppendValue(tokenName)
-	}
-
-	// Found a single TokenAlternatives rule.
-	ok = true
-	v.remove(tokens)
-	tokenAlternatives = ast.TokenAlternativesClass().TokenAlternatives(tokenNames)
-	return
-}
-
-func (v *parser_) parseTokenName() (
-	tokenName ast.TokenNameLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = col.List[TokenLike]()
-
-	// Attempt to parse a single newline token.
-	var newline string
-	newline, token, ok = v.parseToken(NewlineToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single newline token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$TokenName", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single lowercase token.
+	// Attempt to parse a single lowercase Text.
 	var lowercase string
 	lowercase, token, ok = v.parseToken(LowercaseToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single lowercase token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$TokenName", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
 	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
+		// Found a single lowercase Text.
+		text = ast.TextClass().Text(lowercase)
+		return
 	}
 
-	// Found a single TokenName rule.
-	ok = true
-	v.remove(tokens)
-	tokenName = ast.TokenNameClass().TokenName(
-		newline,
-		lowercase,
-		optionalNote,
-	)
+	// Attempt to parse a single allcaps Text.
+	var allcaps string
+	allcaps, token, ok = v.parseToken(AllcapsToken)
+	if ok {
+		// Found a single allcaps Text.
+		text = ast.TextClass().Text(allcaps)
+		return
+	}
+
+	// This is not a single Text rule.
 	return
 }
 
@@ -1909,22 +2054,22 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: col.CatalogFromMap[string, string](
 		map[string]string{
-			"$Syntax":      `LegalNotice comment Rule+ comment Expression+`,
+			"$Syntax":      `LegalNotice comment Rule+ comment Expression+ comment Fragment+`,
 			"$LegalNotice": `comment`,
 			"$Rule":        `"$" uppercase ":" Definition`,
 			"$Definition": `
     LiteralAlternatives
-    TokenAlternatives
+    ExpressionAlternatives
     RuleAlternatives
     TermSequence  ! This must be last since it skips newlines.`,
-			"$LiteralAlternatives": `LiteralValue+`,
-			"$LiteralValue":        `newline literal note?`,
-			"$TokenAlternatives":   `TokenName+`,
-			"$TokenName":           `newline lowercase note?`,
-			"$RuleAlternatives":    `RuleName+`,
-			"$RuleName":            `newline uppercase note?`,
-			"$TermSequence":        `RuleTerm+ note?`,
-			"$RuleTerm":            `Component Cardinality?  ! The default cardinality is one.`,
+			"$LiteralAlternatives":    `LiteralValue+`,
+			"$LiteralValue":           `newline literal note?`,
+			"$ExpressionAlternatives": `ExpressionName+`,
+			"$ExpressionName":         `newline lowercase note?`,
+			"$RuleAlternatives":       `RuleName+`,
+			"$RuleName":               `newline uppercase note?`,
+			"$TermSequence":           `RuleTerm+ note?`,
+			"$RuleTerm":               `Component Cardinality?  ! The default cardinality is one.`,
 			"$Component": `
     literal
     lowercase
@@ -1939,6 +2084,7 @@ var parserClassReference_ = &parserClass_{
 			"$Quantified":          `"{" number Limit? "}"  ! A quantified range of numbers is inclusive.`,
 			"$Limit":               `".." number?  ! A quantified range may have no upper limit.`,
 			"$Expression":          `"$" lowercase ":" Pattern`,
+			"$Fragment":            `"$" allcaps ":" Pattern`,
 			"$Pattern":             `Alternatives note?`,
 			"$Alternatives":        `Sequence AlternativeSequence*`,
 			"$AlternativeSequence": `"|" Sequence`,
@@ -1959,8 +2105,9 @@ var parserClassReference_ = &parserClass_{
 			"$Text": `
     glyph
     literal
+    intrinsic
     lowercase
-    intrinsic`,
+    allcaps`,
 		},
 	),
 }

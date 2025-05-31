@@ -172,6 +172,32 @@ type ExpressionClassLike interface {
 }
 
 /*
+ExpressionAlternativesClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete expression-alternatives-like class.
+*/
+type ExpressionAlternativesClassLike interface {
+	// Constructor Methods
+	ExpressionAlternatives(
+		expressionNames col.ListLike[ExpressionNameLike],
+	) ExpressionAlternativesLike
+}
+
+/*
+ExpressionNameClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete expression-name-like class.
+*/
+type ExpressionNameClassLike interface {
+	// Constructor Methods
+	ExpressionName(
+		newline string,
+		lowercase string,
+		optionalNote string,
+	) ExpressionNameLike
+}
+
+/*
 ExtentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete extent-like class.
@@ -197,6 +223,21 @@ type FilterClassLike interface {
 		characters col.ListLike[CharacterLike],
 		delimiter2 string,
 	) FilterLike
+}
+
+/*
+FragmentClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete fragment-like class.
+*/
+type FragmentClassLike interface {
+	// Constructor Methods
+	Fragment(
+		delimiter1 string,
+		allcaps string,
+		delimiter2 string,
+		pattern PatternLike,
+	) FragmentLike
 }
 
 /*
@@ -396,6 +437,8 @@ type SyntaxClassLike interface {
 		rules col.ListLike[RuleLike],
 		comment2 string,
 		expressions col.ListLike[ExpressionLike],
+		comment3 string,
+		fragments col.ListLike[FragmentLike],
 	) SyntaxLike
 }
 
@@ -422,32 +465,6 @@ type TextClassLike interface {
 	Text(
 		any_ any,
 	) TextLike
-}
-
-/*
-TokenAlternativesClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete token-alternatives-like class.
-*/
-type TokenAlternativesClassLike interface {
-	// Constructor Methods
-	TokenAlternatives(
-		tokenNames col.ListLike[TokenNameLike],
-	) TokenAlternativesLike
-}
-
-/*
-TokenNameClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete token-name-like class.
-*/
-type TokenNameClassLike interface {
-	// Constructor Methods
-	TokenName(
-		newline string,
-		lowercase string,
-		optionalNote string,
-	) TokenNameLike
 }
 
 // INSTANCE DECLARATIONS
@@ -589,6 +606,34 @@ type ExpressionLike interface {
 }
 
 /*
+ExpressionAlternativesLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete expression-alternatives-like class.
+*/
+type ExpressionAlternativesLike interface {
+	// Principal Methods
+	GetClass() ExpressionAlternativesClassLike
+
+	// Attribute Methods
+	GetExpressionNames() col.ListLike[ExpressionNameLike]
+}
+
+/*
+ExpressionNameLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete expression-name-like class.
+*/
+type ExpressionNameLike interface {
+	// Principal Methods
+	GetClass() ExpressionNameClassLike
+
+	// Attribute Methods
+	GetNewline() string
+	GetLowercase() string
+	GetOptionalNote() string
+}
+
+/*
 ExtentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete extent-like class.
@@ -616,6 +661,22 @@ type FilterLike interface {
 	GetDelimiter1() string
 	GetCharacters() col.ListLike[CharacterLike]
 	GetDelimiter2() string
+}
+
+/*
+FragmentLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete fragment-like class.
+*/
+type FragmentLike interface {
+	// Principal Methods
+	GetClass() FragmentClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetAllcaps() string
+	GetDelimiter2() string
+	GetPattern() PatternLike
 }
 
 /*
@@ -831,6 +892,8 @@ type SyntaxLike interface {
 	GetRules() col.ListLike[RuleLike]
 	GetComment2() string
 	GetExpressions() col.ListLike[ExpressionLike]
+	GetComment3() string
+	GetFragments() col.ListLike[FragmentLike]
 }
 
 /*
@@ -858,34 +921,6 @@ type TextLike interface {
 
 	// Attribute Methods
 	GetAny() any
-}
-
-/*
-TokenAlternativesLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete token-alternatives-like class.
-*/
-type TokenAlternativesLike interface {
-	// Principal Methods
-	GetClass() TokenAlternativesClassLike
-
-	// Attribute Methods
-	GetTokenNames() col.ListLike[TokenNameLike]
-}
-
-/*
-TokenNameLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete token-name-like class.
-*/
-type TokenNameLike interface {
-	// Principal Methods
-	GetClass() TokenNameClassLike
-
-	// Attribute Methods
-	GetNewline() string
-	GetLowercase() string
-	GetOptionalNote() string
 }
 
 // ASPECT DECLARATIONS
