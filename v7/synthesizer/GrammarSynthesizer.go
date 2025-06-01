@@ -74,11 +74,11 @@ func (v *grammarSynthesizer_) CreateImportedPackages() string {
 func (v *grammarSynthesizer_) CreateTypeDeclarations() string {
 	var class = grammarSynthesizerClass()
 	var typeDeclarations = class.typeDeclarations_
-	var tokenTypes = v.generateTokenTypes()
+	var expressionTypes = v.generateExpressionTypes()
 	typeDeclarations = uti.ReplaceAll(
 		typeDeclarations,
-		"tokenTypes",
-		tokenTypes,
+		"expressionTypes",
+		expressionTypes,
 	)
 	return typeDeclarations
 }
@@ -109,11 +109,11 @@ func (v *grammarSynthesizer_) CreateInstanceDeclarations() string {
 func (v *grammarSynthesizer_) CreateAspectDeclarations() string {
 	var class = grammarSynthesizerClass()
 	var aspectDeclarations = class.aspectDeclarations_
-	var processTokens = v.generateProcessTokens()
+	var processExpressions = v.generateProcessExpressions()
 	aspectDeclarations = uti.ReplaceAll(
 		aspectDeclarations,
-		"processTokens",
-		processTokens,
+		"processExpressions",
+		processExpressions,
 	)
 	var processRules = v.generateProcessRules()
 	aspectDeclarations = uti.ReplaceAll(
@@ -159,45 +159,45 @@ func (v *grammarSynthesizer_) generateProcessRules() string {
 	return processRules
 }
 
-func (v *grammarSynthesizer_) generateProcessToken(
-	tokenName string,
+func (v *grammarSynthesizer_) generateProcessExpression(
+	expressionName string,
 ) string {
 	var class = grammarSynthesizerClass()
-	var processToken = class.processToken_
-	processToken = uti.ReplaceAll(
-		processToken,
-		"tokenName",
-		tokenName,
+	var processExpression = class.processExpression_
+	processExpression = uti.ReplaceAll(
+		processExpression,
+		"expressionName",
+		expressionName,
 	)
-	return processToken
+	return processExpression
 }
 
-func (v *grammarSynthesizer_) generateProcessTokens() string {
-	var processTokens string
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var processToken = v.generateProcessToken(tokenName)
-		processTokens += processToken
+func (v *grammarSynthesizer_) generateProcessExpressions() string {
+	var processExpressions string
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var processExpression = v.generateProcessExpression(expressionName)
+		processExpressions += processExpression
 	}
-	return processTokens
+	return processExpressions
 }
 
-func (v *grammarSynthesizer_) generateTokenTypes() string {
-	var tokenTypes string
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
+func (v *grammarSynthesizer_) generateExpressionTypes() string {
+	var expressionTypes string
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
 		var class = grammarSynthesizerClass()
-		var tokenType = class.tokenType_
-		tokenType = uti.ReplaceAll(
-			tokenType,
-			"tokenName",
-			tokenName,
+		var expressionType = class.expressionType_
+		expressionType = uti.ReplaceAll(
+			expressionType,
+			"expressionName",
+			expressionName,
 		)
-		tokenTypes += tokenType
+		expressionTypes += expressionType
 	}
-	return tokenTypes
+	return expressionTypes
 }
 
 // Instance Structure
@@ -215,11 +215,11 @@ type grammarSynthesizerClass_ struct {
 	packageDescription_   string
 	importedPackages_     string
 	typeDeclarations_     string
-	tokenType_            string
+	expressionType_       string
 	classDeclarations_    string
 	instanceDeclarations_ string
 	aspectDeclarations_   string
-	processToken_         string
+	processExpression_    string
 	processRule_          string
 }
 
@@ -262,12 +262,12 @@ scanner.
 type TokenType uint8
 
 const (
-	ErrorToken TokenType = iota<TokenTypes>
+	ErrorToken TokenType = iota<ExpressionTypes>
 )
 `,
 
-	tokenType_: `
-	<~TokenName>Token`,
+	expressionType_: `
+	<~ExpressionName>Token`,
 
 	classDeclarations_: `
 /*
@@ -473,13 +473,13 @@ type VisitorLike interface {
 Methodical declares the set of method signatures that must be supported by
 all methodical processors.
 */
-type Methodical interface {<ProcessTokens><ProcessRules>
+type Methodical interface {<ProcessExpressions><ProcessRules>
 }
 `,
 
-	processToken_: `
-	Process<~TokenName>(
-		<tokenName_> string,
+	processExpression_: `
+	Process<~ExpressionName>(
+		<expressionName_> string,
 	)`,
 
 	processRule_: `

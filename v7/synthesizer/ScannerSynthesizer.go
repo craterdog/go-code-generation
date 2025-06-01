@@ -132,17 +132,17 @@ func (v *scannerSynthesizer_) CreateClassStructure() string {
 func (v *scannerSynthesizer_) CreateClass() string {
 	var class = scannerSynthesizerClass()
 	var classReference = class.classReference_
-	var tokenIdentifiers = v.createTokenIdentifiers()
+	var expressionIdentifiers = v.createExpressionIdentifiers()
 	classReference = uti.ReplaceAll(
 		classReference,
-		"tokenIdentifiers",
-		tokenIdentifiers,
+		"expressionIdentifiers",
+		expressionIdentifiers,
 	)
-	var tokenMatchers = v.createTokenMatchers()
+	var expressionMatchers = v.createExpressionMatchers()
 	classReference = uti.ReplaceAll(
 		classReference,
-		"tokenMatchers",
-		tokenMatchers,
+		"expressionMatchers",
+		expressionMatchers,
 	)
 	var expressions = v.createExpressions()
 	classReference = uti.ReplaceAll(
@@ -173,18 +173,18 @@ func (v *scannerSynthesizer_) PerformGlobalUpdates(
 func (v *scannerSynthesizer_) createFoundCases() string {
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
-	var tokenNames = v.analyzer_.GetExpressions()
+	var expressions = v.analyzer_.GetExpressions()
 	var expressionNames = col.CatalogFromSequence[string, string](
 		v.analyzer_.GetPatterns(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
-		var tokenName = expressionNames.GetNext()
-		if tokenNames.ContainsValue(tokenName) {
+		var expressionName = expressionNames.GetNext()
+		if expressions.ContainsValue(expressionName) {
 			var foundCase = synthesizerClass.foundCase_
 			foundCase = uti.ReplaceAll(
 				foundCase,
-				"tokenName",
-				tokenName,
+				"expressionName",
+				expressionName,
 			)
 			foundCases += foundCase
 		}
@@ -222,47 +222,47 @@ func (v *scannerSynthesizer_) createExpressions() string {
 	return expressions
 }
 
-func (v *scannerSynthesizer_) createTokenIdentifiers() string {
+func (v *scannerSynthesizer_) createExpressionIdentifiers() string {
 	var class = scannerSynthesizerClass()
-	// Create the error token identifier.
-	var tokenIdentifiers = class.tokenIdentifier_
-	tokenIdentifiers = uti.ReplaceAll(
-		tokenIdentifiers,
-		"tokenName",
+	// Create the error expression identifier.
+	var expressionIdentifiers = class.expressionIdentifier_
+	expressionIdentifiers = uti.ReplaceAll(
+		expressionIdentifiers,
+		"expressionName",
 		"error",
 	)
 
-	// Create the rest of the token identifiers.
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var tokenIdentifier = class.tokenIdentifier_
-		tokenIdentifier = uti.ReplaceAll(
-			tokenIdentifier,
-			"tokenName",
-			tokenName,
+	// Create the rest of the expression identifiers.
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var expressionIdentifier = class.expressionIdentifier_
+		expressionIdentifier = uti.ReplaceAll(
+			expressionIdentifier,
+			"expressionName",
+			expressionName,
 		)
-		tokenIdentifiers += tokenIdentifier
+		expressionIdentifiers += expressionIdentifier
 	}
 
-	return tokenIdentifiers
+	return expressionIdentifiers
 }
 
-func (v *scannerSynthesizer_) createTokenMatchers() string {
-	var tokenMatchers string
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
+func (v *scannerSynthesizer_) createExpressionMatchers() string {
+	var expressionMatchers string
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
 		var class = scannerSynthesizerClass()
-		var tokenMatcher = class.tokenMatcher_
-		tokenMatcher = uti.ReplaceAll(
-			tokenMatcher,
-			"tokenName",
-			tokenName,
+		var expressionMatcher = class.expressionMatcher_
+		expressionMatcher = uti.ReplaceAll(
+			expressionMatcher,
+			"expressionName",
+			expressionName,
 		)
-		tokenMatchers += tokenMatcher
+		expressionMatchers += expressionMatcher
 	}
-	return tokenMatchers
+	return expressionMatchers
 }
 
 // Instance Structure
@@ -276,23 +276,23 @@ type scannerSynthesizer_ struct {
 
 type scannerSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_     string
-	importedPackages_   string
-	accessFunction_     string
-	constructorMethods_ string
-	functionMethods_    string
-	principalMethods_   string
-	methodicalMethods_  string
-	processToken_       string
-	processRule_        string
-	privateMethods_     string
-	foundCase_          string
-	instanceStructure_  string
-	classStructure_     string
-	classReference_     string
-	tokenIdentifier_    string
-	tokenMatcher_       string
-	expression_         string
+	warningMessage_       string
+	importedPackages_     string
+	accessFunction_       string
+	constructorMethods_   string
+	functionMethods_      string
+	principalMethods_     string
+	methodicalMethods_    string
+	processExpression_    string
+	processRule_          string
+	privateMethods_       string
+	foundCase_            string
+	instanceStructure_    string
+	classStructure_       string
+	classReference_       string
+	expressionIdentifier_ string
+	expressionMatcher_    string
+	expression_           string
 }
 
 // Class Reference
@@ -398,9 +398,9 @@ func (v *scanner_) GetClass() ScannerClassLike {
 
 	methodicalMethods_: `
 // Methodical Methods
-<ProcessTokens><ProcessRules>`,
+<ProcessExpressions><ProcessRules>`,
 
-	processToken_: `
+	processExpression_: `
 func (v *scanner_) Process<~ExpressionName>(
 	<expressionName_> string,
 ) {
@@ -531,7 +531,7 @@ loop:
 `,
 
 	foundCase_: `
-		case v.foundToken(<~TokenName>Token):`,
+		case v.foundToken(<~ExpressionName>Token):`,
 
 	instanceStructure_: `
 // Instance Structure
@@ -568,12 +568,12 @@ var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
 	tokens_: col.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
-			// Define identifiers for each type of token.<TokenIdentifiers>
+			// Define token identifiers for each type of expression.<ExpressionIdentifiers>
 		},
 	),
 	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
-			// Define pattern matchers for each type of token.<TokenMatchers>
+			// Define pattern matchers for each type of expression.<ExpressionMatchers>
 		},
 	),
 }
@@ -582,8 +582,8 @@ var scannerClassReference_ = &scannerClass_{
 
 // NOTE:
 // These private constants define the regular expression sub-patterns that make
-// up the intrinsic types and token types.  Unfortunately there is no way to
-// make them private to the scanner class since they must be TRUE Go constants
+// up the intrinsic types and expression types.  Unfortunately there is no way
+// to make them private to the scanner class since they must be TRUE Go constants
 // to be used in this way.  We append an underscore to each name to lessen the
 // chance of a name collision with other private Go class constants in this
 // package.
@@ -596,15 +596,15 @@ const (
 	lower_   = "\\p{Ll}"
 	upper_   = "\\p{Lu}"
 
-	// Define the regular expressions for each token type.<Expressions>
+	// Define the regular expressions for each expression type.<Expressions>
 )
 `,
 
-	tokenIdentifier_: `
-			<~TokenName>Token: "<~tokenName>",`,
+	expressionIdentifier_: `
+			<~ExpressionName>Token: "<~expressionName>",`,
 
-	tokenMatcher_: `
-			<~TokenName>Token: reg.MustCompile("^" + <~tokenName>_),`,
+	expressionMatcher_: `
+			<~ExpressionName>Token: reg.MustCompile("^" + <~expressionName>_),`,
 
 	expression_: `
 	<~expressionName>_ = <ExpressionValue>`,

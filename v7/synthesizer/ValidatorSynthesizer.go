@@ -115,11 +115,11 @@ func (v *validatorSynthesizer_) CreateAttributeMethods() string {
 func (v *validatorSynthesizer_) CreateAspectInterfaces() string {
 	var class = validatorSynthesizerClass()
 	var aspectInterfaces = class.aspectInterfaces_
-	var processTokens = v.createProcessTokens()
+	var processExpressions = v.createProcessExpressions()
 	aspectInterfaces = uti.ReplaceAll(
 		aspectInterfaces,
-		"processTokens",
-		processTokens,
+		"processExpressions",
+		processExpressions,
 	)
 	var processRules = v.createProcessRules()
 	aspectInterfaces = uti.ReplaceAll(
@@ -168,32 +168,32 @@ func (v *validatorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *validatorSynthesizer_) createProcessToken(
+func (v *validatorSynthesizer_) createProcessExpression(
 	expressionName string,
 ) string {
-	var processToken string
+	var processExpression string
 	if expressionName == "delimiter" {
-		return processToken
+		return processExpression
 	}
 	var class = validatorSynthesizerClass()
-	processToken = class.processToken_
-	processToken = uti.ReplaceAll(
-		processToken,
+	processExpression = class.processExpression_
+	processExpression = uti.ReplaceAll(
+		processExpression,
 		"expressionName",
 		expressionName,
 	)
-	return processToken
+	return processExpression
 }
 
-func (v *validatorSynthesizer_) createProcessTokens() string {
-	var processTokens string
+func (v *validatorSynthesizer_) createProcessExpressions() string {
+	var processExpressions string
 	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
 	for expressionNames.HasNext() {
 		var expressionName = expressionNames.GetNext()
-		var processToken = v.createProcessToken(expressionName)
-		processTokens += processToken
+		var processExpression = v.createProcessExpression(expressionName)
+		processExpressions += processExpression
 	}
-	return processTokens
+	return processExpressions
 }
 
 func (v *validatorSynthesizer_) createProcessRule(
@@ -276,7 +276,7 @@ type validatorSynthesizerClass_ struct {
 	constructorMethods_ string
 	principalMethods_   string
 	aspectInterfaces_   string
-	processToken_       string
+	processExpression_  string
 	processRule_        string
 	privateMethods_     string
 	instanceStructure_  string
@@ -346,13 +346,13 @@ func (v *validator_) Validate<~SyntaxName>(
 
 	aspectInterfaces_: `
 // Methodical Methods
-<ProcessTokens><ProcessRules>`,
+<ProcessExpressions><ProcessRules>`,
 
-	processToken_: `
+	processExpression_: `
 func (v *validator_) Process<~ExpressionName>(
 	<expressionName_> string,
 ) {
-	v.validateToken(<expressionName_>, <~ExpressionName>Token)
+	v.validateExpression(<expressionName_>, <~ExpressionName>Expression)
 }
 `,
 

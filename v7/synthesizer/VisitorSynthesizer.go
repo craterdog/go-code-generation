@@ -363,24 +363,24 @@ func (v *visitorSynthesizer_) createExpressionAlternatives(
 	ruleName string,
 ) string {
 	var class = visitorSynthesizerClass()
-	var implementation = class.tokenAlternatives_
-	var tokenAlternatives string
-	var tokenNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var lowercase = tokenName.GetLowercase()
-		var expression = class.tokenName_
+	var implementation = class.expressionAlternatives_
+	var expressionAlternatives string
+	var expressionNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var lowercase = expressionName.GetLowercase()
+		var expression = class.expressionName_
 		expression = uti.ReplaceAll(
 			expression,
 			"lowercase",
 			lowercase,
 		)
-		tokenAlternatives += expression
+		expressionAlternatives += expression
 	}
 	implementation = uti.ReplaceAll(
 		implementation,
-		"tokenNames",
-		tokenAlternatives,
+		"expressionNames",
+		expressionAlternatives,
 	)
 	return implementation
 }
@@ -463,32 +463,32 @@ type visitorSynthesizer_ struct {
 
 type visitorSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_      string
-	importedPackages_    string
-	accessFunction_      string
-	constructorMethods_  string
-	principalMethods_    string
-	privateMethods_      string
-	visitMethod_         string
-	literalAlternatives_ string
-	literalValue_        string
-	tokenAlternatives_   string
-	tokenName_           string
-	ruleAlternatives_    string
-	ruleName_            string
-	optionalLiteral_     string
-	requiredLiteral_     string
-	repeatedLiteral_     string
-	optionalExpression_  string
-	requiredExpression_  string
-	repeatedExpression_  string
-	optionalRule_        string
-	requiredRule_        string
-	repeatedRule_        string
-	slot_                string
-	instanceStructure_   string
-	classStructure_      string
-	classReference_      string
+	warningMessage_         string
+	importedPackages_       string
+	accessFunction_         string
+	constructorMethods_     string
+	principalMethods_       string
+	privateMethods_         string
+	visitMethod_            string
+	literalAlternatives_    string
+	literalValue_           string
+	expressionAlternatives_ string
+	expressionName_         string
+	ruleAlternatives_       string
+	ruleName_               string
+	optionalLiteral_        string
+	requiredLiteral_        string
+	repeatedLiteral_        string
+	optionalExpression_     string
+	requiredExpression_     string
+	repeatedExpression_     string
+	optionalRule_           string
+	requiredRule_           string
+	repeatedRule_           string
+	slot_                   string
+	instanceStructure_      string
+	classStructure_         string
+	classReference_         string
 }
 
 // Class Reference
@@ -581,13 +581,13 @@ func (v *visitor_) visit<~RuleName>(
 	case <literal>:
 		v.processor_.ProcessDelimiter(<literal>)`,
 
-	tokenAlternatives_: `
+	expressionAlternatives_: `
 	// Visit the possible <~ruleName> expression types.
 	var actual = <ruleName_>.GetAny().(string)
-	switch {<TokenNames>}
+	switch {<ExpressionNames>}
 `,
 
-	tokenName_: `
+	expressionName_: `
 	case ScannerClass().MatchesType(actual, <~Lowercase>Token):
 		v.processor_.Process<~Lowercase>(actual)`,
 

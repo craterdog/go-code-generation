@@ -353,9 +353,9 @@ func (v *parserSynthesizer_) createExpressionAlternatives(
 ) string {
 	var implementation string
 	var class = parserSynthesizerClass()
-	var tokenNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
-	for tokenNames.HasNext() {
-		var lowercase = tokenNames.GetNext().GetLowercase()
+	var expressionNames = v.analyzer_.GetExpressionNames(ruleName).GetIterator()
+	for expressionNames.HasNext() {
+		var lowercase = expressionNames.GetNext().GetLowercase()
 		var parseExpressionName = class.expressionName_
 		implementation += uti.ReplaceAll(
 			parseExpressionName,

@@ -240,7 +240,7 @@ var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
 	tokens_: col.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
-			// Define identifiers for each type of token.
+			// Define token identifiers for each type of expression.
 			ErrorToken:     "error",
 			AllcapsToken:   "allcaps",
 			CommentToken:   "comment",
@@ -258,7 +258,7 @@ var scannerClassReference_ = &scannerClass_{
 	),
 	matchers_: col.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
-			// Define pattern matchers for each type of token.
+			// Define pattern matchers for each type of expression.
 			AllcapsToken:   reg.MustCompile("^" + allcaps_),
 			CommentToken:   reg.MustCompile("^" + comment_),
 			DelimiterToken: reg.MustCompile("^" + delimiter_),
@@ -279,8 +279,8 @@ var scannerClassReference_ = &scannerClass_{
 
 // NOTE:
 // These private constants define the regular expression sub-patterns that make
-// up the intrinsic types and token types.  Unfortunately there is no way to
-// make them private to the scanner class since they must be TRUE Go constants
+// up the intrinsic types and expression types.  Unfortunately there is no way
+// to make them private to the scanner class since they must be TRUE Go constants
 // to be used in this way.  We append an underscore to each name to lessen the
 // chance of a name collision with other private Go class constants in this
 // package.
@@ -293,7 +293,7 @@ const (
 	lower_   = "\\p{Ll}"
 	upper_   = "\\p{Lu}"
 
-	// Define the regular expressions for each token type.
+	// Define the regular expressions for each expression type.
 	allcaps_   = "(?:" + upper_ + "{2}(" + digit_ + "|" + upper_ + ")*)"
 	base16_    = "(?:[0-9a-f])"
 	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"

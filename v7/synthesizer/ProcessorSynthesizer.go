@@ -101,11 +101,11 @@ func (v *processorSynthesizer_) CreateAttributeMethods() string {
 func (v *processorSynthesizer_) CreateAspectInterfaces() string {
 	var class = processorSynthesizerClass()
 	var aspectInterfaces = class.aspectInterfaces_
-	var processTokens = v.createProcessTokens()
+	var processExpressions = v.createProcessExpressions()
 	aspectInterfaces = uti.ReplaceAll(
 		aspectInterfaces,
-		"processTokens",
-		processTokens,
+		"processExpressions",
+		processExpressions,
 	)
 	var processRules = v.createProcessRules()
 	aspectInterfaces = uti.ReplaceAll(
@@ -151,29 +151,29 @@ func (v *processorSynthesizer_) PerformGlobalUpdates(
 
 // Private Methods
 
-func (v *processorSynthesizer_) createProcessToken(
-	tokenName string,
+func (v *processorSynthesizer_) createProcessExpression(
+	expressionName string,
 ) string {
-	var processToken string
+	var processExpression string
 	var class = processorSynthesizerClass()
-	processToken = class.processToken_
-	processToken = uti.ReplaceAll(
-		processToken,
-		"tokenName",
-		tokenName,
+	processExpression = class.processExpression_
+	processExpression = uti.ReplaceAll(
+		processExpression,
+		"expressionName",
+		expressionName,
 	)
-	return processToken
+	return processExpression
 }
 
-func (v *processorSynthesizer_) createProcessTokens() string {
-	var processTokens string
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var processToken = v.createProcessToken(tokenName)
-		processTokens += processToken
+func (v *processorSynthesizer_) createProcessExpressions() string {
+	var processExpressions string
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var processExpression = v.createProcessExpression(expressionName)
+		processExpressions += processExpression
 	}
-	return processTokens
+	return processExpressions
 }
 
 func (v *processorSynthesizer_) createProcessRule(
@@ -217,7 +217,7 @@ type processorSynthesizerClass_ struct {
 	constructorMethods_ string
 	principalMethods_   string
 	aspectInterfaces_   string
-	processToken_       string
+	processExpression_  string
 	processRule_        string
 	privateMethods_     string
 	instanceStructure_  string
@@ -273,11 +273,11 @@ func (v *processor_) GetClass() ProcessorClassLike {
 
 	aspectInterfaces_: `
 // Methodical Methods
-<ProcessTokens><ProcessRules>`,
+<ProcessExpressions><ProcessRules>`,
 
-	processToken_: `
-func (v *processor_) Process<~TokenName>(
-	<tokenName_> string,
+	processExpression_: `
+func (v *processor_) Process<~ExpressionName>(
+	<expressionName_> string,
 ) {
 }
 `,

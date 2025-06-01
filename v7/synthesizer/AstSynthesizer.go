@@ -168,9 +168,9 @@ func (v *astSynthesizer_) createGetterMethod(
 	var class = astSynthesizerClass()
 	var getterMethod = class.ruleGetterMethod_
 	if attributeType == "string" {
-		getterMethod = class.tokenGetterMethod_
+		getterMethod = class.expressionGetterMethod_
 		if isPlural {
-			getterMethod = class.pluralTokenGetterMethod_
+			getterMethod = class.pluralExpressionGetterMethod_
 		}
 	} else {
 		if isPlural {
@@ -255,9 +255,9 @@ func (v *astSynthesizer_) createParameter(
 	var class = astSynthesizerClass()
 	parameter = class.singularRuleParameter_
 	if parameterType == "string" {
-		parameter = class.singularTokenParameter_
+		parameter = class.singularExpressionParameter_
 		if isPlural {
-			parameter = class.pluralTokenParameter_
+			parameter = class.pluralExpressionParameter_
 		}
 	} else {
 		if isPlural {
@@ -302,21 +302,21 @@ type astSynthesizer_ struct {
 
 type astSynthesizerClass_ struct {
 	// Declare the class constants.
-	warningMessage_          string
-	packageDescription_      string
-	importedPackages_        string
-	classDeclaration_        string
-	singularRuleParameter_   string
-	pluralRuleParameter_     string
-	singularTokenParameter_  string
-	pluralTokenParameter_    string
-	instanceDeclaration_     string
-	principalMethods_        string
-	attributeMethods_        string
-	ruleGetterMethod_        string
-	pluralRuleGetterMethod_  string
-	tokenGetterMethod_       string
-	pluralTokenGetterMethod_ string
+	warningMessage_               string
+	packageDescription_           string
+	importedPackages_             string
+	classDeclaration_             string
+	singularRuleParameter_        string
+	pluralRuleParameter_          string
+	singularExpressionParameter_  string
+	pluralExpressionParameter_    string
+	instanceDeclaration_          string
+	principalMethods_             string
+	attributeMethods_             string
+	ruleGetterMethod_             string
+	pluralRuleGetterMethod_       string
+	expressionGetterMethod_       string
+	pluralExpressionGetterMethod_ string
 }
 
 // Class Reference
@@ -359,9 +359,9 @@ type <~ClassName>ClassLike interface {
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
 		<parameterName_> col.ListLike[<ParameterType>],`,
-	singularTokenParameter_: `
+	singularExpressionParameter_: `
 		<parameterName_> string,`,
-	pluralTokenParameter_: `
+	pluralExpressionParameter_: `
 		<parameterName_> col.ListLike[string],`,
 	instanceDeclaration_: `
 /*
@@ -382,8 +382,8 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
 	Get<~AttributeName>() col.ListLike[<AttributeType>]`,
-	tokenGetterMethod_: `
+	expressionGetterMethod_: `
 	Get<~AttributeName>() string`,
-	pluralTokenGetterMethod_: `
+	pluralExpressionGetterMethod_: `
 	Get<~AttributeName>() col.ListLike[string]`,
 }

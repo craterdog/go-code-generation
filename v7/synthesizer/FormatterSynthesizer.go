@@ -115,11 +115,11 @@ func (v *formatterSynthesizer_) CreateAttributeMethods() string {
 func (v *formatterSynthesizer_) CreateAspectInterfaces() string {
 	var class = formatterSynthesizerClass()
 	var aspectInterfaces = class.aspectInterfaces_
-	var processTokens = v.createProcessTokens()
+	var processExpressions = v.createProcessExpressions()
 	aspectInterfaces = uti.ReplaceAll(
 		aspectInterfaces,
-		"processTokens",
-		processTokens,
+		"processExpressions",
+		processExpressions,
 	)
 	var processRules = v.createProcessRules()
 	aspectInterfaces = uti.ReplaceAll(
@@ -192,32 +192,32 @@ func (v *formatterSynthesizer_) createProcessRules() string {
 	return processRules
 }
 
-func (v *formatterSynthesizer_) createProcessToken(
-	tokenName string,
+func (v *formatterSynthesizer_) createProcessExpression(
+	expressionName string,
 ) string {
-	var processToken string
+	var processExpression string
 	var class = formatterSynthesizerClass()
-	processToken = class.processToken_
-	if tokenName == "newline" {
-		processToken = class.processNewline_
+	processExpression = class.processExpression_
+	if expressionName == "newline" {
+		processExpression = class.processNewline_
 	}
-	processToken = uti.ReplaceAll(
-		processToken,
-		"tokenName",
-		tokenName,
+	processExpression = uti.ReplaceAll(
+		processExpression,
+		"expressionName",
+		expressionName,
 	)
-	return processToken
+	return processExpression
 }
 
-func (v *formatterSynthesizer_) createProcessTokens() string {
-	var processTokens string
-	var tokenNames = v.analyzer_.GetExpressions().GetIterator()
-	for tokenNames.HasNext() {
-		var tokenName = tokenNames.GetNext()
-		var processToken = v.createProcessToken(tokenName)
-		processTokens += processToken
+func (v *formatterSynthesizer_) createProcessExpressions() string {
+	var processExpressions string
+	var expressionNames = v.analyzer_.GetExpressions().GetIterator()
+	for expressionNames.HasNext() {
+		var expressionName = expressionNames.GetNext()
+		var processExpression = v.createProcessExpression(expressionName)
+		processExpressions += processExpression
 	}
-	return processTokens
+	return processExpressions
 }
 
 func (v *formatterSynthesizer_) preserveExistingCode(
@@ -263,7 +263,7 @@ type formatterSynthesizerClass_ struct {
 	constructorMethods_ string
 	principalMethods_   string
 	aspectInterfaces_   string
-	processToken_       string
+	processExpression_  string
 	processNewline_     string
 	processRule_        string
 	privateMethods_     string
@@ -333,15 +333,15 @@ func (v *formatter_) Format<~SyntaxName>(<~syntaxName> ast.<~SyntaxName>Like) st
 
 	aspectInterfaces_: `
 // Methodical Methods
-<ProcessTokens><ProcessRules>
+<ProcessExpressions><ProcessRules>
 const _indentation = "\t"
 `,
 
-	processToken_: `
-func (v *formatter_) Process<~TokenName>(
-	<tokenName_> string,
+	processExpression_: `
+func (v *formatter_) Process<~ExpressionName>(
+	<expressionName_> string,
 ) {
-	v.appendString(<tokenName_>)
+	v.appendString(<expressionName_>)
 }
 `,
 
