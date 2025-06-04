@@ -162,8 +162,14 @@ match the following regular expression: [a-zA-Z][a-zA-Z0-9]*
 type Identifier string
 
 /*
+Cardinal is a constrained type representing a cardinal number in the range
+[0..MaxUint].  The value 0 is used to represent infinity.
+*/
+type Cardinal uint64
+
+/*
 Ordinal is a constrained type representing an ordinal number in the range
-[1..∞).  The value 0 is used to represent infinity.
+[1..MaxUint].  The value 0 is invalid.
 */
 type Ordinal uint64
 
@@ -178,11 +184,6 @@ const (
 	EqualRank
 	GreaterRank
 )
-
-/*
-Size is a constrained type representing the size or capacity of something.
-*/
-type Size uint
 
 /*
 Slot is a constrained type representing a slot between values in a sequence.
@@ -275,7 +276,7 @@ type ArrayClassLike[V any] interface {
 		array []V,
 	) ArrayLike[V]
 	ArrayWithSize(
-		size Ordinal,
+		size Cardinal,
 	) ArrayLike[V]
 	ArrayFromSequence(
 		values Sequential[V],
@@ -460,7 +461,7 @@ type IteratorLike[V any] interface {
 	GetNext() V
 
 	// Attribute Methods
-	GetSize() Size
+	GetSize() Cardinal
 	GetSlot() Slot
 	SetSlot(
 		slot Slot,
@@ -539,7 +540,7 @@ class.
 */
 type Sequential[V any] interface {
 	IsEmpty() bool
-	GetSize() Ordinal
+	GetSize() Cardinal
 	AsArray() []V
 	GetIterator() IteratorLike[V]
 }

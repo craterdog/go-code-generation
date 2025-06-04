@@ -35,7 +35,7 @@ func (c *arrayClass_[V]) Array(
 }
 
 func (c *arrayClass_[V]) ArrayWithSize(
-	size Ordinal,
+	size Cardinal,
 ) ArrayLike[V] {
 	if uti.IsUndefined(size) {
 		panic("The \"size\" attribute is required by this class.")
@@ -114,8 +114,8 @@ func (v array_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v array_[V]) GetSize() Ordinal {
-	var result_ Ordinal
+func (v array_[V]) GetSize() Cardinal {
+	var result_ Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }

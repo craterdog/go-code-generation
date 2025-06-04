@@ -135,8 +135,8 @@ func (v *catalog_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *catalog_[V]) GetSize() Ordinal {
-	var result_ Ordinal
+func (v *catalog_[V]) GetSize() Cardinal {
+	var result_ Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }
