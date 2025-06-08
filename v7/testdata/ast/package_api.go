@@ -36,7 +36,7 @@ on interfaces, not on each other.
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 )
 
 // TYPE DECLARATIONS
@@ -67,7 +67,7 @@ type AlternativesClassLike interface {
 	// Constructor Methods
 	Alternatives(
 		sequence SequenceLike,
-		alternativeSequences col.ListLike[AlternativeSequenceLike],
+		alternativeSequences com.ListLike[AlternativeSequenceLike],
 	) AlternativesLike
 }
 
@@ -179,7 +179,7 @@ supported by each concrete expression-alternatives-like class.
 type ExpressionAlternativesClassLike interface {
 	// Constructor Methods
 	ExpressionAlternatives(
-		expressionNames col.ListLike[ExpressionNameLike],
+		expressionNames com.ListLike[ExpressionNameLike],
 	) ExpressionAlternativesLike
 }
 
@@ -220,7 +220,7 @@ type FilterClassLike interface {
 	Filter(
 		optionalDelimiter string,
 		delimiter1 string,
-		characters col.ListLike[CharacterLike],
+		characters com.ListLike[CharacterLike],
 		delimiter2 string,
 	) FilterLike
 }
@@ -299,7 +299,7 @@ supported by each concrete literal-alternatives-like class.
 type LiteralAlternativesClassLike interface {
 	// Constructor Methods
 	LiteralAlternatives(
-		literalValues col.ListLike[LiteralValueLike],
+		literalValues com.ListLike[LiteralValueLike],
 	) LiteralAlternativesLike
 }
 
@@ -381,7 +381,7 @@ supported by each concrete rule-alternatives-like class.
 type RuleAlternativesClassLike interface {
 	// Constructor Methods
 	RuleAlternatives(
-		ruleNames col.ListLike[RuleNameLike],
+		ruleNames com.ListLike[RuleNameLike],
 	) RuleAlternativesLike
 }
 
@@ -420,7 +420,7 @@ supported by each concrete sequence-like class.
 type SequenceClassLike interface {
 	// Constructor Methods
 	Sequence(
-		repetitions col.ListLike[RepetitionLike],
+		repetitions com.ListLike[RepetitionLike],
 	) SequenceLike
 }
 
@@ -434,11 +434,11 @@ type SyntaxClassLike interface {
 	Syntax(
 		legalNotice LegalNoticeLike,
 		comment1 string,
-		rules col.ListLike[RuleLike],
+		rules com.ListLike[RuleLike],
 		comment2 string,
-		expressions col.ListLike[ExpressionLike],
+		expressions com.ListLike[ExpressionLike],
 		comment3 string,
-		fragments col.ListLike[FragmentLike],
+		fragments com.ListLike[FragmentLike],
 	) SyntaxLike
 }
 
@@ -450,7 +450,7 @@ supported by each concrete term-sequence-like class.
 type TermSequenceClassLike interface {
 	// Constructor Methods
 	TermSequence(
-		ruleTerms col.ListLike[RuleTermLike],
+		ruleTerms com.ListLike[RuleTermLike],
 		optionalNote string,
 	) TermSequenceLike
 }
@@ -494,7 +494,7 @@ type AlternativesLike interface {
 
 	// Attribute Methods
 	GetSequence() SequenceLike
-	GetAlternativeSequences() col.ListLike[AlternativeSequenceLike]
+	GetAlternativeSequences() com.ListLike[AlternativeSequenceLike]
 }
 
 /*
@@ -615,7 +615,7 @@ type ExpressionAlternativesLike interface {
 	GetClass() ExpressionAlternativesClassLike
 
 	// Attribute Methods
-	GetExpressionNames() col.ListLike[ExpressionNameLike]
+	GetExpressionNames() com.ListLike[ExpressionNameLike]
 }
 
 /*
@@ -659,7 +659,7 @@ type FilterLike interface {
 	// Attribute Methods
 	GetOptionalDelimiter() string
 	GetDelimiter1() string
-	GetCharacters() col.ListLike[CharacterLike]
+	GetCharacters() com.ListLike[CharacterLike]
 	GetDelimiter2() string
 }
 
@@ -744,7 +744,7 @@ type LiteralAlternativesLike interface {
 	GetClass() LiteralAlternativesClassLike
 
 	// Attribute Methods
-	GetLiteralValues() col.ListLike[LiteralValueLike]
+	GetLiteralValues() com.ListLike[LiteralValueLike]
 }
 
 /*
@@ -832,7 +832,7 @@ type RuleAlternativesLike interface {
 	GetClass() RuleAlternativesClassLike
 
 	// Attribute Methods
-	GetRuleNames() col.ListLike[RuleNameLike]
+	GetRuleNames() com.ListLike[RuleNameLike]
 }
 
 /*
@@ -874,7 +874,7 @@ type SequenceLike interface {
 	GetClass() SequenceClassLike
 
 	// Attribute Methods
-	GetRepetitions() col.ListLike[RepetitionLike]
+	GetRepetitions() com.ListLike[RepetitionLike]
 }
 
 /*
@@ -889,11 +889,11 @@ type SyntaxLike interface {
 	// Attribute Methods
 	GetLegalNotice() LegalNoticeLike
 	GetComment1() string
-	GetRules() col.ListLike[RuleLike]
+	GetRules() com.ListLike[RuleLike]
 	GetComment2() string
-	GetExpressions() col.ListLike[ExpressionLike]
+	GetExpressions() com.ListLike[ExpressionLike]
 	GetComment3() string
-	GetFragments() col.ListLike[FragmentLike]
+	GetFragments() com.ListLike[FragmentLike]
 }
 
 /*
@@ -906,7 +906,7 @@ type TermSequenceLike interface {
 	GetClass() TermSequenceClassLike
 
 	// Attribute Methods
-	GetRuleTerms() col.ListLike[RuleTermLike]
+	GetRuleTerms() com.ListLike[RuleTermLike]
 	GetOptionalNote() string
 }
 

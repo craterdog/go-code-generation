@@ -29,7 +29,7 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	ast "github.com/craterdog/go-syntax-notation/v7/ast"
 	gra "github.com/craterdog/go-syntax-notation/v7/grammar"
 )
@@ -178,7 +178,7 @@ func AlternativesClass() AlternativesClassLike {
 
 func Alternatives(
 	sequence ast.SequenceLike,
-	alternativeSequences col.ListLike[ast.AlternativeSequenceLike],
+	alternativeSequences com.ListLike[ast.AlternativeSequenceLike],
 ) AlternativesLike {
 	return AlternativesClass().Alternatives(
 		sequence,
@@ -295,7 +295,7 @@ func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
 }
 
 func ExpressionAlternatives(
-	expressionNames col.ListLike[ast.ExpressionNameLike],
+	expressionNames com.ListLike[ast.ExpressionNameLike],
 ) ExpressionAlternativesLike {
 	return ExpressionAlternativesClass().ExpressionAlternatives(
 		expressionNames,
@@ -339,7 +339,7 @@ func FilterClass() FilterClassLike {
 func Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	characters col.ListLike[ast.CharacterLike],
+	characters com.ListLike[ast.CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	return FilterClass().Filter(
@@ -427,7 +427,7 @@ func LiteralAlternativesClass() LiteralAlternativesClassLike {
 }
 
 func LiteralAlternatives(
-	literalValues col.ListLike[ast.LiteralValueLike],
+	literalValues com.ListLike[ast.LiteralValueLike],
 ) LiteralAlternativesLike {
 	return LiteralAlternativesClass().LiteralAlternatives(
 		literalValues,
@@ -519,7 +519,7 @@ func RuleAlternativesClass() RuleAlternativesClassLike {
 }
 
 func RuleAlternatives(
-	ruleNames col.ListLike[ast.RuleNameLike],
+	ruleNames com.ListLike[ast.RuleNameLike],
 ) RuleAlternativesLike {
 	return RuleAlternativesClass().RuleAlternatives(
 		ruleNames,
@@ -561,7 +561,7 @@ func SequenceClass() SequenceClassLike {
 }
 
 func Sequence(
-	repetitions col.ListLike[ast.RepetitionLike],
+	repetitions com.ListLike[ast.RepetitionLike],
 ) SequenceLike {
 	return SequenceClass().Sequence(
 		repetitions,
@@ -575,11 +575,11 @@ func SyntaxClass() SyntaxClassLike {
 func Syntax(
 	legalNotice ast.LegalNoticeLike,
 	comment1 string,
-	rules col.ListLike[ast.RuleLike],
+	rules com.ListLike[ast.RuleLike],
 	comment2 string,
-	expressions col.ListLike[ast.ExpressionLike],
+	expressions com.ListLike[ast.ExpressionLike],
 	comment3 string,
-	fragments col.ListLike[ast.FragmentLike],
+	fragments com.ListLike[ast.FragmentLike],
 ) SyntaxLike {
 	return SyntaxClass().Syntax(
 		legalNotice,
@@ -597,7 +597,7 @@ func TermSequenceClass() TermSequenceClassLike {
 }
 
 func TermSequence(
-	ruleTerms col.ListLike[ast.RuleTermLike],
+	ruleTerms com.ListLike[ast.RuleTermLike],
 	optionalNote string,
 ) TermSequenceLike {
 	return TermSequenceClass().TermSequence(
@@ -650,7 +650,7 @@ func ScannerClass() ScannerClassLike {
 
 func Scanner(
 	source string,
-	tokens col.QueueLike[gra.TokenLike],
+	tokens com.QueueLike[gra.TokenLike],
 ) ScannerLike {
 	return ScannerClass().Scanner(
 		source,

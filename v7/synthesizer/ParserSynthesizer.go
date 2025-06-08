@@ -558,7 +558,7 @@ var parserSynthesizerClassReference_ = &parserSynthesizerClass_{
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	mat "math"
 	sts "strings"
@@ -594,8 +594,8 @@ func (v *parser_) ParseSource(
 	source string,
 ) ast.<~SyntaxName>Like {
 	v.source_ = sts.ReplaceAll(source, "\t", "    ")
-	v.tokens_ = col.Queue[TokenLike]()
-	v.next_ = col.Stack[TokenLike]()
+	v.tokens_ = com.Queue[TokenLike]()
+	v.next_ = com.Stack[TokenLike]()
 
 	// The scanner runs in a separate Go routine.
 	ScannerClass().Scanner(v.source_, v.tokens_)
@@ -643,7 +643,7 @@ func (v *parser_) parseToken(
 	ok bool,
 ) {
 	// Attempt to parse a specific token type.
-	var tokens = col.List[TokenLike]()
+	var tokens = com.List[TokenLike]()
 	token = v.getNextToken()
 	for token != nil {
 		tokens.AppendValue(token)
@@ -744,7 +744,7 @@ func (v *parser_) getNextToken() TokenLike {
 }
 
 func (v *parser_) putBack(
-	tokens col.Sequential[TokenLike],
+	tokens com.Sequential[TokenLike],
 ) {
 	var iterator = tokens.GetIterator()
 	for iterator.ToEnd(); iterator.HasPrevious(); {
@@ -758,7 +758,7 @@ func (v *parser_) putBack(
 // generated parser code.  The generated code must call this method is some
 // cases to make it look that the tokens variable is being used somewhere.
 func (v *parser_) remove(
-	tokens col.Sequential[TokenLike],
+	tokens com.Sequential[TokenLike],
 ) {
 }
 `,
@@ -776,7 +776,7 @@ func (v *parser_) parse<~RuleName>() (
 `,
 
 	declareTokens_: `
-	var tokens = col.List[TokenLike]()
+	var tokens = com.List[TokenLike]()
 `,
 
 	optionalLiteral_: `
@@ -814,7 +814,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	repeatedLiteral_: `
 	// Attempt to parse multiple <literal> literals.
-	var <variableName_> = col.List[string]()
+	var <variableName_> = com.List[string]()
 <~variableName>Loop:
 	for count_ := 0; count_ < <last>; count_++ {
 		var literal string
@@ -876,7 +876,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	repeatedExpression_: `
 	// Attempt to parse multiple <~lowercase> tokens.
-	var <variableName_> = col.List[string]()
+	var <variableName_> = com.List[string]()
 <~variableName>Loop:
 	for count_ := 0; count_ < <last>; count_++ {
 		var <lowercase_> string
@@ -938,7 +938,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	repeatedNestedExpression_: `
 	// Attempt to parse multiple <~Uppercase> rules.
-	var <variableName_> = col.List[ast.<~Uppercase>Like]()
+	var <variableName_> = com.List[ast.<~Uppercase>Like]()
 <~variableName>Loop:
 	for count_ := 0; count_ < <last>; count_++ {
 		var <uppercase_> ast.<~Uppercase>Like
@@ -997,7 +997,7 @@ func (v *parser_) parse<~RuleName>() (
 
 	repeatedRule_: `
 	// Attempt to parse multiple <~Uppercase> rules.
-	var <variableName_> = col.List[ast.<~Uppercase>Like]()
+	var <variableName_> = com.List[ast.<~Uppercase>Like]()
 <~variableName>Loop:
 	for count_ := 0; count_ < <last>; count_++ {
 		var <uppercase_> ast.<~Uppercase>Like
@@ -1074,8 +1074,8 @@ func (v *parser_) parse<~RuleName>() (
 type parser_ struct {
 	// Declare the instance attributes.
 	source_ string                   // The original source code.
-	tokens_ col.QueueLike[TokenLike] // A queue of unread tokens from the scanner.
-	next_   col.StackLike[TokenLike] // A stack of read, but unprocessed tokens.
+	tokens_ com.QueueLike[TokenLike] // A queue of unread tokens from the scanner.
+	next_   com.StackLike[TokenLike] // A stack of read, but unprocessed tokens.
 }
 `,
 
@@ -1084,7 +1084,7 @@ type parser_ struct {
 
 type parserClass_ struct {
 	// Declare the class constants.
-	syntax_ col.CatalogLike[string, string]
+	syntax_ com.CatalogLike[string, string]
 }
 `,
 
@@ -1097,7 +1097,7 @@ func parserClass() *parserClass_ {
 
 var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
-	syntax_: col.CatalogFromMap[string, string](
+	syntax_: com.CatalogFromMap[string, string](
 		map[string]string{<SyntaxMap>
 		},
 	),

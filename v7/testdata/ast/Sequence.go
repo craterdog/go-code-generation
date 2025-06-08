@@ -20,7 +20,7 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,7 +35,7 @@ func SequenceClass() SequenceClassLike {
 // Constructor Methods
 
 func (c *sequenceClass_) Sequence(
-	repetitions col.ListLike[RepetitionLike],
+	repetitions com.ListLike[RepetitionLike],
 ) SequenceLike {
 	if uti.IsUndefined(repetitions) {
 		panic("The \"repetitions\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *sequence_) GetClass() SequenceClassLike {
 
 // Attribute Methods
 
-func (v *sequence_) GetRepetitions() col.ListLike[RepetitionLike] {
+func (v *sequence_) GetRepetitions() com.ListLike[RepetitionLike] {
 	return v.repetitions_
 }
 
@@ -67,7 +67,7 @@ func (v *sequence_) GetRepetitions() col.ListLike[RepetitionLike] {
 
 type sequence_ struct {
 	// Declare the instance attributes.
-	repetitions_ col.ListLike[RepetitionLike]
+	repetitions_ com.ListLike[RepetitionLike]
 }
 
 // Class Structure

@@ -33,7 +33,7 @@ import (
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
 	ass "github.com/craterdog/go-code-generation/v7/assembler"
 	syn "github.com/craterdog/go-code-generation/v7/synthesizer"
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 )
 
@@ -207,7 +207,7 @@ func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 
 func ModuleSynthesizer(
 	moduleName string,
-	models col.CatalogLike[string, mod.ModelLike],
+	models com.CatalogLike[string, mod.ModelLike],
 ) ModuleSynthesizerLike {
 	return ModuleSynthesizerClass().ModuleSynthesizer(
 		moduleName,
@@ -400,7 +400,7 @@ func GenerateModule(
 	moduleName string,
 	wikiPath string,
 	existing string,
-	models col.CatalogLike[string, mod.ModelLike],
+	models com.CatalogLike[string, mod.ModelLike],
 ) string {
 	var assembler = ModuleAssembler()
 	var synthesizer = ModuleSynthesizer(

@@ -20,7 +20,7 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,7 +35,7 @@ func TermSequenceClass() TermSequenceClassLike {
 // Constructor Methods
 
 func (c *termSequenceClass_) TermSequence(
-	ruleTerms col.ListLike[RuleTermLike],
+	ruleTerms com.ListLike[RuleTermLike],
 	optionalNote string,
 ) TermSequenceLike {
 	if uti.IsUndefined(ruleTerms) {
@@ -59,7 +59,7 @@ func (v *termSequence_) GetClass() TermSequenceClassLike {
 
 // Attribute Methods
 
-func (v *termSequence_) GetRuleTerms() col.ListLike[RuleTermLike] {
+func (v *termSequence_) GetRuleTerms() com.ListLike[RuleTermLike] {
 	return v.ruleTerms_
 }
 
@@ -73,7 +73,7 @@ func (v *termSequence_) GetOptionalNote() string {
 
 type termSequence_ struct {
 	// Declare the instance attributes.
-	ruleTerms_    col.ListLike[RuleTermLike]
+	ruleTerms_    com.ListLike[RuleTermLike]
 	optionalNote_ string
 }
 

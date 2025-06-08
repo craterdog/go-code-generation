@@ -20,7 +20,7 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -36,7 +36,7 @@ func AlternativesClass() AlternativesClassLike {
 
 func (c *alternativesClass_) Alternatives(
 	sequence SequenceLike,
-	alternativeSequences col.ListLike[AlternativeSequenceLike],
+	alternativeSequences com.ListLike[AlternativeSequenceLike],
 ) AlternativesLike {
 	if uti.IsUndefined(sequence) {
 		panic("The \"sequence\" attribute is required by this class.")
@@ -66,7 +66,7 @@ func (v *alternatives_) GetSequence() SequenceLike {
 	return v.sequence_
 }
 
-func (v *alternatives_) GetAlternativeSequences() col.ListLike[AlternativeSequenceLike] {
+func (v *alternatives_) GetAlternativeSequences() com.ListLike[AlternativeSequenceLike] {
 	return v.alternativeSequences_
 }
 
@@ -77,7 +77,7 @@ func (v *alternatives_) GetAlternativeSequences() col.ListLike[AlternativeSequen
 type alternatives_ struct {
 	// Declare the instance attributes.
 	sequence_             SequenceLike
-	alternativeSequences_ col.ListLike[AlternativeSequenceLike]
+	alternativeSequences_ com.ListLike[AlternativeSequenceLike]
 }
 
 // Class Structure

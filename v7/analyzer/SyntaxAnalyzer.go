@@ -13,7 +13,7 @@
 package analyzer
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 	stc "strconv"
@@ -61,45 +61,45 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 	return v.syntaxName_
 }
 
-func (v *syntaxAnalyzer_) GetRules() col.SetLike[string] {
+func (v *syntaxAnalyzer_) GetRules() com.SetLike[string] {
 	return v.rules_
 }
 
-func (v *syntaxAnalyzer_) GetExpressions() col.SetLike[string] {
+func (v *syntaxAnalyzer_) GetExpressions() com.SetLike[string] {
 	return v.expressions_
 }
 
-func (v *syntaxAnalyzer_) GetFragments() col.SetLike[string] {
+func (v *syntaxAnalyzer_) GetFragments() com.SetLike[string] {
 	return v.fragments_
 }
 
 func (v *syntaxAnalyzer_) GetLiteralValues(
 	ruleName string,
-) col.ListLike[not.LiteralValueLike] {
+) com.ListLike[not.LiteralValueLike] {
 	return v.literalValues_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetExpressionNames(
 	ruleName string,
-) col.ListLike[not.ExpressionNameLike] {
+) com.ListLike[not.ExpressionNameLike] {
 	return v.expressionNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleNames(
 	ruleName string,
-) col.ListLike[not.RuleNameLike] {
+) com.ListLike[not.RuleNameLike] {
 	return v.ruleNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleTerms(
 	ruleName string,
-) col.ListLike[not.RuleTermLike] {
+) com.ListLike[not.RuleTermLike] {
 	return v.ruleTerms_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
 	ruleName string,
-) col.ListLike[string] {
+) com.ListLike[string] {
 	return v.variables_.GetValue(ruleName)
 }
 
@@ -119,11 +119,11 @@ func (v *syntaxAnalyzer_) GetVariableType(
 	return variableType
 }
 
-func (v *syntaxAnalyzer_) GetPatterns() col.CatalogLike[string, string] {
+func (v *syntaxAnalyzer_) GetPatterns() com.CatalogLike[string, string] {
 	return v.patterns_
 }
 
-func (v *syntaxAnalyzer_) GetDefinitions() col.CatalogLike[string, not.DefinitionLike] {
+func (v *syntaxAnalyzer_) GetDefinitions() com.CatalogLike[string, not.DefinitionLike] {
 	return v.definitions_
 }
 
@@ -411,16 +411,16 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	v.definitions_.SetValue(ruleName, definition)
 	switch definition.GetAny().(type) {
 	case not.LiteralAlternativesLike:
-		var literalValues = col.List[not.LiteralValueLike]()
+		var literalValues = com.List[not.LiteralValueLike]()
 		v.literalValues_.SetValue(ruleName, literalValues)
 	case not.ExpressionAlternativesLike:
-		var expressionNames = col.List[not.ExpressionNameLike]()
+		var expressionNames = com.List[not.ExpressionNameLike]()
 		v.expressionNames_.SetValue(ruleName, expressionNames)
 	case not.RuleAlternativesLike:
-		var ruleNames = col.List[not.RuleNameLike]()
+		var ruleNames = com.List[not.RuleNameLike]()
 		v.ruleNames_.SetValue(ruleName, ruleNames)
 	case not.TermSequenceLike:
-		var ruleTerms = col.List[not.RuleTermLike]()
+		var ruleTerms = com.List[not.RuleTermLike]()
 		v.ruleTerms_.SetValue(ruleName, ruleTerms)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
@@ -498,16 +498,16 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.notGreedy_ = false // The default is "greedy" (not notGreedy).
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
-	v.rules_ = col.Set[string]()
-	v.expressions_ = col.SetFromArray[string](
+	v.rules_ = com.Set[string]()
+	v.expressions_ = com.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
 	)
-	v.fragments_ = col.SetFromArray[string](
+	v.fragments_ = com.SetFromArray[string](
 		[]string{"ANY", "CONTROL", "DIGIT", "EOL", "LOWER", "UPPER"},
 	)
-	v.pluralNames_ = col.Set[string]()
-	v.delimiters_ = col.Set[string]()
-	v.patterns_ = col.Catalog[string, string]()
+	v.pluralNames_ = com.Set[string]()
+	v.delimiters_ = com.Set[string]()
+	v.patterns_ = com.Catalog[string, string]()
 	v.patterns_.SetValue(
 		"delimiter",
 		`"(?:)"`, // The delimiters will be filled in later but need to be first.
@@ -520,12 +520,12 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 		"space",
 		`"(?:[ \\t]+)"`,
 	)
-	v.definitions_ = col.Catalog[string, not.DefinitionLike]()
-	v.ruleTerms_ = col.Catalog[string, col.ListLike[not.RuleTermLike]]()
-	v.variables_ = col.Catalog[string, col.ListLike[string]]()
-	v.ruleNames_ = col.Catalog[string, col.ListLike[not.RuleNameLike]]()
-	v.expressionNames_ = col.Catalog[string, col.ListLike[not.ExpressionNameLike]]()
-	v.literalValues_ = col.Catalog[string, col.ListLike[not.LiteralValueLike]]()
+	v.definitions_ = com.Catalog[string, not.DefinitionLike]()
+	v.ruleTerms_ = com.Catalog[string, com.ListLike[not.RuleTermLike]]()
+	v.variables_ = com.Catalog[string, com.ListLike[string]]()
+	v.ruleNames_ = com.Catalog[string, com.ListLike[not.RuleNameLike]]()
+	v.expressionNames_ = com.Catalog[string, com.ListLike[not.ExpressionNameLike]]()
+	v.literalValues_ = com.Catalog[string, com.ListLike[not.LiteralValueLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
@@ -663,7 +663,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	ruleName string,
 ) {
 	// Only inline rules have variables.
-	var ruleTerms col.Sequential[not.RuleTermLike]
+	var ruleTerms com.Sequential[not.RuleTermLike]
 	var definition = v.definitions_.GetValue(ruleName)
 	switch actual := definition.GetAny().(type) {
 	case not.TermSequenceLike:
@@ -673,7 +673,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Extract the variable names from the inline components.
-	var variables = col.List[string]()
+	var variables = com.List[string]()
 	var iterator = ruleTerms.GetIterator()
 	for iterator.HasNext() {
 		var ruleTerm = iterator.GetNext()
@@ -682,9 +682,9 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Make any duplicate variable names unique.
-	var leftIndex col.Index
-	var rightIndex col.Index
-	var size = col.Index(variables.GetSize())
+	var leftIndex com.Index
+	var rightIndex com.Index
+	var size = com.Index(variables.GetSize())
 	for leftIndex = 1; leftIndex <= size; leftIndex++ {
 		var count = 1
 		var leftName = variables.GetValue(leftIndex)
@@ -728,18 +728,18 @@ type syntaxAnalyzer_ struct {
 	legalNotice_     string
 	ruleName_        string
 	pattern_         string
-	rules_           col.SetLike[string]
-	expressions_     col.SetLike[string]
-	fragments_       col.SetLike[string]
-	pluralNames_     col.SetLike[string]
-	delimiters_      col.SetLike[string]
-	patterns_        col.CatalogLike[string, string]
-	definitions_     col.CatalogLike[string, not.DefinitionLike]
-	ruleTerms_       col.CatalogLike[string, col.ListLike[not.RuleTermLike]]
-	variables_       col.CatalogLike[string, col.ListLike[string]]
-	ruleNames_       col.CatalogLike[string, col.ListLike[not.RuleNameLike]]
-	expressionNames_ col.CatalogLike[string, col.ListLike[not.ExpressionNameLike]]
-	literalValues_   col.CatalogLike[string, col.ListLike[not.LiteralValueLike]]
+	rules_           com.SetLike[string]
+	expressions_     com.SetLike[string]
+	fragments_       com.SetLike[string]
+	pluralNames_     com.SetLike[string]
+	delimiters_      com.SetLike[string]
+	patterns_        com.CatalogLike[string, string]
+	definitions_     com.CatalogLike[string, not.DefinitionLike]
+	ruleTerms_       com.CatalogLike[string, com.ListLike[not.RuleTermLike]]
+	variables_       com.CatalogLike[string, com.ListLike[string]]
+	ruleNames_       com.CatalogLike[string, com.ListLike[not.RuleNameLike]]
+	expressionNames_ com.CatalogLike[string, com.ListLike[not.ExpressionNameLike]]
+	literalValues_   com.CatalogLike[string, com.ListLike[not.LiteralValueLike]]
 
 	// Declare the inherited aspects.
 	not.Methodical

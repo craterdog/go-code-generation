@@ -21,7 +21,7 @@ package grammar
 
 import (
 	fmt "fmt"
-	col "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	ast "github.com/craterdog/go-syntax-notation/v7/ast"
 )
 
@@ -38,14 +38,14 @@ func ValidatorClass() ValidatorClassLike {
 func (c *validatorClass_) Validator() ValidatorLike {
 	var instance = &validator_{
 		// Initialize the instance attributes.
-		ruleNames_:       col.Set[string](),
-		expressionNames_: col.Set[string](),
-		fragmentNames_:   col.Set[string](),
-		rules_:           col.Set[string](),
-		expressions_: col.SetFromArray[string](
+		ruleNames_:       com.Set[string](),
+		expressionNames_: com.Set[string](),
+		fragmentNames_:   com.Set[string](),
+		rules_:           com.Set[string](),
+		expressions_: com.SetFromArray[string](
 			[]string{"newline"},
 		),
-		fragments_: col.SetFromArray[string](
+		fragments_: com.SetFromArray[string](
 			[]string{"ANY", "CONTROL", "DIGIT", "EOL", "LOWER", "UPPER"},
 		),
 
@@ -101,6 +101,24 @@ func (v *validator_) ValidateSyntax(
 			panic(message)
 		}
 	}
+	var fragments = syntax.GetFragments()
+	fragments.SortValuesWithRanker(
+		func(
+			first ast.FragmentLike,
+			second ast.FragmentLike,
+		) com.Rank {
+			var firstName = first.GetAllcaps()
+			var secondName = second.GetAllcaps()
+			switch {
+			case firstName < secondName:
+				return com.LesserRank
+			case firstName > secondName:
+				return com.GreaterRank
+			default:
+				return com.EqualRank
+			}
+		},
+	)
 }
 
 // Methodical Methods
@@ -270,12 +288,12 @@ func (v *validator_) validateToken(
 type validator_ struct {
 	// Declare the instance attributes.
 	visitor_         VisitorLike
-	ruleNames_       col.SetLike[string]
-	expressionNames_ col.SetLike[string]
-	fragmentNames_   col.SetLike[string]
-	rules_           col.SetLike[string]
-	expressions_     col.SetLike[string]
-	fragments_       col.SetLike[string]
+	ruleNames_       com.SetLike[string]
+	expressionNames_ com.SetLike[string]
+	fragmentNames_   com.SetLike[string]
+	rules_           com.SetLike[string]
+	expressions_     com.SetLike[string]
+	fragments_       com.SetLike[string]
 
 	// Declare the inherited aspects.
 	Methodical
