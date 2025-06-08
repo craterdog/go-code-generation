@@ -999,6 +999,8 @@ func (v *classSynthesizer_) extractType(
 	var wrapper = abstraction.GetOptionalWrapper()
 	if uti.IsDefined(wrapper) {
 		switch actual := wrapper.GetAny().(type) {
+		case mod.StarLike:
+			abstractType = "*"
 		case mod.ArrayLike:
 			abstractType = "[]"
 		case mod.MapLike:
@@ -1193,6 +1195,8 @@ func (v *classSynthesizer_) replaceWrapperType(
 		return wrapper
 	}
 	switch actual := wrapper.GetAny().(type) {
+	case mod.StarLike:
+		// Example: * -> *
 	case mod.ArrayLike:
 		// Example: [] -> []
 	case mod.MapLike:

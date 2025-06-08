@@ -496,6 +496,8 @@ func (v *nodeSynthesizer_) extractType(
 	var wrapper = abstraction.GetOptionalWrapper()
 	if uti.IsDefined(wrapper) {
 		switch actual := wrapper.GetAny().(type) {
+		case mod.StarLike:
+			abstractType = "*"
 		case mod.ArrayLike:
 			abstractType = "[]"
 		case mod.MapLike:

@@ -470,6 +470,8 @@ func (v *classAnalyzer_) extractType(
 	var wrapper = abstraction.GetOptionalWrapper()
 	if uti.IsDefined(wrapper) {
 		switch actual := wrapper.GetAny().(type) {
+		case ast.StarLike:
+			abstractType = "*"
 		case ast.ArrayLike:
 			abstractType = "[]"
 		case ast.MapLike:
