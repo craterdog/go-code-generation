@@ -301,7 +301,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 		`"github.com/craterdog/go-missing-utilities/v7"`,
 	)
 	v.importedPackages_.SetValue(
-		"col",
+		"com",
 		`"github.com/craterdog/go-component-framework/v7"`,
 	)
 	v.importedPackages_.SetValue(
