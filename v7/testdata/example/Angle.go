@@ -82,7 +82,7 @@ func (v angle_) GetClass() AngleClassLike {
 	return angleClass()
 }
 
-func (v angle_) GetIntrinsic() float64 {
+func (v angle_) AsIntrinsic() float64 {
 	return float64(v)
 }
 

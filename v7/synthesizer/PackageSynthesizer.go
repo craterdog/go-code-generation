@@ -385,7 +385,7 @@ concrete angle-like class.
 type AngleLike interface {
 	// Principal Methods
 	GetClass() AngleClassLike
-	GetIntrinsic() float64
+	AsIntrinsic() float64
 	IsZero() bool
 
 	// Aspect Interfaces
@@ -400,7 +400,7 @@ instance of a concrete array-like class.
 type ArrayLike[V any] interface {
 	// Principal Methods
 	GetClass() ArrayClassLike[V]
-	GetIntrinsic() []V
+	AsIntrinsic() []V
 	SortValuesWithRanker(
 		ranker RankingFunction[V],
 	)

@@ -75,7 +75,7 @@ func (v array_[V]) GetClass() ArrayClassLike[V] {
 	return arrayClass[V]()
 }
 
-func (v array_[V]) GetIntrinsic() []V {
+func (v array_[V]) AsIntrinsic() []V {
 	return []V(v)
 }
 

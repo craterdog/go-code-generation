@@ -27,9 +27,7 @@ on interfaces, not on each other.
 */
 package example
 
-import (
-	reg "regexp"
-)
+import ()
 
 // TYPE DECLARATIONS
 
@@ -79,11 +77,6 @@ const (
 	Radians
 	Gradians
 )
-
-/*
-Regexp is a constrained type representing a compiled regular expression.
-*/
-type Regexp *reg.Regexp
 
 // FUNCTIONAL DECLARATIONS
 
@@ -241,9 +234,9 @@ in an array.  It implements the Gang of Four (GoF) Iterator Design Pattern:
 An iterator agent locks into the slots that reside between each value in the
 sequence:
 
-      . [value 1] . [value 2] . [value 3] ... [value N] .
-      ^           ^           ^                         ^
-    slot 0      slot 1      slot 2                    slot N
+	  . [value 1] . [value 2] . [value 3] ... [value N] .
+	  ^           ^           ^                         ^
+	slot 0      slot 1      slot 2                    slot N
 
 It moves from slot to slot and has access to the values (if they exist) on each
 side of the slot.  At each slot an iterator has access to the previous value
@@ -269,7 +262,7 @@ concrete angle-like class.
 type AngleLike interface {
 	// Principal Methods
 	GetClass() AngleClassLike
-	GetIntrinsic() float64
+	AsIntrinsic() float64
 	IsZero() bool
 
 	// Aspect Interfaces
@@ -284,7 +277,7 @@ instance of a concrete array-like class.
 type ArrayLike[V any] interface {
 	// Principal Methods
 	GetClass() ArrayClassLike[V]
-	GetIntrinsic() []V
+	AsIntrinsic() []V
 	SortValuesWithRanker(
 		ranker RankingFunction[V],
 	)

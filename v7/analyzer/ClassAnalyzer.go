@@ -223,7 +223,7 @@ func (v *classAnalyzer_) analyzeClassStructure(
 	for principalMethods.HasNext() {
 		var method = principalMethods.GetNext().GetMethod()
 		var methodName = method.GetName()
-		if methodName == "GetIntrinsic" {
+		if methodName == "AsIntrinsic" {
 			v.isIntrinsic_ = true
 			var result = method.GetResult()
 			v.intrinsicType_ = result.GetAny().(ast.AbstractionLike)

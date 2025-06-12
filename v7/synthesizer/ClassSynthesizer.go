@@ -836,7 +836,7 @@ func (v *classSynthesizer_) createPrincipalMethods(
 	for methods.HasNext() {
 		var method = methods.GetNext().GetMethod()
 		if method.GetName() == "GetClass" ||
-			method.GetName() == "GetIntrinsic" {
+			method.GetName() == "AsIntrinsic" {
 			continue
 		}
 		var principalMethod = v.createPrincipalMethod(method)
@@ -1370,7 +1370,7 @@ func (v <*><~className>_<Arguments>) GetClass() <~ClassName>ClassLike<Arguments>
 <IntrinsicMethod><PrincipalMethods>`,
 
 	intrinsicMethod_: `
-func (v <*><~className>_<Arguments>) GetIntrinsic() <IntrinsicType> {
+func (v <*><~className>_<Arguments>) AsIntrinsic() <IntrinsicType> {
 	return <IntrinsicType>(v)
 }
 `,
