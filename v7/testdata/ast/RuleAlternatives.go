@@ -20,7 +20,7 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,7 +35,7 @@ func RuleAlternativesClass() RuleAlternativesClassLike {
 // Constructor Methods
 
 func (c *ruleAlternativesClass_) RuleAlternatives(
-	ruleNames com.ListLike[RuleNameLike],
+	ruleNames fra.ListLike[RuleNameLike],
 ) RuleAlternativesLike {
 	if uti.IsUndefined(ruleNames) {
 		panic("The \"ruleNames\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *ruleAlternatives_) GetClass() RuleAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *ruleAlternatives_) GetRuleNames() com.ListLike[RuleNameLike] {
+func (v *ruleAlternatives_) GetRuleNames() fra.ListLike[RuleNameLike] {
 	return v.ruleNames_
 }
 
@@ -67,7 +67,7 @@ func (v *ruleAlternatives_) GetRuleNames() com.ListLike[RuleNameLike] {
 
 type ruleAlternatives_ struct {
 	// Declare the instance attributes.
-	ruleNames_ com.ListLike[RuleNameLike]
+	ruleNames_ fra.ListLike[RuleNameLike]
 }
 
 // Class Structure

@@ -20,7 +20,7 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -37,11 +37,11 @@ func SyntaxClass() SyntaxClassLike {
 func (c *syntaxClass_) Syntax(
 	legalNotice LegalNoticeLike,
 	comment1 string,
-	rules com.ListLike[RuleLike],
+	rules fra.ListLike[RuleLike],
 	comment2 string,
-	expressions com.ListLike[ExpressionLike],
+	expressions fra.ListLike[ExpressionLike],
 	comment3 string,
-	fragments com.ListLike[FragmentLike],
+	fragments fra.ListLike[FragmentLike],
 ) SyntaxLike {
 	if uti.IsUndefined(legalNotice) {
 		panic("The \"legalNotice\" attribute is required by this class.")
@@ -95,7 +95,7 @@ func (v *syntax_) GetComment1() string {
 	return v.comment1_
 }
 
-func (v *syntax_) GetRules() com.ListLike[RuleLike] {
+func (v *syntax_) GetRules() fra.ListLike[RuleLike] {
 	return v.rules_
 }
 
@@ -103,7 +103,7 @@ func (v *syntax_) GetComment2() string {
 	return v.comment2_
 }
 
-func (v *syntax_) GetExpressions() com.ListLike[ExpressionLike] {
+func (v *syntax_) GetExpressions() fra.ListLike[ExpressionLike] {
 	return v.expressions_
 }
 
@@ -111,7 +111,7 @@ func (v *syntax_) GetComment3() string {
 	return v.comment3_
 }
 
-func (v *syntax_) GetFragments() com.ListLike[FragmentLike] {
+func (v *syntax_) GetFragments() fra.ListLike[FragmentLike] {
 	return v.fragments_
 }
 
@@ -123,11 +123,11 @@ type syntax_ struct {
 	// Declare the instance attributes.
 	legalNotice_ LegalNoticeLike
 	comment1_    string
-	rules_       com.ListLike[RuleLike]
+	rules_       fra.ListLike[RuleLike]
 	comment2_    string
-	expressions_ com.ListLike[ExpressionLike]
+	expressions_ fra.ListLike[ExpressionLike]
 	comment3_    string
-	fragments_   com.ListLike[FragmentLike]
+	fragments_   fra.ListLike[FragmentLike]
 }
 
 // Class Structure

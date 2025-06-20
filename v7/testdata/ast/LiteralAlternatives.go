@@ -20,7 +20,7 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,7 +35,7 @@ func LiteralAlternativesClass() LiteralAlternativesClassLike {
 // Constructor Methods
 
 func (c *literalAlternativesClass_) LiteralAlternatives(
-	literalValues com.ListLike[LiteralValueLike],
+	literalValues fra.ListLike[LiteralValueLike],
 ) LiteralAlternativesLike {
 	if uti.IsUndefined(literalValues) {
 		panic("The \"literalValues\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *literalAlternatives_) GetClass() LiteralAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *literalAlternatives_) GetLiteralValues() com.ListLike[LiteralValueLike] {
+func (v *literalAlternatives_) GetLiteralValues() fra.ListLike[LiteralValueLike] {
 	return v.literalValues_
 }
 
@@ -67,7 +67,7 @@ func (v *literalAlternatives_) GetLiteralValues() com.ListLike[LiteralValueLike]
 
 type literalAlternatives_ struct {
 	// Declare the instance attributes.
-	literalValues_ com.ListLike[LiteralValueLike]
+	literalValues_ fra.ListLike[LiteralValueLike]
 }
 
 // Class Structure

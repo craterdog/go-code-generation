@@ -341,7 +341,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	importedPackages_: `
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 `,
 
 	classDeclaration_: `
@@ -358,11 +358,11 @@ type <~ClassName>ClassLike interface {
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
-		<parameterName_> com.ListLike[<ParameterType>],`,
+		<parameterName_> fra.ListLike[<ParameterType>],`,
 	singularExpressionParameter_: `
 		<parameterName_> string,`,
 	pluralExpressionParameter_: `
-		<parameterName_> com.ListLike[string],`,
+		<parameterName_> fra.ListLike[string],`,
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
@@ -381,9 +381,9 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	ruleGetterMethod_: `
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
-	Get<~AttributeName>() com.ListLike[<AttributeType>]`,
+	Get<~AttributeName>() fra.ListLike[<AttributeType>]`,
 	expressionGetterMethod_: `
 	Get<~AttributeName>() string`,
 	pluralExpressionGetterMethod_: `
-	Get<~AttributeName>() com.ListLike[string]`,
+	Get<~AttributeName>() fra.ListLike[string]`,
 }

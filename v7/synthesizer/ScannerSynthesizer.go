@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v7/analyzer"
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 )
@@ -174,7 +174,7 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 	var foundCases string
 	var synthesizerClass = scannerSynthesizerClass()
 	var expressions = v.analyzer_.GetExpressions()
-	var expressionNames = com.CatalogFromSequence[string, string](
+	var expressionNames = fra.CatalogFromSequence[string, string](
 		v.analyzer_.GetPatterns(),
 	).GetKeys().GetIterator()
 	for expressionNames.HasNext() {
@@ -194,7 +194,7 @@ func (v *scannerSynthesizer_) createFoundCases() string {
 
 func (v *scannerSynthesizer_) createExpressions() string {
 	var expressions string
-	var set = com.Set[string]()
+	var set = fra.Set[string]()
 	var patterns = v.analyzer_.GetPatterns().GetIterator()
 	for patterns.HasNext() {
 		var association = patterns.GetNext()
@@ -312,7 +312,7 @@ var scannerSynthesizerClassReference_ = &scannerSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
 	sts "strings"
@@ -332,7 +332,7 @@ func ScannerClass() ScannerClassLike {
 
 func (c *scannerClass_) Scanner(
 	source string,
-	tokens com.QueueLike[TokenLike],
+	tokens fra.QueueLike[TokenLike],
 ) ScannerLike {
 	if uti.IsUndefined(source) {
 		panic("The \"source\" attribute is required by this class.")
@@ -543,7 +543,7 @@ type scanner_ struct {
 	line_     uint // The line number in the source string of the next rune.
 	position_ uint // The position in the current line of the next rune.
 	runes_    []rune
-	tokens_   com.QueueLike[TokenLike]
+	tokens_   fra.QueueLike[TokenLike]
 }
 `,
 
@@ -552,8 +552,8 @@ type scanner_ struct {
 
 type scannerClass_ struct {
 	// Declare the class constants.
-	tokens_   com.CatalogLike[TokenType, string]
-	matchers_ com.CatalogLike[TokenType, *reg.Regexp]
+	tokens_   fra.CatalogLike[TokenType, string]
+	matchers_ fra.CatalogLike[TokenType, *reg.Regexp]
 }
 `,
 
@@ -566,12 +566,12 @@ func scannerClass() *scannerClass_ {
 
 var scannerClassReference_ = &scannerClass_{
 	// Initialize the class constants.
-	tokens_: com.CatalogFromMap[TokenType, string](
+	tokens_: fra.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
 			// Define token identifiers for each type of expression.<ExpressionIdentifiers>
 		},
 	),
-	matchers_: com.CatalogFromMap[TokenType, *reg.Regexp](
+	matchers_: fra.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of expression.<ExpressionMatchers>
 		},

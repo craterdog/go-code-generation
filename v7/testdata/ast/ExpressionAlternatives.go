@@ -20,7 +20,7 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,7 +35,7 @@ func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
 // Constructor Methods
 
 func (c *expressionAlternativesClass_) ExpressionAlternatives(
-	expressionNames com.ListLike[ExpressionNameLike],
+	expressionNames fra.ListLike[ExpressionNameLike],
 ) ExpressionAlternativesLike {
 	if uti.IsUndefined(expressionNames) {
 		panic("The \"expressionNames\" attribute is required by this class.")
@@ -57,7 +57,7 @@ func (v *expressionAlternatives_) GetClass() ExpressionAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *expressionAlternatives_) GetExpressionNames() com.ListLike[ExpressionNameLike] {
+func (v *expressionAlternatives_) GetExpressionNames() fra.ListLike[ExpressionNameLike] {
 	return v.expressionNames_
 }
 
@@ -67,7 +67,7 @@ func (v *expressionAlternatives_) GetExpressionNames() com.ListLike[ExpressionNa
 
 type expressionAlternatives_ struct {
 	// Declare the instance attributes.
-	expressionNames_ com.ListLike[ExpressionNameLike]
+	expressionNames_ fra.ListLike[ExpressionNameLike]
 }
 
 // Class Structure

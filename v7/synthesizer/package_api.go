@@ -32,7 +32,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v7"
 	ass "github.com/craterdog/go-code-generation/v7/assembler"
-	com "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-component-framework/v7"
 	not "github.com/craterdog/go-syntax-notation/v7"
 )
 
@@ -95,7 +95,7 @@ type ModuleSynthesizerClassLike interface {
 	// Constructor Methods
 	ModuleSynthesizer(
 		moduleName string,
-		models com.CatalogLike[string, mod.ModelLike],
+		models fra.CatalogLike[string, mod.ModelLike],
 	) ModuleSynthesizerLike
 }
 
