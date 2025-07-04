@@ -480,6 +480,16 @@ func (v *scanner_) foundToken(
 		return false
 	}
 
+	// Check for an exact delimiter match which takes precedence.
+	if tokenType != DelimiterToken {
+		matcher = class.matchers_.GetValue(DelimiterToken)
+		var delimiter = matcher.FindString(match)
+		if uti.IsDefined(delimiter) && delimiter == match {
+			// This is a delimiter instead so ignore it.
+			return false
+		}
+	}
+
 	// Check for partial identifier matches.
 	var token = []rune(match)
 	var length = uint(len(token))

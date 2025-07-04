@@ -508,18 +508,6 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.pluralNames_ = fra.Set[string]()
 	v.delimiters_ = fra.Set[string]()
 	v.patterns_ = fra.Catalog[string, string]()
-	v.patterns_.SetValue(
-		"delimiter",
-		`"(?:)"`, // The delimiters will be filled in later but need to be first.
-	)
-	v.patterns_.SetValue(
-		"newline",
-		`"(?:" + eol_ + ")"`,
-	)
-	v.patterns_.SetValue(
-		"space",
-		`"(?:[ \\t]+)"`,
-	)
 	v.definitions_ = fra.Catalog[string, not.DefinitionLike]()
 	v.ruleTerms_ = fra.Catalog[string, fra.ListLike[not.RuleTermLike]]()
 	v.variables_ = fra.Catalog[string, fra.ListLike[string]]()
@@ -543,7 +531,18 @@ func (v *syntaxAnalyzer_) PostprocessSyntax(
 		}
 	}
 	delimiters += `)"`
-	v.patterns_.SetValue("delimiter", delimiters)
+	v.patterns_.SetValue(
+		"space",
+		`"(?:[ \\t]+)"`,
+	)
+	v.patterns_.SetValue(
+		"newline",
+		`"(?:" + eol_ + ")"`,
+	)
+	v.patterns_.SetValue(
+		"delimiter",
+		delimiters,
+	)
 }
 
 func (v *syntaxAnalyzer_) PostprocessTermSequence(
