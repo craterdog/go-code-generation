@@ -55,6 +55,26 @@ type (
 	SyntaxAnalyzerLike  = ana.SyntaxAnalyzerLike
 )
 
+// Assembler
+
+type (
+	ClassAssemblerClassLike   = ass.ClassAssemblerClassLike
+	ModuleAssemblerClassLike  = ass.ModuleAssemblerClassLike
+	PackageAssemblerClassLike = ass.PackageAssemblerClassLike
+)
+
+type (
+	ClassAssemblerLike   = ass.ClassAssemblerLike
+	ModuleAssemblerLike  = ass.ModuleAssemblerLike
+	PackageAssemblerLike = ass.PackageAssemblerLike
+)
+
+type (
+	ClassTemplateDriven   = ass.ClassTemplateDriven
+	ModuleTemplateDriven  = ass.ModuleTemplateDriven
+	PackageTemplateDriven = ass.PackageTemplateDriven
+)
+
 // Synthesizer
 
 type (
@@ -87,26 +107,6 @@ type (
 	TokenSynthesizerLike     = syn.TokenSynthesizerLike
 	ValidatorSynthesizerLike = syn.ValidatorSynthesizerLike
 	VisitorSynthesizerLike   = syn.VisitorSynthesizerLike
-)
-
-// Assembler
-
-type (
-	ClassAssemblerClassLike   = ass.ClassAssemblerClassLike
-	ModuleAssemblerClassLike  = ass.ModuleAssemblerClassLike
-	PackageAssemblerClassLike = ass.PackageAssemblerClassLike
-)
-
-type (
-	ClassAssemblerLike   = ass.ClassAssemblerLike
-	ModuleAssemblerLike  = ass.ModuleAssemblerLike
-	PackageAssemblerLike = ass.PackageAssemblerLike
-)
-
-type (
-	ClassTemplateDriven   = ass.ClassTemplateDriven
-	ModuleTemplateDriven  = ass.ModuleTemplateDriven
-	PackageTemplateDriven = ass.PackageTemplateDriven
 )
 
 // CLASS ACCESSORS
@@ -149,6 +149,32 @@ func SyntaxAnalyzer(
 	return SyntaxAnalyzerClass().SyntaxAnalyzer(
 		syntax,
 	)
+}
+
+// Assembler
+
+func ClassAssemblerClass() ClassAssemblerClassLike {
+	return ass.ClassAssemblerClass()
+}
+
+func ClassAssembler() ClassAssemblerLike {
+	return ClassAssemblerClass().ClassAssembler()
+}
+
+func ModuleAssemblerClass() ModuleAssemblerClassLike {
+	return ass.ModuleAssemblerClass()
+}
+
+func ModuleAssembler() ModuleAssemblerLike {
+	return ModuleAssemblerClass().ModuleAssembler()
+}
+
+func PackageAssemblerClass() PackageAssemblerClassLike {
+	return ass.PackageAssemblerClass()
+}
+
+func PackageAssembler() PackageAssemblerLike {
+	return PackageAssemblerClass().PackageAssembler()
 }
 
 // Synthesizer
@@ -309,32 +335,6 @@ func VisitorSynthesizer(
 	return VisitorSynthesizerClass().VisitorSynthesizer(
 		syntax,
 	)
-}
-
-// Assembler
-
-func ClassAssemblerClass() ClassAssemblerClassLike {
-	return ass.ClassAssemblerClass()
-}
-
-func ClassAssembler() ClassAssemblerLike {
-	return ClassAssemblerClass().ClassAssembler()
-}
-
-func ModuleAssemblerClass() ModuleAssemblerClassLike {
-	return ass.ModuleAssemblerClass()
-}
-
-func ModuleAssembler() ModuleAssemblerLike {
-	return ModuleAssemblerClass().ModuleAssembler()
-}
-
-func PackageAssemblerClass() PackageAssemblerClassLike {
-	return ass.PackageAssemblerClass()
-}
-
-func PackageAssembler() PackageAssemblerLike {
-	return PackageAssemblerClass().PackageAssembler()
 }
 
 // GLOBAL FUNCTIONS
