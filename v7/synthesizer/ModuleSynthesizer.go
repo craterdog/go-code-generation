@@ -714,7 +714,9 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│             This "module_api.go" file was automatically generated.           │
+│         This "module_api.go" file was automatically generated using:         │
+│            https://github.com/craterdog/go-development-tools/wiki            │
+│                                                                              │
 │      Updates to any part of this file—other than the Module Description      │
 │             and the Global Functions sections may be overwritten.            │
 └──────────────────────────────────────────────────────────────────────────────┘

@@ -22,7 +22,7 @@ import (
 	tes "testing"
 )
 
-var directory = "./testdata/"
+var directory = "./test/"
 var moduleName = "github.com/craterdog/go-syntax-notation/v7"
 var wikiPath = "https://github.com/craterdog/go-syntax-notation/wiki"
 

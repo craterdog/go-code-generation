@@ -329,7 +329,9 @@ var astSynthesizerClassReference_ = &astSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│            This "package_api.go" file was automatically generated.           │
+│         This "package_api.go" file was automatically generated using:        │
+│            https://github.com/craterdog/go-development-tools/wiki            │
+│                                                                              │
 │                     Any updates to it may be overwritten.                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 `,

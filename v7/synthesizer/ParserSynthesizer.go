@@ -550,7 +550,9 @@ var parserSynthesizerClassReference_ = &parserSynthesizerClass_{
 	// Initialize the class constants.
 	warningMessage_: `
 ┌────────────────────────────────── WARNING ───────────────────────────────────┐
-│                 This class file was automatically generated.                 │
+│              This class file was automatically generated using:              │
+│            https://github.com/craterdog/go-development-tools/wiki            │
+│                                                                              │
 │                     Any updates to it may be overwritten.                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 `,
