@@ -327,7 +327,6 @@ func (c *validatorClass_) Validator() ValidatorLike {
 		// Initialize the inherited aspects.
 		Methodical: ProcessorClass().Processor(),
 	}
-	instance.visitor_ = VisitorClass().Visitor(instance)
 	return instance
 }
 `,
@@ -342,7 +341,7 @@ func (v *validator_) GetClass() ValidatorClassLike {
 func (v *validator_) Validate<~SyntaxName>(
 	<syntaxName_> ast.<~SyntaxName>Like,
 ) {
-	v.visitor_.Visit<~SyntaxName>(<syntaxName_>)
+	VisitorClass().Visitor(v).Visit<~SyntaxName>(<syntaxName_>)
 }
 `,
 
@@ -392,7 +391,6 @@ func (v *validator_) validateToken(
 
 type validator_ struct {
 	// Declare the instance attributes.
-	visitor_ VisitorLike
 
 	// Declare the inherited aspects.
 	Methodical

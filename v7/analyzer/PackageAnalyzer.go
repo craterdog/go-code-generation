@@ -43,8 +43,7 @@ func (c *packageAnalyzerClass_) PackageAnalyzer(
 		// Initialize the inherited aspects.
 		Methodical: mod.Processor(),
 	}
-	instance.visitor_ = mod.Visitor(instance)
-	instance.visitor_.VisitModel(model)
+	mod.Visitor(instance).VisitModel(model)
 	return instance
 
 }
@@ -210,7 +209,6 @@ func (v *packageAnalyzer_) PreprocessValue(
 
 type packageAnalyzer_ struct {
 	// Declare the instance attributes.
-	visitor_                mod.VisitorLike
 	legalNotice_            string
 	packageName_            string
 	importedPackages_       fra.CatalogLike[string, string]

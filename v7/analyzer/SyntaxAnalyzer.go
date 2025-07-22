@@ -39,8 +39,7 @@ func (c *syntaxAnalyzerClass_) SyntaxAnalyzer(
 		// Initialize the inherited aspects.
 		Methodical: not.Processor(),
 	}
-	instance.visitor_ = not.Visitor(instance)
-	instance.visitor_.VisitSyntax(syntax)
+	not.Visitor(instance).VisitSyntax(syntax)
 	return instance
 
 }
@@ -718,7 +717,6 @@ func (v *syntaxAnalyzer_) makeOptional(
 
 type syntaxAnalyzer_ struct {
 	// Declare the instance attributes.
-	visitor_         not.VisitorLike
 	notGreedy_       bool
 	inDefinition_    bool
 	inPattern_       uint8
