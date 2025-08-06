@@ -269,10 +269,10 @@ package module
 
 import (<ImportedPackages>)
 
-// TYPE ALIASES
-<TypeAliases>
-// CLASS ACCESSORS
-<ClassAccessors>
+// TYPE ALIASES<TypeAliases>
+
+// CLASS ACCESSORS<ClassAccessors>
+
 // GLOBAL FUNCTIONS
 `,
 

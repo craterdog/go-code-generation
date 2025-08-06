@@ -731,8 +731,8 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 `,
 
 	packageAliases_: `
-// <~PackageName><TypeAliases>
-`,
+
+// <~PackageName><TypeAliases>`,
 
 	typeAliases_: `
 
@@ -749,8 +749,8 @@ const (<ConstantAliases>)`,
 	<Name><Constraints> = <~packageAcronym>.<Name><Arguments>`,
 
 	accessFunctions_: `
-// <~PackageName>
-`,
+
+// <~PackageName>`,
 
 	classFunctions_: `
 
