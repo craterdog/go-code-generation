@@ -37,7 +37,7 @@ func LiteralAlternativesClass() LiteralAlternativesClassLike {
 // Constructor Methods
 
 func (c *literalAlternativesClass_) LiteralAlternatives(
-	literalValues fra.ListLike[LiteralValueLike],
+	literalValues fra.Sequential[LiteralValueLike],
 ) LiteralAlternativesLike {
 	if uti.IsUndefined(literalValues) {
 		panic("The \"literalValues\" attribute is required by this class.")
@@ -59,7 +59,7 @@ func (v *literalAlternatives_) GetClass() LiteralAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *literalAlternatives_) GetLiteralValues() fra.ListLike[LiteralValueLike] {
+func (v *literalAlternatives_) GetLiteralValues() fra.Sequential[LiteralValueLike] {
 	return v.literalValues_
 }
 
@@ -69,7 +69,7 @@ func (v *literalAlternatives_) GetLiteralValues() fra.ListLike[LiteralValueLike]
 
 type literalAlternatives_ struct {
 	// Declare the instance attributes.
-	literalValues_ fra.ListLike[LiteralValueLike]
+	literalValues_ fra.Sequential[LiteralValueLike]
 }
 
 // Class Structure

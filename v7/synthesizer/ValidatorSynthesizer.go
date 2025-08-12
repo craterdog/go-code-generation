@@ -306,7 +306,6 @@ var validatorSynthesizerClassReference_ = &validatorSynthesizerClass_{
 	ast "<ModuleName>/ast"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	ref "reflect"
-	sts "strings"
 `,
 
 	accessFunction_: `

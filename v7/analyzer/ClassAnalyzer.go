@@ -86,31 +86,31 @@ func (v *classAnalyzer_) GetAttributes() fra.CatalogLike[string, string] {
 	return v.attributes_
 }
 
-func (v *classAnalyzer_) GetConstructorMethods() fra.ListLike[ast.ConstructorMethodLike] {
+func (v *classAnalyzer_) GetConstructorMethods() fra.Sequential[ast.ConstructorMethodLike] {
 	return v.constructorMethods_
 }
 
-func (v *classAnalyzer_) GetConstantMethods() fra.ListLike[ast.ConstantMethodLike] {
+func (v *classAnalyzer_) GetConstantMethods() fra.Sequential[ast.ConstantMethodLike] {
 	return v.constantMethods_
 }
 
-func (v *classAnalyzer_) GetFunctionMethods() fra.ListLike[ast.FunctionMethodLike] {
+func (v *classAnalyzer_) GetFunctionMethods() fra.Sequential[ast.FunctionMethodLike] {
 	return v.functionMethods_
 }
 
-func (v *classAnalyzer_) GetPrincipalMethods() fra.ListLike[ast.PrincipalMethodLike] {
+func (v *classAnalyzer_) GetPrincipalMethods() fra.Sequential[ast.PrincipalMethodLike] {
 	return v.principalMethods_
 }
 
-func (v *classAnalyzer_) GetAttributeMethods() fra.ListLike[ast.AttributeMethodLike] {
+func (v *classAnalyzer_) GetAttributeMethods() fra.Sequential[ast.AttributeMethodLike] {
 	return v.attributeMethods_
 }
 
-func (v *classAnalyzer_) GetAspectInterfaces() fra.ListLike[ast.AspectInterfaceLike] {
+func (v *classAnalyzer_) GetAspectInterfaces() fra.Sequential[ast.AspectInterfaceLike] {
 	return v.aspectInterfaces_
 }
 
-func (v *classAnalyzer_) GetAspectDeclarations() fra.ListLike[ast.AspectDeclarationLike] {
+func (v *classAnalyzer_) GetAspectDeclarations() fra.Sequential[ast.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -519,8 +519,8 @@ type classAnalyzer_ struct {
 	functionMethods_    fra.ListLike[ast.FunctionMethodLike]
 	principalMethods_   fra.ListLike[ast.PrincipalMethodLike]
 	attributeMethods_   fra.ListLike[ast.AttributeMethodLike]
-	aspectInterfaces_   fra.ListLike[ast.AspectInterfaceLike]
-	aspectDeclarations_ fra.ListLike[ast.AspectDeclarationLike]
+	aspectInterfaces_   fra.Sequential[ast.AspectInterfaceLike]
+	aspectDeclarations_ fra.Sequential[ast.AspectDeclarationLike]
 }
 
 // Class Structure

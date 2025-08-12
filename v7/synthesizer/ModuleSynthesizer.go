@@ -127,7 +127,7 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *moduleSynthesizer_) createAspectAliases(
-	aspectDeclarations fra.ListLike[mod.AspectDeclarationLike],
+	aspectDeclarations fra.Sequential[mod.AspectDeclarationLike],
 	model mod.ModelLike,
 ) (
 	aspectAliases string,
@@ -153,7 +153,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 }
 
 func (v *moduleSynthesizer_) createClassAliases(
-	classDeclarations fra.ListLike[mod.ClassDeclarationLike],
+	classDeclarations fra.Sequential[mod.ClassDeclarationLike],
 	model mod.ModelLike,
 ) (
 	classAliases string,
@@ -270,7 +270,7 @@ func (v *moduleSynthesizer_) createAccessFunctions(
 }
 
 func (v *moduleSynthesizer_) createEnumeratedAliases(
-	enumeratedValues fra.ListLike[string],
+	enumeratedValues fra.Sequential[string],
 	model mod.ModelLike,
 ) (
 	enumeratedAliases string,
@@ -301,7 +301,7 @@ func (v *moduleSynthesizer_) createEnumeratedAliases(
 }
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
-	functionalDeclarations fra.ListLike[mod.FunctionalDeclarationLike],
+	functionalDeclarations fra.Sequential[mod.FunctionalDeclarationLike],
 	model mod.ModelLike,
 ) (
 	functionalAliases string,
@@ -327,7 +327,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 }
 
 func (v *moduleSynthesizer_) createInstanceAliases(
-	instanceDeclarations fra.ListLike[mod.InstanceDeclarationLike],
+	instanceDeclarations fra.Sequential[mod.InstanceDeclarationLike],
 	model mod.ModelLike,
 ) (
 	instanceAliases string,
@@ -451,7 +451,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 }
 
 func (v *moduleSynthesizer_) createTypeAliases(
-	typeDeclarations fra.ListLike[mod.TypeDeclarationLike],
+	typeDeclarations fra.Sequential[mod.TypeDeclarationLike],
 	model mod.ModelLike,
 ) (
 	typeAliases string,

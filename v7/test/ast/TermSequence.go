@@ -37,7 +37,7 @@ func TermSequenceClass() TermSequenceClassLike {
 // Constructor Methods
 
 func (c *termSequenceClass_) TermSequence(
-	ruleTerms fra.ListLike[RuleTermLike],
+	ruleTerms fra.Sequential[RuleTermLike],
 	optionalNote string,
 ) TermSequenceLike {
 	if uti.IsUndefined(ruleTerms) {
@@ -61,7 +61,7 @@ func (v *termSequence_) GetClass() TermSequenceClassLike {
 
 // Attribute Methods
 
-func (v *termSequence_) GetRuleTerms() fra.ListLike[RuleTermLike] {
+func (v *termSequence_) GetRuleTerms() fra.Sequential[RuleTermLike] {
 	return v.ruleTerms_
 }
 
@@ -75,7 +75,7 @@ func (v *termSequence_) GetOptionalNote() string {
 
 type termSequence_ struct {
 	// Declare the instance attributes.
-	ruleTerms_    fra.ListLike[RuleTermLike]
+	ruleTerms_    fra.Sequential[RuleTermLike]
 	optionalNote_ string
 }
 

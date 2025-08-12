@@ -91,12 +91,12 @@ type ClassAnalyzerLike interface {
 	GetIntrinsicType() mod.AbstractionLike
 	GetConstants() fra.CatalogLike[string, string]
 	GetAttributes() fra.CatalogLike[string, string]
-	GetConstructorMethods() fra.ListLike[mod.ConstructorMethodLike]
-	GetConstantMethods() fra.ListLike[mod.ConstantMethodLike]
-	GetFunctionMethods() fra.ListLike[mod.FunctionMethodLike]
-	GetPrincipalMethods() fra.ListLike[mod.PrincipalMethodLike]
-	GetAttributeMethods() fra.ListLike[mod.AttributeMethodLike]
-	GetAspectInterfaces() fra.ListLike[mod.AspectInterfaceLike]
+	GetConstructorMethods() fra.Sequential[mod.ConstructorMethodLike]
+	GetConstantMethods() fra.Sequential[mod.ConstantMethodLike]
+	GetFunctionMethods() fra.Sequential[mod.FunctionMethodLike]
+	GetPrincipalMethods() fra.Sequential[mod.PrincipalMethodLike]
+	GetAttributeMethods() fra.Sequential[mod.AttributeMethodLike]
+	GetAspectInterfaces() fra.Sequential[mod.AspectInterfaceLike]
 }
 
 /*
@@ -109,12 +109,12 @@ type PackageAnalyzerLike interface {
 	GetLegalNotice() string
 	GetPackageName() string
 	GetImportedPackages() fra.CatalogLike[string, string]
-	GetTypeDeclarations() fra.ListLike[mod.TypeDeclarationLike]
-	GetEnumeratedValues() fra.ListLike[string]
-	GetFunctionalDeclarations() fra.ListLike[mod.FunctionalDeclarationLike]
-	GetClassDeclarations() fra.ListLike[mod.ClassDeclarationLike]
-	GetInstanceDeclarations() fra.ListLike[mod.InstanceDeclarationLike]
-	GetAspectDeclarations() fra.ListLike[mod.AspectDeclarationLike]
+	GetTypeDeclarations() fra.Sequential[mod.TypeDeclarationLike]
+	GetEnumeratedValues() fra.Sequential[string]
+	GetFunctionalDeclarations() fra.Sequential[mod.FunctionalDeclarationLike]
+	GetClassDeclarations() fra.Sequential[mod.ClassDeclarationLike]
+	GetInstanceDeclarations() fra.Sequential[mod.InstanceDeclarationLike]
+	GetAspectDeclarations() fra.Sequential[mod.AspectDeclarationLike]
 
 	// Aspect Interfaces
 	mod.Methodical
@@ -133,19 +133,19 @@ type SyntaxAnalyzerLike interface {
 	GetExpressions() fra.SetLike[string]
 	GetLiteralValues(
 		ruleName string,
-	) fra.ListLike[not.LiteralValueLike]
+	) fra.Sequential[not.LiteralValueLike]
 	GetExpressionNames(
 		ruleName string,
-	) fra.ListLike[not.ExpressionNameLike]
+	) fra.Sequential[not.ExpressionNameLike]
 	GetRuleNames(
 		ruleName string,
-	) fra.ListLike[not.RuleNameLike]
+	) fra.Sequential[not.RuleNameLike]
 	GetRuleTerms(
 		ruleName string,
-	) fra.ListLike[not.RuleTermLike]
+	) fra.Sequential[not.RuleTermLike]
 	GetVariables(
 		ruleName string,
-	) fra.ListLike[string]
+	) fra.Sequential[string]
 	GetVariableType(
 		component not.ComponentLike,
 	) string

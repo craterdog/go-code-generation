@@ -37,7 +37,7 @@ func RuleAlternativesClass() RuleAlternativesClassLike {
 // Constructor Methods
 
 func (c *ruleAlternativesClass_) RuleAlternatives(
-	ruleNames fra.ListLike[RuleNameLike],
+	ruleNames fra.Sequential[RuleNameLike],
 ) RuleAlternativesLike {
 	if uti.IsUndefined(ruleNames) {
 		panic("The \"ruleNames\" attribute is required by this class.")
@@ -59,7 +59,7 @@ func (v *ruleAlternatives_) GetClass() RuleAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *ruleAlternatives_) GetRuleNames() fra.ListLike[RuleNameLike] {
+func (v *ruleAlternatives_) GetRuleNames() fra.Sequential[RuleNameLike] {
 	return v.ruleNames_
 }
 
@@ -69,7 +69,7 @@ func (v *ruleAlternatives_) GetRuleNames() fra.ListLike[RuleNameLike] {
 
 type ruleAlternatives_ struct {
 	// Declare the instance attributes.
-	ruleNames_ fra.ListLike[RuleNameLike]
+	ruleNames_ fra.Sequential[RuleNameLike]
 }
 
 // Class Structure

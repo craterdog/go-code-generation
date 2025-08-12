@@ -37,7 +37,7 @@ func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
 // Constructor Methods
 
 func (c *expressionAlternativesClass_) ExpressionAlternatives(
-	expressionNames fra.ListLike[ExpressionNameLike],
+	expressionNames fra.Sequential[ExpressionNameLike],
 ) ExpressionAlternativesLike {
 	if uti.IsUndefined(expressionNames) {
 		panic("The \"expressionNames\" attribute is required by this class.")
@@ -59,7 +59,7 @@ func (v *expressionAlternatives_) GetClass() ExpressionAlternativesClassLike {
 
 // Attribute Methods
 
-func (v *expressionAlternatives_) GetExpressionNames() fra.ListLike[ExpressionNameLike] {
+func (v *expressionAlternatives_) GetExpressionNames() fra.Sequential[ExpressionNameLike] {
 	return v.expressionNames_
 }
 
@@ -69,7 +69,7 @@ func (v *expressionAlternatives_) GetExpressionNames() fra.ListLike[ExpressionNa
 
 type expressionAlternatives_ struct {
 	// Declare the instance attributes.
-	expressionNames_ fra.ListLike[ExpressionNameLike]
+	expressionNames_ fra.Sequential[ExpressionNameLike]
 }
 
 // Class Structure

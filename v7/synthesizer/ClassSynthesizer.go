@@ -189,7 +189,7 @@ func (v *classSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *classSynthesizer_) createAspectInterface(
-	aspectDeclarations fra.ListLike[mod.AspectDeclarationLike],
+	aspectDeclarations fra.Sequential[mod.AspectDeclarationLike],
 	aspectType mod.AbstractionLike,
 ) string {
 	var class = classSynthesizerClass()
@@ -233,8 +233,8 @@ func (v *classSynthesizer_) createAspectInterface(
 }
 
 func (v *classSynthesizer_) createAspectInterfaces(
-	declarations fra.ListLike[mod.AspectDeclarationLike],
-	interfaces fra.ListLike[mod.AspectInterfaceLike],
+	declarations fra.Sequential[mod.AspectDeclarationLike],
+	interfaces fra.Sequential[mod.AspectInterfaceLike],
 ) string {
 	var aspectInterfaces string
 	if uti.IsDefined(interfaces) {
@@ -401,7 +401,7 @@ func (v *classSynthesizer_) createAttributeInitializations(
 }
 
 func (v *classSynthesizer_) createAttributeMethods(
-	list fra.ListLike[mod.AttributeMethodLike],
+	list fra.Sequential[mod.AttributeMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -523,7 +523,7 @@ func (v *classSynthesizer_) createConstantMethod(
 }
 
 func (v *classSynthesizer_) createConstantMethods(
-	list fra.ListLike[mod.ConstantMethodLike],
+	list fra.Sequential[mod.ConstantMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -578,7 +578,7 @@ func (v *classSynthesizer_) createConstructorMethod(
 }
 
 func (v *classSynthesizer_) createConstructorMethods(
-	list fra.ListLike[mod.ConstructorMethodLike],
+	list fra.Sequential[mod.ConstructorMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -627,7 +627,7 @@ func (v *classSynthesizer_) createFunctionMethod(
 }
 
 func (v *classSynthesizer_) createFunctionMethods(
-	list fra.ListLike[mod.FunctionMethodLike],
+	list fra.Sequential[mod.FunctionMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -726,7 +726,7 @@ func (v *classSynthesizer_) createIntrinsicInstantiation(
 	var parameterName string
 	var parameters = constructorMethod.GetOptionalParameterList()
 	if uti.IsDefined(parameters) {
-		var parameter = parameters.GetParameters().GetValue(1)
+		var parameter = parameters.GetParameters().GetIterator().GetNext()
 		parameterName = parameter.GetName()
 		instantiation = class.intrinsicInstantiation_
 		instantiation = uti.ReplaceAll(
@@ -829,7 +829,7 @@ func (v *classSynthesizer_) createPrincipalMethod(
 }
 
 func (v *classSynthesizer_) createPrincipalMethods(
-	list fra.ListLike[mod.PrincipalMethodLike],
+	list fra.Sequential[mod.PrincipalMethodLike],
 ) string {
 	var principalMethods string
 	var methods = list.GetIterator()

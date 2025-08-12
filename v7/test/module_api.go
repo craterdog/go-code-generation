@@ -180,7 +180,7 @@ func AlternativesClass() AlternativesClassLike {
 
 func Alternatives(
 	sequence ast.SequenceLike,
-	alternativeSequences fra.ListLike[ast.AlternativeSequenceLike],
+	alternativeSequences fra.Sequential[ast.AlternativeSequenceLike],
 ) AlternativesLike {
 	return AlternativesClass().Alternatives(
 		sequence,
@@ -297,7 +297,7 @@ func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
 }
 
 func ExpressionAlternatives(
-	expressionNames fra.ListLike[ast.ExpressionNameLike],
+	expressionNames fra.Sequential[ast.ExpressionNameLike],
 ) ExpressionAlternativesLike {
 	return ExpressionAlternativesClass().ExpressionAlternatives(
 		expressionNames,
@@ -341,7 +341,7 @@ func FilterClass() FilterClassLike {
 func Filter(
 	optionalDelimiter string,
 	delimiter1 string,
-	characters fra.ListLike[ast.CharacterLike],
+	characters fra.Sequential[ast.CharacterLike],
 	delimiter2 string,
 ) FilterLike {
 	return FilterClass().Filter(
@@ -429,7 +429,7 @@ func LiteralAlternativesClass() LiteralAlternativesClassLike {
 }
 
 func LiteralAlternatives(
-	literalValues fra.ListLike[ast.LiteralValueLike],
+	literalValues fra.Sequential[ast.LiteralValueLike],
 ) LiteralAlternativesLike {
 	return LiteralAlternativesClass().LiteralAlternatives(
 		literalValues,
@@ -521,7 +521,7 @@ func RuleAlternativesClass() RuleAlternativesClassLike {
 }
 
 func RuleAlternatives(
-	ruleNames fra.ListLike[ast.RuleNameLike],
+	ruleNames fra.Sequential[ast.RuleNameLike],
 ) RuleAlternativesLike {
 	return RuleAlternativesClass().RuleAlternatives(
 		ruleNames,
@@ -563,7 +563,7 @@ func SequenceClass() SequenceClassLike {
 }
 
 func Sequence(
-	repetitions fra.ListLike[ast.RepetitionLike],
+	repetitions fra.Sequential[ast.RepetitionLike],
 ) SequenceLike {
 	return SequenceClass().Sequence(
 		repetitions,
@@ -577,11 +577,11 @@ func SyntaxClass() SyntaxClassLike {
 func Syntax(
 	legalNotice ast.LegalNoticeLike,
 	comment1 string,
-	rules fra.ListLike[ast.RuleLike],
+	rules fra.Sequential[ast.RuleLike],
 	comment2 string,
-	expressions fra.ListLike[ast.ExpressionLike],
+	expressions fra.Sequential[ast.ExpressionLike],
 	comment3 string,
-	fragments fra.ListLike[ast.FragmentLike],
+	fragments fra.Sequential[ast.FragmentLike],
 ) SyntaxLike {
 	return SyntaxClass().Syntax(
 		legalNotice,
@@ -599,7 +599,7 @@ func TermSequenceClass() TermSequenceClassLike {
 }
 
 func TermSequence(
-	ruleTerms fra.ListLike[ast.RuleTermLike],
+	ruleTerms fra.Sequential[ast.RuleTermLike],
 	optionalNote string,
 ) TermSequenceLike {
 	return TermSequenceClass().TermSequence(

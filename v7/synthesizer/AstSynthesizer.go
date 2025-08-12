@@ -360,11 +360,11 @@ type <~ClassName>ClassLike interface {
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
-		<parameterName_> fra.ListLike[<ParameterType>],`,
+		<parameterName_> fra.Sequential[<ParameterType>],`,
 	singularExpressionParameter_: `
 		<parameterName_> string,`,
 	pluralExpressionParameter_: `
-		<parameterName_> fra.ListLike[string],`,
+		<parameterName_> fra.Sequential[string],`,
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
@@ -383,9 +383,9 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	ruleGetterMethod_: `
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
-	Get<~AttributeName>() fra.ListLike[<AttributeType>]`,
+	Get<~AttributeName>() fra.Sequential[<AttributeType>]`,
 	expressionGetterMethod_: `
 	Get<~AttributeName>() string`,
 	pluralExpressionGetterMethod_: `
-	Get<~AttributeName>() fra.ListLike[string]`,
+	Get<~AttributeName>() fra.Sequential[string]`,
 }

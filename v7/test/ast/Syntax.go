@@ -39,11 +39,11 @@ func SyntaxClass() SyntaxClassLike {
 func (c *syntaxClass_) Syntax(
 	legalNotice LegalNoticeLike,
 	comment1 string,
-	rules fra.ListLike[RuleLike],
+	rules fra.Sequential[RuleLike],
 	comment2 string,
-	expressions fra.ListLike[ExpressionLike],
+	expressions fra.Sequential[ExpressionLike],
 	comment3 string,
-	fragments fra.ListLike[FragmentLike],
+	fragments fra.Sequential[FragmentLike],
 ) SyntaxLike {
 	if uti.IsUndefined(legalNotice) {
 		panic("The \"legalNotice\" attribute is required by this class.")
@@ -97,7 +97,7 @@ func (v *syntax_) GetComment1() string {
 	return v.comment1_
 }
 
-func (v *syntax_) GetRules() fra.ListLike[RuleLike] {
+func (v *syntax_) GetRules() fra.Sequential[RuleLike] {
 	return v.rules_
 }
 
@@ -105,7 +105,7 @@ func (v *syntax_) GetComment2() string {
 	return v.comment2_
 }
 
-func (v *syntax_) GetExpressions() fra.ListLike[ExpressionLike] {
+func (v *syntax_) GetExpressions() fra.Sequential[ExpressionLike] {
 	return v.expressions_
 }
 
@@ -113,7 +113,7 @@ func (v *syntax_) GetComment3() string {
 	return v.comment3_
 }
 
-func (v *syntax_) GetFragments() fra.ListLike[FragmentLike] {
+func (v *syntax_) GetFragments() fra.Sequential[FragmentLike] {
 	return v.fragments_
 }
 
@@ -125,11 +125,11 @@ type syntax_ struct {
 	// Declare the instance attributes.
 	legalNotice_ LegalNoticeLike
 	comment1_    string
-	rules_       fra.ListLike[RuleLike]
+	rules_       fra.Sequential[RuleLike]
 	comment2_    string
-	expressions_ fra.ListLike[ExpressionLike]
+	expressions_ fra.Sequential[ExpressionLike]
 	comment3_    string
-	fragments_   fra.ListLike[FragmentLike]
+	fragments_   fra.Sequential[FragmentLike]
 }
 
 // Class Structure

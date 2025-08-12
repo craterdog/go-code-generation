@@ -68,27 +68,27 @@ func (v *packageAnalyzer_) GetImportedPackages() fra.CatalogLike[string, string]
 	return v.importedPackages_
 }
 
-func (v *packageAnalyzer_) GetTypeDeclarations() fra.ListLike[mod.TypeDeclarationLike] {
+func (v *packageAnalyzer_) GetTypeDeclarations() fra.Sequential[mod.TypeDeclarationLike] {
 	return v.typeDeclarations_
 }
 
-func (v *packageAnalyzer_) GetEnumeratedValues() fra.ListLike[string] {
+func (v *packageAnalyzer_) GetEnumeratedValues() fra.Sequential[string] {
 	return v.enumeratedValues_
 }
 
-func (v *packageAnalyzer_) GetFunctionalDeclarations() fra.ListLike[mod.FunctionalDeclarationLike] {
+func (v *packageAnalyzer_) GetFunctionalDeclarations() fra.Sequential[mod.FunctionalDeclarationLike] {
 	return v.functionalDeclarations_
 }
 
-func (v *packageAnalyzer_) GetClassDeclarations() fra.ListLike[mod.ClassDeclarationLike] {
+func (v *packageAnalyzer_) GetClassDeclarations() fra.Sequential[mod.ClassDeclarationLike] {
 	return v.classDeclarations_
 }
 
-func (v *packageAnalyzer_) GetInstanceDeclarations() fra.ListLike[mod.InstanceDeclarationLike] {
+func (v *packageAnalyzer_) GetInstanceDeclarations() fra.Sequential[mod.InstanceDeclarationLike] {
 	return v.instanceDeclarations_
 }
 
-func (v *packageAnalyzer_) GetAspectDeclarations() fra.ListLike[mod.AspectDeclarationLike] {
+func (v *packageAnalyzer_) GetAspectDeclarations() fra.Sequential[mod.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 

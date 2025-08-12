@@ -74,31 +74,31 @@ func (v *syntaxAnalyzer_) GetFragments() fra.SetLike[string] {
 
 func (v *syntaxAnalyzer_) GetLiteralValues(
 	ruleName string,
-) fra.ListLike[not.LiteralValueLike] {
+) fra.Sequential[not.LiteralValueLike] {
 	return v.literalValues_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetExpressionNames(
 	ruleName string,
-) fra.ListLike[not.ExpressionNameLike] {
+) fra.Sequential[not.ExpressionNameLike] {
 	return v.expressionNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleNames(
 	ruleName string,
-) fra.ListLike[not.RuleNameLike] {
+) fra.Sequential[not.RuleNameLike] {
 	return v.ruleNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleTerms(
 	ruleName string,
-) fra.ListLike[not.RuleTermLike] {
+) fra.Sequential[not.RuleTermLike] {
 	return v.ruleTerms_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
 	ruleName string,
-) fra.ListLike[string] {
+) fra.Sequential[string] {
 	return v.variables_.GetValue(ruleName)
 }
 

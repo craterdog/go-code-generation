@@ -69,7 +69,7 @@ type AlternativesClassLike interface {
 	// Constructor Methods
 	Alternatives(
 		sequence SequenceLike,
-		alternativeSequences fra.ListLike[AlternativeSequenceLike],
+		alternativeSequences fra.Sequential[AlternativeSequenceLike],
 	) AlternativesLike
 }
 
@@ -181,7 +181,7 @@ supported by each concrete expression-alternatives-like class.
 type ExpressionAlternativesClassLike interface {
 	// Constructor Methods
 	ExpressionAlternatives(
-		expressionNames fra.ListLike[ExpressionNameLike],
+		expressionNames fra.Sequential[ExpressionNameLike],
 	) ExpressionAlternativesLike
 }
 
@@ -222,7 +222,7 @@ type FilterClassLike interface {
 	Filter(
 		optionalDelimiter string,
 		delimiter1 string,
-		characters fra.ListLike[CharacterLike],
+		characters fra.Sequential[CharacterLike],
 		delimiter2 string,
 	) FilterLike
 }
@@ -301,7 +301,7 @@ supported by each concrete literal-alternatives-like class.
 type LiteralAlternativesClassLike interface {
 	// Constructor Methods
 	LiteralAlternatives(
-		literalValues fra.ListLike[LiteralValueLike],
+		literalValues fra.Sequential[LiteralValueLike],
 	) LiteralAlternativesLike
 }
 
@@ -383,7 +383,7 @@ supported by each concrete rule-alternatives-like class.
 type RuleAlternativesClassLike interface {
 	// Constructor Methods
 	RuleAlternatives(
-		ruleNames fra.ListLike[RuleNameLike],
+		ruleNames fra.Sequential[RuleNameLike],
 	) RuleAlternativesLike
 }
 
@@ -422,7 +422,7 @@ supported by each concrete sequence-like class.
 type SequenceClassLike interface {
 	// Constructor Methods
 	Sequence(
-		repetitions fra.ListLike[RepetitionLike],
+		repetitions fra.Sequential[RepetitionLike],
 	) SequenceLike
 }
 
@@ -436,11 +436,11 @@ type SyntaxClassLike interface {
 	Syntax(
 		legalNotice LegalNoticeLike,
 		comment1 string,
-		rules fra.ListLike[RuleLike],
+		rules fra.Sequential[RuleLike],
 		comment2 string,
-		expressions fra.ListLike[ExpressionLike],
+		expressions fra.Sequential[ExpressionLike],
 		comment3 string,
-		fragments fra.ListLike[FragmentLike],
+		fragments fra.Sequential[FragmentLike],
 	) SyntaxLike
 }
 
@@ -452,7 +452,7 @@ supported by each concrete term-sequence-like class.
 type TermSequenceClassLike interface {
 	// Constructor Methods
 	TermSequence(
-		ruleTerms fra.ListLike[RuleTermLike],
+		ruleTerms fra.Sequential[RuleTermLike],
 		optionalNote string,
 	) TermSequenceLike
 }
@@ -496,7 +496,7 @@ type AlternativesLike interface {
 
 	// Attribute Methods
 	GetSequence() SequenceLike
-	GetAlternativeSequences() fra.ListLike[AlternativeSequenceLike]
+	GetAlternativeSequences() fra.Sequential[AlternativeSequenceLike]
 }
 
 /*
@@ -617,7 +617,7 @@ type ExpressionAlternativesLike interface {
 	GetClass() ExpressionAlternativesClassLike
 
 	// Attribute Methods
-	GetExpressionNames() fra.ListLike[ExpressionNameLike]
+	GetExpressionNames() fra.Sequential[ExpressionNameLike]
 }
 
 /*
@@ -661,7 +661,7 @@ type FilterLike interface {
 	// Attribute Methods
 	GetOptionalDelimiter() string
 	GetDelimiter1() string
-	GetCharacters() fra.ListLike[CharacterLike]
+	GetCharacters() fra.Sequential[CharacterLike]
 	GetDelimiter2() string
 }
 
@@ -746,7 +746,7 @@ type LiteralAlternativesLike interface {
 	GetClass() LiteralAlternativesClassLike
 
 	// Attribute Methods
-	GetLiteralValues() fra.ListLike[LiteralValueLike]
+	GetLiteralValues() fra.Sequential[LiteralValueLike]
 }
 
 /*
@@ -834,7 +834,7 @@ type RuleAlternativesLike interface {
 	GetClass() RuleAlternativesClassLike
 
 	// Attribute Methods
-	GetRuleNames() fra.ListLike[RuleNameLike]
+	GetRuleNames() fra.Sequential[RuleNameLike]
 }
 
 /*
@@ -876,7 +876,7 @@ type SequenceLike interface {
 	GetClass() SequenceClassLike
 
 	// Attribute Methods
-	GetRepetitions() fra.ListLike[RepetitionLike]
+	GetRepetitions() fra.Sequential[RepetitionLike]
 }
 
 /*
@@ -891,11 +891,11 @@ type SyntaxLike interface {
 	// Attribute Methods
 	GetLegalNotice() LegalNoticeLike
 	GetComment1() string
-	GetRules() fra.ListLike[RuleLike]
+	GetRules() fra.Sequential[RuleLike]
 	GetComment2() string
-	GetExpressions() fra.ListLike[ExpressionLike]
+	GetExpressions() fra.Sequential[ExpressionLike]
 	GetComment3() string
-	GetFragments() fra.ListLike[FragmentLike]
+	GetFragments() fra.Sequential[FragmentLike]
 }
 
 /*
@@ -908,7 +908,7 @@ type TermSequenceLike interface {
 	GetClass() TermSequenceClassLike
 
 	// Attribute Methods
-	GetRuleTerms() fra.ListLike[RuleTermLike]
+	GetRuleTerms() fra.Sequential[RuleTermLike]
 	GetOptionalNote() string
 }
 

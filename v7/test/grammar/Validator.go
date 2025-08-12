@@ -102,7 +102,8 @@ func (v *validator_) ValidateSyntax(
 			panic(message)
 		}
 	}
-	var fragments = syntax.GetFragments()
+	// We can "cheat" here because we know the code generator uses lists.
+	var fragments = syntax.GetFragments().(fra.ListLike[ast.FragmentLike])
 	fragments.SortValuesWithRanker(
 		func(
 			first ast.FragmentLike,
