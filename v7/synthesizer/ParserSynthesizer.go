@@ -604,7 +604,7 @@ func (v *parser_) ParseSource(
 
 	// Attempt to parse the <~syntaxName>.
 	var <syntaxName_>, token, ok = v.parse<~SyntaxName>()
-	if !ok || !v.tokens_.IsEmpty() {
+	if !ok || v.tokens_.GetSize() > 1 {
 		var message = v.formatError("$<~SyntaxName>", token)
 		panic(message)
 	}
