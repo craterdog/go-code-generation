@@ -62,14 +62,14 @@ func (v *visitor_) VisitSyntax(
 ) {
 	v.processor_.PreprocessSyntax(
 		syntax,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitSyntax(syntax)
 	v.processor_.PostprocessSyntax(
 		syntax,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 
@@ -91,14 +91,14 @@ func (v *visitor_) visitAlternativeSequence(
 	var sequence = alternativeSequence.GetSequence()
 	v.processor_.PreprocessSequence(
 		sequence,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitSequence(sequence)
 	v.processor_.PostprocessSequence(
 		sequence,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 
@@ -108,14 +108,14 @@ func (v *visitor_) visitAlternatives(
 	var sequence = alternatives.GetSequence()
 	v.processor_.PreprocessSequence(
 		sequence,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitSequence(sequence)
 	v.processor_.PostprocessSequence(
 		sequence,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessAlternativesSlot(
@@ -151,26 +151,26 @@ func (v *visitor_) visitCardinality(
 	case ast.ConstrainedLike:
 		v.processor_.PreprocessConstrained(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitConstrained(actual)
 		v.processor_.PostprocessConstrained(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.QuantifiedLike:
 		v.processor_.PreprocessQuantified(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitQuantified(actual)
 		v.processor_.PostprocessQuantified(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -183,26 +183,26 @@ func (v *visitor_) visitCharacter(
 	case ast.ImplicitLike:
 		v.processor_.PreprocessImplicit(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitImplicit(actual)
 		v.processor_.PostprocessImplicit(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.ExplicitLike:
 		v.processor_.PreprocessExplicit(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitExplicit(actual)
 		v.processor_.PostprocessExplicit(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -245,50 +245,50 @@ func (v *visitor_) visitDefinition(
 	case ast.LiteralAlternativesLike:
 		v.processor_.PreprocessLiteralAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitLiteralAlternatives(actual)
 		v.processor_.PostprocessLiteralAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.ExpressionAlternativesLike:
 		v.processor_.PreprocessExpressionAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitExpressionAlternatives(actual)
 		v.processor_.PostprocessExpressionAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.RuleAlternativesLike:
 		v.processor_.PreprocessRuleAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitRuleAlternatives(actual)
 		v.processor_.PostprocessRuleAlternatives(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.TermSequenceLike:
 		v.processor_.PreprocessTermSequence(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitTermSequence(actual)
 		v.processor_.PostprocessTermSequence(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -301,38 +301,38 @@ func (v *visitor_) visitElement(
 	case ast.GroupLike:
 		v.processor_.PreprocessGroup(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitGroup(actual)
 		v.processor_.PostprocessGroup(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.FilterLike:
 		v.processor_.PreprocessFilter(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitFilter(actual)
 		v.processor_.PostprocessFilter(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	case ast.TextLike:
 		v.processor_.PreprocessText(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitText(actual)
 		v.processor_.PostprocessText(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -352,14 +352,14 @@ func (v *visitor_) visitExplicit(
 	if uti.IsDefined(optionalExtent) {
 		v.processor_.PreprocessExtent(
 			optionalExtent,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitExtent(optionalExtent)
 		v.processor_.PostprocessExtent(
 			optionalExtent,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -394,14 +394,14 @@ func (v *visitor_) visitExpression(
 	var pattern = expression.GetPattern()
 	v.processor_.PreprocessPattern(
 		pattern,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitPattern(pattern)
 	v.processor_.PostprocessPattern(
 		pattern,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 
@@ -547,14 +547,14 @@ func (v *visitor_) visitFragment(
 	var pattern = fragment.GetPattern()
 	v.processor_.PreprocessPattern(
 		pattern,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitPattern(pattern)
 	v.processor_.PostprocessPattern(
 		pattern,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 
@@ -572,14 +572,14 @@ func (v *visitor_) visitGroup(
 	var alternatives = group.GetAlternatives()
 	v.processor_.PreprocessAlternatives(
 		alternatives,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitAlternatives(alternatives)
 	v.processor_.PostprocessAlternatives(
 		alternatives,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 2 between terms.
 	v.processor_.ProcessGroupSlot(
@@ -676,14 +676,14 @@ func (v *visitor_) visitPattern(
 	var alternatives = pattern.GetAlternatives()
 	v.processor_.PreprocessAlternatives(
 		alternatives,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitAlternatives(alternatives)
 	v.processor_.PostprocessAlternatives(
 		alternatives,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessPatternSlot(
@@ -720,14 +720,14 @@ func (v *visitor_) visitQuantified(
 	if uti.IsDefined(optionalLimit) {
 		v.processor_.PreprocessLimit(
 			optionalLimit,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitLimit(optionalLimit)
 		v.processor_.PostprocessLimit(
 			optionalLimit,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 	// Visit slot 3 between terms.
@@ -746,14 +746,14 @@ func (v *visitor_) visitRepetition(
 	var element = repetition.GetElement()
 	v.processor_.PreprocessElement(
 		element,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitElement(element)
 	v.processor_.PostprocessElement(
 		element,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessRepetitionSlot(
@@ -765,14 +765,14 @@ func (v *visitor_) visitRepetition(
 	if uti.IsDefined(optionalCardinality) {
 		v.processor_.PreprocessCardinality(
 			optionalCardinality,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitCardinality(optionalCardinality)
 		v.processor_.PostprocessCardinality(
 			optionalCardinality,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -807,14 +807,14 @@ func (v *visitor_) visitRule(
 	var definition = rule.GetDefinition()
 	v.processor_.PreprocessDefinition(
 		definition,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitDefinition(definition)
 	v.processor_.PostprocessDefinition(
 		definition,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 
@@ -872,14 +872,14 @@ func (v *visitor_) visitRuleTerm(
 	var component = ruleTerm.GetComponent()
 	v.processor_.PreprocessComponent(
 		component,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitComponent(component)
 	v.processor_.PostprocessComponent(
 		component,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessRuleTermSlot(
@@ -891,14 +891,14 @@ func (v *visitor_) visitRuleTerm(
 	if uti.IsDefined(optionalCardinality) {
 		v.processor_.PreprocessCardinality(
 			optionalCardinality,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visitCardinality(optionalCardinality)
 		v.processor_.PostprocessCardinality(
 			optionalCardinality,
-			1,
-			1,
+			0,
+			0,
 		)
 	}
 }
@@ -932,14 +932,14 @@ func (v *visitor_) visitSyntax(
 	var legalNotice = syntax.GetLegalNotice()
 	v.processor_.PreprocessLegalNotice(
 		legalNotice,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visitLegalNotice(legalNotice)
 	v.processor_.PostprocessLegalNotice(
 		legalNotice,
-		1,
-		1,
+		0,
+		0,
 	)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessSyntaxSlot(

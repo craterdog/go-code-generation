@@ -551,14 +551,14 @@ func (v *visitor_) Visit<~SyntaxName>(
 ) {
 	v.processor_.Preprocess<~SyntaxName>(
 		<syntaxName_>,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visit<~SyntaxName>(<syntaxName_>)
 	v.processor_.Postprocess<~SyntaxName>(
 		<syntaxName_>,
-		1,
-		1,
+		0,
+		0,
 	)
 }
 `,
@@ -602,14 +602,14 @@ func (v *visitor_) visit<~RuleName>(
 	case ast.<~Uppercase>Like:
 		v.processor_.Preprocess<~Uppercase>(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visit<~Uppercase>(actual)
 		v.processor_.Postprocess<~Uppercase>(
 			actual,
-			1,
-			1,
+			0,
+			0,
 		)`,
 
 	optionalLiteral_: `
@@ -651,14 +651,14 @@ func (v *visitor_) visit<~RuleName>(
 	if uti.IsDefined(<variableName_>) {
 		v.processor_.Preprocess<~Uppercase>(
 			<variableName_>,
-			1,
-			1,
+			0,
+			0,
 		)
 		v.visit<~Uppercase>(<variableName_>)
 		v.processor_.Postprocess<~Uppercase>(
 			<variableName_>,
-			1,
-			1,
+			0,
+			0,
 		)
 	}`,
 
@@ -666,14 +666,14 @@ func (v *visitor_) visit<~RuleName>(
 	var <variableName_> = <ruleName_>.Get<~VariableName>()
 	v.processor_.Preprocess<~Uppercase>(
 		<variableName_>,
-		1,
-		1,
+		0,
+		0,
 	)
 	v.visit<~Uppercase>(<variableName_>)
 	v.processor_.Postprocess<~Uppercase>(
 		<variableName_>,
-		1,
-		1,
+		0,
+		0,
 	)`,
 
 	repeatedRule_: `
