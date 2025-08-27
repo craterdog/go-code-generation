@@ -59,8 +59,7 @@ func (c *arrayClass_[V]) ArrayFromSequence(
 // Function Methods
 
 func (c *arrayClass_[V]) Merge(
-	first ArrayLike[V],
-	second ArrayLike[V],
+	arrays ...ArrayLike[V],
 ) ArrayLike[V] {
 	var result_ ArrayLike[V]
 	// TBD - Add the function implementation.

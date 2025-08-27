@@ -151,7 +151,9 @@ var packageSynthesizerClassReference_ = &packageSynthesizerClass_{
 	packageDescription_: `
 Package "example" provides...`,
 
-	importedPackages_: ``,
+	importedPackages_: `
+	reg "regexp"
+`,
 
 	typeDeclarations_: `
 /*
@@ -200,6 +202,11 @@ const (
 	Radians
 	Gradians
 )
+
+/*
+Regexp is a constrained type representing a compiled regular expression.
+*/
+type Regexp *reg.Regexp
 `,
 
 	functionalDeclarations_: `
@@ -284,8 +291,7 @@ type ArrayClassLike[V any] interface {
 
 	// Function Methods
 	Merge(
-		first ArrayLike[V],
-		second ArrayLike[V],
+		arrays ...ArrayLike[V],
 	) ArrayLike[V]
 }
 
