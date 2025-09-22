@@ -680,9 +680,9 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Make any duplicate variable names unique.
-	var leftIndex uti.Index
-	var rightIndex uti.Index
-	var size = uti.Index(variables.GetSize())
+	var leftIndex int
+	var rightIndex int
+	var size = int(variables.GetSize())
 	for leftIndex = 1; leftIndex <= size; leftIndex++ {
 		var count = 1
 		var leftName = variables.GetValue(leftIndex)
