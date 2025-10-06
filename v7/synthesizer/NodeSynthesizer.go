@@ -502,29 +502,93 @@ func (v *nodeSynthesizer_) extractType(
 			abstractType = "*"
 		case mod.ArrayLike:
 			abstractType = "[]"
-		case mod.MapLike:
-			abstractType = "map[" + actual.GetName() + "]"
 		case mod.ChannelLike:
 			abstractType = "chan "
+		case mod.MapLike:
+			abstractType = "map[" + actual.GetName() + "]"
 		}
 	}
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		abstractType += prefix
-	}
-	var name = abstraction.GetName()
-	abstractType += name
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
-		abstractType += "[" + argument
-		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
-		for additionalArguments.HasNext() {
-			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(additionalArgument.GetAbstraction())
-			abstractType += ", " + argument
+	switch actual := abstraction.GetType().GetAny().(type) {
+	case mod.NamedLike:
+		var prefix = actual.GetOptionalPrefix()
+		if uti.IsDefined(prefix) {
+			abstractType += prefix
 		}
-		abstractType += "]"
+		var name = actual.GetName()
+		abstractType += name
+		var arguments = actual.GetOptionalArguments()
+		if uti.IsDefined(arguments) {
+			var argument = v.extractType(arguments.GetArgument().GetAbstraction())
+			abstractType += "[" + argument
+			var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+			for additionalArguments.HasNext() {
+				var additionalArgument = additionalArguments.GetNext().GetArgument()
+				argument = v.extractType(additionalArgument.GetAbstraction())
+				abstractType += ", " + argument
+			}
+			abstractType += "]"
+		}
+	case mod.FunctionalLike:
+		abstractType += "func("
+		var parameterList = actual.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			var parameters = parameterList.GetParameters().GetIterator()
+			for parameters.HasNext() {
+				var parameter = parameters.GetNext()
+				var parameterName = parameter.GetName()
+				var parameterType = v.extractType(
+					parameter.GetAbstraction(),
+				)
+				var class = nodeSynthesizerClass()
+				var methodParameter = class.methodParameter_
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterName",
+					parameterName,
+				)
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterType",
+					parameterType,
+				)
+				abstractType += methodParameter
+			}
+			abstractType += "\n"
+		}
+		abstractType += ")"
+		var result = actual.GetOptionalResult()
+		if uti.IsDefined(result) {
+			switch actual := result.GetAny().(type) {
+			case mod.NoneLike:
+			case mod.AbstractionLike:
+				abstractType += " " + v.extractType(actual)
+			case mod.MultivalueLike:
+				abstractType += " ("
+				var parameterList = actual.GetParameterList()
+				var parameters = parameterList.GetParameters().GetIterator()
+				for parameters.HasNext() {
+					var parameter = parameters.GetNext()
+					var parameterName = parameter.GetName()
+					var parameterType = v.extractType(
+						parameter.GetAbstraction(),
+					)
+					var class = nodeSynthesizerClass()
+					var methodParameter = class.methodParameter_
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterName",
+						parameterName,
+					)
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterType",
+						parameterType,
+					)
+					abstractType += methodParameter
+				}
+				abstractType += "\n)"
+			}
+		}
 	}
 	return abstractType
 }

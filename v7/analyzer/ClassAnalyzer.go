@@ -14,7 +14,7 @@ package analyzer
 
 import (
 	fmt "fmt"
-	ast "github.com/craterdog/go-class-model/v7/ast"
+	mod "github.com/craterdog/go-class-model/v7"
 	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	sts "strings"
@@ -31,7 +31,7 @@ func ClassAnalyzerClass() ClassAnalyzerClassLike {
 // Constructor Methods
 
 func (c *classAnalyzerClass_) ClassAnalyzer(
-	model ast.ModelLike,
+	model mod.ModelLike,
 	className string,
 ) ClassAnalyzerLike {
 	var instance = &classAnalyzer_{
@@ -74,7 +74,7 @@ func (v *classAnalyzer_) IsIntrinsic() bool {
 	return v.isIntrinsic_
 }
 
-func (v *classAnalyzer_) GetIntrinsicType() ast.AbstractionLike {
+func (v *classAnalyzer_) GetIntrinsicType() mod.AbstractionLike {
 	return v.intrinsicType_
 }
 
@@ -86,31 +86,31 @@ func (v *classAnalyzer_) GetAttributes() fra.CatalogLike[string, string] {
 	return v.attributes_
 }
 
-func (v *classAnalyzer_) GetConstructorMethods() fra.Sequential[ast.ConstructorMethodLike] {
+func (v *classAnalyzer_) GetConstructorMethods() fra.Sequential[mod.ConstructorMethodLike] {
 	return v.constructorMethods_
 }
 
-func (v *classAnalyzer_) GetConstantMethods() fra.Sequential[ast.ConstantMethodLike] {
+func (v *classAnalyzer_) GetConstantMethods() fra.Sequential[mod.ConstantMethodLike] {
 	return v.constantMethods_
 }
 
-func (v *classAnalyzer_) GetFunctionMethods() fra.Sequential[ast.FunctionMethodLike] {
+func (v *classAnalyzer_) GetFunctionMethods() fra.Sequential[mod.FunctionMethodLike] {
 	return v.functionMethods_
 }
 
-func (v *classAnalyzer_) GetPrincipalMethods() fra.Sequential[ast.PrincipalMethodLike] {
+func (v *classAnalyzer_) GetPrincipalMethods() fra.Sequential[mod.PrincipalMethodLike] {
 	return v.principalMethods_
 }
 
-func (v *classAnalyzer_) GetAttributeMethods() fra.Sequential[ast.AttributeMethodLike] {
+func (v *classAnalyzer_) GetAttributeMethods() fra.Sequential[mod.AttributeMethodLike] {
 	return v.attributeMethods_
 }
 
-func (v *classAnalyzer_) GetAspectInterfaces() fra.Sequential[ast.AspectInterfaceLike] {
+func (v *classAnalyzer_) GetAspectInterfaces() fra.Sequential[mod.AspectInterfaceLike] {
 	return v.aspectInterfaces_
 }
 
-func (v *classAnalyzer_) GetAspectDeclarations() fra.Sequential[ast.AspectDeclarationLike] {
+func (v *classAnalyzer_) GetAspectDeclarations() fra.Sequential[mod.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -119,14 +119,14 @@ func (v *classAnalyzer_) GetAspectDeclarations() fra.Sequential[ast.AspectDeclar
 // Private Methods
 
 func (v *classAnalyzer_) analyzeAspectDeclarations(
-	interfaceDeclarations ast.InterfaceDeclarationsLike,
+	interfaceDeclarations mod.InterfaceDeclarationsLike,
 ) {
 	var aspectSection = interfaceDeclarations.GetAspectSection()
 	v.aspectDeclarations_ = aspectSection.GetAspectDeclarations()
 }
 
 func (v *classAnalyzer_) analyzeAspectInterfaces(
-	instanceDeclaration ast.InstanceDeclarationLike,
+	instanceDeclaration mod.InstanceDeclarationLike,
 ) {
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var aspectSubsection = instanceMethods.GetOptionalAspectSubsection()
@@ -136,9 +136,9 @@ func (v *classAnalyzer_) analyzeAspectInterfaces(
 }
 
 func (v *classAnalyzer_) analyzeAttributeMethods(
-	instanceDeclaration ast.InstanceDeclarationLike,
+	instanceDeclaration mod.InstanceDeclarationLike,
 ) {
-	v.attributeMethods_ = fra.List[ast.AttributeMethodLike]()
+	v.attributeMethods_ = fra.List[mod.AttributeMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var attributeSubsection = instanceMethods.GetOptionalAttributeSubsection()
 	if uti.IsDefined(attributeSubsection) {
@@ -151,7 +151,7 @@ func (v *classAnalyzer_) analyzeAttributeMethods(
 }
 
 func (v *classAnalyzer_) analyzeClass(
-	model ast.ModelLike,
+	model mod.ModelLike,
 	className string,
 ) {
 	var packageDeclaration = model.GetPackageDeclaration()
@@ -183,7 +183,7 @@ func (v *classAnalyzer_) analyzeClass(
 }
 
 func (v *classAnalyzer_) analyzeClassConstants(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
 	v.constants_ = fra.Catalog[string, string]()
 	var classMethods = classDeclaration.GetClassMethods()
@@ -200,7 +200,7 @@ func (v *classAnalyzer_) analyzeClassConstants(
 }
 
 func (v *classAnalyzer_) analyzeClassGenerics(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
 	v.isGeneric_ = false
 	var declaration = classDeclaration.GetDeclaration()
@@ -213,7 +213,7 @@ func (v *classAnalyzer_) analyzeClassGenerics(
 }
 
 func (v *classAnalyzer_) analyzeClassStructure(
-	instanceDeclaration ast.InstanceDeclarationLike,
+	instanceDeclaration mod.InstanceDeclarationLike,
 ) {
 	v.isIntrinsic_ = false
 	v.intrinsicType_ = nil
@@ -226,15 +226,15 @@ func (v *classAnalyzer_) analyzeClassStructure(
 		if methodName == "AsIntrinsic" {
 			v.isIntrinsic_ = true
 			var result = method.GetResult()
-			v.intrinsicType_ = result.GetAny().(ast.AbstractionLike)
+			v.intrinsicType_ = result.GetAny().(mod.AbstractionLike)
 		}
 	}
 }
 
 func (v *classAnalyzer_) analyzeConstantMethods(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
-	v.constantMethods_ = fra.List[ast.ConstantMethodLike]()
+	v.constantMethods_ = fra.List[mod.ConstantMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constantSubsection = classMethods.GetOptionalConstantSubsection()
 	if uti.IsDefined(constantSubsection) {
@@ -247,9 +247,9 @@ func (v *classAnalyzer_) analyzeConstantMethods(
 }
 
 func (v *classAnalyzer_) analyzeConstructorMethods(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
-	v.constructorMethods_ = fra.List[ast.ConstructorMethodLike]()
+	v.constructorMethods_ = fra.List[mod.ConstructorMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var constructorSubsection = classMethods.GetConstructorSubsection()
 	var constructorMethods = constructorSubsection.GetConstructorMethods().GetIterator()
@@ -260,9 +260,9 @@ func (v *classAnalyzer_) analyzeConstructorMethods(
 }
 
 func (v *classAnalyzer_) analyzeFunctionMethods(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
-	v.functionMethods_ = fra.List[ast.FunctionMethodLike]()
+	v.functionMethods_ = fra.List[mod.FunctionMethodLike]()
 	var classMethods = classDeclaration.GetClassMethods()
 	var functionSubsection = classMethods.GetOptionalFunctionSubsection()
 	if uti.IsDefined(functionSubsection) {
@@ -275,7 +275,7 @@ func (v *classAnalyzer_) analyzeFunctionMethods(
 }
 
 func (v *classAnalyzer_) analyzePackageDeclaration(
-	packageDeclaration ast.PackageDeclarationLike,
+	packageDeclaration mod.PackageDeclarationLike,
 ) {
 	v.legalNotice_ = packageDeclaration.GetLegalNotice().GetComment()
 	v.importedPackages_ = fra.Catalog[string, string]()
@@ -311,9 +311,9 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 }
 
 func (v *classAnalyzer_) analyzePrincipalMethods(
-	instanceDeclaration ast.InstanceDeclarationLike,
+	instanceDeclaration mod.InstanceDeclarationLike,
 ) {
-	v.principalMethods_ = fra.List[ast.PrincipalMethodLike]()
+	v.principalMethods_ = fra.List[mod.PrincipalMethodLike]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
 	var principalSubsection = instanceMethods.GetPrincipalSubsection()
 	var principalMethods = principalSubsection.GetPrincipalMethods().GetIterator()
@@ -324,7 +324,7 @@ func (v *classAnalyzer_) analyzePrincipalMethods(
 }
 
 func (v *classAnalyzer_) analyzePrivateAttributes(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
 	var classMethods = classDeclaration.GetClassMethods()
 	var className = v.extractClassName(classDeclaration)
@@ -353,7 +353,7 @@ func (v *classAnalyzer_) analyzePrivateAttributes(
 }
 
 func (v *classAnalyzer_) analyzePublicAttributes(
-	instanceDeclaration ast.InstanceDeclarationLike,
+	instanceDeclaration mod.InstanceDeclarationLike,
 ) {
 	v.attributes_ = fra.Catalog[string, string]()
 	var instanceMethods = instanceDeclaration.GetInstanceMethods()
@@ -363,12 +363,12 @@ func (v *classAnalyzer_) analyzePublicAttributes(
 		for attributeMethods.HasNext() {
 			var attributeMethod = attributeMethods.GetNext()
 			var attributeName string
-			var abstraction ast.AbstractionLike
+			var abstraction mod.AbstractionLike
 			switch actual := attributeMethod.GetAny().(type) {
-			case ast.GetterMethodLike:
+			case mod.GetterMethodLike:
 				attributeName = v.extractAttributeName(actual.GetName())
 				abstraction = actual.GetAbstraction()
-			case ast.SetterMethodLike:
+			case mod.SetterMethodLike:
 				attributeName = v.extractAttributeName(actual.GetName())
 				abstraction = actual.GetParameter().GetAbstraction()
 			}
@@ -379,7 +379,7 @@ func (v *classAnalyzer_) analyzePublicAttributes(
 }
 
 func (v *classAnalyzer_) analyzeTypeArguments(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
 	if v.isGeneric_ {
 		v.typeArguments_ = "["
@@ -399,7 +399,7 @@ func (v *classAnalyzer_) analyzeTypeArguments(
 }
 
 func (v *classAnalyzer_) analyzeTypeConstraints(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) {
 	if v.isGeneric_ {
 		v.typeConstraints_ = "["
@@ -455,7 +455,7 @@ func (v *classAnalyzer_) extractAttributeName(
 }
 
 func (v *classAnalyzer_) extractClassName(
-	classDeclaration ast.ClassDeclarationLike,
+	classDeclaration mod.ClassDeclarationLike,
 ) string {
 	var className = classDeclaration.GetDeclaration().GetName()
 	className = sts.TrimSuffix(className, "ClassLike")
@@ -464,41 +464,74 @@ func (v *classAnalyzer_) extractClassName(
 }
 
 func (v *classAnalyzer_) extractType(
-	abstraction ast.AbstractionLike,
+	abstraction mod.AbstractionLike,
 ) string {
 	var abstractType string
 	var wrapper = abstraction.GetOptionalWrapper()
 	if uti.IsDefined(wrapper) {
 		switch actual := wrapper.GetAny().(type) {
-		case ast.DotsLike:
+		case mod.DotsLike:
 			abstractType = "..."
-		case ast.StarLike:
+		case mod.StarLike:
 			abstractType = "*"
-		case ast.ArrayLike:
+		case mod.ArrayLike:
 			abstractType = "[]"
-		case ast.MapLike:
-			abstractType = "map[" + actual.GetName() + "]"
-		case ast.ChannelLike:
+		case mod.ChannelLike:
 			abstractType = "chan "
+		case mod.MapLike:
+			abstractType = "map[" + actual.GetName() + "]"
 		}
 	}
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		abstractType += prefix
-	}
-	var name = abstraction.GetName()
-	abstractType += name
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
-		abstractType += "[" + argument
-		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
-		for additionalArguments.HasNext() {
-			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(additionalArgument.GetAbstraction())
-			abstractType += ", " + argument
+	switch actual := abstraction.GetType().GetAny().(type) {
+	case mod.FunctionalLike:
+		abstractType += "func("
+		var parameterList = actual.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			var parameters = parameterList.GetParameters().GetIterator()
+			for parameters.HasNext() {
+				var parameter = parameters.GetNext()
+				abstractType += parameter.GetName() + " "
+				abstractType += v.extractType(parameter.GetAbstraction())
+			}
 		}
-		abstractType += "]"
+		abstractType += ")"
+		var result = actual.GetOptionalResult()
+		if uti.IsDefined(result) {
+			switch actual := result.GetAny().(type) {
+			case mod.NoneLike:
+			case mod.AbstractionLike:
+				abstractType += v.extractType(actual)
+			case mod.MultivalueLike:
+				abstractType += "("
+				var parameterList = actual.GetParameterList()
+				var parameters = parameterList.GetParameters().GetIterator()
+				for parameters.HasNext() {
+					var parameter = parameters.GetNext()
+					abstractType += parameter.GetName() + " "
+					abstractType += v.extractType(parameter.GetAbstraction())
+				}
+				abstractType += ")"
+			}
+		}
+	case mod.NamedLike:
+		var prefix = actual.GetOptionalPrefix()
+		if uti.IsDefined(prefix) {
+			abstractType += prefix
+		}
+		var name = actual.GetName()
+		abstractType += name
+		var arguments = actual.GetOptionalArguments()
+		if uti.IsDefined(arguments) {
+			var argument = v.extractType(arguments.GetArgument().GetAbstraction())
+			abstractType += "[" + argument
+			var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+			for additionalArguments.HasNext() {
+				var additionalArgument = additionalArguments.GetNext().GetArgument()
+				argument = v.extractType(additionalArgument.GetAbstraction())
+				abstractType += ", " + argument
+			}
+			abstractType += "]"
+		}
 	}
 	return abstractType
 }
@@ -513,16 +546,16 @@ type classAnalyzer_ struct {
 	typeConstraints_    string
 	typeArguments_      string
 	isIntrinsic_        bool
-	intrinsicType_      ast.AbstractionLike
+	intrinsicType_      mod.AbstractionLike
 	constants_          fra.CatalogLike[string, string]
 	attributes_         fra.CatalogLike[string, string]
-	constructorMethods_ fra.ListLike[ast.ConstructorMethodLike]
-	constantMethods_    fra.ListLike[ast.ConstantMethodLike]
-	functionMethods_    fra.ListLike[ast.FunctionMethodLike]
-	principalMethods_   fra.ListLike[ast.PrincipalMethodLike]
-	attributeMethods_   fra.ListLike[ast.AttributeMethodLike]
-	aspectInterfaces_   fra.Sequential[ast.AspectInterfaceLike]
-	aspectDeclarations_ fra.Sequential[ast.AspectDeclarationLike]
+	constructorMethods_ fra.ListLike[mod.ConstructorMethodLike]
+	constantMethods_    fra.ListLike[mod.ConstantMethodLike]
+	functionMethods_    fra.ListLike[mod.FunctionMethodLike]
+	principalMethods_   fra.ListLike[mod.PrincipalMethodLike]
+	attributeMethods_   fra.ListLike[mod.AttributeMethodLike]
+	aspectInterfaces_   fra.Sequential[mod.AspectInterfaceLike]
+	aspectDeclarations_ fra.Sequential[mod.AspectDeclarationLike]
 }
 
 // Class Structure

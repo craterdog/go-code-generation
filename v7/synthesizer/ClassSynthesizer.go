@@ -190,17 +190,18 @@ func (v *classSynthesizer_) PerformGlobalUpdates(
 
 func (v *classSynthesizer_) createAspectInterface(
 	aspectDeclarations fra.Sequential[mod.AspectDeclarationLike],
-	aspectType mod.AbstractionLike,
+	aspectAbstraction mod.AbstractionLike,
 ) string {
 	var class = classSynthesizerClass()
 	var aspectInterface = class.aspectInterface_
 	aspectInterface = uti.ReplaceAll(
 		aspectInterface,
 		"aspectType",
-		v.extractType(aspectType),
+		v.extractType(aspectAbstraction),
 	)
 	var aspectMethods string
-	if uti.IsDefined(aspectType.GetOptionalPrefix()) {
+	var named = aspectAbstraction.GetType().GetAny().(mod.NamedLike)
+	if uti.IsDefined(named.GetOptionalPrefix()) {
 		// Ignore the methods for aspect types defined in other packages.
 		aspectInterface = uti.ReplaceAll(
 			aspectInterface,
@@ -214,8 +215,9 @@ func (v *classSynthesizer_) createAspectInterface(
 		var aspectDeclaration = iterator.GetNext()
 		var declaration = aspectDeclaration.GetDeclaration()
 		var constraints = declaration.GetOptionalConstraints()
-		var arguments = aspectType.GetOptionalArguments()
-		if declaration.GetName() == aspectType.GetName() {
+		var named = aspectAbstraction.GetType().GetAny().(mod.NamedLike)
+		var arguments = named.GetOptionalArguments()
+		if declaration.GetName() == named.GetName() {
 			var mappings = v.extractMappings(constraints, arguments)
 			aspectMethods = v.createAspectMethods(
 				aspectDeclaration,
@@ -241,8 +243,11 @@ func (v *classSynthesizer_) createAspectInterfaces(
 		var aspects = interfaces.GetIterator()
 		for aspects.HasNext() {
 			var aspectInterface = aspects.GetNext()
-			var aspectType = aspectInterface.GetAbstraction()
-			aspectInterfaces += v.createAspectInterface(declarations, aspectType)
+			var aspectAbstraction = aspectInterface.GetAbstraction()
+			aspectInterfaces += v.createAspectInterface(
+				declarations,
+				aspectAbstraction,
+			)
 		}
 	}
 	return aspectInterfaces
@@ -678,7 +683,9 @@ func (v *classSynthesizer_) createInstanceInstantiation(
 	constructorMethod mod.ConstructorMethodLike,
 ) string {
 	var methodName = constructorMethod.GetName()
-	var className = constructorMethod.GetAbstraction().GetName()
+	var abstraction = constructorMethod.GetAbstraction()
+	var named = abstraction.GetType().GetAny().(mod.NamedLike)
+	var className = named.GetName()
 	className = sts.TrimSuffix(className, "Like")
 	var isDefaultConstructor = methodName == className
 	switch {
@@ -1005,29 +1012,93 @@ func (v *classSynthesizer_) extractType(
 			abstractType = "*"
 		case mod.ArrayLike:
 			abstractType = "[]"
-		case mod.MapLike:
-			abstractType = "map[" + actual.GetName() + "]"
 		case mod.ChannelLike:
 			abstractType = "chan "
+		case mod.MapLike:
+			abstractType = "map[" + actual.GetName() + "]"
 		}
 	}
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsDefined(prefix) {
-		abstractType += prefix
-	}
-	var name = abstraction.GetName()
-	abstractType += name
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		var argument = v.extractType(arguments.GetArgument().GetAbstraction())
-		abstractType += "[" + argument
-		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
-		for additionalArguments.HasNext() {
-			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(additionalArgument.GetAbstraction())
-			abstractType += ", " + argument
+	switch actual := abstraction.GetType().GetAny().(type) {
+	case mod.NamedLike:
+		var prefix = actual.GetOptionalPrefix()
+		if uti.IsDefined(prefix) {
+			abstractType += prefix
 		}
-		abstractType += "]"
+		var name = actual.GetName()
+		abstractType += name
+		var arguments = actual.GetOptionalArguments()
+		if uti.IsDefined(arguments) {
+			var argument = v.extractType(arguments.GetArgument().GetAbstraction())
+			abstractType += "[" + argument
+			var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+			for additionalArguments.HasNext() {
+				var additionalArgument = additionalArguments.GetNext().GetArgument()
+				argument = v.extractType(additionalArgument.GetAbstraction())
+				abstractType += ", " + argument
+			}
+			abstractType += "]"
+		}
+	case mod.FunctionalLike:
+		abstractType += "func("
+		var parameterList = actual.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			var parameters = parameterList.GetParameters().GetIterator()
+			for parameters.HasNext() {
+				var parameter = parameters.GetNext()
+				var parameterName = parameter.GetName()
+				var parameterType = v.extractType(
+					parameter.GetAbstraction(),
+				)
+				var class = classSynthesizerClass()
+				var methodParameter = class.methodParameter_
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterName",
+					parameterName,
+				)
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterType",
+					parameterType,
+				)
+				abstractType += methodParameter
+			}
+			abstractType += "\n"
+		}
+		abstractType += ")"
+		var result = actual.GetOptionalResult()
+		if uti.IsDefined(result) {
+			switch actual := result.GetAny().(type) {
+			case mod.NoneLike:
+			case mod.AbstractionLike:
+				abstractType += " " + v.extractType(actual)
+			case mod.MultivalueLike:
+				abstractType += " ("
+				var parameterList = actual.GetParameterList()
+				var parameters = parameterList.GetParameters().GetIterator()
+				for parameters.HasNext() {
+					var parameter = parameters.GetNext()
+					var parameterName = parameter.GetName()
+					var parameterType = v.extractType(
+						parameter.GetAbstraction(),
+					)
+					var class = classSynthesizerClass()
+					var methodParameter = class.methodParameter_
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterName",
+						parameterName,
+					)
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterType",
+						parameterType,
+					)
+					abstractType += methodParameter
+				}
+				abstractType += "\n)"
+			}
+		}
 	}
 	return abstractType
 }
@@ -1040,23 +1111,31 @@ func (v *classSynthesizer_) replaceAbstractionType(
 	var wrapper = abstraction.GetOptionalWrapper()
 	wrapper = v.replaceWrapperType(wrapper, mappings)
 
-	// Check for external type prefix (no mapping).
-	var prefix = abstraction.GetOptionalPrefix()
+	// Extract the abstraction type.
+	var type_ mod.TypeLike
+	switch actual := abstraction.GetType().GetAny().(type) {
+	case mod.NamedLike:
+		// Check for external type prefix (no mapping).
+		var prefix = actual.GetOptionalPrefix()
 
-	// Check for name mapping.
-	var name = abstraction.GetName()
-	name = v.replaceNameType(name, mappings)
+		// Check for name mapping.
+		var name = actual.GetName()
+		name = v.replaceNameType(name, mappings)
 
-	// Check for argument type mappings.
-	var arguments = abstraction.GetOptionalArguments()
-	arguments = v.replaceArgumentTypes(arguments, mappings)
+		// Check for argument type mappings.
+		var arguments = actual.GetOptionalArguments()
+		arguments = v.replaceArgumentTypes(arguments, mappings)
+
+		var named = mod.NamedClass().Named(prefix, name, arguments)
+		type_ = mod.TypeClass().Type(named)
+	case mod.FunctionalLike:
+		type_ = mod.TypeClass().Type(actual)
+	}
 
 	// Recreate the abstraction using its updated types.
 	abstraction = mod.AbstractionClass().Abstraction(
 		wrapper,
-		prefix,
-		name,
-		arguments,
+		type_,
 	)
 	return abstraction
 }
@@ -1206,7 +1285,8 @@ func (v *classSynthesizer_) replaceWrapperType(
 		var typeName = actual.GetName()
 		var mappedType = mappings.GetValue(typeName)
 		if uti.IsDefined(mappedType) {
-			typeName = mappedType.GetName()
+			var named = mappedType.GetType().GetAny().(mod.NamedLike)
+			typeName = named.GetName()
 			var map_ = mod.MapClass().Map(
 				"map",
 				"[",

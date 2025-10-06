@@ -544,91 +544,157 @@ func (v *moduleSynthesizer_) extractType(
 			abstractType = "*"
 		case mod.ArrayLike:
 			abstractType = "[]"
-		case mod.MapLike:
-			abstractType = "map[" + actual.GetName() + "]"
 		case mod.ChannelLike:
 			abstractType = "chan "
+		case mod.MapLike:
+			abstractType = "map[" + actual.GetName() + "]"
 		}
 	}
 	var analyzer = ana.PackageAnalyzerClass().PackageAnalyzer(model)
 	var packageAcronym = analyzer.GetPackageName()[0:3] + "."
-	var name = abstraction.GetName()
-	var prefix = abstraction.GetOptionalPrefix()
-	if uti.IsUndefined(prefix) {
-		var typeDeclarations = analyzer.GetTypeDeclarations()
-		var types = typeDeclarations.GetIterator()
-		for types.HasNext() {
-			var typeName = types.GetNext().GetDeclaration().GetName()
-			if typeName == name {
-				prefix = packageAcronym
-				break
+	switch actual := abstraction.GetType().GetAny().(type) {
+	case mod.NamedLike:
+		var name = actual.GetName()
+		var prefix = actual.GetOptionalPrefix()
+		if uti.IsUndefined(prefix) {
+			var typeDeclarations = analyzer.GetTypeDeclarations()
+			var types = typeDeclarations.GetIterator()
+			for types.HasNext() {
+				var typeName = types.GetNext().GetDeclaration().GetName()
+				if typeName == name {
+					prefix = packageAcronym
+					break
+				}
+			}
+			var enumeratedValues = analyzer.GetEnumeratedValues()
+			var enumerations = enumeratedValues.GetIterator()
+			for enumerations.HasNext() {
+				var enumerationName = enumerations.GetNext()
+				if enumerationName == name {
+					prefix = packageAcronym
+					break
+				}
+			}
+			var functionalDeclarations = analyzer.GetFunctionalDeclarations()
+			var functionals = functionalDeclarations.GetIterator()
+			for functionals.HasNext() {
+				var functionalName = functionals.GetNext().GetDeclaration().GetName()
+				if functionalName == name {
+					prefix = packageAcronym
+					break
+				}
+			}
+			var classDeclarations = analyzer.GetClassDeclarations()
+			var classes = classDeclarations.GetIterator()
+			for classes.HasNext() {
+				var className = classes.GetNext().GetDeclaration().GetName()
+				if className == name {
+					prefix = packageAcronym
+					break
+				}
+			}
+			var instanceDeclarations = analyzer.GetInstanceDeclarations()
+			var instances = instanceDeclarations.GetIterator()
+			for instances.HasNext() {
+				var instanceName = instances.GetNext().GetDeclaration().GetName()
+				if instanceName == name {
+					prefix = packageAcronym
+					break
+				}
+			}
+			var aspectDeclarations = analyzer.GetAspectDeclarations()
+			var aspects = aspectDeclarations.GetIterator()
+			for aspects.HasNext() {
+				var aspectName = aspects.GetNext().GetDeclaration().GetName()
+				if aspectName == name {
+					prefix = packageAcronym
+					break
+				}
 			}
 		}
-		var enumeratedValues = analyzer.GetEnumeratedValues()
-		var enumerations = enumeratedValues.GetIterator()
-		for enumerations.HasNext() {
-			var enumerationName = enumerations.GetNext()
-			if enumerationName == name {
-				prefix = packageAcronym
-				break
-			}
-		}
-		var functionalDeclarations = analyzer.GetFunctionalDeclarations()
-		var functionals = functionalDeclarations.GetIterator()
-		for functionals.HasNext() {
-			var functionalName = functionals.GetNext().GetDeclaration().GetName()
-			if functionalName == name {
-				prefix = packageAcronym
-				break
-			}
-		}
-		var classDeclarations = analyzer.GetClassDeclarations()
-		var classes = classDeclarations.GetIterator()
-		for classes.HasNext() {
-			var className = classes.GetNext().GetDeclaration().GetName()
-			if className == name {
-				prefix = packageAcronym
-				break
-			}
-		}
-		var instanceDeclarations = analyzer.GetInstanceDeclarations()
-		var instances = instanceDeclarations.GetIterator()
-		for instances.HasNext() {
-			var instanceName = instances.GetNext().GetDeclaration().GetName()
-			if instanceName == name {
-				prefix = packageAcronym
-				break
-			}
-		}
-		var aspectDeclarations = analyzer.GetAspectDeclarations()
-		var aspects = aspectDeclarations.GetIterator()
-		for aspects.HasNext() {
-			var aspectName = aspects.GetNext().GetDeclaration().GetName()
-			if aspectName == name {
-				prefix = packageAcronym
-				break
-			}
-		}
-	}
-	abstractType += prefix
-	abstractType += name
-	var arguments = abstraction.GetOptionalArguments()
-	if uti.IsDefined(arguments) {
-		var argument = v.extractType(
-			arguments.GetArgument().GetAbstraction(),
-			model,
-		)
-		abstractType += "[" + argument
-		var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
-		for additionalArguments.HasNext() {
-			var additionalArgument = additionalArguments.GetNext().GetArgument()
-			argument = v.extractType(
-				additionalArgument.GetAbstraction(),
+		abstractType += prefix
+		abstractType += name
+		var arguments = actual.GetOptionalArguments()
+		if uti.IsDefined(arguments) {
+			var argument = v.extractType(
+				arguments.GetArgument().GetAbstraction(),
 				model,
 			)
-			abstractType += ", " + argument
+			abstractType += "[" + argument
+			var additionalArguments = arguments.GetAdditionalArguments().GetIterator()
+			for additionalArguments.HasNext() {
+				var additionalArgument = additionalArguments.GetNext().GetArgument()
+				argument = v.extractType(
+					additionalArgument.GetAbstraction(),
+					model,
+				)
+				abstractType += ", " + argument
+			}
+			abstractType += "]"
 		}
-		abstractType += "]"
+	case mod.FunctionalLike:
+		abstractType += "func("
+		var parameterList = actual.GetOptionalParameterList()
+		if uti.IsDefined(parameterList) {
+			var parameters = parameterList.GetParameters().GetIterator()
+			for parameters.HasNext() {
+				var parameter = parameters.GetNext()
+				var parameterName = parameter.GetName()
+				var parameterType = v.extractType(
+					parameter.GetAbstraction(),
+					model,
+				)
+				var class = moduleSynthesizerClass()
+				var methodParameter = class.methodParameter_
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterName",
+					parameterName,
+				)
+				methodParameter = uti.ReplaceAll(
+					methodParameter,
+					"parameterType",
+					parameterType,
+				)
+				abstractType += methodParameter
+			}
+			abstractType += "\n"
+		}
+		abstractType += ")"
+		var result = actual.GetOptionalResult()
+		if uti.IsDefined(result) {
+			switch actual := result.GetAny().(type) {
+			case mod.NoneLike:
+			case mod.AbstractionLike:
+				abstractType += " " + v.extractType(actual, model)
+			case mod.MultivalueLike:
+				abstractType += " ("
+				var parameterList = actual.GetParameterList()
+				var parameters = parameterList.GetParameters().GetIterator()
+				for parameters.HasNext() {
+					var parameter = parameters.GetNext()
+					var parameterName = parameter.GetName()
+					var parameterType = v.extractType(
+						parameter.GetAbstraction(),
+						model,
+					)
+					var class = moduleSynthesizerClass()
+					var methodParameter = class.methodParameter_
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterName",
+						parameterName,
+					)
+					methodParameter = uti.ReplaceAll(
+						methodParameter,
+						"parameterType",
+						parameterType,
+					)
+					abstractType += methodParameter
+				}
+				abstractType += "\n)"
+			}
+		}
 	}
 	return abstractType
 }
