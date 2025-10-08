@@ -9,6 +9,10 @@ validator and formatter for a specified `syntax.cdsn` file.  An `ast` package
 containing a class for each node in the corresponding _abstract syntax tree_ is
 also generated.
 
+⚠️  Note: This is a very complex project to understand and use.  To take full
+advantage of the code generation capabilities, click on the "command-line tools"
+link below.
+
 ### Quick Links
 For more information on this project click on the following links:
  * [project documentation](https://github.com/craterdog/go-code-generation/wiki)
