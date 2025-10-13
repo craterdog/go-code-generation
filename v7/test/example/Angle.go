@@ -30,8 +30,8 @@ func (c *angleClass_) Angle(
 	return angle_(radians)
 }
 
-func (c *angleClass_) AngleFromString(
-	value string,
+func (c *angleClass_) AngleFromSource(
+	source string,
 ) AngleLike {
 	var instance AngleLike
 	// TBD - Add the constructor implementation.
