@@ -482,9 +482,10 @@ func (v *syntaxAnalyzer_) PreprocessRuleTerm(
 				v.syntaxMap_ += ".."
 				var last = limit.GetOptionalNumber()
 				if uti.IsDefined(last) {
-					v.syntaxMap_ += last + "}"
+					v.syntaxMap_ += last
 				}
 			}
+			v.syntaxMap_ += "}"
 		}
 	}
 }

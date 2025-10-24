@@ -550,7 +550,7 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: fra.CatalogFromMap[string, string](
 		map[string]string{
-			"$Document": `Component{3..  ! An inline comment.`,
+			"$Document": `Component{3..}  ! An inline comment.`,
 			"$Component": `
     Intrinsic
     List
