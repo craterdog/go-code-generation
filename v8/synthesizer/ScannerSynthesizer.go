@@ -406,7 +406,7 @@ func (v *scanner_) GetClass() ScannerClassLike {
 func (v *scanner_) Process<~ExpressionName>(
 	<expressionName_> string,
 ) {
-	v.validateExpression(<expressionName_>, <~ExpressionName>Expression)
+	v.validateToken(<expressionName_>, <~ExpressionName>Token)
 }
 `,
 

@@ -173,21 +173,30 @@ func (v *parser_) parseDocument() (
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Component rule.
-	var components ast.ComponentLike
-	components, token, ok = v.parseComponent()
-	switch {
-	case ok:
+	// Attempt to parse multiple Component rules.
+	var components = fra.List[ast.ComponentLike]()
+componentsLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var component ast.ComponentLike
+		component, token, ok = v.parseComponent()
+		if !ok {
+			switch {
+			case count_ >= 3:
+				break componentsLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple Component rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Document", token)
+				message += "3 or more Component rules are required."
+				panic(message)
+			}
+		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Document", token)
-		panic(message)
+		components.AppendValue(component)
 	}
 
 	// Found a single Document rule.

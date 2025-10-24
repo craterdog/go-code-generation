@@ -65,31 +65,31 @@ func (v *validator_) ValidateDocument(
 func (v *validator_) ProcessNewline(
 	newline string,
 ) {
-	v.validateExpression(newline, NewlineExpression)
+	v.validateToken(newline, NewlineToken)
 }
 
 func (v *validator_) ProcessNumber(
 	number string,
 ) {
-	v.validateExpression(number, NumberExpression)
+	v.validateToken(number, NumberToken)
 }
 
 func (v *validator_) ProcessRune(
 	rune_ string,
 ) {
-	v.validateExpression(rune_, RuneExpression)
+	v.validateToken(rune_, RuneToken)
 }
 
 func (v *validator_) ProcessSpace(
 	space string,
 ) {
-	v.validateExpression(space, SpaceExpression)
+	v.validateToken(space, SpaceToken)
 }
 
 func (v *validator_) ProcessText(
 	text string,
 ) {
-	v.validateExpression(text, TextExpression)
+	v.validateToken(text, TextToken)
 }
 
 func (v *validator_) PreprocessAdditional(

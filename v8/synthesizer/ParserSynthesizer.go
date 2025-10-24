@@ -209,9 +209,9 @@ func (v *parserSynthesizer_) createCardinality(
 	if uti.IsUndefined(cardinality) {
 		return actualCardinality
 	}
+	actualCardinality = repeatedCardinality
 	switch actual := cardinality.GetAny().(type) {
 	case not.ConstrainedLike:
-		actualCardinality = repeatedCardinality
 		switch actual.GetAny().(string) {
 		case "?":
 			// This is the "{0..1}" case.

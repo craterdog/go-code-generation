@@ -149,18 +149,24 @@ func (v *visitor_) visitComponent(
 func (v *visitor_) visitDocument(
 	document ast.DocumentLike,
 ) {
-	var components = document.GetComponents()
-	v.processor_.PreprocessComponent(
-		components,
-		0,
-		0,
-	)
-	v.visitComponent(components)
-	v.processor_.PostprocessComponent(
-		components,
-		0,
-		0,
-	)
+	var componentsIndex uint
+	var components = document.GetComponents().GetIterator()
+	var componentsCount = uint(components.GetSize())
+	for components.HasNext() {
+		componentsIndex++
+		var rule = components.GetNext()
+		v.processor_.PreprocessComponent(
+			rule,
+			componentsIndex,
+			componentsCount,
+		)
+		v.visitComponent(rule)
+		v.processor_.PostprocessComponent(
+			rule,
+			componentsIndex,
+			componentsCount,
+		)
+	}
 }
 
 func (v *visitor_) visitIntrinsic(
