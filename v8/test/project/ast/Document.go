@@ -22,6 +22,7 @@
 package ast
 
 import (
+	fra "github.com/craterdog/go-collection-framework/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
@@ -29,26 +30,21 @@ import (
 
 // Access Function
 
-func AlternativeSequenceClass() AlternativeSequenceClassLike {
-	return alternativeSequenceClass()
+func DocumentClass() DocumentClassLike {
+	return documentClass()
 }
 
 // Constructor Methods
 
-func (c *alternativeSequenceClass_) AlternativeSequence(
-	delimiter string,
-	sequence SequenceLike,
-) AlternativeSequenceLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+func (c *documentClass_) Document(
+	components fra.Sequential[ComponentLike],
+) DocumentLike {
+	if uti.IsUndefined(components) {
+		panic("The \"components\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(sequence) {
-		panic("The \"sequence\" attribute is required by this class.")
-	}
-	var instance = &alternativeSequence_{
+	var instance = &document_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		sequence_:  sequence,
+		components_: components,
 	}
 	return instance
 }
@@ -57,42 +53,37 @@ func (c *alternativeSequenceClass_) AlternativeSequence(
 
 // Principal Methods
 
-func (v *alternativeSequence_) GetClass() AlternativeSequenceClassLike {
-	return alternativeSequenceClass()
+func (v *document_) GetClass() DocumentClassLike {
+	return documentClass()
 }
 
 // Attribute Methods
 
-func (v *alternativeSequence_) GetDelimiter() string {
-	return v.delimiter_
-}
-
-func (v *alternativeSequence_) GetSequence() SequenceLike {
-	return v.sequence_
+func (v *document_) GetComponents() fra.Sequential[ComponentLike] {
+	return v.components_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type alternativeSequence_ struct {
+type document_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	sequence_  SequenceLike
+	components_ fra.Sequential[ComponentLike]
 }
 
 // Class Structure
 
-type alternativeSequenceClass_ struct {
+type documentClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func alternativeSequenceClass() *alternativeSequenceClass_ {
-	return alternativeSequenceClassReference_
+func documentClass() *documentClass_ {
+	return documentClassReference_
 }
 
-var alternativeSequenceClassReference_ = &alternativeSequenceClass_{
+var documentClassReference_ = &documentClass_{
 	// Initialize the class constants.
 }

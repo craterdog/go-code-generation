@@ -22,11 +22,11 @@ import (
 	tes "testing"
 )
 
-var directory = "./test/"
-var moduleName = "github.com/craterdog/go-syntax-notation/v8"
-var wikiPath = "https://github.com/craterdog/go-syntax-notation/wiki"
+var directory = "./test/project/"
+var moduleName = "github.com/craterdog/go-example-syntax"
+var wikiPath = "https://" + moduleName + "/wiki"
 
-func TestPackageGeneration(t *tes.T) {
+func TestProjectGeneration(t *tes.T) {
 	// Validate the language grammar.
 	var filename = directory + "syntax.cdsn"
 	var source = uti.ReadFile(filename)
@@ -238,11 +238,13 @@ func TestValidatorGeneration(t *tes.T) {
 	uti.WriteFile(filename, source)
 }
 
-func TestExampleGeneration(t *tes.T) {
+func TestPackageGeneration(t *tes.T) {
 	// Generate the example class model.
+	var moduleName = "github.com/craterdog/go-example-package"
 	var packageName = "example"
-	var wikiPath = "https://github.com/craterdog/go-package-example/wiki"
-	uti.RemakeDirectory(directory + packageName)
+	var directory = "./test/" + packageName + "/"
+	var wikiPath = "https://github.com/craterdog/go-example-package/wiki"
+	uti.RemakeDirectory(directory)
 	var model = gen.CreatePackage(
 		moduleName,
 		wikiPath,
@@ -250,7 +252,7 @@ func TestExampleGeneration(t *tes.T) {
 	)
 	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
-	var filename = directory + packageName + "/package_api.go"
+	var filename = directory + "package_api.go"
 	uti.WriteFile(filename, source)
 
 	// Generate the example concrete classes.
@@ -271,7 +273,7 @@ func TestExampleGeneration(t *tes.T) {
 			model,
 		)
 		className = uti.MakeUpperCase(className)
-		filename = directory + packageName + "/" + className + ".go"
+		filename = directory + className + ".go"
 		uti.WriteFile(filename, source)
 	}
 }

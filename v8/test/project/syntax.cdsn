@@ -11,10 +11,9 @@
 <!
 
 !>
-CRATER DOG SYNTAX NOTATION
-This document contains a formal definition of the Crater Dog Syntax Notation™
-(CDSN) using CDSN itself in homage to Douglas Hofstadter of Gödel, Escher, Bach
-fame.
+EXAMPLE NOTATION
+This document contains a formal definition of an example syntax notation using
+Crater Dog Syntax Notation™ (CDSN).
 
 For more information on CDSN see the wiki at:
   - https://github.com/craterdog/go-syntax-notation/wiki
@@ -23,123 +22,42 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Syntax: LegalNotice comment Rule+ comment Expression+ comment Fragment+
-
-$LegalNotice: comment
-
-$Rule: "$" uppercase ":" Definition
-
-$Definition:
-    LiteralAlternatives
-    ExpressionAlternatives
-    RuleAlternatives
-    TermSequence  ! This must be last since it skips newlines.
-
-$LiteralAlternatives: LiteralValue+
-
-$LiteralValue: newline literal note?
-
-$ExpressionAlternatives: ExpressionName+
-
-$ExpressionName: newline lowercase note?
-
-$RuleAlternatives: RuleName+
-
-$RuleName: newline uppercase note?
-
-$TermSequence: RuleTerm+ note?
-
-$RuleTerm: Component Cardinality?  ! The default cardinality is one.
+$Document: Component{3..}  ! An inline comment.
 
 $Component:
-    literal
-    lowercase
-    uppercase
+    Intrinsic
+    List
+    Keyword
 
-$Cardinality:
-    Constrained
-    Quantified
+$Intrinsic:
+    number
+    rune  ! A multiline comment.
+    text
 
-$Constrained:
-    "?"  ! Zero or one.
-    "*"  ! Zero or more.
-    "+"  ! One or more.
+$List: "[" Component Additional* "]"
 
-$Quantified: "{" number Limit? "}"  ! A quantified range of numbers is inclusive.
+$Additional: "," Component
 
-$Limit: ".." number?  ! A quantified range may have no upper limit.
-
-$Expression: "$" lowercase ":" Pattern
-
-$Fragment: "$" allcaps ":" Pattern
-
-$Pattern: Alternatives note?
-
-$Alternatives: Sequence AlternativeSequence*
-
-$AlternativeSequence: "|" Sequence
-
-$Sequence: Repetition+
-
-$Repetition: Element Cardinality?  ! The default cardinality is exactly one.
-
-$Element:
-    Group
-    Filter
-    Text
-
-$Group: "(" Alternatives ")"
-
-$Filter: "~"? "[" Character+ "]"
-
-$Character:
-    Implicit
-    Explicit
-
-$Implicit: intrinsic
-
-$Explicit: glyph Extent?  ! An explicit range of glyphs is inclusive.
-
-$Extent: ".." glyph
-
-$Text:
-    glyph
-    literal
-    intrinsic
-    lowercase
-    allcaps
+$Keyword:
+    "if"
+    "then"
+    "else"
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                            EXPRESSION DEFINITIONS                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
+$number: '0' | '-'? ORDINAL
 
-$allcaps: UPPER{2} (DIGIT | UPPER)*
+$rune: ''' ~[CONTROL] "'"  ! Any single printable unicode character.
 
-$comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible match.
-
-$glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
-
-$literal: '"' (ESCAPE | ~['"' CONTROL])+ '"'
-
-$lowercase: LOWER (DIGIT | LOWER | UPPER)*
-
-$note: "! " ~[CONTROL]*
-
-$number: DIGIT+
-
-$uppercase: UPPER LOWER (DIGIT | LOWER | UPPER)*
+$text: '"' ~['"' CONTROL]+ '"'
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                             FRAGMENT DEFINITIONS                             │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$BASE16: ['0'..'9' 'a'..'f']
-
-$ESCAPE: '\' (UNICODE | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
-
-$UNICODE: ('x' BASE16{2}) | ('u' BASE16{4}) | ('U' BASE16{8})
+$ORDINAL: ['1'..'9'] DIGIT*
 

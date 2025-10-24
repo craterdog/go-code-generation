@@ -14,7 +14,7 @@
 Package "example" provides...
 
 For detailed documentation on this package refer to the wiki:
-  - https://github.com/craterdog/go-package-example/wiki
+  - https://github.com/craterdog/go-example-package/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:

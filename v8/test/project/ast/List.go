@@ -22,6 +22,7 @@
 package ast
 
 import (
+	fra "github.com/craterdog/go-collection-framework/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
@@ -29,26 +30,36 @@ import (
 
 // Access Function
 
-func ExtentClass() ExtentClassLike {
-	return extentClass()
+func ListClass() ListClassLike {
+	return listClass()
 }
 
 // Constructor Methods
 
-func (c *extentClass_) Extent(
-	delimiter string,
-	glyph string,
-) ExtentLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+func (c *listClass_) List(
+	delimiter1 string,
+	component ComponentLike,
+	additionals fra.Sequential[AdditionalLike],
+	delimiter2 string,
+) ListLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(glyph) {
-		panic("The \"glyph\" attribute is required by this class.")
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	var instance = &extent_{
+	if uti.IsUndefined(additionals) {
+		panic("The \"additionals\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	var instance = &list_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		glyph_:     glyph,
+		delimiter1_:  delimiter1,
+		component_:   component,
+		additionals_: additionals,
+		delimiter2_:  delimiter2,
 	}
 	return instance
 }
@@ -57,42 +68,52 @@ func (c *extentClass_) Extent(
 
 // Principal Methods
 
-func (v *extent_) GetClass() ExtentClassLike {
-	return extentClass()
+func (v *list_) GetClass() ListClassLike {
+	return listClass()
 }
 
 // Attribute Methods
 
-func (v *extent_) GetDelimiter() string {
-	return v.delimiter_
+func (v *list_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
-func (v *extent_) GetGlyph() string {
-	return v.glyph_
+func (v *list_) GetComponent() ComponentLike {
+	return v.component_
+}
+
+func (v *list_) GetAdditionals() fra.Sequential[AdditionalLike] {
+	return v.additionals_
+}
+
+func (v *list_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type extent_ struct {
+type list_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	glyph_     string
+	delimiter1_  string
+	component_   ComponentLike
+	additionals_ fra.Sequential[AdditionalLike]
+	delimiter2_  string
 }
 
 // Class Structure
 
-type extentClass_ struct {
+type listClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func extentClass() *extentClass_ {
-	return extentClassReference_
+func listClass() *listClass_ {
+	return listClassReference_
 }
 
-var extentClassReference_ = &extentClass_{
+var listClassReference_ = &listClass_{
 	// Initialize the class constants.
 }

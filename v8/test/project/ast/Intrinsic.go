@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func CharacterClass() CharacterClassLike {
-	return characterClass()
+func IntrinsicClass() IntrinsicClassLike {
+	return intrinsicClass()
 }
 
 // Constructor Methods
 
-func (c *characterClass_) Character(
+func (c *intrinsicClass_) Intrinsic(
 	any_ any,
-) CharacterLike {
+) IntrinsicLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &character_{
+	var instance = &intrinsic_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *characterClass_) Character(
 
 // Principal Methods
 
-func (v *character_) GetClass() CharacterClassLike {
-	return characterClass()
+func (v *intrinsic_) GetClass() IntrinsicClassLike {
+	return intrinsicClass()
 }
 
 // Attribute Methods
 
-func (v *character_) GetAny() any {
+func (v *intrinsic_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *character_) GetAny() any {
 
 // Instance Structure
 
-type character_ struct {
+type intrinsic_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type characterClass_ struct {
+type intrinsicClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func characterClass() *characterClass_ {
-	return characterClassReference_
+func intrinsicClass() *intrinsicClass_ {
+	return intrinsicClassReference_
 }
 
-var characterClassReference_ = &characterClass_{
+var intrinsicClassReference_ = &intrinsicClass_{
 	// Initialize the class constants.
 }

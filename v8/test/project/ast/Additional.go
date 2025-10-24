@@ -22,7 +22,6 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
@@ -30,21 +29,26 @@ import (
 
 // Access Function
 
-func ExpressionAlternativesClass() ExpressionAlternativesClassLike {
-	return expressionAlternativesClass()
+func AdditionalClass() AdditionalClassLike {
+	return additionalClass()
 }
 
 // Constructor Methods
 
-func (c *expressionAlternativesClass_) ExpressionAlternatives(
-	expressionNames fra.Sequential[ExpressionNameLike],
-) ExpressionAlternativesLike {
-	if uti.IsUndefined(expressionNames) {
-		panic("The \"expressionNames\" attribute is required by this class.")
+func (c *additionalClass_) Additional(
+	delimiter string,
+	component ComponentLike,
+) AdditionalLike {
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	var instance = &expressionAlternatives_{
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
+	}
+	var instance = &additional_{
 		// Initialize the instance attributes.
-		expressionNames_: expressionNames,
+		delimiter_: delimiter,
+		component_: component,
 	}
 	return instance
 }
@@ -53,37 +57,42 @@ func (c *expressionAlternativesClass_) ExpressionAlternatives(
 
 // Principal Methods
 
-func (v *expressionAlternatives_) GetClass() ExpressionAlternativesClassLike {
-	return expressionAlternativesClass()
+func (v *additional_) GetClass() AdditionalClassLike {
+	return additionalClass()
 }
 
 // Attribute Methods
 
-func (v *expressionAlternatives_) GetExpressionNames() fra.Sequential[ExpressionNameLike] {
-	return v.expressionNames_
+func (v *additional_) GetDelimiter() string {
+	return v.delimiter_
+}
+
+func (v *additional_) GetComponent() ComponentLike {
+	return v.component_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type expressionAlternatives_ struct {
+type additional_ struct {
 	// Declare the instance attributes.
-	expressionNames_ fra.Sequential[ExpressionNameLike]
+	delimiter_ string
+	component_ ComponentLike
 }
 
 // Class Structure
 
-type expressionAlternativesClass_ struct {
+type additionalClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func expressionAlternativesClass() *expressionAlternativesClass_ {
-	return expressionAlternativesClassReference_
+func additionalClass() *additionalClass_ {
+	return additionalClassReference_
 }
 
-var expressionAlternativesClassReference_ = &expressionAlternativesClass_{
+var additionalClassReference_ = &additionalClass_{
 	// Initialize the class constants.
 }

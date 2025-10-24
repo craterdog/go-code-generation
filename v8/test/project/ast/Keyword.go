@@ -22,7 +22,6 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
@@ -30,21 +29,21 @@ import (
 
 // Access Function
 
-func RuleAlternativesClass() RuleAlternativesClassLike {
-	return ruleAlternativesClass()
+func KeywordClass() KeywordClassLike {
+	return keywordClass()
 }
 
 // Constructor Methods
 
-func (c *ruleAlternativesClass_) RuleAlternatives(
-	ruleNames fra.Sequential[RuleNameLike],
-) RuleAlternativesLike {
-	if uti.IsUndefined(ruleNames) {
-		panic("The \"ruleNames\" attribute is required by this class.")
+func (c *keywordClass_) Keyword(
+	any_ any,
+) KeywordLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &ruleAlternatives_{
+	var instance = &keyword_{
 		// Initialize the instance attributes.
-		ruleNames_: ruleNames,
+		any_: any_,
 	}
 	return instance
 }
@@ -53,37 +52,37 @@ func (c *ruleAlternativesClass_) RuleAlternatives(
 
 // Principal Methods
 
-func (v *ruleAlternatives_) GetClass() RuleAlternativesClassLike {
-	return ruleAlternativesClass()
+func (v *keyword_) GetClass() KeywordClassLike {
+	return keywordClass()
 }
 
 // Attribute Methods
 
-func (v *ruleAlternatives_) GetRuleNames() fra.Sequential[RuleNameLike] {
-	return v.ruleNames_
+func (v *keyword_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type ruleAlternatives_ struct {
+type keyword_ struct {
 	// Declare the instance attributes.
-	ruleNames_ fra.Sequential[RuleNameLike]
+	any_ any
 }
 
 // Class Structure
 
-type ruleAlternativesClass_ struct {
+type keywordClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func ruleAlternativesClass() *ruleAlternativesClass_ {
-	return ruleAlternativesClassReference_
+func keywordClass() *keywordClass_ {
+	return keywordClassReference_
 }
 
-var ruleAlternativesClassReference_ = &ruleAlternativesClass_{
+var keywordClassReference_ = &keywordClass_{
 	// Initialize the class constants.
 }

@@ -202,15 +202,9 @@ loop:
 	for v.next_ < uti.ArraySize(v.runes_) {
 		switch {
 		// Find the next token type.
-		case v.foundToken(IntrinsicToken):
-		case v.foundToken(AllcapsToken):
-		case v.foundToken(CommentToken):
-		case v.foundToken(GlyphToken):
-		case v.foundToken(LiteralToken):
-		case v.foundToken(LowercaseToken):
-		case v.foundToken(NoteToken):
 		case v.foundToken(NumberToken):
-		case v.foundToken(UppercaseToken):
+		case v.foundToken(RuneToken):
+		case v.foundToken(TextToken):
 		case v.foundToken(SpaceToken):
 		case v.foundToken(NewlineToken):
 		case v.foundToken(DelimiterToken):
@@ -254,35 +248,23 @@ var scannerClassReference_ = &scannerClass_{
 		map[TokenType]string{
 			// Define token identifiers for each type of expression.
 			ErrorToken:     "error",
-			AllcapsToken:   "allcaps",
-			CommentToken:   "comment",
 			DelimiterToken: "delimiter",
-			GlyphToken:     "glyph",
-			IntrinsicToken: "intrinsic",
-			LiteralToken:   "literal",
-			LowercaseToken: "lowercase",
 			NewlineToken:   "newline",
-			NoteToken:      "note",
 			NumberToken:    "number",
+			RuneToken:      "rune",
 			SpaceToken:     "space",
-			UppercaseToken: "uppercase",
+			TextToken:      "text",
 		},
 	),
 	matchers_: fra.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of expression.
-			AllcapsToken:   reg.MustCompile("^" + allcaps_),
-			CommentToken:   reg.MustCompile("^" + comment_),
 			DelimiterToken: reg.MustCompile("^" + delimiter_),
-			GlyphToken:     reg.MustCompile("^" + glyph_),
-			IntrinsicToken: reg.MustCompile("^" + intrinsic_),
-			LiteralToken:   reg.MustCompile("^" + literal_),
-			LowercaseToken: reg.MustCompile("^" + lowercase_),
 			NewlineToken:   reg.MustCompile("^" + newline_),
-			NoteToken:      reg.MustCompile("^" + note_),
 			NumberToken:    reg.MustCompile("^" + number_),
+			RuneToken:      reg.MustCompile("^" + rune_),
 			SpaceToken:     reg.MustCompile("^" + space_),
-			UppercaseToken: reg.MustCompile("^" + uppercase_),
+			TextToken:      reg.MustCompile("^" + text_),
 		},
 	),
 }
@@ -306,19 +288,11 @@ const (
 	upper_   = "\\p{Lu}"
 
 	// Define the regular expressions for each expression type.
-	allcaps_   = "(?:" + upper_ + "{2}(" + digit_ + "|" + upper_ + ")*)"
-	base16_    = "(?:[0-9a-f])"
-	comment_   = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")*?" + eol_ + "<!" + eol_ + ")"
-	delimiter_ = "(?:~|\\}|\\||\\{|\\]|\\[|\\?|\\.\\.|\\+|\\*|\\)|\\(|\\$|:)"
-	escape_    = "(?:\\\\((?:" + unicode_ + ")|[abfnrtv\"\\\\]))"
-	glyph_     = "(?:'[^" + control_ + "]')"
-	intrinsic_ = "(?:ANY|CONTROL|DIGIT|EOL|LOWER|UPPER)"
-	literal_   = "(?:\"((?:" + escape_ + ")|[^\"" + control_ + "])+\")"
-	lowercase_ = "(?:" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	delimiter_ = "(?:then|if|else|\\]|\\[|,)"
 	newline_   = "(?:" + eol_ + ")"
-	note_      = "(?:! [^" + control_ + "]*)"
-	number_    = "(?:" + digit_ + "+)"
+	number_    = "(?:0|-?(?:" + ordinal_ + "))"
+	ordinal_   = "(?:[1-9]" + digit_ + "*)"
+	rune_      = "(?:'[^" + control_ + "]')"
 	space_     = "(?:[ \\t]+)"
-	unicode_   = "(?:(x(?:" + base16_ + "){2})|(u(?:" + base16_ + "){4})|(U(?:" + base16_ + "){8}))"
-	uppercase_ = "(?:" + upper_ + "" + lower_ + "(" + digit_ + "|" + lower_ + "|" + upper_ + ")*)"
+	text_      = "(?:\"[^\"" + control_ + "]+\")"
 )
