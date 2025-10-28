@@ -15,7 +15,7 @@ package analyzer
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v8"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 	sts "strings"
 )
@@ -302,7 +302,7 @@ func (v *classAnalyzer_) analyzePackageDeclaration(
 	)
 	v.importedPackages_.SetValue(
 		"fra",
-		`"github.com/craterdog/go-collection-framework/v8"`,
+		`"github.com/craterdog/go-essential-composites/v8"`,
 	)
 	v.importedPackages_.SetValue(
 		"syn",

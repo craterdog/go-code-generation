@@ -31,7 +31,7 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	ast "github.com/craterdog/go-example-syntax/ast"
 	gra "github.com/craterdog/go-example-syntax/grammar"
 )

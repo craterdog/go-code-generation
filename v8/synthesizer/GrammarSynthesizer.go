@@ -253,7 +253,7 @@ abstract syntax tree (AST) for this module:
 
 	importedPackages_: `
 	ast "<ModuleName>/ast"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 `,
 
 	typeDeclarations_: `

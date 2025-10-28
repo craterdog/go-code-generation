@@ -560,7 +560,7 @@ var parserSynthesizerClassReference_ = &parserSynthesizerClass_{
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 	mat "math"
 	sts "strings"

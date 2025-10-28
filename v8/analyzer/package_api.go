@@ -31,7 +31,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v8"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 )
 

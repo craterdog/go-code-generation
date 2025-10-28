@@ -16,7 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v8"
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 	sts "strings"
 )
@@ -643,7 +643,7 @@ var nodeSynthesizerClassReference_ = &nodeSynthesizerClass_{
 `,
 
 	importedPackages_: `
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 `,
 

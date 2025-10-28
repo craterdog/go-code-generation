@@ -14,7 +14,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v8"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 )
 
 // CLASS INTERFACE
@@ -168,7 +168,7 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 	)
 	v.importedPackages_.SetValue(
 		"fra",
-		`"github.com/craterdog/go-collection-framework/v8"`,
+		`"github.com/craterdog/go-essential-composites/v8"`,
 	)
 	v.importedPackages_.SetValue(
 		"syn",

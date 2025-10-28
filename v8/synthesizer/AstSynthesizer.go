@@ -343,7 +343,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	importedPackages_: `
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 `,
 
 	classDeclaration_: `

@@ -13,7 +13,7 @@
 package analyzer
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 	stc "strconv"

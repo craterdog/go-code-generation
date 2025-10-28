@@ -43,7 +43,7 @@ on interfaces, not on each other.
 package grammar
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	ast "github.com/craterdog/go-example-syntax/ast"
 )
 

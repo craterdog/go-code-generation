@@ -32,7 +32,7 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v8"
 	ass "github.com/craterdog/go-code-generation/v8/assembler"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	fra "github.com/craterdog/go-essential-composites/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 )
 
