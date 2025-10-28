@@ -22,8 +22,8 @@
 package grammar
 
 import (
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	ast "github.com/craterdog/go-example-syntax/ast"
-	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
 // CLASS INTERFACE

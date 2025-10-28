@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -37,7 +37,7 @@ func DocumentClass() DocumentClassLike {
 // Constructor Methods
 
 func (c *documentClass_) Document(
-	components fra.Sequential[ComponentLike],
+	components com.Sequential[ComponentLike],
 ) DocumentLike {
 	if uti.IsUndefined(components) {
 		panic("The \"components\" attribute is required by this class.")
@@ -59,7 +59,7 @@ func (v *document_) GetClass() DocumentClassLike {
 
 // Attribute Methods
 
-func (v *document_) GetComponents() fra.Sequential[ComponentLike] {
+func (v *document_) GetComponents() com.Sequential[ComponentLike] {
 	return v.components_
 }
 
@@ -69,7 +69,7 @@ func (v *document_) GetComponents() fra.Sequential[ComponentLike] {
 
 type document_ struct {
 	// Declare the instance attributes.
-	components_ fra.Sequential[ComponentLike]
+	components_ com.Sequential[ComponentLike]
 }
 
 // Class Structure

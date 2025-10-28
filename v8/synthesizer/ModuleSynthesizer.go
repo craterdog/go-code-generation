@@ -15,8 +15,8 @@ package synthesizer
 import (
 	mod "github.com/craterdog/go-class-model/v8"
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	reg "regexp"
 	sts "strings"
 )
@@ -33,7 +33,7 @@ func ModuleSynthesizerClass() ModuleSynthesizerClassLike {
 
 func (c *moduleSynthesizerClass_) ModuleSynthesizer(
 	moduleName string,
-	models fra.CatalogLike[string, mod.ModelLike],
+	models com.CatalogLike[string, mod.ModelLike],
 ) ModuleSynthesizerLike {
 	var instance = &moduleSynthesizer_{
 		// Initialize the instance attributes.
@@ -127,7 +127,7 @@ func (v *moduleSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *moduleSynthesizer_) createAspectAliases(
-	aspectDeclarations fra.Sequential[mod.AspectDeclarationLike],
+	aspectDeclarations com.Sequential[mod.AspectDeclarationLike],
 	model mod.ModelLike,
 ) (
 	aspectAliases string,
@@ -153,7 +153,7 @@ func (v *moduleSynthesizer_) createAspectAliases(
 }
 
 func (v *moduleSynthesizer_) createClassAliases(
-	classDeclarations fra.Sequential[mod.ClassDeclarationLike],
+	classDeclarations com.Sequential[mod.ClassDeclarationLike],
 	model mod.ModelLike,
 ) (
 	classAliases string,
@@ -270,7 +270,7 @@ func (v *moduleSynthesizer_) createAccessFunctions(
 }
 
 func (v *moduleSynthesizer_) createEnumeratedAliases(
-	enumeratedValues fra.Sequential[string],
+	enumeratedValues com.Sequential[string],
 	model mod.ModelLike,
 ) (
 	enumeratedAliases string,
@@ -301,7 +301,7 @@ func (v *moduleSynthesizer_) createEnumeratedAliases(
 }
 
 func (v *moduleSynthesizer_) createFunctionalAliases(
-	functionalDeclarations fra.Sequential[mod.FunctionalDeclarationLike],
+	functionalDeclarations com.Sequential[mod.FunctionalDeclarationLike],
 	model mod.ModelLike,
 ) (
 	functionalAliases string,
@@ -327,7 +327,7 @@ func (v *moduleSynthesizer_) createFunctionalAliases(
 }
 
 func (v *moduleSynthesizer_) createInstanceAliases(
-	instanceDeclarations fra.Sequential[mod.InstanceDeclarationLike],
+	instanceDeclarations com.Sequential[mod.InstanceDeclarationLike],
 	model mod.ModelLike,
 ) (
 	instanceAliases string,
@@ -451,7 +451,7 @@ func (v *moduleSynthesizer_) createPackageAliases(
 }
 
 func (v *moduleSynthesizer_) createTypeAliases(
-	typeDeclarations fra.Sequential[mod.TypeDeclarationLike],
+	typeDeclarations com.Sequential[mod.TypeDeclarationLike],
 	model mod.ModelLike,
 ) (
 	typeAliases string,
@@ -752,7 +752,7 @@ func (v *moduleSynthesizer_) replacePattern(
 type moduleSynthesizer_ struct {
 	// Declare the instance attributes.
 	moduleName_ string
-	models_     fra.CatalogLike[string, mod.ModelLike]
+	models_     com.CatalogLike[string, mod.ModelLike]
 }
 
 // Class Structure
@@ -792,8 +792,8 @@ var moduleSynthesizerClassReference_ = &moduleSynthesizerClass_{
 
 	importedPackages_: `
 	fmt "fmt"
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	ref "reflect"
 	sts "strings"
 `,

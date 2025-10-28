@@ -14,7 +14,7 @@ package analyzer
 
 import (
 	mod "github.com/craterdog/go-class-model/v8"
-	fra "github.com/craterdog/go-essential-composites/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 )
 
 // CLASS INTERFACE
@@ -32,13 +32,13 @@ func (c *packageAnalyzerClass_) PackageAnalyzer(
 ) PackageAnalyzerLike {
 	var instance = &packageAnalyzer_{
 		// Initialize the instance attributes.
-		importedPackages_:       fra.Catalog[string, string](),
-		typeDeclarations_:       fra.List[mod.TypeDeclarationLike](),
-		enumeratedValues_:       fra.List[string](),
-		functionalDeclarations_: fra.List[mod.FunctionalDeclarationLike](),
-		classDeclarations_:      fra.List[mod.ClassDeclarationLike](),
-		instanceDeclarations_:   fra.List[mod.InstanceDeclarationLike](),
-		aspectDeclarations_:     fra.List[mod.AspectDeclarationLike](),
+		importedPackages_:       com.Catalog[string, string](),
+		typeDeclarations_:       com.List[mod.TypeDeclarationLike](),
+		enumeratedValues_:       com.List[string](),
+		functionalDeclarations_: com.List[mod.FunctionalDeclarationLike](),
+		classDeclarations_:      com.List[mod.ClassDeclarationLike](),
+		instanceDeclarations_:   com.List[mod.InstanceDeclarationLike](),
+		aspectDeclarations_:     com.List[mod.AspectDeclarationLike](),
 
 		// Initialize the inherited aspects.
 		Methodical: mod.Processor(),
@@ -64,31 +64,31 @@ func (v *packageAnalyzer_) GetLegalNotice() string {
 	return v.legalNotice_
 }
 
-func (v *packageAnalyzer_) GetImportedPackages() fra.CatalogLike[string, string] {
+func (v *packageAnalyzer_) GetImportedPackages() com.CatalogLike[string, string] {
 	return v.importedPackages_
 }
 
-func (v *packageAnalyzer_) GetTypeDeclarations() fra.Sequential[mod.TypeDeclarationLike] {
+func (v *packageAnalyzer_) GetTypeDeclarations() com.Sequential[mod.TypeDeclarationLike] {
 	return v.typeDeclarations_
 }
 
-func (v *packageAnalyzer_) GetEnumeratedValues() fra.Sequential[string] {
+func (v *packageAnalyzer_) GetEnumeratedValues() com.Sequential[string] {
 	return v.enumeratedValues_
 }
 
-func (v *packageAnalyzer_) GetFunctionalDeclarations() fra.Sequential[mod.FunctionalDeclarationLike] {
+func (v *packageAnalyzer_) GetFunctionalDeclarations() com.Sequential[mod.FunctionalDeclarationLike] {
 	return v.functionalDeclarations_
 }
 
-func (v *packageAnalyzer_) GetClassDeclarations() fra.Sequential[mod.ClassDeclarationLike] {
+func (v *packageAnalyzer_) GetClassDeclarations() com.Sequential[mod.ClassDeclarationLike] {
 	return v.classDeclarations_
 }
 
-func (v *packageAnalyzer_) GetInstanceDeclarations() fra.Sequential[mod.InstanceDeclarationLike] {
+func (v *packageAnalyzer_) GetInstanceDeclarations() com.Sequential[mod.InstanceDeclarationLike] {
 	return v.instanceDeclarations_
 }
 
-func (v *packageAnalyzer_) GetAspectDeclarations() fra.Sequential[mod.AspectDeclarationLike] {
+func (v *packageAnalyzer_) GetAspectDeclarations() com.Sequential[mod.AspectDeclarationLike] {
 	return v.aspectDeclarations_
 }
 
@@ -164,7 +164,7 @@ func (v *packageAnalyzer_) PostprocessPackageDeclaration(
 	)
 	v.importedPackages_.SetValue(
 		"uti",
-		`"github.com/craterdog/go-missing-utilities/v8"`,
+		`"github.com/craterdog/go-essential-utilities/v8"`,
 	)
 	v.importedPackages_.SetValue(
 		"fra",
@@ -211,13 +211,13 @@ type packageAnalyzer_ struct {
 	// Declare the instance attributes.
 	legalNotice_            string
 	packageName_            string
-	importedPackages_       fra.CatalogLike[string, string]
-	typeDeclarations_       fra.ListLike[mod.TypeDeclarationLike]
-	enumeratedValues_       fra.ListLike[string]
-	functionalDeclarations_ fra.ListLike[mod.FunctionalDeclarationLike]
-	classDeclarations_      fra.ListLike[mod.ClassDeclarationLike]
-	instanceDeclarations_   fra.ListLike[mod.InstanceDeclarationLike]
-	aspectDeclarations_     fra.ListLike[mod.AspectDeclarationLike]
+	importedPackages_       com.CatalogLike[string, string]
+	typeDeclarations_       com.ListLike[mod.TypeDeclarationLike]
+	enumeratedValues_       com.ListLike[string]
+	functionalDeclarations_ com.ListLike[mod.FunctionalDeclarationLike]
+	classDeclarations_      com.ListLike[mod.ClassDeclarationLike]
+	instanceDeclarations_   com.ListLike[mod.InstanceDeclarationLike]
+	aspectDeclarations_     com.ListLike[mod.AspectDeclarationLike]
 
 	// Declare the inherited aspects.
 	mod.Methodical

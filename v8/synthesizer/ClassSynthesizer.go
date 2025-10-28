@@ -16,8 +16,8 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v8"
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	sts "strings"
 )
 
@@ -189,7 +189,7 @@ func (v *classSynthesizer_) PerformGlobalUpdates(
 // Private Methods
 
 func (v *classSynthesizer_) createAspectInterface(
-	aspectDeclarations fra.Sequential[mod.AspectDeclarationLike],
+	aspectDeclarations com.Sequential[mod.AspectDeclarationLike],
 	aspectAbstraction mod.AbstractionLike,
 ) string {
 	var class = classSynthesizerClass()
@@ -235,8 +235,8 @@ func (v *classSynthesizer_) createAspectInterface(
 }
 
 func (v *classSynthesizer_) createAspectInterfaces(
-	declarations fra.Sequential[mod.AspectDeclarationLike],
-	interfaces fra.Sequential[mod.AspectInterfaceLike],
+	declarations com.Sequential[mod.AspectDeclarationLike],
+	interfaces com.Sequential[mod.AspectInterfaceLike],
 ) string {
 	var aspectInterfaces string
 	if uti.IsDefined(interfaces) {
@@ -255,7 +255,7 @@ func (v *classSynthesizer_) createAspectInterfaces(
 
 func (v *classSynthesizer_) createAspectMethod(
 	method mod.MethodLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	// Determine any instance method parameters.
 	var parameterList = method.GetOptionalParameterList()
@@ -306,7 +306,7 @@ func (v *classSynthesizer_) createAspectMethod(
 
 func (v *classSynthesizer_) createAspectMethods(
 	aspectDeclaration mod.AspectDeclarationLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	var aspectMethods string
 	var iterator = aspectDeclaration.GetAspectMethods().GetIterator()
@@ -406,7 +406,7 @@ func (v *classSynthesizer_) createAttributeInitializations(
 }
 
 func (v *classSynthesizer_) createAttributeMethods(
-	list fra.Sequential[mod.AttributeMethodLike],
+	list com.Sequential[mod.AttributeMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -528,7 +528,7 @@ func (v *classSynthesizer_) createConstantMethod(
 }
 
 func (v *classSynthesizer_) createConstantMethods(
-	list fra.Sequential[mod.ConstantMethodLike],
+	list com.Sequential[mod.ConstantMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -583,7 +583,7 @@ func (v *classSynthesizer_) createConstructorMethod(
 }
 
 func (v *classSynthesizer_) createConstructorMethods(
-	list fra.Sequential[mod.ConstructorMethodLike],
+	list com.Sequential[mod.ConstructorMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -632,7 +632,7 @@ func (v *classSynthesizer_) createFunctionMethod(
 }
 
 func (v *classSynthesizer_) createFunctionMethods(
-	list fra.Sequential[mod.FunctionMethodLike],
+	list com.Sequential[mod.FunctionMethodLike],
 ) string {
 	var methods string
 	if uti.IsDefined(list) {
@@ -836,7 +836,7 @@ func (v *classSynthesizer_) createPrincipalMethod(
 }
 
 func (v *classSynthesizer_) createPrincipalMethods(
-	list fra.Sequential[mod.PrincipalMethodLike],
+	list com.Sequential[mod.PrincipalMethodLike],
 ) string {
 	var principalMethods string
 	var methods = list.GetIterator()
@@ -971,9 +971,9 @@ func (v *classSynthesizer_) extractAttributeName(
 func (v *classSynthesizer_) extractMappings(
 	constraints mod.ConstraintsLike,
 	arguments mod.ArgumentsLike,
-) fra.CatalogLike[string, mod.AbstractionLike] {
+) com.CatalogLike[string, mod.AbstractionLike] {
 	// Create the mappings catalog.
-	var mappings = fra.Catalog[string, mod.AbstractionLike]()
+	var mappings = com.Catalog[string, mod.AbstractionLike]()
 	if uti.IsUndefined(constraints) || uti.IsUndefined(arguments) {
 		return mappings
 	}
@@ -1105,7 +1105,7 @@ func (v *classSynthesizer_) extractType(
 
 func (v *classSynthesizer_) replaceAbstractionType(
 	abstraction mod.AbstractionLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.AbstractionLike {
 	// Check for wrapper mapping.
 	var wrapper = abstraction.GetOptionalWrapper()
@@ -1142,7 +1142,7 @@ func (v *classSynthesizer_) replaceAbstractionType(
 
 func (v *classSynthesizer_) replaceArgumentType(
 	argument mod.ArgumentLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.ArgumentLike {
 	var abstraction = argument.GetAbstraction()
 	abstraction = v.replaceAbstractionType(abstraction, mappings)
@@ -1152,7 +1152,7 @@ func (v *classSynthesizer_) replaceArgumentType(
 
 func (v *classSynthesizer_) replaceArgumentTypes(
 	arguments mod.ArgumentsLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.ArgumentsLike {
 	// Check for arguments.
 	if uti.IsUndefined(arguments) {
@@ -1164,7 +1164,7 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 	argument = v.replaceArgumentType(argument, mappings)
 
 	// Replace the generic types of any additional arguments with mapped types.
-	var additionalArguments = fra.List[mod.AdditionalArgumentLike]()
+	var additionalArguments = com.List[mod.AdditionalArgumentLike]()
 	var iterator = arguments.GetAdditionalArguments().GetIterator()
 	for iterator.HasNext() {
 		var additionalArgument = iterator.GetNext()
@@ -1189,7 +1189,7 @@ func (v *classSynthesizer_) replaceArgumentTypes(
 
 func (v *classSynthesizer_) replaceMultivalueTypes(
 	parameterized mod.MultivalueLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.MultivalueLike {
 	var parameterList = parameterized.GetParameterList()
 	parameterList = v.replaceParameterTypes(parameterList, mappings)
@@ -1203,7 +1203,7 @@ func (v *classSynthesizer_) replaceMultivalueTypes(
 
 func (v *classSynthesizer_) replaceParameterType(
 	parameter mod.ParameterLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.ParameterLike {
 	var parameterName = parameter.GetName()
 	var abstraction = parameter.GetAbstraction()
@@ -1218,10 +1218,10 @@ func (v *classSynthesizer_) replaceParameterType(
 
 func (v *classSynthesizer_) replaceParameterTypes(
 	parameterList mod.ParameterListLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.ParameterListLike {
 	if uti.IsDefined(parameterList) {
-		var replacedParameters = fra.List[mod.ParameterLike]()
+		var replacedParameters = com.List[mod.ParameterLike]()
 		var parameters = parameterList.GetParameters().GetIterator()
 		for parameters.HasNext() {
 			var parameter = parameters.GetNext()
@@ -1235,7 +1235,7 @@ func (v *classSynthesizer_) replaceParameterTypes(
 
 func (v *classSynthesizer_) replaceResultType(
 	result mod.ResultLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.ResultLike {
 	switch actual := result.GetAny().(type) {
 	case mod.NoneLike:
@@ -1259,7 +1259,7 @@ func (v *classSynthesizer_) replaceResultType(
 
 func (v *classSynthesizer_) replaceNameType(
 	name string,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) string {
 	var mappedType = mappings.GetValue(name)
 	if uti.IsDefined(mappedType) {
@@ -1270,7 +1270,7 @@ func (v *classSynthesizer_) replaceNameType(
 
 func (v *classSynthesizer_) replaceWrapperType(
 	wrapper mod.WrapperLike,
-	mappings fra.CatalogLike[string, mod.AbstractionLike],
+	mappings com.CatalogLike[string, mod.AbstractionLike],
 ) mod.WrapperLike {
 	if uti.IsUndefined(wrapper) {
 		return wrapper

@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 	reg "regexp"
 	sts "strings"
@@ -292,7 +292,7 @@ var formatterSynthesizerClassReference_ = &formatterSynthesizerClass_{
 	importedPackages_: `
 	fmt "fmt"
 	ast "<ModuleName>/ast"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	ref "reflect"
 	sts "strings"
 `,

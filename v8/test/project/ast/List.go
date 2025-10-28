@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -39,7 +39,7 @@ func ListClass() ListClassLike {
 func (c *listClass_) List(
 	delimiter1 string,
 	component ComponentLike,
-	additionals fra.Sequential[AdditionalLike],
+	additionals com.Sequential[AdditionalLike],
 	delimiter2 string,
 ) ListLike {
 	if uti.IsUndefined(delimiter1) {
@@ -82,7 +82,7 @@ func (v *list_) GetComponent() ComponentLike {
 	return v.component_
 }
 
-func (v *list_) GetAdditionals() fra.Sequential[AdditionalLike] {
+func (v *list_) GetAdditionals() com.Sequential[AdditionalLike] {
 	return v.additionals_
 }
 
@@ -98,7 +98,7 @@ type list_ struct {
 	// Declare the instance attributes.
 	delimiter1_  string
 	component_   ComponentLike
-	additionals_ fra.Sequential[AdditionalLike]
+	additionals_ com.Sequential[AdditionalLike]
 	delimiter2_  string
 }
 

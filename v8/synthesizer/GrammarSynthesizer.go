@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 )
 
@@ -253,7 +253,7 @@ abstract syntax tree (AST) for this module:
 
 	importedPackages_: `
 	ast "<ModuleName>/ast"
-	fra "github.com/craterdog/go-essential-composites/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 `,
 
 	typeDeclarations_: `
@@ -317,7 +317,7 @@ type ScannerClassLike interface {
 	// Constructor Methods
 	Scanner(
 		source string,
-		tokens fra.QueueLike[TokenLike],
+		tokens com.QueueLike[TokenLike],
 	) ScannerLike
 
 	// Function Methods

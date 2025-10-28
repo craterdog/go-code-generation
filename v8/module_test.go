@@ -15,8 +15,8 @@ package module_test
 import (
 	mod "github.com/craterdog/go-class-model/v8"
 	gen "github.com/craterdog/go-code-generation/v8"
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 	sts "strings"
 	tes "testing"
@@ -59,7 +59,7 @@ func TestProjectGeneration(t *tes.T) {
 }
 
 func TestModuleGeneration(t *tes.T) {
-	var models = fra.Catalog[string, mod.ModelLike]()
+	var models = com.Catalog[string, mod.ModelLike]()
 
 	// Read in the AST package file.
 	var packageName = "ast"

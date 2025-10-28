@@ -14,7 +14,7 @@ package example
 
 import (
 	fmt "fmt"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	syn "sync"
 )
 

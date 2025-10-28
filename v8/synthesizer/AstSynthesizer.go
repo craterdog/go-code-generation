@@ -14,7 +14,7 @@ package synthesizer
 
 import (
 	ana "github.com/craterdog/go-code-generation/v8/analyzer"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 )
 
@@ -343,7 +343,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.`,
 
 	importedPackages_: `
-	fra "github.com/craterdog/go-essential-composites/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 `,
 
 	classDeclaration_: `
@@ -360,11 +360,11 @@ type <~ClassName>ClassLike interface {
 	singularRuleParameter_: `
 		<parameterName_> <ParameterType>,`,
 	pluralRuleParameter_: `
-		<parameterName_> fra.Sequential[<ParameterType>],`,
+		<parameterName_> com.Sequential[<ParameterType>],`,
 	singularExpressionParameter_: `
 		<parameterName_> string,`,
 	pluralExpressionParameter_: `
-		<parameterName_> fra.Sequential[string],`,
+		<parameterName_> com.Sequential[string],`,
 	instanceDeclaration_: `
 /*
 <~ClassName>Like is an instance interface that declares the
@@ -383,9 +383,9 @@ type <~ClassName>Like interface {<PrincipalMethods><AttributeMethods>}
 	ruleGetterMethod_: `
 	Get<~AttributeName>() <AttributeType>`,
 	pluralRuleGetterMethod_: `
-	Get<~AttributeName>() fra.Sequential[<AttributeType>]`,
+	Get<~AttributeName>() com.Sequential[<AttributeType>]`,
 	expressionGetterMethod_: `
 	Get<~AttributeName>() string`,
 	pluralExpressionGetterMethod_: `
-	Get<~AttributeName>() fra.Sequential[string]`,
+	Get<~AttributeName>() com.Sequential[string]`,
 }

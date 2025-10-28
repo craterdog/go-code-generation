@@ -13,8 +13,8 @@
 package analyzer
 
 import (
-	fra "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 	stc "strconv"
 	sts "strings"
@@ -60,45 +60,45 @@ func (v *syntaxAnalyzer_) GetSyntaxName() string {
 	return v.syntaxName_
 }
 
-func (v *syntaxAnalyzer_) GetRules() fra.SetLike[string] {
+func (v *syntaxAnalyzer_) GetRules() com.SetLike[string] {
 	return v.rules_
 }
 
-func (v *syntaxAnalyzer_) GetExpressions() fra.SetLike[string] {
+func (v *syntaxAnalyzer_) GetExpressions() com.SetLike[string] {
 	return v.expressions_
 }
 
-func (v *syntaxAnalyzer_) GetFragments() fra.SetLike[string] {
+func (v *syntaxAnalyzer_) GetFragments() com.SetLike[string] {
 	return v.fragments_
 }
 
 func (v *syntaxAnalyzer_) GetLiteralValues(
 	ruleName string,
-) fra.Sequential[not.LiteralValueLike] {
+) com.Sequential[not.LiteralValueLike] {
 	return v.literalValues_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetExpressionNames(
 	ruleName string,
-) fra.Sequential[not.ExpressionNameLike] {
+) com.Sequential[not.ExpressionNameLike] {
 	return v.expressionNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleNames(
 	ruleName string,
-) fra.Sequential[not.RuleNameLike] {
+) com.Sequential[not.RuleNameLike] {
 	return v.ruleNames_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetRuleTerms(
 	ruleName string,
-) fra.Sequential[not.RuleTermLike] {
+) com.Sequential[not.RuleTermLike] {
 	return v.ruleTerms_.GetValue(ruleName)
 }
 
 func (v *syntaxAnalyzer_) GetVariables(
 	ruleName string,
-) fra.Sequential[string] {
+) com.Sequential[string] {
 	return v.variables_.GetValue(ruleName)
 }
 
@@ -118,11 +118,11 @@ func (v *syntaxAnalyzer_) GetVariableType(
 	return variableType
 }
 
-func (v *syntaxAnalyzer_) GetPatterns() fra.CatalogLike[string, string] {
+func (v *syntaxAnalyzer_) GetPatterns() com.CatalogLike[string, string] {
 	return v.patterns_
 }
 
-func (v *syntaxAnalyzer_) GetDefinitions() fra.CatalogLike[string, not.DefinitionLike] {
+func (v *syntaxAnalyzer_) GetDefinitions() com.CatalogLike[string, not.DefinitionLike] {
 	return v.definitions_
 }
 
@@ -410,16 +410,16 @@ func (v *syntaxAnalyzer_) PreprocessRule(
 	v.definitions_.SetValue(ruleName, definition)
 	switch definition.GetAny().(type) {
 	case not.LiteralAlternativesLike:
-		var literalValues = fra.List[not.LiteralValueLike]()
+		var literalValues = com.List[not.LiteralValueLike]()
 		v.literalValues_.SetValue(ruleName, literalValues)
 	case not.ExpressionAlternativesLike:
-		var expressionNames = fra.List[not.ExpressionNameLike]()
+		var expressionNames = com.List[not.ExpressionNameLike]()
 		v.expressionNames_.SetValue(ruleName, expressionNames)
 	case not.RuleAlternativesLike:
-		var ruleNames = fra.List[not.RuleNameLike]()
+		var ruleNames = com.List[not.RuleNameLike]()
 		v.ruleNames_.SetValue(ruleName, ruleNames)
 	case not.TermSequenceLike:
-		var ruleTerms = fra.List[not.RuleTermLike]()
+		var ruleTerms = com.List[not.RuleTermLike]()
 		v.ruleTerms_.SetValue(ruleName, ruleTerms)
 	}
 	v.syntaxMap_ += "\n\t\t\t\"$" + ruleName + "\": `"
@@ -498,22 +498,22 @@ func (v *syntaxAnalyzer_) PreprocessSyntax(
 	v.notGreedy_ = false // The default is "greedy" (not notGreedy).
 	v.syntaxName_ = v.extractSyntaxName(syntax)
 	v.legalNotice_ = v.extractLegalNotice(syntax)
-	v.rules_ = fra.Set[string]()
-	v.expressions_ = fra.SetFromArray[string](
+	v.rules_ = com.Set[string]()
+	v.expressions_ = com.SetFromArray[string](
 		[]string{"delimiter", "newline", "space"},
 	)
-	v.fragments_ = fra.SetFromArray[string](
+	v.fragments_ = com.SetFromArray[string](
 		[]string{"ANY", "CONTROL", "DIGIT", "EOL", "LOWER", "UPPER"},
 	)
-	v.pluralNames_ = fra.Set[string]()
-	v.delimiters_ = fra.Set[string]()
-	v.patterns_ = fra.Catalog[string, string]()
-	v.definitions_ = fra.Catalog[string, not.DefinitionLike]()
-	v.ruleTerms_ = fra.Catalog[string, fra.ListLike[not.RuleTermLike]]()
-	v.variables_ = fra.Catalog[string, fra.ListLike[string]]()
-	v.ruleNames_ = fra.Catalog[string, fra.ListLike[not.RuleNameLike]]()
-	v.expressionNames_ = fra.Catalog[string, fra.ListLike[not.ExpressionNameLike]]()
-	v.literalValues_ = fra.Catalog[string, fra.ListLike[not.LiteralValueLike]]()
+	v.pluralNames_ = com.Set[string]()
+	v.delimiters_ = com.Set[string]()
+	v.patterns_ = com.Catalog[string, string]()
+	v.definitions_ = com.Catalog[string, not.DefinitionLike]()
+	v.ruleTerms_ = com.Catalog[string, com.ListLike[not.RuleTermLike]]()
+	v.variables_ = com.Catalog[string, com.ListLike[string]]()
+	v.ruleNames_ = com.Catalog[string, com.ListLike[not.RuleNameLike]]()
+	v.expressionNames_ = com.Catalog[string, com.ListLike[not.ExpressionNameLike]]()
+	v.literalValues_ = com.Catalog[string, com.ListLike[not.LiteralValueLike]]()
 }
 
 func (v *syntaxAnalyzer_) PostprocessSyntax(
@@ -662,7 +662,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	ruleName string,
 ) {
 	// Only inline rules have variables.
-	var ruleTerms fra.Sequential[not.RuleTermLike]
+	var ruleTerms com.Sequential[not.RuleTermLike]
 	var definition = v.definitions_.GetValue(ruleName)
 	switch actual := definition.GetAny().(type) {
 	case not.TermSequenceLike:
@@ -672,7 +672,7 @@ func (v *syntaxAnalyzer_) extractVariables(
 	}
 
 	// Extract the variable names from the inline components.
-	var variables = fra.List[string]()
+	var variables = com.List[string]()
 	var iterator = ruleTerms.GetIterator()
 	for iterator.HasNext() {
 		var ruleTerm = iterator.GetNext()
@@ -726,18 +726,18 @@ type syntaxAnalyzer_ struct {
 	legalNotice_     string
 	ruleName_        string
 	pattern_         string
-	rules_           fra.SetLike[string]
-	expressions_     fra.SetLike[string]
-	fragments_       fra.SetLike[string]
-	pluralNames_     fra.SetLike[string]
-	delimiters_      fra.SetLike[string]
-	patterns_        fra.CatalogLike[string, string]
-	definitions_     fra.CatalogLike[string, not.DefinitionLike]
-	ruleTerms_       fra.CatalogLike[string, fra.ListLike[not.RuleTermLike]]
-	variables_       fra.CatalogLike[string, fra.ListLike[string]]
-	ruleNames_       fra.CatalogLike[string, fra.ListLike[not.RuleNameLike]]
-	expressionNames_ fra.CatalogLike[string, fra.ListLike[not.ExpressionNameLike]]
-	literalValues_   fra.CatalogLike[string, fra.ListLike[not.LiteralValueLike]]
+	rules_           com.SetLike[string]
+	expressions_     com.SetLike[string]
+	fragments_       com.SetLike[string]
+	pluralNames_     com.SetLike[string]
+	delimiters_      com.SetLike[string]
+	patterns_        com.CatalogLike[string, string]
+	definitions_     com.CatalogLike[string, not.DefinitionLike]
+	ruleTerms_       com.CatalogLike[string, com.ListLike[not.RuleTermLike]]
+	variables_       com.CatalogLike[string, com.ListLike[string]]
+	ruleNames_       com.CatalogLike[string, com.ListLike[not.RuleNameLike]]
+	expressionNames_ com.CatalogLike[string, com.ListLike[not.ExpressionNameLike]]
+	literalValues_   com.CatalogLike[string, com.ListLike[not.LiteralValueLike]]
 
 	// Declare the inherited aspects.
 	not.Methodical
