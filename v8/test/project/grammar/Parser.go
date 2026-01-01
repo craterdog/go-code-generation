@@ -1,6 +1,6 @@
 /*
 ................................................................................
-.    Copyright (c) 2009-2025 Crater Dog Technologies.  All Rights Reserved.    .
+.    Copyright (c) 2009-2026 Crater Dog Technologies™.  All Rights Reserved.   .
 ................................................................................
 .  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
 .                                                                              .
@@ -559,7 +559,7 @@ var parserClassReference_ = &parserClass_{
     number
     rune  ! A multiline comment.
     text`,
-			"$List":       `"[" Component Additional* "]"`,
+			"$List": `"[" Component Additional* "]"`,
 			"$Additional": `"," Component`,
 			"$Keyword": `
     "if"

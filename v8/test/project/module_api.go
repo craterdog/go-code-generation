@@ -1,6 +1,6 @@
 /*
 ................................................................................
-.    Copyright (c) 2009-2025 Crater Dog Technologies.  All Rights Reserved.    .
+.    Copyright (c) 2009-2026 Crater Dog Technologies™.  All Rights Reserved.   .
 ................................................................................
 .  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
 .                                                                              .
@@ -42,20 +42,20 @@ import (
 
 type (
 	AdditionalClassLike = ast.AdditionalClassLike
-	ComponentClassLike  = ast.ComponentClassLike
-	DocumentClassLike   = ast.DocumentClassLike
-	IntrinsicClassLike  = ast.IntrinsicClassLike
-	KeywordClassLike    = ast.KeywordClassLike
-	ListClassLike       = ast.ListClassLike
+	ComponentClassLike = ast.ComponentClassLike
+	DocumentClassLike = ast.DocumentClassLike
+	IntrinsicClassLike = ast.IntrinsicClassLike
+	KeywordClassLike = ast.KeywordClassLike
+	ListClassLike = ast.ListClassLike
 )
 
 type (
 	AdditionalLike = ast.AdditionalLike
-	ComponentLike  = ast.ComponentLike
-	DocumentLike   = ast.DocumentLike
-	IntrinsicLike  = ast.IntrinsicLike
-	KeywordLike    = ast.KeywordLike
-	ListLike       = ast.ListLike
+	ComponentLike = ast.ComponentLike
+	DocumentLike = ast.DocumentLike
+	IntrinsicLike = ast.IntrinsicLike
+	KeywordLike = ast.KeywordLike
+	ListLike = ast.ListLike
 )
 
 // Grammar
@@ -65,33 +65,33 @@ type (
 )
 
 const (
-	ErrorToken     = gra.ErrorToken
+	ErrorToken = gra.ErrorToken
 	DelimiterToken = gra.DelimiterToken
-	NewlineToken   = gra.NewlineToken
-	NumberToken    = gra.NumberToken
-	RuneToken      = gra.RuneToken
-	SpaceToken     = gra.SpaceToken
-	TextToken      = gra.TextToken
+	NewlineToken = gra.NewlineToken
+	NumberToken = gra.NumberToken
+	RuneToken = gra.RuneToken
+	SpaceToken = gra.SpaceToken
+	TextToken = gra.TextToken
 )
 
 type (
 	FormatterClassLike = gra.FormatterClassLike
-	ParserClassLike    = gra.ParserClassLike
+	ParserClassLike = gra.ParserClassLike
 	ProcessorClassLike = gra.ProcessorClassLike
-	ScannerClassLike   = gra.ScannerClassLike
-	TokenClassLike     = gra.TokenClassLike
+	ScannerClassLike = gra.ScannerClassLike
+	TokenClassLike = gra.TokenClassLike
 	ValidatorClassLike = gra.ValidatorClassLike
-	VisitorClassLike   = gra.VisitorClassLike
+	VisitorClassLike = gra.VisitorClassLike
 )
 
 type (
 	FormatterLike = gra.FormatterLike
-	ParserLike    = gra.ParserLike
+	ParserLike = gra.ParserLike
 	ProcessorLike = gra.ProcessorLike
-	ScannerLike   = gra.ScannerLike
-	TokenLike     = gra.TokenLike
+	ScannerLike = gra.ScannerLike
+	TokenLike = gra.TokenLike
 	ValidatorLike = gra.ValidatorLike
-	VisitorLike   = gra.VisitorLike
+	VisitorLike = gra.VisitorLike
 )
 
 type (

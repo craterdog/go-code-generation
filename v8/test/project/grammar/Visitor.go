@@ -1,6 +1,6 @@
 /*
 ................................................................................
-.    Copyright (c) 2009-2025 Crater Dog Technologies.  All Rights Reserved.    .
+.    Copyright (c) 2009-2026 Crater Dog Technologies™.  All Rights Reserved.   .
 ................................................................................
 .  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
 .                                                                              .
@@ -99,8 +99,7 @@ func (v *visitor_) visitAdditional(
 		component,
 		0,
 		0,
-	)
-}
+	)}
 
 func (v *visitor_) visitComponent(
 	component ast.ComponentLike,
@@ -142,8 +141,7 @@ func (v *visitor_) visitComponent(
 			actual,
 			0,
 			0,
-		)
-	}
+		)}
 }
 
 func (v *visitor_) visitDocument(
@@ -166,8 +164,7 @@ func (v *visitor_) visitDocument(
 			componentsIndex,
 			componentsCount,
 		)
-	}
-}
+	}}
 
 func (v *visitor_) visitIntrinsic(
 	intrinsic ast.IntrinsicLike,
@@ -180,8 +177,7 @@ func (v *visitor_) visitIntrinsic(
 	case ScannerClass().MatchesType(actual, RuneToken):
 		v.processor_.ProcessRune(actual)
 	case ScannerClass().MatchesType(actual, TextToken):
-		v.processor_.ProcessText(actual)
-	}
+		v.processor_.ProcessText(actual)}
 }
 
 func (v *visitor_) visitKeyword(
@@ -195,8 +191,7 @@ func (v *visitor_) visitKeyword(
 	case "then":
 		v.processor_.ProcessDelimiter("then")
 	case "else":
-		v.processor_.ProcessDelimiter("else")
-	}
+		v.processor_.ProcessDelimiter("else")}
 }
 
 func (v *visitor_) visitList(
@@ -253,8 +248,7 @@ func (v *visitor_) visitList(
 	)
 
 	var delimiter2 = list.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
-}
+	v.processor_.ProcessDelimiter(delimiter2)}
 
 // Instance Structure
 

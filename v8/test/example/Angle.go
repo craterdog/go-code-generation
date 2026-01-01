@@ -130,7 +130,7 @@ type angle_ float64
 
 type angleClass_ struct {
 	// Declare the class constants.
-	pi_  AngleLike
+	pi_ AngleLike
 	tau_ AngleLike
 }
 

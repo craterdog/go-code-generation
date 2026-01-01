@@ -1,6 +1,6 @@
 /*
 ................................................................................
-.    Copyright (c) 2009-2025 Crater Dog Technologies.  All Rights Reserved.    .
+.    Copyright (c) 2009-2026 Crater Dog Technologies™.  All Rights Reserved.   .
 ................................................................................
 .  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
 .                                                                              .
@@ -236,8 +236,8 @@ func (v *formatter_) getResult() string {
 
 type formatter_ struct {
 	// Declare the instance attributes.
-	depth_  uint
-	result_ sts.Builder
+	depth_   uint
+	result_  sts.Builder
 
 	// Declare the inherited aspects.
 	Methodical
