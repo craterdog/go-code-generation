@@ -56,10 +56,10 @@ func (c *listClass_) List(
 	}
 	var instance = &list_{
 		// Initialize the instance attributes.
-		delimiter1_: delimiter1,
-		component_: component,
+		delimiter1_:  delimiter1,
+		component_:   component,
 		additionals_: additionals,
-		delimiter2_: delimiter2,
+		delimiter2_:  delimiter2,
 	}
 	return instance
 }
@@ -96,10 +96,10 @@ func (v *list_) GetDelimiter2() string {
 
 type list_ struct {
 	// Declare the instance attributes.
-	delimiter1_ string
-	component_ ComponentLike
+	delimiter1_  string
+	component_   ComponentLike
 	additionals_ com.Sequential[AdditionalLike]
-	delimiter2_ string
+	delimiter2_  string
 }
 
 // Class Structure

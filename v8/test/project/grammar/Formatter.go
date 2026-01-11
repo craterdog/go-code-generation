@@ -236,8 +236,8 @@ func (v *formatter_) getResult() string {
 
 type formatter_ struct {
 	// Declare the instance attributes.
-	depth_   uint
-	result_  sts.Builder
+	depth_  uint
+	result_ sts.Builder
 
 	// Declare the inherited aspects.
 	Methodical

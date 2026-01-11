@@ -247,24 +247,24 @@ var scannerClassReference_ = &scannerClass_{
 	tokens_: com.CatalogFromMap[TokenType, string](
 		map[TokenType]string{
 			// Define token identifiers for each type of expression.
-			ErrorToken: "error",
+			ErrorToken:     "error",
 			DelimiterToken: "delimiter",
-			NewlineToken: "newline",
-			NumberToken: "number",
-			RuneToken: "rune",
-			SpaceToken: "space",
-			TextToken: "text",
+			NewlineToken:   "newline",
+			NumberToken:    "number",
+			RuneToken:      "rune",
+			SpaceToken:     "space",
+			TextToken:      "text",
 		},
 	),
 	matchers_: com.CatalogFromMap[TokenType, *reg.Regexp](
 		map[TokenType]*reg.Regexp{
 			// Define pattern matchers for each type of expression.
 			DelimiterToken: reg.MustCompile("^" + delimiter_),
-			NewlineToken: reg.MustCompile("^" + newline_),
-			NumberToken: reg.MustCompile("^" + number_),
-			RuneToken: reg.MustCompile("^" + rune_),
-			SpaceToken: reg.MustCompile("^" + space_),
-			TextToken: reg.MustCompile("^" + text_),
+			NewlineToken:   reg.MustCompile("^" + newline_),
+			NumberToken:    reg.MustCompile("^" + number_),
+			RuneToken:      reg.MustCompile("^" + rune_),
+			SpaceToken:     reg.MustCompile("^" + space_),
+			TextToken:      reg.MustCompile("^" + text_),
 		},
 	),
 }
@@ -289,10 +289,10 @@ const (
 
 	// Define the regular expressions for each expression type.
 	delimiter_ = "(?:then|if|else|\\]|\\[|,)"
-	newline_ = "(?:" + eol_ + ")"
-	number_ = "(?:0|-?(?:" + ordinal_ + "))"
-	ordinal_ = "(?:[1-9]" + digit_ + "*)"
-	rune_ = "(?:'[^" + control_ + "]')"
-	space_ = "(?:[ \\t]+)"
-	text_ = "(?:\"[^\"" + control_ + "]+\")"
+	newline_   = "(?:" + eol_ + ")"
+	number_    = "(?:0|-?(?:" + ordinal_ + "))"
+	ordinal_   = "(?:[1-9]" + digit_ + "*)"
+	rune_      = "(?:'[^" + control_ + "]')"
+	space_     = "(?:[ \\t]+)"
+	text_      = "(?:\"[^\"" + control_ + "]+\")"
 )

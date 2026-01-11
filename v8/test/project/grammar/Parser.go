@@ -559,7 +559,7 @@ var parserClassReference_ = &parserClass_{
     number
     rune  ! A multiline comment.
     text`,
-			"$List": `"[" Component Additional* "]"`,
+			"$List":       `"[" Component Additional* "]"`,
 			"$Additional": `"," Component`,
 			"$Keyword": `
     "if"

@@ -40,7 +40,7 @@ func (c *associationClass_[K, V]) Association(
 	}
 	var instance = &association_[K, V]{
 		// Initialize the instance attributes.
-		key_: key,
+		key_:   key,
 		value_: value,
 	}
 	return instance
@@ -85,7 +85,7 @@ func (v *association_[K, V]) SetValue(
 
 type association_[K comparable, V any] struct {
 	// Declare the instance attributes.
-	key_ K
+	key_   K
 	value_ V
 }
 
